@@ -1,5 +1,5 @@
 import { User } from "../../entities/user";
-import { IUserRepository } from "../IUserRepository";
+import { IUsersRepository } from "../IUsersRepository";
 
 import { Repository } from "typeorm"
 import { dataSource } from "../../../../database";
@@ -7,7 +7,7 @@ import { dataSource } from "../../../../database";
 import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
 
 
-class UserRepository implements IUserRepository {
+class UsersRepository implements IUsersRepository {
 
     private repository: Repository<User>
 
@@ -44,4 +44,4 @@ class UserRepository implements IUserRepository {
     }
 }
 
-export { UserRepository }
+export { UsersRepository }

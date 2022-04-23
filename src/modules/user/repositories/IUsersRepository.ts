@@ -2,7 +2,7 @@
 import { ICreateUserDTO } from "../dtos/ICreateUserDTO"
 import { User } from "../entities/user"
 
-interface IUserRepository {
+interface IUsersRepository {
 
     create(data: ICreateUserDTO): Promise<void>
     find(): Promise<User[]>
@@ -10,4 +10,4 @@ interface IUserRepository {
     findByName(name: string): Promise<User>
 }
 
-export { IUserRepository }
+export { IUsersRepository }
