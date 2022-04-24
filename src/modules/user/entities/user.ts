@@ -10,6 +10,9 @@ class User {
     @Column()
     name: string
 
+    @Column()
+    password: string
+
 
     constructor() {
         if (!this.id) {
