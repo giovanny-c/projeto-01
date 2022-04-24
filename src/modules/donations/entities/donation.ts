@@ -48,3 +48,5 @@ class Donation {
     }
 
 }
+
+export { Donation }

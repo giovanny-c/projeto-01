@@ -1,4 +1,8 @@
 import { container } from "tsyringe";
+
+import { IDonationsRepository } from "../../modules/donations/repositories/IDonationsRepository";
+import { DonationsRepository } from "../../modules/donations/repositories/implementation/DonationsRepository";
+
 import { IDonorsRepository } from "../../modules/donor/repositories/IDonorsRepository";
 import { DonorsRepository } from "../../modules/donor/repositories/implemantations/DonorsRepository";
 
@@ -15,4 +19,10 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IDonorsRepository>(
     "DonorsRepository",
     DonorsRepository
+)
+
+
+container.registerSingleton<IDonationsRepository>(
+    "DonationsRepository",
+    DonationsRepository
 )
