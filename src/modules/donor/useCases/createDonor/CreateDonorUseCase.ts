@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../../shared/errors/AppError";
 import { ICreateDonorDTO } from "../../dtos/ICreateDonorDTO";
 
 import { IDonorsRepository } from "../../repositories/IDonorsRepository";
@@ -15,7 +16,7 @@ class CreateDonorUseCase {
         const donorAlreadyExists = this.donorsRepository.findByEmail(email)
 
         if (!donorAlreadyExists) {
-            throw new Error("This donor already exists")
+            throw new AppError("This donor already exists")
 
         }
 

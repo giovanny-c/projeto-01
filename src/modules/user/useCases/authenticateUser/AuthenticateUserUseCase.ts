@@ -4,6 +4,7 @@ import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { sign } from "jsonwebtoken"
 
 import auth from "../../../../config/auth";
+import { AppError } from "../../../../shared/errors/AppError";
 
 interface IRequest {
     name: string
@@ -34,13 +35,13 @@ class AuthenticateUserUseCase {
         const { expires_in_token, secret_token } = auth
 
         if (!user) {
-            throw new Error("name or password incorrect")
+            throw new AppError("name or password incorrect")
         }
 
         const passwordMatch = await compare(password, user.password)
 
         if (!passwordMatch) {
-            throw new Error("name or password incorrect")
+            throw new AppError("name or password incorrect")
 
         }
 

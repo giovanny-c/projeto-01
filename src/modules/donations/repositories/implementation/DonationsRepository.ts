@@ -55,7 +55,7 @@ class DonationsRepository implements IDonationsRepository {
     }
 
     async findOneBy(property: string, value: string): Promise<Donation> {
-        throw new Error("Method not implemented.");
+
 
         let donation
 

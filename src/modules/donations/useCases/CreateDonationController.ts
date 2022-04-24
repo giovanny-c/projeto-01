@@ -9,14 +9,14 @@ class CreateDonationController {
 
         const { donation_value } = req.body
         const { donor_id } = req.params
-        const { user } = req.headers
+        const { id } = req.user
 
-        const user_id = user as string
+
 
 
         const createDonationUseCase = container.resolve(CreateDonationUseCase)
 
-        createDonationUseCase.execute({ donor_id, user_id, donation_value })
+        createDonationUseCase.execute({ donor_id, user_id: id, donation_value })
 
         return res.status(201).send()
 

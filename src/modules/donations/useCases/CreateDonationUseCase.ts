@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { AppError } from "../../../shared/errors/AppError";
 import { IDonationsRepository } from "../repositories/IDonationsRepository";
 
 @injectable()
@@ -15,12 +16,12 @@ class CreateDonationUseCase {
         const donorExists = await this.donationsRepository.findBy("donor_id", donor_id)
 
         if (!userExists) {
-            throw new Error("This user does not exists")
+            throw new AppError("This user does not exists")
 
         }
 
         if (!donorExists) {
-            throw new Error("This donor does not exists")
+            throw new AppError("This donor does not exists")
 
         }
 
