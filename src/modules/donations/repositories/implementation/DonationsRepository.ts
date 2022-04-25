@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { ILike, Repository } from "typeorm";
 import { dataSource } from "../../../../database";
 import { Donation } from "../../entities/donation";
 import { IDonationsRepository } from "../IDonationsRepository";
@@ -25,32 +25,40 @@ class DonationsRepository implements IDonationsRepository {
 
 
     }
-    async findBy(property: string, value: string): Promise<Donation[]> {
+    async findBy(value: string,): Promise<Donation[]> {
 
-        let donations
+        const results = await this.repository.find({
+            relations: {
+                user: true,
+                donor: true
+            },
+            where: [ //OR
 
-        if (property === "id") {
+                //OR
+                {
+                    user: [
+                        { name: ILike(`%${value}%`) },
+                    ]
+                },
+                {
+                    donor: [
+                        //OR 
+                        { name: ILike(`%${value}%`) },
+                        { email: ILike(`%${value}%`) }
+                    ]
+                },
+                //OR
+                { donation_number: ILike(`%${value}%`) },
+                { donation_value: ILike(`%${value}%`) },
+                //converter date para string
+                //limit e offset
+                //is payed or canceled
 
-            donations = await this.repository.findBy({
-                id: value
-            })
-        }
 
-        if (property === "user_id") {
+            ]
+        })
 
-            donations = await this.repository.findBy({
-                user_id: value
-            })
-        }
-
-        if (property === "donor_id") {
-
-            donations = await this.repository.findBy({
-                donor_id: value
-            })
-        }
-
-        return donations
+        return results
 
     }
 
