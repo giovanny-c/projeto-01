@@ -13,7 +13,7 @@ class CreateDonationUseCase {
         private donationsRepository: IDonationsRepository,
         @inject("DonorsRepository")
         private donorsRepository: IDonorsRepository,
-        @inject("UsersRepopitory")
+        @inject("UsersRepository")
         private usersRepository: IUsersRepository
     ) { }
 

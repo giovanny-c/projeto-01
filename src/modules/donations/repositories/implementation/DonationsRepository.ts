@@ -1,7 +1,9 @@
-import { ILike, Repository } from "typeorm";
+import { Between, FindOptionsOrderValue, ILike, Repository } from "typeorm";
 import { dataSource } from "../../../../database";
+import { IFindOptions } from "../../dtos/IFindOptionsDTO";
 import { Donation } from "../../entities/donation";
 import { IDonationsRepository } from "../IDonationsRepository";
+
 
 
 class DonationsRepository implements IDonationsRepository {
@@ -25,42 +27,63 @@ class DonationsRepository implements IDonationsRepository {
 
 
     }
-    async findBy(value: string,): Promise<Donation[]> {
+
+    async findDonationsByUserOrDonorId(id: string): Promise<Donation[]> {
+        const results = await this.repository.find({
+            where: [
+                { donor_id: id },
+                { user_id: id }
+            ]
+        })
+        return
+    }
+    async findDonationsByDonorNameOrEmail({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
+
+
 
         const results = await this.repository.find({
             relations: {
                 user: true,
                 donor: true
             },
-            where: [ //OR
+            where: [ //colchete no where = OR 
 
-                //OR
+                //chaves na coluna ou relaçao = OR
                 {
                     user: [
                         { name: ILike(`%${value}%`) },
-                    ]
+                    ], //AND
+                    // created_at: Between(startDate, endDate)
                 },
                 {
-                    donor: [
-                        //OR 
+                    donor: [ //OR 
                         { name: ILike(`%${value}%`) },
                         { email: ILike(`%${value}%`) }
-                    ]
+                    ],
+                    created_at: Between(startDate, endDate)
                 },
-                //OR
-                { donation_number: ILike(`%${value}%`) },
-                { donation_value: ILike(`%${value}%`) },
-                //converter date para string
-                //limit e offset
-                //is payed or canceled
 
 
-            ]
+
+            ],
+            order: {
+                created_at: orderBy as FindOptionsOrderValue
+            },
+            skip: offset,
+            take: limit
+            //converter date para string
+            //limit e offset
+            //is payed or canceled
+
         })
 
         return results
-
     }
+    findDonationsByUserName(name: string): Promise<Donation[]> {
+        throw new Error("Method not implemented.");
+    }
+
+
 
     async findOneById(value: string): Promise<Donation> {
 
@@ -108,3 +131,32 @@ class DonationsRepository implements IDonationsRepository {
 }
 
 export { DonationsRepository }
+
+/**relations: {
+    user: true,
+    donor: true
+},
+where: [ //colchete no where = OR 
+
+    //chaves na coluna ou relaçao = OR
+    {
+        user: [
+            { name: ILike(`%${value}%`) },
+        ]
+    },
+    {
+        donor: [ //OR 
+            { name: ILike(`%${value}%`) },
+            { email: ILike(`%${value}%`) }
+        ]
+    },
+    //OR
+    { donation_number: ILike(`%${value}%`) },
+    { donation_value: ILike(`%${value}%`) },
+    //converter date para string
+    //limit e offset
+    //is payed or canceled
+
+
+]
+}) */
