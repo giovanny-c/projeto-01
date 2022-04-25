@@ -54,36 +54,47 @@ class DonationsRepository implements IDonationsRepository {
 
     }
 
-    async findOneBy(property: string, value: string): Promise<Donation> {
+    async findOneById(value: string): Promise<Donation> {
 
+        const donation = await this.repository.findOneBy({
+            id: value
+        })
 
-        let donation
-
-        if (property === "id") {
-
-            donation = await this.repository.findBy({
-                id: value
-            })
-        }
-
-        if (property === "user_id") {
-
-            donation = await this.repository.findBy({
-                user_id: value
-            })
-        }
-
-        if (property === "donor_id") {
-
-            donation = await this.repository.findBy({
-                donor_id: value
-            })
-        }
 
         return donation
     }
-    donationPayed(id: string): Promise<Donation> {
-        throw new Error("Method not implemented.");
+
+
+    async MarkDonationAsPayed({ id, donation_number, donor_id, user_id, donation_value }: ICreateDonationsDTO, payed_at: Date): Promise<Donation> {
+
+
+        const payedDonation = this.repository.create({
+            id,
+            donation_number,
+            donor_id,
+            user_id,
+            donation_value,
+            is_payed: true,
+            payed_at,
+
+        })
+
+        const donation = await this.repository.save(payedDonation)
+
+        return donation
+
+
+    }
+
+    async MarkDonationAsCanceled(id: string): Promise<Donation> {
+        const canceledDonation = this.repository.create({
+            id,
+            is_donation_canceled: true
+        })
+
+        const donation = await this.repository.save(canceledDonation)
+
+        return donation
     }
 
 }

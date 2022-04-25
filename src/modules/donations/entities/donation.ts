@@ -41,6 +41,9 @@ class Donation {
     @Column()
     is_payed: boolean
 
+    @Column()
+    is_donation_canceled: boolean
+
     constructor() {
         if (!this.id) {
             this.id = uuidV4()

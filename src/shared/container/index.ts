@@ -1,5 +1,7 @@
 import { container } from "tsyringe";
 
+import "./providers/Index"
+
 import { IDonationsRepository } from "../../modules/donations/repositories/IDonationsRepository";
 import { DonationsRepository } from "../../modules/donations/repositories/implementation/DonationsRepository";
 
