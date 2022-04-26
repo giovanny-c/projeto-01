@@ -1,4 +1,4 @@
-import { FindOptionsOrderValue, ILike, Repository } from "typeorm";
+import { Between, FindOptionsOrderValue, ILike, Repository } from "typeorm";
 import { dataSource } from "../../../../database";
 import { IFindOptions } from "../../dtos/IFindOptionsDTO";
 import { Donation } from "../../entities/donation";
@@ -37,14 +37,27 @@ class DonationsRepository implements IDonationsRepository {
         })
         return results
     }
-    async findDonationsByDonorNameOrEmail({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
+    async findDonationsBy({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
 
-
+        //fazer com query builder!
         const results = await this.repository.find({
 
             relations: {
                 user: true,
                 donor: true
+            },
+            select: {
+
+                donor: {
+                    name: true,
+                    email: true
+                },
+
+                user: {
+                    name: true
+                }
+
+
             },
 
             where: [//colchete no where = OR 
@@ -54,18 +67,19 @@ class DonationsRepository implements IDonationsRepository {
                 {
                     user: [
                         { name: ILike(`%${value}%`) },
-                    ] //AND
+                    ], //AND
+                    created_at: Between(startDate, endDate),
 
                 },
-
+                //OR
                 {
-                    donor: [ //OR 
-                        { name: ILike(`%${value}%`) },
+                    donor: [
+                        { name: ILike(`%${value}%`) },//OR 
                         { email: ILike(`%${value}%`) }
-                    ]
+                    ],
+                    created_at: Between(startDate, endDate)
+                },
 
-                }
-                //between date
 
 
 
@@ -84,11 +98,6 @@ class DonationsRepository implements IDonationsRepository {
 
         return results
     }
-    findDonationsByUserName(name: string): Promise<Donation[]> {
-        throw new Error("Method not implemented.");
-    }
-
-
 
     async findOneById(value: string): Promise<Donation> {
 

@@ -7,8 +7,7 @@ interface IDonationsRepository {
     create(data: ICreateDonationsDTO): Promise<void>
     findOneById(id: string): Promise<Donation>
     findDonationsByUserOrDonorId(id: string): Promise<Donation[]>
-    findDonationsByDonorNameOrEmail(data: IFindOptions): Promise<Donation[]>
-    findDonationsByUserName(name: string): Promise<Donation[]>
+    findDonationsBy(data: IFindOptions): Promise<Donation[]>
     //findByCreated_atOrPayed_at(data: Date, dateType: string(criado ou pago))
     // findByIsPayedOrIsCanceled (isTrue: boolean, payOrCanceled: string)
     MarkDonationAsPayed(donation: ICreateDonationsDTO, payed_at: Date): Promise<Donation>
