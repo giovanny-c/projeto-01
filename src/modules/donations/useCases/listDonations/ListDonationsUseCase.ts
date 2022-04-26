@@ -34,8 +34,8 @@ class ListDonationsUseCase {
         if (!limit || limit === 0) limit = 10
         if (!offset) offset = 0
 
-        if (limit.valueOf !== Number) throw new AppError("this is not a valid limit")
-        if (offset.valueOf !== Number) throw new AppError("this is not a valid offset")
+        //if (limit.valueOf !== Number) throw new AppError("this is not a valid limit")
+        //if (offset.valueOf !== Number) throw new AppError("this is not a valid offset")
 
         if (!startDate) {
             startDate = "2000-01-01"

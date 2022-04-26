@@ -1,4 +1,4 @@
-import { Between, FindOptionsOrderValue, ILike, Repository } from "typeorm";
+import { FindOptionsOrderValue, ILike, Repository } from "typeorm";
 import { dataSource } from "../../../../database";
 import { IFindOptions } from "../../dtos/IFindOptionsDTO";
 import { Donation } from "../../entities/donation";
@@ -35,33 +35,38 @@ class DonationsRepository implements IDonationsRepository {
                 { user_id: id }
             ]
         })
-        return
+        return results
     }
     async findDonationsByDonorNameOrEmail({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
 
 
-
         const results = await this.repository.find({
+
             relations: {
                 user: true,
                 donor: true
             },
-            where: [ //colchete no where = OR 
+
+            where: [//colchete no where = OR 
 
                 //chaves na coluna ou relaçao = OR
+
                 {
                     user: [
                         { name: ILike(`%${value}%`) },
-                    ], //AND
-                    // created_at: Between(startDate, endDate)
+                    ] //AND
+
                 },
+
                 {
                     donor: [ //OR 
                         { name: ILike(`%${value}%`) },
                         { email: ILike(`%${value}%`) }
-                    ],
-                    created_at: Between(startDate, endDate)
-                },
+                    ]
+
+                }
+                //between date
+
 
 
 

@@ -22,9 +22,10 @@ class DayjsDateProvider implements IDateProvider {
             throw new AppError("this is not a valid date")
         }
 
-        const d = dayjs(date, "YYYY-MM-DD")
+        const d = dayjs(date, "YYYY-MM-DD").format("YYYY-MM-DD")
 
-        return d.$d
+
+        return d
 
 
     }
