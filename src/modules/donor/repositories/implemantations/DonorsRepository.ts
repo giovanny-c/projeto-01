@@ -5,7 +5,7 @@ import { IDonorsRepository } from "../IDonorsRepository";
 
 import { Donor } from "../../entities/donor";
 import { dataSource } from "../../../../database";
-import { IListDonorsDTO } from "../../dtos/IListDonorsDTO";
+
 
 
 class DonorsRepository implements IDonorsRepository {
@@ -16,7 +16,7 @@ class DonorsRepository implements IDonorsRepository {
         this.repository = dataSource.getRepository(Donor)
     }
 
-    async create({ id, name, email, phone, last_donation }: ICreateDonorDTO): Promise<void> {
+    async create({ id, name, email, phone, last_donation }: ICreateDonorDTO): Promise<Donor> {
         const donor = this.repository.create({
             id,
             name,
@@ -25,7 +25,7 @@ class DonorsRepository implements IDonorsRepository {
             last_donation
         })
 
-        await this.repository.save(donor)
+        return await this.repository.save(donor)
     }
 
     async findByEmail(email: string): Promise<Donor> {
@@ -53,6 +53,7 @@ class DonorsRepository implements IDonorsRepository {
 
         return donors
     }
+
 
 }
 

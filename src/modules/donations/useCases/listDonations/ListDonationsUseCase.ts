@@ -38,24 +38,18 @@ class ListDonationsUseCase {
         //if (offset.valueOf !== Number) throw new AppError("this is not a valid offset")
 
 
-        if (!startDate) {
-            startDate = this.dateProvider.addOrSubtractTime("sub", "day", 1).toString()
-
-        }
-        if (!endDate) {
-            endDate = this.dateProvider.dateNow().toString()
-            console.log(endDate)
-
-        }
+        if (!startDate) startDate = this.dateProvider.addOrSubtractTime("sub", "year", 1).toString()
+        console.log(startDate)
+        if (!endDate) endDate = this.dateProvider.dateNow().toString()
 
         let startD = this.dateProvider.convertToDate(startDate)
         let endD = this.dateProvider.convertToDate(endDate)
 
-        if (startD === endD) {
-            endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
+        if (startD === endD) endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
 
 
-        }
+
+
 
         return await this.donationsRepository.findDonationsBy({
             value,

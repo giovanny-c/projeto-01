@@ -4,6 +4,7 @@ import express, { NextFunction, Request, Response } from "express"
 
 import "express-async-errors"
 
+
 import { userRoutes } from "./routes/user.routes"
 import { donorRoutes } from "./routes/donor.routes"
 
@@ -15,7 +16,10 @@ import { AppError } from "./shared/errors/AppError"
 
 const app = express()
 
+
+
 app.use(express.json())
+
 
 app.use("/user", userRoutes)
 app.use("/donors", donorRoutes)

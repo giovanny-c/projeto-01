@@ -38,13 +38,9 @@ class UpdateDonationStatusUseCase {
             throw new AppError("This donation was already payed")
         }
 
-        const donor = await this.donorsRepository.findById(donationExists.donor_id)
 
         await this.donorsRepository.create({
-            id: donor.id,
-            name: donor.name,
-            email: donor.email,
-            phone: donor.phone,
+            id: donationExists.donor_id,
             last_donation: this.dateProvider.dateNow()
         })
 
