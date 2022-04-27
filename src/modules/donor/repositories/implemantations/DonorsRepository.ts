@@ -1,10 +1,11 @@
-import { Repository } from "typeorm";
+import { ILike, Repository } from "typeorm";
 
 import { ICreateDonorDTO } from "../../dtos/ICreateDonorDTO";
 import { IDonorsRepository } from "../IDonorsRepository";
 
 import { Donor } from "../../entities/donor";
 import { dataSource } from "../../../../database";
+import { IListDonorsDTO } from "../../dtos/IListDonorsDTO";
 
 
 class DonorsRepository implements IDonorsRepository {
@@ -36,8 +37,19 @@ class DonorsRepository implements IDonorsRepository {
 
         return donor
     }
-    async findAll(): Promise<Donor[]> {
-        return await this.repository.find()
+    async findBy(value): Promise<Donor[]> {
+
+        const donors = await this.repository.find({
+
+            where: [
+                { name: ILike(`%${value}%`) },
+                { email: ILike(`%${value}%`) },
+                { phone: ILike(`%${value}%`) },
+            ]
+
+        })
+
+        return donors
     }
 
 }
