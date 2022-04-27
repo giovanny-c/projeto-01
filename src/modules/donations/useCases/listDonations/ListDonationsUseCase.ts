@@ -37,17 +37,27 @@ class ListDonationsUseCase {
         //if (limit.valueOf !== Number) throw new AppError("this is not a valid limit")
         //if (offset.valueOf !== Number) throw new AppError("this is not a valid offset")
 
+
         if (!startDate) {
-            startDate = "2000-01-01"
+            startDate = this.dateProvider.addOrSubtractTime("sub", "day", 1).toString()
+
         }
         if (!endDate) {
-            endDate = "3000-01-01"
+            endDate = this.dateProvider.dateNow().toString()
+            console.log(endDate)
+
         }
 
-        const startD = this.dateProvider.convertToDate(startDate)
-        const endD = this.dateProvider.convertToDate(endDate)
+        let startD = this.dateProvider.convertToDate(startDate)
+        let endD = this.dateProvider.convertToDate(endDate)
 
-        return await this.donationsRepository.findDonationsByDonorNameOrEmail({
+        if (startD === endD) {
+            endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
+
+
+        }
+
+        return await this.donationsRepository.findDonationsBy({
             value,
             orderBy,
             limit,
