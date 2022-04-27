@@ -23,6 +23,11 @@ class Donor {
     @UpdateDateColumn()
     updated_at: Date
 
+    @Column()
+    last_donation: Date
+
+
+
     constructor() {
         if (!this.id) {
             this.id = uuidV4()

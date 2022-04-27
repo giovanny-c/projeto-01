@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { AppError } from "../../../../shared/errors/AppError";
+import { IDonorsRepository } from "../../../donor/repositories/IDonorsRepository";
 import { Donation } from "../../entities/donation";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 
@@ -10,6 +11,8 @@ class UpdateDonationStatusUseCase {
     constructor(
         @inject("DonationsRepository")
         private donationsRepository: IDonationsRepository,
+        @inject("DonorsRepository")
+        private donorsRepository: IDonorsRepository,
         @inject("DayjsDateProvider")
         private dateProvider: IDateProvider
 
@@ -35,6 +38,15 @@ class UpdateDonationStatusUseCase {
             throw new AppError("This donation was already payed")
         }
 
+        const donor = await this.donorsRepository.findById(donationExists.donor_id)
+
+        await this.donorsRepository.create({
+            id: donor.id,
+            name: donor.name,
+            email: donor.email,
+            phone: donor.phone,
+            last_donation: this.dateProvider.dateNow()
+        })
 
         const payedDonation = await this.donationsRepository.MarkDonationAsPayed(donationExists, payedAt)
 

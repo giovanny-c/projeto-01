@@ -20,6 +20,10 @@ class CreateDonorUseCase {
 
         }
 
+        if (!name || !email || !phone) {
+            throw new AppError("Please fill all fields")
+        }
+
         await this.donorsRepository.create({ name, email, phone })
 
 
