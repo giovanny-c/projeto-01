@@ -8,20 +8,20 @@ import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 @injectable()
 class ImportDonationsUseCase {
 
-    constructor(
-        @inject("DonationsRepository")
-        private donationsRepository: IDonationsRepository,
-        @inject("DonorsRepository")
-        private donorsRepository: IDonorsRepository,
-        @inject("UsersRepository")
-        private usersRepository: IUsersRepository,
-        @inject("WorkersRepository")
-        private workersRepository: IWorkersReposiroty,
-        @inject("DayjsDateProvider")
-        private dateProviderRepository: IDateProvider
-    ) {
+    // constructor(
+    //     @inject("DonationsRepository")
+    //     private donationsRepository: IDonationsRepository,
+    //     @inject("DonorsRepository")
+    //     private donorsRepository: IDonorsRepository,
+    //     @inject("UsersRepository")
+    //     private usersRepository: IUsersRepository,
+    //     @inject("WorkersRepository")
+    //     private workersRepository: IWorkersReposiroty,
+    //     @inject("DayjsDateProvider")
+    //     private dateProviderRepository: IDateProvider
+    // ) {
 
-    }
+    // }
 
     async execute(): Promise<void> {
 

@@ -9,8 +9,7 @@ export class createTableWorkers1651162482636 implements MigrationInterface {
                 {
                     name: "id",
                     type: "uuid",
-                    isGenerated: true,
-                    generationStrategy: "uuid"
+                    isPrimary: true
                 },
                 {
                     name: "name",
@@ -27,6 +26,7 @@ export class createTableWorkers1651162482636 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropTable("workers")
     }
 
 }

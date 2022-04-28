@@ -24,6 +24,21 @@ export class CreateTableDonors1650670753236 implements MigrationInterface {
                         {
                             name: "phone",
                             type: "varchar"
+                        },
+                        {
+                            name: "created_at",
+                            type: "timestamp",
+                            default: "now()"
+                        },
+                        {
+                            name: "updated_at",
+                            type: "timestamp",
+                            default: "now()"
+                        },
+                        {
+                            name: "last_donation",
+                            type: "timestamp",
+                            isNullable: true
                         }
                     ]
 

@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { dataSource } from "../../../../database";
-import { Worker } from "../../entities/Worker";
+import { Worker } from "../../entities/worker";
 import { IWorkersReposiroty } from "../IWorkersRepository";
 
 

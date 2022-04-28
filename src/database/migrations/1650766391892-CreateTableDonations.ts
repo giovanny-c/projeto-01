@@ -15,7 +15,6 @@ export class CreateTableDonations1650766391892 implements MigrationInterface {
                     {
                         name: "donation_number",
                         type: "numeric",
-                        //isGenerated
                     },
                     {
                         name: "user_id",
@@ -40,13 +39,20 @@ export class CreateTableDonations1650766391892 implements MigrationInterface {
                     },
                     {
                         name: "payed_at",
-                        type: "timestamp"
+                        type: "timestamp",
+                        isNullable: true
                     },
                     {
                         name: "is_payed",
                         type: "boolean",
                         default: false
-                    }
+                    },
+                    {
+                        name: "is_donation_canceled",
+                        type: "boolean",
+                        isNullable: true
+                    },
+
 
                 ],
 

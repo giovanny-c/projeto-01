@@ -16,6 +16,11 @@ export class CreateTableUser1650573456216 implements MigrationInterface {
                         {
                             name: "name",
                             type: "varchar",
+                        },
+                        {
+                            name: "password",
+                            type: "varchar",
+                            isNullable: false
                         }
                     ]
                 }

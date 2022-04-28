@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { inject, injectable } from "tsyringe";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { AppError } from "../../../../shared/errors/AppError";
@@ -39,7 +40,7 @@ class ListDonationsUseCase {
 
 
         if (!startDate) startDate = this.dateProvider.addOrSubtractTime("sub", "year", 1).toString()
-        console.log(startDate)
+
         if (!endDate) endDate = this.dateProvider.dateNow().toString()
 
         let startD = this.dateProvider.convertToDate(startDate)
@@ -47,9 +48,7 @@ class ListDonationsUseCase {
 
         if (startD === endD) endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
 
-
-
-
+        if (this.dateProvider.AddDateIfIsToday(endD)) endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
 
         return await this.donationsRepository.findDonationsBy({
             value,

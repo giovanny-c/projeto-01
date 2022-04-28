@@ -11,7 +11,7 @@ import { UpdateDonationStatusController } from "../modules/donations/useCases/up
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated";
 
 const upload = multer({
-    dest: "./tmp"
+    dest: "./tmp/"
 })
 
 const donationRoutes = Router()
@@ -23,10 +23,10 @@ const cancelDonationController = new CancelDonationController()
 const listDonationsController = new ListDonationsController()
 const importDonationsController = new ImportDonationsController()
 
-donationRoutes.post("/:donor_id", ensureAuthenticated, createDonationController.handle)
+donationRoutes.post("/import", ensureAuthenticated, upload.single("file"), importDonationsController.handle)
 donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationStatusController.handle)
 donationRoutes.post("/cancel-donation/:id", ensureAuthenticated, cancelDonationController.handle)
 donationRoutes.get("/list", ensureAuthenticated, listDonationsController.handle)
-donationRoutes.post("/import", ensureAuthenticated, upload.single("file"), importDonationsController.handle)
+donationRoutes.post("/:donor_id", ensureAuthenticated, createDonationController.handle)
 
 export { donationRoutes }

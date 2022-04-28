@@ -1,19 +1,22 @@
 import { AppError } from "../../../../errors/AppError"
 import { IDateProvider } from "../IDateProvider"
-var customParseFormat = require('dayjs/plugin/customParseFormat')
+const customParseFormat = require('dayjs/plugin/customParseFormat')
 
 const dayjs = require("dayjs")
-var utc = require('dayjs/plugin/utc')
-var timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
+const utc = require('dayjs/plugin/utc')
+const timezone = require('dayjs/plugin/timezone') // dependent on utc plugin
+const isToday = require('dayjs/plugin/isToday')
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.extend(customParseFormat) //para formatar de string pra date
+dayjs.extend(isToday)
 
 dayjs.tz.setDefault("America/Sao_Paulo")//timezone
 
 
 class DayjsDateProvider implements IDateProvider {
+
 
 
     addOrSubtractTime(operation: string = ("sub" || "add"), timeUnit: string, amountOfTime: number, date?: string | Date) {
@@ -67,11 +70,22 @@ class DayjsDateProvider implements IDateProvider {
             throw new AppError("this is not a valid date")
         }
 
-        const d = dayjs(date, "YYYY-MM-DD").format("YYYY-MM-DD")
+        const d = dayjs(date).format("YYYY-MM-DD")
 
 
         return d
 
+
+    }
+
+    AddDateIfIsToday(date: Date): boolean {
+
+        if (dayjs(date).isToday()) {
+
+            return true
+        }
+
+        return false
 
     }
 

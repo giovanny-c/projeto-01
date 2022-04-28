@@ -1,4 +1,4 @@
-import { Worker } from "../entities/Worker"
+import { Worker } from "../entities/worker"
 
 
 interface IWorkersReposiroty {
