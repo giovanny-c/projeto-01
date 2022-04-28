@@ -10,6 +10,8 @@ import { DonorsRepository } from "../../modules/donor/repositories/implemantatio
 
 import { UsersRepository } from "../../modules/user/repositories/implementation/UsersRepository";
 import { IUsersRepository } from "../../modules/user/repositories/IUsersRepository";
+import { IWorkersReposiroty } from "../../modules/workers/repositories/IWorkersRepository";
+import { WorkersRepository } from "../../modules/workers/repositories/implementations/WorkersRepository";
 
 
 
@@ -27,4 +29,9 @@ container.registerSingleton<IDonorsRepository>(
 container.registerSingleton<IDonationsRepository>(
     "DonationsRepository",
     DonationsRepository
+)
+
+container.registerSingleton<IWorkersReposiroty>(
+    "WorkersRepository",
+    WorkersRepository
 )
