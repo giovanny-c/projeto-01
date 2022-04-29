@@ -8,12 +8,13 @@ class ImportDonationsController {
     async handle(req: Request, res: Response): Promise<Response> {
 
         const { file } = req
+        const { user } = req
 
         const importDonationsUseCase = container.resolve(ImportDonationsUseCase)
 
-        await importDonationsUseCase.execute(file)
+        await importDonationsUseCase.execute(file, user.id)
 
-        return res.send()
+        return res.status(201).send()
     }
 }
 

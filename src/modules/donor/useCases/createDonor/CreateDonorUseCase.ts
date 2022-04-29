@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../shared/errors/AppError";
 import { ICreateDonorDTO } from "../../dtos/ICreateDonorDTO";
+import { Donor } from "../../entities/donor";
 
 import { IDonorsRepository } from "../../repositories/IDonorsRepository";
 
@@ -11,7 +12,7 @@ class CreateDonorUseCase {
         @inject("DonorsRepository")
         private donorsRepository: IDonorsRepository) { }
 
-    async execute({ name, email, phone }: ICreateDonorDTO): Promise<void> {
+    async execute({ name, email, phone }: ICreateDonorDTO): Promise<Donor> {
 
         const donorAlreadyExists = this.donorsRepository.findByEmail(email)
 
@@ -24,8 +25,9 @@ class CreateDonorUseCase {
             throw new AppError("Please fill all fields")
         }
 
-        await this.donorsRepository.create({ name, email, phone })
+        const donor = await this.donorsRepository.create({ name, email, phone })
 
+        return donor
 
     }
 

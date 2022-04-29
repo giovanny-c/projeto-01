@@ -12,9 +12,9 @@ class CreateDonorController {
 
         const createDonorUseCase = container.resolve(CreateDonorUseCase)
 
-        await createDonorUseCase.execute({ name, email, phone })
+        const result = await createDonorUseCase.execute({ name, email, phone })
 
-        return res.status(201).send()
+        return res.json(result)
     }
 
 

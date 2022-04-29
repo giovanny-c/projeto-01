@@ -12,13 +12,15 @@ class WorkersRepository implements IWorkersReposiroty {
         this.repository = dataSource.getRepository(Worker)
     }
 
-    async create(name: string, id?: string): Promise<void> {
+    async create(name: string, id?: string): Promise<Worker> {
         const worker = this.repository.create({
             id,
             name
         })
 
-        await this.repository.save(worker)
+        return await this.repository.save(worker)
+
+
     }
     async findById(id: string): Promise<Worker> {
 
