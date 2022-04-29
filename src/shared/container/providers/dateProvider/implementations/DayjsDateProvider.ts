@@ -19,6 +19,7 @@ class DayjsDateProvider implements IDateProvider {
 
 
 
+
     addOrSubtractTime(operation: string = ("sub" || "add"), timeUnit: string, amountOfTime: number, date?: string | Date) {
         //adciona ou subtrai tempo de uma data passada ou da data atual
         //timeUnit = "day", "month", "hour" ...
@@ -56,9 +57,7 @@ class DayjsDateProvider implements IDateProvider {
 
     }
 
-
-
-    convertToDate(date: string): Date {
+    convertToDate(date: string | Date): Date {
         //pega uma data em string e transforma em date
         //se a string nao for valida retorna um erro
 
@@ -76,6 +75,18 @@ class DayjsDateProvider implements IDateProvider {
         return d
 
 
+    }
+
+    isValidDate(date: string | Date): boolean {
+
+        const isValid = dayjs(date).isValid()
+
+        if (!isValid) {
+
+            return false
+        }
+
+        return true
     }
 
     AddDateIfIsToday(date: Date): boolean {
