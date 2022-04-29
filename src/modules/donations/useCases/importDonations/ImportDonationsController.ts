@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+import { container } from "tsyringe";
 import { AppError } from "../../../../shared/errors/AppError";
+import { ImportDonationsUseCase } from "./ImportDonationsUseCase";
 
 class ImportDonationsController {
 
@@ -7,13 +9,9 @@ class ImportDonationsController {
 
         const { file } = req
 
-        if (!file) {
-            throw new AppError("erro")
-        }
-        if (file) {
-            console.log("success")
-        }
+        const importDonationsUseCase = container.resolve(ImportDonationsUseCase)
 
+        await importDonationsUseCase.execute(file)
 
         return res.send()
     }
