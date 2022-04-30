@@ -42,6 +42,7 @@ class ListDonationsUseCase {
         if (!startDate) startDate = this.dateProvider.addOrSubtractTime("sub", "year", 1).toString()
 
         if (!endDate) endDate = this.dateProvider.dateNow().toString()
+        console.log(endDate)
 
         let startD = this.dateProvider.convertToDate(startDate)
         let endD = this.dateProvider.convertToDate(endDate)

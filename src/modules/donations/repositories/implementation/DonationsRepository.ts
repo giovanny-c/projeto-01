@@ -1,5 +1,6 @@
-import { Between, FindOptionsOrderValue, ILike, Repository } from "typeorm";
+import { Between, FindOptionsOrderValue, ILike, QueryBuilder, Repository } from "typeorm";
 import { dataSource } from "../../../../database";
+import { Donor } from "../../../donor/entities/donor";
 import { IFindOptions } from "../../dtos/IFindOptionsDTO";
 import { Donation } from "../../entities/donation";
 import { IDonationsRepository } from "../IDonationsRepository";
@@ -47,62 +48,86 @@ class DonationsRepository implements IDonationsRepository {
     }
     async findDonationsBy({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
 
+        const results = await this.repository
+            .createQueryBuilder("donations")
+            .leftJoin("donations.donor", "donors")
+            .where("donors.name = :name ", { name: value })
+            .getMany()
+
+
+
+
+
         //fazer com query builder!
-        const results = await this.repository.find({
+        // const results = await this.repository.find({
 
-            relations: {
-                user: true,
-                donor: true
-            },
-            select: {
+        //     relations: {
+        //         user: true,
+        //         donor: true,
+        //         worker: true
+        //     },
+        //     select: {
 
-                donor: {
-                    name: true,
-                    email: true
-                },
+        //         donor: {
+        //             name: true,
+        //             email: true
+        //         },
 
-                user: {
-                    name: true
-                }
-
-
-            },
-
-            where: [//colchete no where = OR 
-
-                //chaves na coluna ou relaçao = OR
-
-                {
-                    user: [
-                        { name: ILike(`%${value}%`) },
-                    ], //AND
-                    created_at: Between(startDate, endDate),
-
-                },
-                //OR
-                {
-                    donor: [
-                        { name: ILike(`%${value}%`) },//OR 
-                        { email: ILike(`%${value}%`) }
-                    ],
-                    created_at: Between(startDate, endDate)
-                },
+        //         user: {
+        //             name: true
+        //         },
+        //         worker: {
+        //             name: true
+        //         }
 
 
 
+        //     },
+
+        //     where: [//colchete no where = OR 
+
+        //         //chaves na coluna ou relaçao = OR
+
+        //         {
+        //             donor: [
+        //                 { name: ILike(`%${value}%`) },
+        //                 //OR 
+        //                 { email: ILike(`%${value}%`) }
+        //             ],
+        //             //AND
+        //             created_at: Between(startDate, endDate)
+        //         },
+        //         //OR
+        //         {
+        //             worker: [
+        //                 { name: ILike(`%${value}%`) }
+        //             ],
+        //             created_at: Between(startDate, endDate)
+        //         },
+        //         {
+        //             user: [
+        //                 { name: ILike(`%${value}%`) },
+        //             ],
+        //             created_at: Between(startDate, endDate),
+
+        //         },
 
 
-            ],
-            order: {
-                created_at: orderBy as FindOptionsOrderValue
-            },
-            skip: offset,
-            take: limit
-            //converter date para string
-            //limit e offset
-            //is payed or canceled
 
-        })
+
+
+
+        //     ],
+        //     order: {
+        //         created_at: orderBy as FindOptionsOrderValue
+        //     },
+        //     skip: offset,
+        //     take: limit
+        //     //converter date para string
+        //     //limit e offset
+        //     //is payed or canceled
+
+        // })
 
         return results
     }

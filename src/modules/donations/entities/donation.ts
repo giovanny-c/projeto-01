@@ -1,8 +1,10 @@
-import { Column, CreateDateColumn, Entity, Generated, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
-import { Donor } from "../../donor/entities/donor";
+import { Column, CreateDateColumn, Entity, Generated, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 import { v4 as uuidV4 } from "uuid"
+
+import { Donor } from "../../donor/entities/donor";
 import { User } from "../../user/entities/user";
+import { Worker } from "../../workers/entities/worker";
 
 @Entity("donations")
 class Donation {
@@ -25,9 +27,15 @@ class Donation {
     @JoinColumn({ name: "donor_id" })
     donor: Donor
 
-
     @Column()
     donor_id: string
+
+    @ManyToOne(() => Worker)
+    @JoinColumn({ name: "worker_id" })
+    worker: Worker
+
+    @Column()
+    worker_id: string
 
     @Column()
     donation_value: Number
