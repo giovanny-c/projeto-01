@@ -16,10 +16,11 @@ class CreateDonorUseCase {
 
         const donorAlreadyExists = this.donorsRepository.findByEmail(email)
 
-        if (!donorAlreadyExists) {
+        if (donorAlreadyExists) {
             throw new AppError("This donor already exists")
 
         }
+
 
         if (!name || !email || !phone) {
             throw new AppError("Please fill all fields")

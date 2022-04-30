@@ -20,7 +20,7 @@ class UpdateDonorUseCase {
         if (!donorExists) {
             throw new AppError("This donor does not exists or its a invalid id")
         }
-        console.log(`${name}-${email}-${phone}`)
+
         if (!name) name = donorExists.name
         if (!email) email = donorExists.email
         if (!phone) phone = donorExists.phone

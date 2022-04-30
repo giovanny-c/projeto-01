@@ -13,6 +13,7 @@ import "./database"
 import "./shared/container"
 import { donationRoutes } from "./routes/donation.routes"
 import { AppError } from "./shared/errors/AppError"
+import { workerRoutes } from "./routes/worker.routes"
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use(express.json())
 app.use("/user", userRoutes)
 app.use("/donors", donorRoutes)
 app.use("/donations", donationRoutes)
+app.use("/workers", workerRoutes)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof AppError) {

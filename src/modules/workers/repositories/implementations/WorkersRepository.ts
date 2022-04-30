@@ -11,6 +11,10 @@ class WorkersRepository implements IWorkersReposiroty {
     constructor() {
         this.repository = dataSource.getRepository(Worker)
     }
+    async find(): Promise<Worker[]> {
+        const workers = await this.repository.find({ order: { created_at: "ASC" } })
+        return workers
+    }
 
     async create(name: string, id?: string): Promise<Worker> {
         const worker = this.repository.create({
