@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IDonorsRepository } from "../../../donor/repositories/IDonorsRepository";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
+import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 
 @injectable()
@@ -14,13 +15,16 @@ class CreateDonationUseCase {
         @inject("DonorsRepository")
         private donorsRepository: IDonorsRepository,
         @inject("UsersRepository")
-        private usersRepository: IUsersRepository
+        private usersRepository: IUsersRepository,
+        @inject("WorkersRepository")
+        private workersRepository: IWorkersReposiroty
     ) { }
 
-    async execute({ donor_id, user_id, donation_value }: ICreateDonationsDTO): Promise<void> {
+    async execute({ donor_id, user_id, donation_value }: ICreateDonationsDTO, worker_name: string): Promise<void> {
 
         const userExists = await this.usersRepository.findById(user_id)
         const donorExists = await this.donorsRepository.findById(donor_id)
+        const workerExists = await this.workersRepository.findByName(worker_name)
 
         if (!userExists) {
             throw new AppError("This user does not exists")
@@ -32,7 +36,13 @@ class CreateDonationUseCase {
 
         }
 
-        await this.donationsRepository.create({ donor_id, user_id, donation_value })
+        if (!workerExists) {
+            throw new AppError("This worker does not exists")
+
+        }
+
+
+        await this.donationsRepository.create({ donor_id, user_id, donation_value, worker_id: workerExists.id })
 
     }
 

@@ -16,12 +16,13 @@ class DonationsRepository implements IDonationsRepository {
         this.repository = dataSource.getRepository(Donation)
     }
 
-    async create({ id, user_id, donor_id, donation_value, is_payed, payed_at, donation_number, created_at, is_donation_canceled }: ICreateDonationsDTO): Promise<void> {
+    async create({ id, user_id, donor_id, donation_value, is_payed, payed_at, donation_number, created_at, is_donation_canceled, worker_id }: ICreateDonationsDTO): Promise<void> {
 
         const donation = this.repository.create({
             id,
             user_id,
             donor_id,
+            worker_id,
             donation_value,
             donation_number,
             is_payed,
@@ -48,11 +49,27 @@ class DonationsRepository implements IDonationsRepository {
     }
     async findDonationsBy({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
 
-        const results = await this.repository
-            .createQueryBuilder("donations")
-            .leftJoin("donations.donor", "donors")
-            .where("donors.name = :name ", { name: value })
-            .getMany()
+        const results = await this.repository.query("SELECT * from donations")
+
+        // `select donations.*, 
+        // donors.name as donor, 
+        // workers.name as worker 
+        // from donations
+        // left join donors on donations.donor_id = donors.id
+        // left join workers on donations.worker_id = workers.id
+        // where donors.name ilike '%an%' and donations.created_at between '2022-04-24' and '2022-05-30'
+        // or
+        // workers.name ilike '%an%' and donations.created_at between '2022-04-24' and '2022-05-30'
+        // order by donations.created_at
+        // limit 50
+        // offset 0`
+
+
+
+        // .createQueryBuilder("donations")
+        //     .leftJoin("donations.donor", "donors")
+        //     .where("donors.name = :name ", { name: value })
+        //     .getMany()
 
 
 

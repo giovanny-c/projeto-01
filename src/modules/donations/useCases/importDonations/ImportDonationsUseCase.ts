@@ -115,11 +115,11 @@ class ImportDonationsUseCase {
                     donation_value: data.donation_value as number,
                     donor_id: donor.id,
                     user_id: user_id,
-                    //worker: worker.id, //criar relação worker na tabela donation
+                    worker_id: worker.id, //criar relação worker na tabela donation
                     //donation_number: data.donation_number // fazer outra estrategia p/ number (tirar auto generate)
                     //created_at: data.created_at, // fazer validaçao de data
                     is_payed: data.is_payed || false,
-                    //payed_at: data.payed_at || null, // fazer validaçao de data
+                    payed_at: data.payed_at || null,
                     is_donation_canceled: data.is_canceled || false,
 
 

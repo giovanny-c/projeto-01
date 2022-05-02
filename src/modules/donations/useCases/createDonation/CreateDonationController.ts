@@ -7,7 +7,7 @@ class CreateDonationController {
 
     async handle(req: Request, res: Response): Promise<Response> {
 
-        const { donation_value } = req.body
+        const { donation_value, worker_name } = req.body
         const { donor_id } = req.params
         const { id } = req.user
 
@@ -16,7 +16,7 @@ class CreateDonationController {
 
         const createDonationUseCase = container.resolve(CreateDonationUseCase)
 
-        createDonationUseCase.execute({ donor_id, user_id: id, donation_value })
+        createDonationUseCase.execute({ donor_id, user_id: id, donation_value }, worker_name)
 
         return res.status(201).send()
 
