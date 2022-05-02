@@ -29,6 +29,10 @@ class CancelDonationUseCase {
             throw new AppError("This donation was canceled already")
         }
 
+        if (donationExists.is_payed === true) {
+            throw new AppError("This donation cant be canceled, because is already payed")
+        }
+
         const donation = await this.donationsRepository.MarkDonationAsCanceled(id, confirmation)
 
 

@@ -63,12 +63,12 @@ class ImportDonationsUseCase {
         object.forEach(data => {
 
             if (!data.email) throw new AppError(`Please fill de email field at line ${object.indexOf(data) + 1}`) //testar se o erro ta na linha certa
-            if (!data.donation_value) throw new AppError(`Please fill de donation_value field at line ${object.indexOf(data) + 1}`) //testar se o erro ta na linha certa
-            if (!data.created_at) throw new AppError(`Please fill de created_at field at line ${object.indexOf(data) + 1}`) //testar se o erro ta na linha certa
-            if (!data.worker_name) throw new AppError(`Please fill de worker_name field at line ${object.indexOf(data) + 1}`) //testar se o erro ta na linha certa
-            if (!data.donor_name) throw new AppError(`Please fill de donor_name field at line ${object.indexOf(data) + 1}`) //testar se o erro ta na linha certa
-            if (!data.phone) throw new AppError(`Please fill de phone field at line ${object.indexOf(data) + 1}`) //testar se o erro ta na linha certa
-
+            if (!data.donation_value) throw new AppError(`Please fill de donation_value field at line ${object.indexOf(data) + 1}`)
+            if (!data.created_at) throw new AppError(`Please fill de created_at field at line ${object.indexOf(data) + 1}`)
+            if (!data.worker_name) throw new AppError(`Please fill de worker_name field at line ${object.indexOf(data) + 1}`)
+            if (!data.donor_name) throw new AppError(`Please fill de donor_name field at line ${object.indexOf(data) + 1}`)
+            if (!data.phone) throw new AppError(`Please fill de phone field at line ${object.indexOf(data) + 1}`)
+            if (data.is_payed === true && data.is_canceled === true) throw new AppError(`There cant be a donation payed mark as canceled, on line: ${object.indexOf(data) + 1}`)
             // Fazer para created_at tbm
             // ve se a data de pagamento é valida
 
@@ -86,8 +86,9 @@ class ImportDonationsUseCase {
             //Validação de campos
             //try {
 
-            //converte a data de pagamento 
+            //se tiver, converte a data de pagamento 
             if (data.payed_at) this.dateProviderRepository.convertToDate(data.payed_at)
+
 
             //PODE HAVER ERROS DE DIGITAÇAO NOS CAMPOS QUE CAUSEM A CRIAÇAO DE NOVOS DONOR E WORKERS
             //procura donor
@@ -133,8 +134,8 @@ class ImportDonationsUseCase {
 
             }
 
-            //poe a data da ultima doaçao no donor 
-            if (data.is_payed) {
+            //poe a data da ultima doaçao no donor se for paga
+            if (data.is_payed === true) {
 
                 await this.donorsRepository.create({ id: donor.id, last_donation: data.payed_at })
 
