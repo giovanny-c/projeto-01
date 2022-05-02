@@ -42,14 +42,13 @@ class ListDonationsUseCase {
         if (!startDate) startDate = this.dateProvider.addOrSubtractTime("sub", "year", 1).toString()
 
         if (!endDate) endDate = this.dateProvider.dateNow().toString()
-        console.log(endDate)
 
         let startD = this.dateProvider.convertToDate(startDate)
         let endD = this.dateProvider.convertToDate(endDate)
 
         if (startD === endD) endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
 
-        if (this.dateProvider.AddDateIfIsToday(endD)) endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
+        if (this.dateProvider.IsToday(endD)) endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
 
         return await this.donationsRepository.findDonationsBy({
             value,

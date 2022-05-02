@@ -25,31 +25,31 @@ class DayjsDateProvider implements IDateProvider {
         //timeUnit = "day", "month", "hour" ...
         //amountofTime = 1, 2, 3 ...
 
-        if (!date) {
+        if (!date) { //se nao for passada, cria uma
 
             let dateNow
 
             if (operation === "sub") {
 
 
-                dateNow = dayjs.tz(dayjs().toDate()).subtract(amountOfTime, timeUnit).format("YYYY-MM-DD")
+                dateNow = dayjs.tz(dayjs().toDate()).subtract(amountOfTime, timeUnit).format("YYYY-MM-DDTHH:mm:ss")
 
                 return dateNow
             }
 
-            dateNow = dayjs.tz(dayjs().toDate()).add(amountOfTime, timeUnit).format("YYYY-MM-DD")
+            dateNow = dayjs.tz(dayjs().toDate()).add(amountOfTime, timeUnit).format("YYYY-MM-DDTHH:mm:ss")
 
             return dateNow
         }
 
         if (operation === "sub") {
-            date = dayjs(date).subtract(amountOfTime, timeUnit).format("YYYY-MM-DD")
+            date = dayjs(date).subtract(amountOfTime, timeUnit).format("YYYY-MM-DDTHH:mm:ss")
 
 
             return date
         }
 
-        date = dayjs(date).add(amountOfTime, timeUnit).format("YYYY-MM-DD")
+        date = dayjs(date).add(amountOfTime, timeUnit).format("YYYY-MM-DDTHH:mm:ss")
 
 
         return date
@@ -61,7 +61,7 @@ class DayjsDateProvider implements IDateProvider {
         //pega uma data em string e transforma em date
         //se a string nao for valida retorna um erro
 
-        const isValid = dayjs(date, "YYYY-MM-DD").isValid()
+        const isValid = dayjs(date, ["YYYY-MM-DD", "YYYY-MM-DDTHH:mm:ssZ[Z]"]).isValid()
 
 
         if (!isValid) {
@@ -69,7 +69,7 @@ class DayjsDateProvider implements IDateProvider {
             throw new AppError("this is not a valid date")
         }
 
-        const d = dayjs(date).format("YYYY-MM-DD")
+        const d = dayjs(date, ["YYYY-MM-DD", "YYYY-MM-DDTHH:mm:ssZ[Z]"]).format("YYYY-MM-DDTHH:mm:ss")
 
 
         return d
@@ -89,7 +89,7 @@ class DayjsDateProvider implements IDateProvider {
         return true
     }
 
-    AddDateIfIsToday(date: Date): boolean {
+    IsToday(date: Date): boolean {
 
         if (dayjs(date).isToday()) {
 

@@ -48,8 +48,49 @@ class DonationsRepository implements IDonationsRepository {
         return results
     }
     async findDonationsBy({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
+        // buscar tbm por is payed or is_canceled
+        let query = `select donations.*,
+         donors.name as donor, 
+         workers.name as worker 
+         from donations
+         left join donors on donations.donor_id = donors.id
+         left join workers on donations.worker_id = workers.id `
 
-        const results = await this.repository.query("SELECT * from donations")
+        if (value) {//se tiver valor
+            query += `where donors.name ilike '%${value}%' `
+
+            if (startDate && endDate) { // se tiver datas, junta com o 1 valor
+                query += `and donations.created_at between '${startDate}' and '${endDate}' `
+            }
+
+            //poe o segundo parametro de valor
+            query += `or 
+                      workers.name ilike '%${value}%' `
+
+            if (startDate && endDate) { // junta com o segundo valor
+                query += `and donations.created_at between '${startDate}' and '${endDate}' `
+            }
+        }
+
+        if (!value && (startDate && endDate)) { //se nao tiver valor mas tiver datas
+
+            query += ` where donations.created_at between '${startDate}' and '${endDate}' `
+        }
+
+
+        if (orderBy) {
+            query += `order by donations.created_at ${orderBy} `
+        }
+
+        if (limit) {
+            query += `limit ${limit} `
+        }
+
+        if (offset) {
+            query += `offset ${offset} `
+        }
+
+        const results = await this.repository.query(query)
 
         // `select donations.*, 
         // donors.name as donor, 
@@ -60,22 +101,11 @@ class DonationsRepository implements IDonationsRepository {
         // where donors.name ilike '%an%' and donations.created_at between '2022-04-24' and '2022-05-30'
         // or
         // workers.name ilike '%an%' and donations.created_at between '2022-04-24' and '2022-05-30'
-        // order by donations.created_at
-        // limit 50
+        // order by donations.created_at 
+        // limit 10
         // offset 0`
 
 
-
-        // .createQueryBuilder("donations")
-        //     .leftJoin("donations.donor", "donors")
-        //     .where("donors.name = :name ", { name: value })
-        //     .getMany()
-
-
-
-
-
-        //fazer com query builder!
         // const results = await this.repository.find({
 
         //     relations: {
@@ -129,20 +159,14 @@ class DonationsRepository implements IDonationsRepository {
 
         //         },
 
-
-
-
-
-
         //     ],
         //     order: {
         //         created_at: orderBy as FindOptionsOrderValue
         //     },
         //     skip: offset,
         //     take: limit
-        //     //converter date para string
-        //     //limit e offset
-        //     //is payed or canceled
+        //     
+        //     
 
         // })
 
