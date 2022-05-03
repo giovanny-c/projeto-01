@@ -1,5 +1,6 @@
-import { Repository } from "typeorm";
+import { Between, FindOptionsOrderValue, Repository } from "typeorm";
 import { dataSource } from "../../../../database";
+import { IFindOptions } from "../../../donations/dtos/IFindOptionsDTO";
 import { Worker } from "../../entities/worker";
 import { IWorkersReposiroty } from "../IWorkersRepository";
 
@@ -11,8 +12,9 @@ class WorkersRepository implements IWorkersReposiroty {
     constructor() {
         this.repository = dataSource.getRepository(Worker)
     }
+
     async find(): Promise<Worker[]> {
-        const workers = await this.repository.find({ order: { created_at: "ASC" } })
+        const workers = await this.repository.find()
         return workers
     }
 

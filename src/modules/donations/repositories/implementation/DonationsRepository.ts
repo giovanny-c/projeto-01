@@ -15,6 +15,37 @@ class DonationsRepository implements IDonationsRepository {
 
         this.repository = dataSource.getRepository(Donation)
     }
+    async findDonationsForWorker(worker_id: string, { orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
+
+        let query = `select donations.*
+         from donations
+         left join workers on donations.worker_id = workers.id
+         where donations.worker_id = '${worker_id}' 
+        `
+
+        if (startDate && endDate) { // se tiver datas, junta com o 1 valor
+            query += `and donations.created_at between '${startDate}' and '${endDate}' `
+        }
+
+        if (orderBy) {
+            query += `order by donations.created_at ${orderBy} `
+        }
+
+        if (limit) {
+            query += `limit ${limit} `
+        }
+
+        if (offset) {
+            query += `offset ${offset} `
+        }
+
+        const results = await this.repository.query(query)
+
+        return results
+
+
+
+    }
 
     async create({ id, user_id, donor_id, donation_value, is_payed, payed_at, donation_number, created_at, is_donation_canceled, worker_id }: ICreateDonationsDTO): Promise<void> {
 

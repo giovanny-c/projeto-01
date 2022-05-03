@@ -1,5 +1,5 @@
 interface IFindOptions {
-    value: string
+    value?: string
     orderBy?: string
     limit?: number
     offset?: number

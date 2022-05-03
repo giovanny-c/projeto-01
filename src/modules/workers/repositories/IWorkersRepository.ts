@@ -1,3 +1,4 @@
+import { IFindOptions } from "../../donations/dtos/IFindOptionsDTO"
 import { Worker } from "../entities/worker"
 
 
@@ -6,6 +7,7 @@ interface IWorkersReposiroty {
     findById(id: string): Promise<Worker>
     findByName(name: string): Promise<Worker>
     find(): Promise<Worker[]>
+
 }
 
 export { IWorkersReposiroty }
