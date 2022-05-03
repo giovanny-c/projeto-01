@@ -78,7 +78,14 @@ class WorkerContribuitionsUseCase {
             throw new AppError("No Donation found")
         }
 
+        //somar valor 
+        // let sumValues
 
+        // donations.forEach(donation => {
+        //     sumValues += donation.donation_value.valueOf()
+        // })
+
+        //console.log(sumValues)
         return {
             worker,
             donations

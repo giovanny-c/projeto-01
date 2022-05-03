@@ -206,10 +206,15 @@ class DonationsRepository implements IDonationsRepository {
 
     async findOneById(value: string): Promise<Donation> {
 
-        const donation = await this.repository.findOneBy({
-            id: value
-        })
+        const donation = await this.repository.findOne({
+            relations: {
+                donor: true
+            },
 
+            where: {
+                id: value
+            }
+        })
 
         return donation
     }
