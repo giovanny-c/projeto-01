@@ -6,6 +6,7 @@ import { Response } from "express";
 import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
+import { document } from "pdfkit/js/page";
 
 @injectable()
 class GenerateReceiptUseCase {
@@ -28,21 +29,25 @@ class GenerateReceiptUseCase {
             throw new AppError("This donation does not exists")
         }
 
-        if (donation.is_payed === true) {
+        //if (donation.is_payed === true) {}
 
-            const filePath = "./templates/recibo.png"
+        const filePath = "./templates/recibo.png"
 
-            const stream = res.writeHead(201, {
-                "Content-Type": "application/pdf",
-                "Content-Disposition": `attachment;filename=recibo${donation.id}.pdf`,
-            })
+        // const stream = res.writeHead(200, {
+        //     "Content-Type": "application/pdf",
+        //     "Content-Disposition": `attachment;filename=recibo${donation.id}.pdf`,
+        // })
 
 
-            this.fileProvider.createFile(filePath,
-                (chunk) => stream.write(chunk),
-                () => stream.end)
+        this.fileProvider.createFile(filePath/*,
+            (chunk) => stream.write(chunk),
+            () => stream.end()*/
+        )
 
-        }
+
+
+
+
 
     }
 

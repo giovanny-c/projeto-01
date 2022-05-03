@@ -16,6 +16,7 @@ class GenerateReceiptController {
         await generateReceiptUseCase.execute(id, res)
 
         return res.send()
+
     }
 }
 

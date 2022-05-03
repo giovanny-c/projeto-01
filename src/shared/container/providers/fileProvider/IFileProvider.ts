@@ -2,7 +2,7 @@
 
 interface IFileProvider {
 
-    createFile(filePath: string, dataCallback: Function, endCallback: Function)
+    createFile(filePath: string, /*dataCallback: Function, endCallback: Function*/)
 
 }
 
