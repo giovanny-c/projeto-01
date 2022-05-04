@@ -1,8 +1,9 @@
+import { Donation } from "../../../../modules/donations/entities/donation"
 
 
 interface IFileProvider {
 
-    createFile(filePath: string, /*dataCallback: Function, endCallback: Function*/)
+    createFile(filePath: string, data?: Donation/*dataCallback: Function, endCallback: Function*/)
 
 }
 

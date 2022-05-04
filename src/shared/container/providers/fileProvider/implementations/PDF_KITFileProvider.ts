@@ -1,14 +1,14 @@
 
 import pdfkit from "pdfkit"
+
 import fs from "fs"
 
-import blobStream from "blob-stream"
 
 import { IFileProvider } from "../IFileProvider"
 
 
 
-class FileProvider implements IFileProvider {
+class PDF_KITFileProvider implements IFileProvider {
 
 
     createFile(filePath: string, /*dataCallback, endCallback*/) {
@@ -22,7 +22,6 @@ class FileProvider implements IFileProvider {
         //pdfdocument.on("data", dataCallback)
         //pdfdocument.on("end", endCallback)
 
-        const stream = pdfdocument.pipe(blobStream())
 
         pdfdocument.image(filePath, {
             align: "center",
@@ -38,10 +37,7 @@ class FileProvider implements IFileProvider {
 
         pdfdocument.end()
 
-        stream.on("finish", function () {
-            const url = stream.toBlob("application/pdf")
-            console.log(url)
-        })
+
 
     }
 
@@ -49,4 +45,4 @@ class FileProvider implements IFileProvider {
 
 }
 
-export { FileProvider }
+export { PDF_KITFileProvider }
