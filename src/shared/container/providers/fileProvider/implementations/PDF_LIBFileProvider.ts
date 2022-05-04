@@ -36,12 +36,13 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const pdfBytes = await doc.save()
 
-        //salva o pdf no dir
+        //criar o pdf no dir
         fs.writeFile(`./tmp/receipts/recibo${data.donation_number}.pdf`, pdfBytes,
             (err) => {
                 if (err) throw err
             })
 
+        return pdfBytes
     }
 
 }
