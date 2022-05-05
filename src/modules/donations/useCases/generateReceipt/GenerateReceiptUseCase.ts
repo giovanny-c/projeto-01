@@ -9,8 +9,9 @@ import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { Donation } from "../../entities/donation";
 
 interface IResponse {
-    donation: Donation,
-    doc: string
+
+    file: string
+    name: string
 }
 
 @injectable()
@@ -53,8 +54,8 @@ class GenerateReceiptUseCase {
         const buffer = Buffer.from(pdfBytes)
 
         return {
-            donation,
-            doc: buffer.toString("base64")
+            file: buffer.toString("base64"),
+            name: `${donation.donation_number}`
         }
 
 

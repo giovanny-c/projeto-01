@@ -14,9 +14,9 @@ class GenerateReceiptController {
 
         const generateReceiptUseCase = container.resolve(GenerateReceiptUseCase)
 
-        const results = await generateReceiptUseCase.execute(id, res)
+        const document = await generateReceiptUseCase.execute(id, res)
 
-        return res.render("index", { results })
+        return res.render("donations/donationReceipt", { document })
 
     }
 }

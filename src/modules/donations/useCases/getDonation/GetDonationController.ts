@@ -15,8 +15,8 @@ class GetDonationController {
         const donation = await getDonationUseCase.execute(id)
 
 
-        return res.render("index", { donation })
+        return res.render("donations/donation", { donation })
     }
 }
 
-export { GetDonationController }
+export { GetDonationController } 
