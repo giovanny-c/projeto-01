@@ -69,9 +69,13 @@ class ImportDonationsUseCase {
             if (!data.donor_name) throw new AppError(`Please fill de donor_name field at line ${object.indexOf(data) + 1}`)
             if (!data.phone) throw new AppError(`Please fill de phone field at line ${object.indexOf(data) + 1}`)
             if (data.is_payed === true && data.is_canceled === true) throw new AppError(`There cant be a donation payed mark as canceled, on line: ${object.indexOf(data) + 1}`)
-            // Fazer para created_at tbm
-            // ve se a data de pagamento é valida
 
+            // Fazer para created_at tbm
+            if (!this.dateProviderRepository.isValidDate(data.created_at)) {
+                throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`)
+            }
+
+            // ve se a data de pagamento é validaq
             if (!this.dateProviderRepository.isValidDate(data.payed_at)) {
                 throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`)
             }
@@ -86,6 +90,7 @@ class ImportDonationsUseCase {
             //Validação de campos
             //try {
 
+            if (data.created_at) this.dateProviderRepository.convertToDate(data.created_at)
             //se tiver, converte a data de pagamento 
             if (data.payed_at) this.dateProviderRepository.convertToDate(data.payed_at)
 
@@ -116,9 +121,9 @@ class ImportDonationsUseCase {
                     donation_value: data.donation_value as number,
                     donor_id: donor.id,
                     user_id: user_id,
-                    worker_id: worker.id, //criar relação worker na tabela donation
+                    worker_id: worker.id,
                     //donation_number: data.donation_number // fazer outra estrategia p/ number (tirar auto generate)
-                    //created_at: data.created_at, // fazer validaçao de data
+                    created_at: data.created_at,
                     is_payed: data.is_payed || false,
                     payed_at: data.payed_at || null,
                     is_donation_canceled: data.is_canceled || false,

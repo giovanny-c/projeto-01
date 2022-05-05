@@ -7,6 +7,7 @@ interface IDateProvider {
     addOrSubtractTime(operation: string, timeUnit: string, amountOfTime: number, date?: string | Date,): Date
     IsToday(date: Date): boolean
     isValidDate(date: string | Date): boolean
+    formatDate(date: Date, formatType: string): Date
 
 }
 

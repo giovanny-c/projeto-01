@@ -20,6 +20,7 @@ class DayjsDateProvider implements IDateProvider {
 
 
 
+
     addOrSubtractTime(operation: string = ("sub" || "add"), timeUnit: string, amountOfTime: number, date?: string | Date) {
         //adciona ou subtrai tempo de uma data passada ou da data atual
         //timeUnit = "day", "month", "hour" ...
@@ -100,12 +101,15 @@ class DayjsDateProvider implements IDateProvider {
 
     }
 
-
-
     dateNow(): Date {
 
         return dayjs.tz(dayjs().toDate()).format("YYYY-MM-DDTHH:mm:ssZ[Z]")//ISO FORMAT
     }
+
+    formatDate(date: Date, formatType: string): Date {
+        return dayjs(date, ["YYYY-MM-DD", "YYYY-MM-DDTHH:mm:ssZ[Z]"]).format(formatType)
+    }
+
 
 }
 

@@ -17,6 +17,7 @@ interface IRequest {
 interface IResponse {
     worker: Worker
     donations: Donation[]
+    totalValue
 }
 
 @injectable()
@@ -46,16 +47,19 @@ class WorkerContribuitionsUseCase {
         //if (offset.valueOf !== Number) throw new AppError("this is not a valid offset")
 
 
+        //se nao tiver data inicial cria uma data 1 mes antes da atual
         if (!startDate) startDate = this.dateProvider.addOrSubtractTime("sub", "month", 1).toString()
-
-        if (!endDate) endDate = this.dateProvider.dateNow().toString()
+        //se nao tiver data final cria uma do dia atual + 23:59 min
+        if (!endDate) endDate = this.dateProvider.addOrSubtractTime("add", "minute", 1439).toString()
 
         let startD = this.dateProvider.convertToDate(startDate)
         let endD = this.dateProvider.convertToDate(endDate)
 
-        if (startD === endD) endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
+        //if (startD === endD) endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
 
-        if (this.dateProvider.IsToday(endD)) endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
+        //if (this.dateProvider.IsToday(endD)) endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
+
+        endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
 
         const worker = await this.workersRepository.findById(id)
 
@@ -74,21 +78,23 @@ class WorkerContribuitionsUseCase {
             })
 
 
+        const totalValue = await this.donationsRepository.countDonationsValuesForWorker(
+            id,
+            {
+                startDate: startD,
+                endDate: endD,
+            }
+        )
+
         if (!donations) {
             throw new AppError("No Donation found")
         }
 
-        //somar valor  
-        // let sumValues
 
-        // donations.forEach(donation => {
-        //     sumValues += donation.donation_value.valueOf()
-        // })
-
-        //console.log(sumValues)
         return {
             worker,
-            donations
+            donations,
+            totalValue
         }
 
     }

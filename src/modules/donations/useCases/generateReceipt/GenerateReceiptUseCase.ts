@@ -59,7 +59,8 @@ class GenerateReceiptUseCase {
         }
 
 
-
+        //juntar getdonation e generate?
+        //fazer forma mais elegante de mostrar o download(tela de preview)
 
 
 

@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IDonorsRepository } from "../../../donor/repositories/IDonorsRepository";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
@@ -17,7 +18,9 @@ class CreateDonationUseCase {
         @inject("UsersRepository")
         private usersRepository: IUsersRepository,
         @inject("WorkersRepository")
-        private workersRepository: IWorkersReposiroty
+        private workersRepository: IWorkersReposiroty,
+        @inject("DayjsDateProvider")
+        private dateProvider: IDateProvider
     ) { }
 
     async execute({ donor_id, user_id, donation_value }: ICreateDonationsDTO, worker_name: string): Promise<void> {
@@ -41,8 +44,9 @@ class CreateDonationUseCase {
 
         }
 
+        const created_at = this.dateProvider.dateNow()
 
-        await this.donationsRepository.create({ donor_id, user_id, donation_value, worker_id: workerExists.id })
+        await this.donationsRepository.create({ donor_id, user_id, donation_value, worker_id: workerExists.id, created_at })
 
     }
 

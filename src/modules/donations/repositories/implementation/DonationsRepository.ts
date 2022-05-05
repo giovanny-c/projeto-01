@@ -15,6 +15,25 @@ class DonationsRepository implements IDonationsRepository {
 
         this.repository = dataSource.getRepository(Donation)
     }
+
+
+    async countDonationsValuesForWorker(worker_id: string, { startDate, endDate }: IFindOptions) {
+        let querySum = `select sum (donations.donation_value)
+            from donations       
+            left join workers on donations.worker_id = workers.id
+            where donations.worker_id = '${worker_id}' and donations.is_payed = true 
+         `
+
+        if (startDate && endDate) { // se tiver datas, junta com o 1 valor
+            querySum += `and donations.created_at between '${startDate}' and '${endDate}' `
+        }
+
+        const totalValue = await this.repository.query(querySum)
+
+        return totalValue[0].sum
+    }
+
+
     async findDonationsForWorker(worker_id: string, { orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
 
         let query = `select donations.*
@@ -23,8 +42,11 @@ class DonationsRepository implements IDonationsRepository {
          where donations.worker_id = '${worker_id}' 
         `
 
+
+
         if (startDate && endDate) { // se tiver datas, junta com o 1 valor
             query += `and donations.created_at between '${startDate}' and '${endDate}' `
+
         }
 
         if (orderBy) {
@@ -39,9 +61,9 @@ class DonationsRepository implements IDonationsRepository {
             query += `offset ${offset} `
         }
 
-        const results = await this.repository.query(query)
+        const donations = await this.repository.query(query) as Donation[]
 
-        return results
+        return donations
 
 
 
