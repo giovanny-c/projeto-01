@@ -1,3 +1,4 @@
+import { decodeBase64 } from "bcryptjs";
 import { Request, Response } from "express";
 import { container } from "tsyringe";
 import { GenerateReceiptUseCase } from "./GenerateReceiptUseCase";
@@ -7,15 +8,15 @@ import { GenerateReceiptUseCase } from "./GenerateReceiptUseCase";
 class GenerateReceiptController {
 
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
         const { id } = req.params
 
         const generateReceiptUseCase = container.resolve(GenerateReceiptUseCase)
 
-        const result = await generateReceiptUseCase.execute(id, res)
+        const results = await generateReceiptUseCase.execute(id, res)
 
-        return res.send(result)
+        return res.render("index", { results })
 
     }
 }

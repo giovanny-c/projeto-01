@@ -6,7 +6,7 @@ import { GetDonationUseCase } from "./GetDonationUseCase";
 class GetDonationController {
 
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
         const { id } = req.params
 
@@ -15,7 +15,7 @@ class GetDonationController {
         const donation = await getDonationUseCase.execute(id)
 
 
-        return res.json(donation)
+        return res.render("index", { donation })
     }
 }
 

@@ -6,12 +6,11 @@ import { Response } from "express";
 import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
+import { Donation } from "../../entities/donation";
 
 interface IResponse {
-    statusCode: number
-    headers: {}
-    body: string
-    isBase64Encoded: boolean
+    donation: Donation,
+    doc: string
 }
 
 @injectable()
@@ -54,15 +53,9 @@ class GenerateReceiptUseCase {
         const buffer = Buffer.from(pdfBytes)
 
         return {
-            statusCode: 200,
-            headers: {
-                "Content-type": "application/pdf",
-                "Content-Disposition": `attachment;filename=recibo${donation.donation_number}.pdf` //colocar a data tbm
-            },
-            body: buffer.toString("base64"),
-            isBase64Encoded: true
+            donation,
+            doc: buffer.toString("base64")
         }
-
 
 
 

@@ -34,7 +34,7 @@ donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationSta
 donationRoutes.post("/cancel-donation/:id", ensureAuthenticated, cancelDonationController.handle)
 donationRoutes.post("/create/:donor_id", ensureAuthenticated, createDonationController.handle)//cria a donation
 donationRoutes.get("/receipt/:id", generateReceiptController.handle)
-donationRoutes.get("/:id", /**/ensureAuthenticated, getDonationController.handle)
+donationRoutes.get("/:id", /*ensureAuthenticated,*/getDonationController.handle)
 
 
 export { donationRoutes } 
