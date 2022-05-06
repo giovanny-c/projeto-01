@@ -7,6 +7,7 @@ import { IFileProvider } from "../../../../shared/container/providers/fileProvid
 import { AppError } from "../../../../shared/errors/AppError";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { Donation } from "../../entities/donation";
+import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 
 interface IResponse {
 
@@ -21,7 +22,9 @@ class GenerateReceiptUseCase {
         @inject("DonationsRepository")
         private donationsRepository: IDonationsRepository,
         @inject("FileProvider")
-        private fileProvider: IFileProvider
+        private fileProvider: IFileProvider,
+        @inject("DayjsDateProvider")
+        private dateProvider: IDateProvider
     ) {
 
     }
@@ -45,6 +48,7 @@ class GenerateReceiptUseCase {
         //     "Content-Disposition": `attachment;filename=recibo${donation.id}.pdf`,
         // })
 
+        donation.payed_at = this.dateProvider.formatDate(donation.payed_at, "DD/MM/YYYY")
 
         const pdfBytes = await this.fileProvider.createFile(filePath, donation/*,
             (chunk) => stream.write(chunk),

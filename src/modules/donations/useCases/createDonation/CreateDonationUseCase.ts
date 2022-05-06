@@ -25,6 +25,8 @@ class CreateDonationUseCase {
 
     async execute({ donor_id, user_id, donation_value }: ICreateDonationsDTO, worker_name: string): Promise<void> {
 
+
+
         const userExists = await this.usersRepository.findById(user_id)
         const donorExists = await this.donorsRepository.findById(donor_id)
         const workerExists = await this.workersRepository.findByName(worker_name)
@@ -46,7 +48,10 @@ class CreateDonationUseCase {
 
         const created_at = this.dateProvider.dateNow()
 
+
         await this.donationsRepository.create({ donor_id, user_id, donation_value, worker_id: workerExists.id, created_at })
+
+
 
     }
 

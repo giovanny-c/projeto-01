@@ -53,6 +53,7 @@ class ImportDonationsUseCase {
         const excelData = xlsx.readFile(file.path, { cellDates: true }) //diskstorage
 
         return Object.keys(excelData.Sheets).map(name => ({
+            // console.log(name) 
             data: xlsx.utils.sheet_to_json(excelData.Sheets[name], { raw: false, dateNF: 'yyyy-mm-dd' }) as any,
         }))
 
@@ -135,8 +136,8 @@ class ImportDonationsUseCase {
 
             } catch (err) {
                 //TENTAR FORÇAR UM ERRO AQUI
-                throw new AppError(`It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`)
-
+                //throw new AppError(`It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`)
+                console.log(err)
             }
 
             //poe a data da ultima doaçao no donor se for paga
@@ -159,7 +160,9 @@ class ImportDonationsUseCase {
 
         this.loadDonations(file).forEach((element) => {
 
+
             object = element.data //as IImportDonation[]
+
         })
 
         this.validateFields(object)

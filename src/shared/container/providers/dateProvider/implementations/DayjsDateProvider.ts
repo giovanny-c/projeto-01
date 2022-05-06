@@ -62,7 +62,7 @@ class DayjsDateProvider implements IDateProvider {
         //pega uma data em string e transforma em date
         //se a string nao for valida retorna um erro
 
-        const isValid = dayjs(date, ["YYYY-MM-DD", "YYYY-MM-DDTHH:mm:ssZ[Z]"]).isValid()
+        const isValid = dayjs(date, ["YYYY-MM-DD", "YYYY-MM-DDTHH:mm:ssZ[Z]", "YYYY-MM-DDTHH:mm:ss"]).isValid()
 
 
         if (!isValid) {
@@ -107,7 +107,8 @@ class DayjsDateProvider implements IDateProvider {
     }
 
     formatDate(date: Date, formatType: string): Date {
-        return dayjs(date, ["YYYY-MM-DD", "YYYY-MM-DDTHH:mm:ssZ[Z]"]).format(formatType)
+
+        return dayjs(date).format(formatType)
     }
 
 

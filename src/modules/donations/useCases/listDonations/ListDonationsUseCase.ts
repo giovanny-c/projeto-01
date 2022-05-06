@@ -35,7 +35,7 @@ class ListDonationsUseCase {
         if (!limit || limit === 0) limit = 10
         if (!offset) offset = 0
 
-        //if (limit.valueOf !== Number) throw new AppError("this is not a valid limit")
+        //if ( se nao for number ) throw new AppError("this is not a valid limit")
         //if (offset.valueOf !== Number) throw new AppError("this is not a valid offset")
 
         //se nao tiver data inicial cria uma data 1 mes antes da atual
@@ -45,7 +45,7 @@ class ListDonationsUseCase {
 
         //converte para data
         let startD = this.dateProvider.convertToDate(startDate)
-        let endD = this.dateProvider.convertToDate(endDate)
+        let endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, this.dateProvider.convertToDate(endDate))
 
         //if (startD === endD) endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
 

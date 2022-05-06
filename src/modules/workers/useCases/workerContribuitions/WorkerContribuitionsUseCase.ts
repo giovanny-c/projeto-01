@@ -53,13 +53,12 @@ class WorkerContribuitionsUseCase {
         if (!endDate) endDate = this.dateProvider.addOrSubtractTime("add", "minute", 1439).toString()
 
         let startD = this.dateProvider.convertToDate(startDate)
-        let endD = this.dateProvider.convertToDate(endDate)
+        let endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, this.dateProvider.convertToDate(endDate))
 
         //if (startD === endD) endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
 
         //if (this.dateProvider.IsToday(endD)) endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
 
-        endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
 
         const worker = await this.workersRepository.findById(id)
 
