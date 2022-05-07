@@ -159,10 +159,7 @@ class ImportDonationsUseCase {
         let object: IImportDonation[]
 
         this.loadDonations(file).forEach((element) => {
-
-
-            object = element.data //as IImportDonation[]
-
+            object = element.data
         })
 
         this.validateFields(object)

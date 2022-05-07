@@ -1,8 +1,11 @@
-import { degrees, PDFDocument, rgb, StandardFonts } from "pdf-lib"
+import { degrees, PDFDocument, rgb } from "pdf-lib"
 import fs from "fs"
+import intl from "intl"
+
 import { IFileProvider } from "../IFileProvider";
 import { Donation } from "../../../../../modules/donations/entities/donation";
-import intl from "intl"
+import formatToBRL from "../../../../../../utils/numberFormat";
+
 
 
 
@@ -12,15 +15,16 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const doc = await PDFDocument.create()
 
-        const uint8Array = fs.readFileSync(filePath)
+        const uint8Array = fs.readFileSync(filePath) // le o tamplate do recibo
 
 
-        const templatePNG = await doc.embedPng(uint8Array)
+        const templatePNG = await doc.embedPng(uint8Array) //poe o template no pdf
+
         const page = doc.addPage()
 
         page.setRotation(degrees(90))
 
-        page.drawImage(templatePNG, {
+        page.drawImage(templatePNG, { //"desenha" a imagem
             x: 500,
             y: 10,
             width: 800,
@@ -38,20 +42,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         })
 
 
-
-        const formatter = new intl.NumberFormat("pt-BR",
-            {
-                style: "currency",
-                currency: "BRL",
-
-            })
-
-        let value
-
-        value = formatter.format(data.donation_value as number).toString()
-
-
-        page.drawText(value, {
+        page.drawText(formatToBRL(data.donation_value as number).toString(), {
             x: 85,
             y: 570,
             rotate: degrees(90),
@@ -83,7 +74,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
 
 
-        const pdfBytes = await doc.save()
+        const pdfBytes = await doc.save() //cria um array de bytes 
 
         //criar o pdf no dir
         fs.writeFile(`./tmp/receipts/recibo${data.donation_number}.pdf`, pdfBytes,

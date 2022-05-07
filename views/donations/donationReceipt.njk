@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    {# <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> #}
+    <link rel="stylesheet" href="/styles/index.css">
     <title>Document</title>
 </head>
 <body>
 
-    <a href="data:application/pdf;base64,{{document.file}}" download="recibo{{document.name}}.pdf">Download</a>
+    {# <a href="data:application/pdf;base64,{{document.file}}" download="recibo{{document.name}}.pdf">Download</a> #}
     
     {# <script>
         const downloadLink = document.getElement('a');
     
         downloadLink.click();
     </script> #}
+
+    <iframe name="recibo" src="data:application/pdf;base64,{{document.file}}"></iframe>
 </body>
 
 </html>
