@@ -9,14 +9,18 @@
 </head>
 <body>
 
-    {# <a href="data:application/pdf;base64,{{document.file}}" download="recibo{{document.name}}.pdf">Download</a> #}
-    
+    <a href="data:application/pdf;base64,{{document.file}}" download="recibo{{document.name}}.pdf">Baixar Recibo</a> 
     {# <script>
         const downloadLink = document.getElement('a');
     
         downloadLink.click();
     </script> #}
 
+    {# <a href="">Visiualizar</a>
+    
+    {% if condition %}
+        
+    {% endif %} #}
     <iframe name="recibo" src="data:application/pdf;base64,{{document.file}}"></iframe>
 </body>
 
