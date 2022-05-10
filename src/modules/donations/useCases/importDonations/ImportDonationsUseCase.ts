@@ -23,9 +23,9 @@ interface IImportDonation {
     email: string
     phone?: string
     created_at: Date
-    is_payed: boolean
+    is_payed: string
     payed_at?: Date
-    is_canceled?: boolean
+    is_canceled?: string
 }
 
 
@@ -69,7 +69,7 @@ class ImportDonationsUseCase {
             if (!data.worker_name) throw new AppError(`Please fill de worker_name field at line ${object.indexOf(data) + 1}`)
             if (!data.donor_name) throw new AppError(`Please fill de donor_name field at line ${object.indexOf(data) + 1}`)
             if (!data.phone) throw new AppError(`Please fill de phone field at line ${object.indexOf(data) + 1}`)
-            if (data.is_payed === true && data.is_canceled === true) throw new AppError(`There cant be a donation payed mark as canceled, on line: ${object.indexOf(data) + 1}`)
+            if (data.is_payed === "true" && data.is_canceled === "true") throw new AppError(`There cant be a donation payed mark as canceled, on line: ${object.indexOf(data) + 1}`)
 
             // Fazer para created_at tbm
             if (!this.dateProviderRepository.isValidDate(data.created_at)) {
@@ -87,9 +87,15 @@ class ImportDonationsUseCase {
 
     async proccessDonations(object: IImportDonation[], user_id: string): Promise<void> {
 
-        const result = object.forEach(async (data): Promise<void> => {
+        object.forEach(async (data): Promise<void> => {
             //Validação de campos
             //try {
+            let is_payed: boolean, is_canceled: boolean
+
+            if (data.is_payed === "true") is_payed = true
+
+            if (data.is_canceled === "true") is_canceled = true
+
 
             if (data.created_at) this.dateProviderRepository.convertToDate(data.created_at)
             //se tiver, converte a data de pagamento 
@@ -125,9 +131,9 @@ class ImportDonationsUseCase {
                     worker_id: worker.id,
                     //donation_number: data.donation_number // fazer outra estrategia p/ number (tirar auto generate)
                     created_at: data.created_at,
-                    is_payed: data.is_payed || false,
+                    is_payed: is_payed,
                     payed_at: data.payed_at || null,
-                    is_donation_canceled: data.is_canceled || false,
+                    is_donation_canceled: is_canceled,
 
 
                 })
@@ -141,7 +147,7 @@ class ImportDonationsUseCase {
             }
 
             //poe a data da ultima doaçao no donor se for paga
-            if (data.is_payed === true) {
+            if (is_payed === true) {
 
                 await this.donorsRepository.create({ id: donor.id, last_donation: data.payed_at })
 
