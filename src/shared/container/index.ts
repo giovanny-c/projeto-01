@@ -12,12 +12,19 @@ import { UsersRepository } from "../../modules/user/repositories/implementation/
 import { IUsersRepository } from "../../modules/user/repositories/IUsersRepository";
 import { IWorkersReposiroty } from "../../modules/workers/repositories/IWorkersRepository";
 import { WorkersRepository } from "../../modules/workers/repositories/implementations/WorkersRepository";
+import { IUsersTokensRepository } from "../../modules/user/repositories/IUsersTokensRepository";
+import { UsersTokensRepository } from "../../modules/user/repositories/implementation/IUsersTokensRepository";
 
 
 
 container.registerSingleton<IUsersRepository>(
     "UsersRepository",
     UsersRepository
+)
+
+container.registerSingleton<IUsersTokensRepository>(
+    "UsersTokensRepository",
+    UsersTokensRepository
 )
 
 container.registerSingleton<IDonorsRepository>(
