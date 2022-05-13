@@ -13,7 +13,7 @@ import { IUsersRepository } from "../../modules/user/repositories/IUsersReposito
 import { IWorkersReposiroty } from "../../modules/workers/repositories/IWorkersRepository";
 import { WorkersRepository } from "../../modules/workers/repositories/implementations/WorkersRepository";
 import { IUsersTokensRepository } from "../../modules/user/repositories/IUsersTokensRepository";
-import { UsersTokensRepository } from "../../modules/user/repositories/implementation/IUsersTokensRepository";
+import { UsersTokensRepository } from "../../modules/user/repositories/implementation/UsersTokensRepository";
 
 
 
