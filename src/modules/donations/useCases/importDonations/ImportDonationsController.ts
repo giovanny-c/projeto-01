@@ -12,7 +12,11 @@ class ImportDonationsController {
 
         const importDonationsUseCase = container.resolve(ImportDonationsUseCase)
 
-        await importDonationsUseCase.execute(file, user.id)
+        const response = await importDonationsUseCase.execute(file, user.id)
+
+        if (response) {
+            throw new AppError(response, 400)
+        }
 
         return res.status(201).send()
     }

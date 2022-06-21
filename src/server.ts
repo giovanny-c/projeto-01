@@ -1,6 +1,6 @@
 import "reflect-metadata"
 
-import express, { NextFunction, Request, Response } from "express"
+import express from "express"
 
 import "express-async-errors"
 
@@ -14,8 +14,9 @@ import "./database"
 
 import "./shared/container"
 import { donationRoutes } from "./routes/donation.routes"
-import { AppError } from "./shared/errors/AppError"
+
 import { workerRoutes } from "./routes/worker.routes"
+import { errorHandler } from "./shared/errors/errorHandler"
 
 const app = express()
 
@@ -31,16 +32,8 @@ app.use("/donors", donorRoutes)
 app.use("/donations", donationRoutes)
 app.use("/workers", workerRoutes)
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    if (err instanceof AppError) {
-        return res.status(err.statusCode).json({ message: err.message })
-    }
-
-    return res.status(500).json({
-        status: "error",
-        message: `Internal server error - ${err.message}`
-    })
-})
+//middleware de erro apos as rotas
+app.use(errorHandler)
 
 //front
 app.set("view engine", "njk")

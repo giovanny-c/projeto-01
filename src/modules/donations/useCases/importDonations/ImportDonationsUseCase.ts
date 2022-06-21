@@ -63,31 +63,31 @@ class ImportDonationsUseCase {
 
         object.forEach(data => {
 
-            if (!data.email) throw new AppError(`Please fill de email field at line ${object.indexOf(data) + 1}`) //testar se o erro ta na linha certa
-            if (!data.donation_value) throw new AppError(`Please fill de donation_value field at line ${object.indexOf(data) + 1}`)
-            if (!data.created_at) throw new AppError(`Please fill de created_at field at line ${object.indexOf(data) + 1}`)
-            if (!data.worker_name) throw new AppError(`Please fill de worker_name field at line ${object.indexOf(data) + 1}`)
-            if (!data.donor_name) throw new AppError(`Please fill de donor_name field at line ${object.indexOf(data) + 1}`)
-            if (!data.phone) throw new AppError(`Please fill de phone field at line ${object.indexOf(data) + 1}`)
-            if (data.is_payed === "true" && data.is_canceled === "true") throw new AppError(`There cant be a donation payed mark as canceled, on line: ${object.indexOf(data) + 1}`)
+            if (!data.email) throw new AppError(`Please fill de email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
+            if (!data.donation_value) throw new AppError(`Please fill de donation_value field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.created_at) throw new AppError(`Please fill de created_at field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.worker_name) throw new AppError(`Please fill de worker_name field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.donor_name) throw new AppError(`Please fill de donor_name field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.phone) throw new AppError(`Please fill de phone field at line ${object.indexOf(data) + 1}`, 400)
+            if (data.is_payed === "true" && data.is_canceled === "true") throw new AppError(`There cant be a donation payed mark as canceled, on line: ${object.indexOf(data) + 1}`, 400)
 
             // Fazer para created_at tbm
             if (!this.dateProviderRepository.isValidDate(data.created_at)) {
-                throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`)
+                throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`, 400)
             }
 
             // ve se a data de pagamento é validaq
             if (!this.dateProviderRepository.isValidDate(data.payed_at)) {
-                throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`)
+                throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`, 400)// status code
             }
 
         });
 
     }
 
-    async proccessDonations(object: IImportDonation[], user_id: string): Promise<void> {
+    async proccessDonations(object: IImportDonation[], user_id: string): Promise<any> {
 
-        object.forEach(async (data): Promise<void> => {
+        object.forEach(async (data): Promise<any> => {
             //Validação de campos
             //try {
             let is_payed: boolean, is_canceled: boolean
@@ -143,7 +143,7 @@ class ImportDonationsUseCase {
             } catch (err) {
                 //TENTAR FORÇAR UM ERRO AQUI
                 //throw new AppError(`It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`)
-                console.log(err)
+                return `It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`
             }
 
             //poe a data da ultima doaçao no donor se for paga
@@ -160,17 +160,28 @@ class ImportDonationsUseCase {
     }
 
 
-    async execute(file: Express.Multer.File, user_id: string): Promise<void> {
+    async execute(file: Express.Multer.File, user_id: string): Promise<any> {
 
-        let object: IImportDonation[]
+        try {
 
-        this.loadDonations(file).forEach((element) => {
-            object = element.data
-        })
+            let object: IImportDonation[]
 
-        this.validateFields(object)
+            this.loadDonations(file).forEach((element) => {
+                object = element.data
+            })
 
-        await this.proccessDonations(object, user_id)
+            this.validateFields(object)
+
+            await this.proccessDonations(object, user_id)
+
+        } catch (error) {
+
+            throw new AppError(`Error!: ${error}`, 500)
+
+
+
+
+        }
 
     }
 
