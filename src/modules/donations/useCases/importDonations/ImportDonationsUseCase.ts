@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-
+import fs from "fs"
 
 import * as xlsx from "xlsx"
 
@@ -11,7 +11,6 @@ import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersReposi
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 
 import { AppError } from "../../../../shared/errors/AppError";
-import { dataSource } from "../../../../database";
 
 
 
@@ -48,14 +47,27 @@ class ImportDonationsUseCase {
     }
 
 
-    loadDonations(file: Express.Multer.File) { //talvez tenha que ser asincrona
+    loadDonations(file: Express.Multer.File): IImportDonation[] { //talvez tenha que ser asincrona
+
+        let donationsObj: IImportDonation[]
 
         const excelData = xlsx.readFile(file.path, { cellDates: true }) //diskstorage
 
-        return Object.keys(excelData.Sheets).map(name => ({
-            // console.log(name) 
-            data: xlsx.utils.sheet_to_json(excelData.Sheets[name], { raw: false, dateNF: 'yyyy-mm-dd' }) as any,
-        }))
+
+
+        Object.keys(excelData.Sheets).map(name => ({
+            //cria um array de objs onde dentro de cada obj tem as donations
+
+            donations: xlsx.utils.sheet_to_json(excelData.Sheets[name], { raw: false, dateNF: 'yyyy-mm-dd' }) as IImportDonation[],
+
+
+        })).forEach(object => {
+
+            donationsObj = object.donations
+
+        })
+
+        return donationsObj
 
     }
 
@@ -63,12 +75,12 @@ class ImportDonationsUseCase {
 
         object.forEach(data => {
 
-            if (!data.email) throw new AppError(`Please fill de email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
-            if (!data.donation_value) throw new AppError(`Please fill de donation_value field at line ${object.indexOf(data) + 1}`, 400)
-            if (!data.created_at) throw new AppError(`Please fill de created_at field at line ${object.indexOf(data) + 1}`, 400)
-            if (!data.worker_name) throw new AppError(`Please fill de worker_name field at line ${object.indexOf(data) + 1}`, 400)
-            if (!data.donor_name) throw new AppError(`Please fill de donor_name field at line ${object.indexOf(data) + 1}`, 400)
-            if (!data.phone) throw new AppError(`Please fill de phone field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.email) throw new AppError(`Please fill the email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
+            if (!data.donation_value) throw new AppError(`Please fill the donation_value field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.created_at) throw new AppError(`Please fill the created_at field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.worker_name) throw new AppError(`Please fill the worker_name field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.donor_name) throw new AppError(`Please fill the donor_name field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.phone) throw new AppError(`Please fill the phone field at line ${object.indexOf(data) + 1}`, 400)
             if (data.is_payed === "true" && data.is_canceled === "true") throw new AppError(`There cant be a donation payed mark as canceled, on line: ${object.indexOf(data) + 1}`, 400)
 
             // Fazer para created_at tbm
@@ -85,9 +97,14 @@ class ImportDonationsUseCase {
 
     }
 
-    async proccessDonations(object: IImportDonation[], user_id: string): Promise<any> {
+    async proccessDonations(object: IImportDonation[], user_id: string): Promise<void | string> {
+
+        this.validateFields(object)
 
         object.forEach(async (data): Promise<any> => {
+
+
+
             //Validação de campos
             //try {
             let is_payed: boolean, is_canceled: boolean
@@ -121,11 +138,12 @@ class ImportDonationsUseCase {
                 worker = await this.workersRepository.create(data.worker_name)
             }
 
+
             try {
                 //CRIA A DONATION
                 await this.donationsRepository.create({
 
-                    donation_value: data.donation_value as number,
+                    donation_value: data.donation_value,
                     donor_id: donor.id,
                     user_id: user_id,
                     worker_id: worker.id,
@@ -141,9 +159,9 @@ class ImportDonationsUseCase {
                 //LOGICA PARA NAO FAZER A MESMA DONATION 2 VEZES
 
             } catch (err) {
-                //TENTAR FORÇAR UM ERRO AQUI
-                //throw new AppError(`It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`)
-                return `It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`
+
+                throw new AppError(`It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`)
+                //return `It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`
             }
 
             //poe a data da ultima doaçao no donor se for paga
@@ -162,26 +180,14 @@ class ImportDonationsUseCase {
 
     async execute(file: Express.Multer.File, user_id: string): Promise<any> {
 
-        try {
 
-            let object: IImportDonation[]
+        //vai fazer para cada donation
+        const result = await this.proccessDonations(this.loadDonations(file), user_id)
 
-            this.loadDonations(file).forEach((element) => {
-                object = element.data
-            })
+        fs.unlinkSync(file.path)
 
-            this.validateFields(object)
+        return result
 
-            await this.proccessDonations(object, user_id)
-
-        } catch (error) {
-
-            throw new AppError(`Error!: ${error}`, 500)
-
-
-
-
-        }
 
     }
 
