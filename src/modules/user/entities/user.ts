@@ -11,7 +11,10 @@ class User {
     name: string
 
     @Column()
-    password: string
+    password_hash: string
+
+    @Column()
+    salt: string
 
 
     constructor() {

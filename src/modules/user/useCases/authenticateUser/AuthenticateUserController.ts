@@ -11,9 +11,12 @@ class AuthenticateUserController {
 
         const authenticateUserUseCase = container.resolve(AuthenticateUserUseCase)
 
-        const token = await authenticateUserUseCase.execute({ name, password })
+        const response = await authenticateUserUseCase.execute({ name, password })
 
-        return res.json(token)
+        req.session.user = response.user
+        req.session.created_at = response.created_at
+
+        return res.json({"session": req.session})
     }
 
 

@@ -4,7 +4,7 @@ import intl from "intl"
 
 import { IFileProvider } from "../IFileProvider";
 import { Donation } from "../../../../../modules/donations/entities/donation";
-import formatToBRL from "../../../../../../utils/numberFormat";
+import formatToBRL from "../../../../../../utils/formatToBRL";
 
 
 

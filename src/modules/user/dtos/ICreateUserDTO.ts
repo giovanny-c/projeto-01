@@ -1,7 +1,8 @@
 interface ICreateUserDTO {
     id?: string
     name: string
-    password: string
+    password_hash: string
+    salt: string
 }
 
 export { ICreateUserDTO }

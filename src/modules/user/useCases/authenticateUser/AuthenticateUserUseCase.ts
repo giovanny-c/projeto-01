@@ -1,12 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import { compare } from "bcryptjs";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { sign } from "jsonwebtoken"
 
-import auth from "../../../../config/auth";
+import {instanceToPlain} from "class-transformer"
+
 import { AppError } from "../../../../shared/errors/AppError";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
-import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
+
+import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 
 interface IRequest {
     name: string
@@ -15,10 +16,11 @@ interface IRequest {
 
 interface IResponse {
     user: {
+        id: string
         name: string,
+        admin?: boolean 
     }
-    token: string
-    refresh_token: string
+    created_at: Date
 
 }
 
@@ -29,10 +31,10 @@ class AuthenticateUserUseCase {
     constructor(
         @inject("UsersRepository")
         private usersRepository: IUsersRepository,
-        @inject("UsersTokensRepository")
-        private usersTokensRepository: IUsersTokensRepository,
         @inject("DayjsDateProvider")
         private dateProvider: IDateProvider,
+        @inject("CacheProvider")
+        private cacheProvider: ICacheProvider,
     ) { }
 
     async execute({ name, password }: IRequest): Promise<IResponse> {
@@ -40,51 +42,34 @@ class AuthenticateUserUseCase {
         const user = await this.usersRepository.findByName(name); //mudar depois
 
 
-        const { expires_in_token, secret_token, secret_refresh_token, expires_refresh_token_days, expires_in_refresh_token } = auth
-
         if (!user) {
             throw new AppError("name or password incorrect")
         }
 
-        const passwordMatch = await compare(password, user.password)
+        const passwordMatch = await compare(password, user.password_hash)
 
-        if (!passwordMatch) {
+        if (!passwordMatch) { //trocar para validate password
             throw new AppError("name or password incorrect")
 
         }
 
-        //cria o token
-        const token = sign({}, secret_token, {
-            subject: user.id,
-            expiresIn: expires_in_token
-        })
+        await this.cacheProvider.setRedis(`user-${user.id}`, JSON.stringify(instanceToPlain(user)))
 
-        const refresh_token = sign({ name }, secret_refresh_token, {
-            subject: user.id,
-            expiresIn: expires_in_refresh_token // 30d
-        })
+        const created_at = this.dateProvider.dateNow()
 
-        const refresh_token_expires_date = this.dateProvider.addOrSubtractTime("add", "day", expires_refresh_token_days) //+ 30 dias 
 
-        await this.usersTokensRepository.create({
-            refresh_token: refresh_token,
-            expires_date: refresh_token_expires_date,
-            user_id: user.id
-        })
-
-        const tokenReturn: IResponse = {
+        return {
             user: {
-                name
+                id: user.id,
+                name: user.name,
+                admin: true // criar campo adm depois
             },
-            token,
-            refresh_token
+            created_at
         }
-
         //TIPs 
-        //fazer uma validaçao por ip (se e o mesmo ip nao gera um novo token)
-        //auth 2.0
-        //passar os tokens para o req.headers ?
-        return tokenReturn
+        
+        
+        
     }
 
 }
