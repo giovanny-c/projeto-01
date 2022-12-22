@@ -13,11 +13,22 @@ export class CreateTableDonations1650766391892 implements MigrationInterface {
                         isPrimary: true
                     },
                     {
+                        name: "ngo_id", //ong
+                        type: "uuid",
+                        isNullable: false
+                    },
+                    {
                         name: "donation_number",
                         type: "numeric",
+                        isNullable: false
                     },
                     {
                         name: "user_id",
+                        type: "uuid",
+                        isNullable: false
+                    },
+                    {
+                        name: "worker_id",
                         type: "uuid",
                         isNullable: false
                     },
@@ -67,15 +78,34 @@ export class CreateTableDonations1650766391892 implements MigrationInterface {
 
                     },
                     {
-                        name: "FKuUserDonations",
+                        name: "FKUserDonations",
                         referencedTableName: "users",
                         referencedColumnNames: ["id"],
                         columnNames: ["user_id"],
                         onDelete: "SET NULL",
                         onUpdate: "SET NULL" //Só vai ser null a foreign key?
 
+                    },
+                    {
+                        name: "FKworkerDonations",
+                        referencedTableName: "workers",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["worker_id"],
+                        onDelete: "SET NULL",
+                        onUpdate: "SET NULL" //Só vai ser null a foreign key?
+
+                    },
+                    {
+                        name: "FKngoDonations",
+                        referencedTableName: "ngos",
+                        referencedColumnNames: ["id"],
+                        columnNames: ["ngo_id"],
+                        onDelete: "SET NULL",
+                        onUpdate: "SET NULL" //Só vai ser null a foreign key?
+
                     }
                 ]
+                
             })
         )
 
