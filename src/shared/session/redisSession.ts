@@ -16,7 +16,7 @@ const redisSession = {
         //habilitar em produçao
         secure: false, //true: so transmite o cookie via https
         httpOnly: false, //true: nao deixa o cookie ser lido por client-side js
-        maxAge: 1000 * 60 * 60 * 24 // 1d * 30,  //1 mes
+        maxAge: 1000 * 60 * 60 * 24 * 30,  //1 mes
 
     },
 
