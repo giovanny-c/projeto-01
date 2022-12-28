@@ -5,6 +5,7 @@ import { v4 as uuidV4 } from "uuid"
 import { Donor } from "../../donor/entities/donor";
 import { User } from "../../user/entities/user";
 import { Worker } from "../../workers/entities/worker";
+import { Ngo } from "./ngos";
 
 @Entity("donations")
 class Donation {
@@ -13,8 +14,7 @@ class Donation {
     id?: string
 
     @Column()
-    @Generated("increment")
-    donation_number: Number
+    donation_number: number
 
     @ManyToOne(() => User)
     @JoinColumn({ name: "user_id" })
@@ -29,13 +29,21 @@ class Donation {
 
     @Column()
     donor_id: string
-
+    
     @ManyToOne(() => Worker)
     @JoinColumn({ name: "worker_id" })
     worker: Worker
-
+    
     @Column()
     worker_id: string
+
+    @ManyToOne(() => Ngo)
+    @JoinColumn({ name: "ngo_id" })
+    Ngo: Ngo
+    
+    @Column() 
+    ngo_id: string
+
 
     @Column()
     donation_value: Number

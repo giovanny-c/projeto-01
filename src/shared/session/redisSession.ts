@@ -1,4 +1,4 @@
-import { redisClient } from "@shared/redis/redisConfig";
+import { redisClient } from "../redis/redisConfig";
 import session from "express-session"
 import connectRedis from "connect-redis"
 

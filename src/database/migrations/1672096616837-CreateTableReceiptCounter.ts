@@ -17,9 +17,22 @@ export class CreateTableReceiptCounter1672096616837 implements MigrationInterfac
                     
                 },
                 {
-                    name: "donation_count",
+                    name: "donotion_number",
                     type: "numeric",
-                    default: 0
+                    isNullable: false
+                },
+                {
+                    name: "last_donotion_number",
+                    type: "numeric",
+                    isNullable: false
+                }
+            ],
+            foreignKeys :[
+                {
+                    name: "NGOsDonationCounter",
+                    referencedTableName: "ngos",
+                    referencedColumnNames: ["id"],
+                    columnNames: ["ngo_id"]
                 }
             ]
         }))

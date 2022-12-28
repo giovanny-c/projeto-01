@@ -7,6 +7,7 @@ interface ICreateDonationsDTO {
     user_id: string
     donor_id: string
     worker_id?: string
+    ngo_id: string
     donation_value: Number
     created_at?: Date
     is_payed?: boolean
