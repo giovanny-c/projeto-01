@@ -9,16 +9,21 @@ class CreateDonationController {
     async handle(req: Request, res: Response): Promise<Response> {
 
 
-        const { donation_value, worker_name } = req.body
-        const { donor_id } = req.params
+        const { donation_value, donor_id, donor_name, worker_id, ngo_id, is_payed, payed_at } = req.body
         const { id } = req.user
-
-
-
 
         const createDonationUseCase = container.resolve(CreateDonationUseCase)
 
-        createDonationUseCase.execute({ donor_id, user_id: id, donation_value }, worker_name)
+        createDonationUseCase.execute({ 
+            ngo_id, 
+            donor_id, 
+            donor_name,
+            user_id: id, 
+            worker_id,
+            donation_value, 
+            is_payed, 
+            payed_at, 
+         })
 
         return res.status(201).send()
 

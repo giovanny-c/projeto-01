@@ -20,10 +20,11 @@ class DonationsRepository implements IDonationsRepository {
 
     
 
-    async create({user_id, donor_id, ngo_id ,donation_value, is_payed, payed_at, donation_number, created_at, is_donation_canceled, worker_id }: ICreateDonationsDTO): Promise<void> {
+    async create({user_id, donor_id, donor_name, ngo_id ,donation_value, is_payed, payed_at, donation_number, created_at, is_donation_canceled, worker_id }: ICreateDonationsDTO): Promise<void> {
 
         const donation = this.repository.create({
            donor_id,
+           donor_name,
            user_id,
            worker_id,
            ngo_id,

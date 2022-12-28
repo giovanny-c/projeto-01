@@ -5,7 +5,8 @@ interface ICreateDonationsDTO {
     id?: string
     donation_number: number
     user_id: string
-    donor_id: string
+    donor_id?: string
+    donor_name: string
     worker_id?: string
     ngo_id: string
     donation_value: Number

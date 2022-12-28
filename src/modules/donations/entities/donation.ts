@@ -28,8 +28,11 @@ class Donation {
     donor: Donor
 
     @Column()
-    donor_id: string
+    donor_id?: string
     
+    @Column()
+    donor_name: string
+
     @ManyToOne(() => Worker)
     @JoinColumn({ name: "worker_id" })
     worker: Worker

@@ -14,6 +14,10 @@ import { IWorkersReposiroty } from "../../modules/workers/repositories/IWorkersR
 import { WorkersRepository } from "../../modules/workers/repositories/implementations/WorkersRepository";
 import { IUsersTokensRepository } from "../../modules/user/repositories/IUsersTokensRepository";
 import { UsersTokensRepository } from "../../modules/user/repositories/implementation/UsersTokensRepository";
+import { IDonationCounterRepository } from "../../modules/donations/repositories/IDonationCounterRepository";
+import { DonationCounterRepository } from "../../modules/donations/repositories/implementation/DonationCounterRepository";
+import { INgoRepository } from "../../modules/donations/repositories/INgoRepository";
+import { NgoRepository } from "../../modules/donations/repositories/implementation/NgoRepository";
 
 
 
@@ -37,6 +41,17 @@ container.registerSingleton<IDonationsRepository>(
     "DonationsRepository",
     DonationsRepository
 )
+
+container.registerSingleton<IDonationCounterRepository>(
+    "DonationCounterRepository",
+    DonationCounterRepository
+)
+container.registerSingleton<INgoRepository>(
+    "NgoRepository",
+    NgoRepository
+)
+
+
 
 container.registerSingleton<IWorkersReposiroty>(
     "WorkersRepository",

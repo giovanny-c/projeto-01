@@ -33,3 +33,5 @@ class NgoRepository implements INgoRepository{
         return this.repository.find()
     }
 }
+
+export {NgoRepository}

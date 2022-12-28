@@ -4,7 +4,22 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { IDonorsRepository } from "../../../donor/repositories/IDonorsRepository";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
+import { ICreateDonationsDTO } from "../../dtos/ICreateDonationsDTO";
+import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
+import { INgoRepository } from "../../repositories/INgoRepository";
+
+interface IRequest {
+    ngo_id:string 
+    donor_id:string 
+    donor_name: string
+    user_id:string 
+    worker_id:string 
+    donation_value: number
+    is_payed: boolean
+    payed_at?: Date
+    
+}
 
 @injectable()
 class CreateDonationUseCase {
@@ -13,6 +28,10 @@ class CreateDonationUseCase {
     constructor(
         @inject("DonationsRepository")
         private donationsRepository: IDonationsRepository,
+        @inject("DonationCounterRepository")
+        private donationCounterRepository: IDonationCounterRepository,
+        @inject("NgoRepository")
+        private ngoRepository: INgoRepository,
         @inject("DonorsRepository")
         private donorsRepository: IDonorsRepository,
         @inject("UsersRepository")
@@ -23,35 +42,57 @@ class CreateDonationUseCase {
         private dateProvider: IDateProvider
     ) { }
 
-    async execute({ donor_id, user_id, donation_value }: ICreateDonationsDTO, worker_name: string): Promise<void> {
+    async execute({ ngo_id, donor_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<void> {
 
 
 
         const userExists = await this.usersRepository.findById(user_id)
-        const donorExists = await this.donorsRepository.findById(donor_id)
-        const workerExists = await this.workersRepository.findByName(worker_name)
+       //const donorExists = await this.donorsRepository.findById(donor_id)
+        const workerExists = await this.workersRepository.findById(worker_id)
 
         if (!userExists) {
             throw new AppError("This user does not exists")
 
         }
 
-        if (!donorExists) {
-            throw new AppError("This donor does not exists")
+        // if (!donorExists) {
+        //     throw new AppError("This donor does not exists")
 
-        }
+        // }
 
         if (!workerExists) {
             throw new AppError("This worker does not exists")
 
+        } 
+
+        const ngo = await this.ngoRepository.findById(ngo_id)
+
+        if(!ngo){
+            throw new AppError("This ngo does not exists")
+        }
+        const {donation_number} = await this.donationCounterRepository.findByNgoId(ngo_id)
+
+        
+
+        if(is_payed && !payed_at){//se for pago mas nao tiver data
+
+            payed_at = this.dateProvider.dateNow()
         }
 
-        const created_at = this.dateProvider.dateNow()
+        await this.donationsRepository.create({
+            ngo_id, 
+            worker_id, 
+            donor_id, 
+            donor_name,
+            user_id, 
+            donation_number,
+            donation_value,
+            is_payed,
+            payed_at: payed_at,
+            created_at: this.dateProvider.dateNow()
+         })
 
-
-        await this.donationsRepository.create({ donor_id, user_id, donation_value, worker_id: workerExists.id, created_at })
-
-
+        await this.donationCounterRepository.update(ngo_id, donation_number + 1, donation_number )
 
     }
 
