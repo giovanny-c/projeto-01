@@ -66,7 +66,7 @@ class WorkerContribuitionsUseCase {
             throw new AppError("Worker not found")
         }
 
-        const donations = await this.donationsRepository.findDonationsForWorker(
+        const donations = await this.donationsRepository.findDonationsByWorker(
             id,
             {
                 startDate: startD,
@@ -77,7 +77,7 @@ class WorkerContribuitionsUseCase {
             })
 
 
-        const totalValue = await this.donationsRepository.countDonationsValuesForWorker(
+        const totalValue = await this.donationsRepository.countDonationsValues(
             id,
             {
                 startDate: startD,

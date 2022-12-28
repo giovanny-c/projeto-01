@@ -3,7 +3,7 @@
 interface ICreateDonationsDTO {
 
     id?: string
-    donation_number?: Number
+    donation_number: number
     user_id: string
     donor_id: string
     worker_id?: string
@@ -16,3 +16,5 @@ interface ICreateDonationsDTO {
 
 
 }
+
+export{ ICreateDonationsDTO}

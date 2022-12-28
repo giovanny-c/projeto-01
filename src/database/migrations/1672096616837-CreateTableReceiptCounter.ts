@@ -14,6 +14,7 @@ export class CreateTableReceiptCounter1672096616837 implements MigrationInterfac
                 {
                     name: "ngo_id",
                     type: "uuid",
+                    isUnique: true
                     
                 },
                 {
@@ -24,7 +25,7 @@ export class CreateTableReceiptCounter1672096616837 implements MigrationInterfac
                 {
                     name: "last_donotion_number",
                     type: "numeric",
-                    isNullable: false
+                    
                 }
             ],
             foreignKeys :[

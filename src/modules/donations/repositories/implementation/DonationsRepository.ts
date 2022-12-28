@@ -1,6 +1,7 @@
 import { Between, FindOptionsOrderValue, ILike, QueryBuilder, Repository } from "typeorm";
 import { dataSource } from "../../../../database";
 import { Donor } from "../../../donor/entities/donor";
+import { ICreateDonationsDTO } from "../../dtos/ICreateDonationsDTO";
 import { IFindOptions } from "../../dtos/IFindOptionsDTO";
 import { Donation } from "../../entities/donation";
 import { IDonationsRepository } from "../IDonationsRepository";
@@ -17,12 +18,42 @@ class DonationsRepository implements IDonationsRepository {
     }
 
 
-    async countDonationsValuesForWorker(worker_id: string, { startDate, endDate }: IFindOptions) {
+    
+
+    async create({user_id, donor_id, ngo_id ,donation_value, is_payed, payed_at, donation_number, created_at, is_donation_canceled, worker_id }: ICreateDonationsDTO): Promise<void> {
+
+        const donation = this.repository.create({
+           donor_id,
+           user_id,
+           worker_id,
+           ngo_id,
+           donation_number,
+           donation_value,
+           created_at,
+           is_payed,
+           payed_at,
+           is_donation_canceled,
+        })
+
+
+        await this.repository.save(donation)
+
+
+    }
+
+    async countDonationsValues(worker_id: string, { startDate, endDate }: IFindOptions) {
         let querySum = `select sum (donations.donation_value)
-            from donations       
-            left join workers on donations.worker_id = workers.id
-            where donations.worker_id = '${worker_id}' and donations.is_payed = true 
+            from donations left join workers on donations.worker_id = workers.id
+            where `
+        
+        
+        if(worker_id){
+            querySum += `    
+            donations.worker_id = '${worker_id} and'  
          `
+        }
+
+        querySum += ` donations.is_payed = true and is_donation_canceled = false`
 
         if (startDate && endDate) { // se tiver datas, junta com o 1 valor
             querySum += `and donations.created_at between '${startDate}' and '${endDate}' `
@@ -33,73 +64,6 @@ class DonationsRepository implements IDonationsRepository {
         return totalValue[0].sum
     }
 
-
-    async findDonationsForWorker(worker_id: string, { orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
-
-        let query = `select donations.*
-         from donations
-         left join workers on donations.worker_id = workers.id
-         where donations.worker_id = '${worker_id}' 
-        `
-
-
-
-        if (startDate && endDate) { // se tiver datas, junta com o 1 valor
-            query += `and donations.created_at between '${startDate}' and '${endDate}' `
-
-        }
-
-        if (orderBy) {
-            query += `order by donations.created_at ${orderBy} `
-        }
-
-        if (limit) {
-            query += `limit ${limit} `
-        }
-
-        if (offset) {
-            query += `offset ${offset} `
-        }
-
-        const donations = await this.repository.query(query) as Donation[]
-
-        return donations
-
-
-
-    }
-
-    async create({ id, user_id, donor_id, donation_value, is_payed, payed_at, donation_number, created_at, is_donation_canceled, worker_id }: ICreateDonationsDTO): Promise<void> {
-
-        const donation = this.repository.create({
-            id,
-            user_id,
-            donor_id,
-            worker_id,
-            donation_value,
-            donation_number,
-            is_payed,
-            payed_at,
-            created_at,
-            is_donation_canceled,
-
-
-        })
-
-        await this.repository.save(donation)
-
-
-    }
-
-    async findDonationsByUserOrDonorId(id: string): Promise<Donation[]> {
-        const results = await this.repository.find({
-            where: [
-                { donor_id: id },
-                { user_id: id }
-            ]
-        })
-        return results
-    }
     async findDonationsBy({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
         // buscar tbm por is payed or is_canceled
         let query = `select donations.*,
@@ -230,7 +194,9 @@ class DonationsRepository implements IDonationsRepository {
 
         const donation = await this.repository.findOne({
             relations: {
-                donor: true
+                donor: true,
+                worker: true,
+                ngo: true
             },
 
             where: {
@@ -241,8 +207,55 @@ class DonationsRepository implements IDonationsRepository {
         return donation
     }
 
+    async findDonationsByDonorId(id: string): Promise<Donation[]> {
+        return await this.repository.find({
+            relations: {
+                donor: true,
+                worker: true,
+                ngo: true
+            },
+            where: { donor_id: id }
+                
+        })
+        
+    }
+    
+    async findDonationsByWorker(worker_id: string, { orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
 
-    async MarkDonationAsPayed({ id, donation_number, donor_id, user_id, donation_value }: ICreateDonationsDTO, payed_at: Date): Promise<Donation> {
+        let query = `select donations.*
+         from donations
+         left join workers on donations.worker_id = workers.id
+         where donations.worker_id = '${worker_id}' 
+        `
+
+
+
+        if (startDate && endDate) { // se tiver datas, junta com o 1 valor
+            query += `and donations.created_at between '${startDate}' and '${endDate}' `
+
+        }
+
+        if (orderBy) {
+            query += `order by donations.created_at ${orderBy} `
+        }
+
+        if (limit) {
+            query += `limit ${limit} `
+        }
+
+        if (offset) {
+            query += `offset ${offset} `
+        }
+
+        const donations = await this.repository.query(query) as Donation[]
+
+        return donations
+
+
+
+    }
+
+    async MarkDonationAsPayed({ id, donation_number, donor_id, user_id, donation_value  }: ICreateDonationsDTO, payed_at: Date): Promise<Donation> {
 
 
         const payedDonation = this.repository.create({

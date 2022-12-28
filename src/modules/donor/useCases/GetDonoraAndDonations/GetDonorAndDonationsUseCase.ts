@@ -30,7 +30,7 @@ class GetDonorAndDonationsUseCase {
             throw new AppError("This donor does not exists or its a invalid id")
         }
 
-        const donations = await this.donationsRepository.findDonationsByUserOrDonorId(donorExists.id)
+        const donations = await this.donationsRepository.findDonationsByDonorId(donorExists.id)
 
         const results = {
             donor: donorExists,

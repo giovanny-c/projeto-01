@@ -5,7 +5,7 @@ import { Ngo } from "./ngos";
 import { v4 as uuidV4 } from "uuid"
 
 @Entity("donation_counter")
-class Donation_Counter {
+class DonationCounter {
 
     @PrimaryColumn()
     id?: string
@@ -18,7 +18,7 @@ class Donation_Counter {
     ngo: Ngo
 
     @Column()
-    donotion_number: number
+    donation_number: number
 
     @Column()
     last_donotion_number: number
@@ -33,4 +33,4 @@ class Donation_Counter {
 
 }
 
-export {Donation_Counter}
+export {DonationCounter}

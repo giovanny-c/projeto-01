@@ -39,7 +39,7 @@ class Donation {
 
     @ManyToOne(() => Ngo)
     @JoinColumn({ name: "ngo_id" })
-    Ngo: Ngo
+    ngo: Ngo
     
     @Column() 
     ngo_id: string
