@@ -15,14 +15,14 @@ class NgoRepository implements INgoRepository{
     }
 
     
-    async create(name: string, full_name): Promise<void> {
+    async create(name: string, full_name): Promise<Ngo> {
 
         const ngo = this.repository.create({
             name,
             full_name,
         })
         
-        await this.repository.save(ngo)
+       return await this.repository.save(ngo)
     }
     async findById(id: string): Promise<Ngo> {
         return this.repository.findOneBy({id})

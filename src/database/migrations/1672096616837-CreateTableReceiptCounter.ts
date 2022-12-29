@@ -20,11 +20,13 @@ export class CreateTableReceiptCounter1672096616837 implements MigrationInterfac
                 {
                     name: "donotion_number",
                     type: "numeric",
+                    default: 1,
                     isNullable: false
                 },
                 {
                     name: "last_donotion_number",
                     type: "numeric",
+                    default: 0
                     
                 }
             ],
