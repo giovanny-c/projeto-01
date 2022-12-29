@@ -1,10 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
+import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IDonorsRepository } from "../../../donor/repositories/IDonorsRepository";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 import { ICreateDonationsDTO } from "../../dtos/ICreateDonationsDTO";
+import { Donation } from "../../entities/donation";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
@@ -39,10 +41,12 @@ class CreateDonationUseCase {
         @inject("WorkersRepository")
         private workersRepository: IWorkersReposiroty,
         @inject("DayjsDateProvider")
-        private dateProvider: IDateProvider
+        private dateProvider: IDateProvider,
+        @inject("FileProvider")
+        private fileProvider: IFileProvider,
     ) { }
 
-    async execute({ ngo_id, donor_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<void> {
+    async execute({ ngo_id, donor_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<Donation> {
 
 
 
@@ -79,7 +83,7 @@ class CreateDonationUseCase {
             payed_at = this.dateProvider.dateNow()
         }
 
-        await this.donationsRepository.create({
+        const donation = await this.donationsRepository.create({
             ngo_id, 
             worker_id, 
             donor_id, 
@@ -93,6 +97,22 @@ class CreateDonationUseCase {
          })
 
         await this.donationCounterRepository.update(ngo_id, donation_number + 1, donation_number )
+
+
+        //temporario () fazer ele pegar o recibo usando o db
+        const filePath = "./templates/recibo.png" //template do recibo
+        
+
+
+        const donationWithRelations = await this.donationsRepository.findOneById(donation.id)
+
+        donationWithRelations.payed_at = this.dateProvider.formatDate(donation.payed_at, "DD/MM/YYYY")
+
+        const pdfBytes = await this.fileProvider.createFile(filePath, donationWithRelations)
+
+        //const buffer = Buffer.from(pdfBytes)
+
+        return donationWithRelations
 
     }
 

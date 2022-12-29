@@ -13,8 +13,11 @@ export class CreateTableNgos1671669412902 implements MigrationInterface {
                 },
                 {
                     name:"name",
-                    type: "name",
-                    isPrimary: true
+                    type: "varchar",
+                },
+                {
+                    name: "full_name",
+                    type: "varchar",
                 }
             ]
 

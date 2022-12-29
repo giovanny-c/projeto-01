@@ -11,6 +11,9 @@ class Ngo {
     @Column()
     name: string
 
+    @Column()
+    full_name: string
+    
     constructor() {
         if (!this.id) {
             this.id = uuidV4()

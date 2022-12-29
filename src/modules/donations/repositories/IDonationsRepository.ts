@@ -6,7 +6,7 @@ import { Donation } from "../entities/donation"
 
 interface IDonationsRepository {
 
-    create(data: ICreateDonationsDTO): Promise<void>
+    create(data: ICreateDonationsDTO): Promise<Donation>
     findOneById(id: string): Promise<Donation>
     findDonationsByDonorId(id: string): Promise<Donation[]>
     findDonationsBy(data: IFindOptions): Promise<Donation[]>

@@ -14,7 +14,7 @@ class CreateDonationController {
 
         const createDonationUseCase = container.resolve(CreateDonationUseCase)
 
-        createDonationUseCase.execute({ 
+        const response = await createDonationUseCase.execute({ 
             ngo_id, 
             donor_id, 
             donor_name,
@@ -23,9 +23,9 @@ class CreateDonationController {
             donation_value, 
             is_payed, 
             payed_at, 
-         })
+        })
 
-        return res.status(201).send()
+        return res.status(201).json(response)
 
     }
 }

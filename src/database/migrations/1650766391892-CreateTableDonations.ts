@@ -42,8 +42,7 @@ export class CreateTableDonations1650766391892 implements MigrationInterface {
                         name: "donor_name",
                         type: "varchar",
                         isNullable: false
-                    }
-
+                    },
                     {
                         name: "ngo_id",
                         type: "uuid",

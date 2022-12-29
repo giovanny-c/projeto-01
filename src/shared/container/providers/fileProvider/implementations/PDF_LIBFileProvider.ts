@@ -1,12 +1,13 @@
 import { degrees, PDFDocument, rgb } from "pdf-lib"
 import fs from "fs"
-import intl from "intl"
+
 
 import { IFileProvider } from "../IFileProvider";
 import { Donation } from "../../../../../modules/donations/entities/donation";
+
 import formatToBRL from "../../../../../../utils/formatToBRL";
-
-
+import extenso from "extenso"
+import moment from "moment"
 
 
 class PDF_LIBFileProvider implements IFileProvider {
@@ -32,6 +33,7 @@ class PDF_LIBFileProvider implements IFileProvider {
             rotate: degrees(90)
         })
 
+        //numero da doaçao
         page.drawText(data.donation_number.toString(), {
             x: 85,
             y: 350,
@@ -41,7 +43,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
 
-
+        //valor numerico
         page.drawText(formatToBRL(data.donation_value as number).toString(), {
             x: 85,
             y: 570,
@@ -52,6 +54,15 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
 
+        //valor por extenso
+        page.drawText(extenso(data.donation_value as number, {mode: "currency", currency: { type: "BRL"}, locale: "br"}), {
+            x: 142,
+            y: 280,
+            rotate: degrees(90),
+            size: 30,
+        })
+
+        //nome
         page.drawText(data.donor.name, {
             x: 142,
             y: 220,
@@ -62,7 +73,14 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
 
-        page.drawText(data.payed_at.toString(), {
+
+        moment.locale("pt-br")
+        //data do recibo 
+        // telvez precise separar em 3 e fazer 3 draw diferente
+        const date = moment(data.payed_at).format("D MMMM YYYY")
+        const [dia, mes, ano] = date.split(" ")
+
+        page.drawText(date, {
             x: 360,
             y: 110,
             rotate: degrees(90),
@@ -77,10 +95,10 @@ class PDF_LIBFileProvider implements IFileProvider {
         const pdfBytes = await doc.save() //cria um array de bytes 
 
         //criar o pdf no dir
-        fs.writeFile(`./tmp/receipts/recibo${data.donation_number}.pdf`, pdfBytes,
+        fs.writeFile(`./tmp/receipts/${data.ngo.name}_${mes}_${data.donor_name}.pdf`, pdfBytes,
             (err) => {
                 if (err) throw err
-            })
+            }) 
 
         return pdfBytes
     }
