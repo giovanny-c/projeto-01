@@ -48,6 +48,7 @@ class CreateDonationUseCase {
 
     async execute({ ngo_id, donor_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<Donation> {
 
+//TESTAR
 
 
         const userExists = await this.usersRepository.findById(user_id)
@@ -86,7 +87,7 @@ class CreateDonationUseCase {
         const donation = await this.donationsRepository.create({
             ngo_id, 
             worker_id, 
-            donor_id, 
+            //donor_id, 
             donor_name,
             user_id, 
             donation_number,
@@ -100,7 +101,8 @@ class CreateDonationUseCase {
 
 
         //temporario () fazer ele pegar o recibo usando o db
-        const filePath = "./templates/recibo.png" //template do recibo
+        const filePath = `./templates/recibo.png` //template do recibo
+        
         
 
 
@@ -109,6 +111,9 @@ class CreateDonationUseCase {
         donationWithRelations.payed_at = this.dateProvider.formatDate(donation.payed_at, "DD/MM/YYYY")
 
         const pdfBytes = await this.fileProvider.createFile(filePath, donationWithRelations)
+
+        //mandar para uma rota para escolher o dono desse recibo, para mandar o email
+        // mandar email do recibo no futuro
 
         //const buffer = Buffer.from(pdfBytes)
 

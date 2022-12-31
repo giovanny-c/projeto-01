@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-import { compare } from "bcryptjs";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 import {instanceToPlain} from "class-transformer"
@@ -8,6 +7,7 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
+import { validatePassword } from "../../../../../utils/passwordUtils";
 
 interface IRequest {
     name: string
@@ -46,7 +46,7 @@ class AuthenticateUserUseCase {
             throw new AppError("name or password incorrect")
         }
 
-        const passwordMatch = await compare(password, user.password_hash)
+        const passwordMatch = await  validatePassword(password, user.salt, user.password_hash)
 
         if (!passwordMatch) { //trocar para validate password
             throw new AppError("name or password incorrect")
