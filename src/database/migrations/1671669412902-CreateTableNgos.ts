@@ -14,10 +14,12 @@ export class CreateTableNgos1671669412902 implements MigrationInterface {
                 {
                     name:"name",
                     type: "varchar",
+                    isUnique: true
                 },
                 {
                     name: "full_name",
                     type: "varchar",
+                    isUnique: true
                 }
             ]
 

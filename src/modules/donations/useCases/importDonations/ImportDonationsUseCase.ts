@@ -11,12 +11,15 @@ import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersReposi
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 
 import { AppError } from "../../../../shared/errors/AppError";
+import { INgoRepository } from "../../repositories/INgoRepository";
+import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 
 
 
 interface IImportDonation {
+    ngo_name: string
     donation_value: number
-    donation_number?: number,
+    donation_number?: number
     worker_name: string //worker
     donor_name: string
     email: string
@@ -41,7 +44,11 @@ class ImportDonationsUseCase {
         @inject("WorkersRepository")
         private workersRepository: IWorkersReposiroty,
         @inject("DayjsDateProvider")
-        private dateProviderRepository: IDateProvider
+        private dateProviderRepository: IDateProvider,
+        @inject("NgoRepository")
+        private ngoRepository: INgoRepository,
+        @inject("DonationCounterRepository")
+        private donationCounterRepository: IDonationCounterRepository,
     ) {
 
     }
@@ -93,11 +100,16 @@ class ImportDonationsUseCase {
                 throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`, 400)// status code
             }
 
+            
+
         });
 
     }
 
     async proccessDonations(object: IImportDonation[], user_id: string): Promise<void | string> {
+
+//////////////// TRABALHAR AQUI ///////////////
+        
 
         this.validateFields(object)
 
@@ -144,6 +156,7 @@ class ImportDonationsUseCase {
                 await this.donationsRepository.create({
 
                     donation_value: data.donation_value,
+                    donor_name: donor_name,
                     donor_id: donor.id,
                     user_id: user_id,
                     worker_id: worker.id,
