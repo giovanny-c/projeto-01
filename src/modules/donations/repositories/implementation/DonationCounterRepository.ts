@@ -26,13 +26,13 @@ class DonationCounterRepository implements IDonationCounterRepository{
     }
 
     async findById(id: string): Promise<DonationCounter> {
-        return this.repository.findOneBy({id})
+        return  await this.repository.findOneBy({id})
     }
     async findByNgoId(ngo_id: string): Promise<DonationCounter> {
-        return this.repository.findOneBy({ngo_id})
+        return  await this.repository.findOneBy({ngo_id})
     }
     async findAll(): Promise<DonationCounter[]> {
-        return this.repository.find()
+        return await this.repository.find()
     }
     async update(ngo_id: string, donation_number: number, last_donotion_number: number): Promise<Partial<DonationCounter>> {
         

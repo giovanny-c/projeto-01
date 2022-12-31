@@ -13,6 +13,7 @@ import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { AppError } from "../../../../shared/errors/AppError";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
+import { Ngo } from "../../entities/ngos";
 
 
 
@@ -78,7 +79,8 @@ class ImportDonationsUseCase {
 
     }
 
-    validateFields(object: IImportDonation[]): void {
+    async validateFields(object: IImportDonation[]): Promise<void> {
+
 
         object.forEach(data => {
 
@@ -89,6 +91,9 @@ class ImportDonationsUseCase {
             if (!data.donor_name) throw new AppError(`Please fill the donor_name field at line ${object.indexOf(data) + 1}`, 400)
             if (!data.phone) throw new AppError(`Please fill the phone field at line ${object.indexOf(data) + 1}`, 400)
             if (data.is_payed === "true" && data.is_canceled === "true") throw new AppError(`There cant be a donation payed mark as canceled, on line: ${object.indexOf(data) + 1}`, 400)
+
+            
+            
 
             // Fazer para created_at tbm
             if (!this.dateProviderRepository.isValidDate(data.created_at)) {
@@ -106,7 +111,7 @@ class ImportDonationsUseCase {
 
     }
 
-    async proccessDonations(object: IImportDonation[], user_id: string): Promise<void | string> {
+    async proccessDonations(object: IImportDonation[], user_id: string, ngo_id): Promise<void | string> {
 
 //////////////// TRABALHAR AQUI ///////////////
         
@@ -152,11 +157,14 @@ class ImportDonationsUseCase {
 
 
             try {
+
+                let {donation_number} = await this.donationCounterRepository.findByNgoId(ngo_id)
                 //CRIA A DONATION
                 await this.donationsRepository.create({
 
+                    donation_number: donation_number,
                     donation_value: data.donation_value,
-                    donor_name: donor_name,
+                    donor_name: data.donor_name,
                     donor_id: donor.id,
                     user_id: user_id,
                     worker_id: worker.id,
@@ -165,9 +173,11 @@ class ImportDonationsUseCase {
                     is_payed: is_payed,
                     payed_at: data.payed_at || null,
                     is_donation_canceled: is_canceled,
-
+                    ngo_id
 
                 })
+
+                await this.donationCounterRepository.update(ngo_id, donation_number + 1, donation_number)
 
                 //LOGICA PARA NAO FAZER A MESMA DONATION 2 VEZES
 
@@ -191,11 +201,16 @@ class ImportDonationsUseCase {
     }
 
 
-    async execute(file: Express.Multer.File, user_id: string): Promise<any> {
+    async execute(file: Express.Multer.File, user_id: string, ngo_id: string): Promise<any> {
 
+        const ngoExistis = await this.ngoRepository.findById(ngo_id)
+
+        if(!ngoExistis){
+            throw new AppError("Essa instituiçao nao existe", 400)
+        }
 
         //vai fazer para cada donation
-        const result = await this.proccessDonations(this.loadDonations(file), user_id)
+        const result = await this.proccessDonations(this.loadDonations(file), user_id, ngo_id)
 
         fs.unlinkSync(file.path)
 
