@@ -6,6 +6,7 @@ import multer from "multer"
 import { CancelDonationController } from "../modules/donations/useCases/cancelDonation/CancelDonationController";
 import { CreateDonationController } from "../modules/donations/useCases/createDonation/CreateDonationController";
 import { CreateNgoController } from "../modules/donations/useCases/createNgo/CreateNgoController";
+import { FindAllNgosController } from "../modules/donations/useCases/findAllNgos/FindAllNgosController";
 import { GenerateReceiptController } from "../modules/donations/useCases/generateReceipt/GenerateReceiptController";
 import { GetDonationController } from "../modules/donations/useCases/getDonation/GetDonationController";
 import { ImportDonationsController } from "../modules/donations/useCases/importDonations/ImportDonationsController";
@@ -28,6 +29,7 @@ const importDonationsController = new ImportDonationsController()
 const getDonationController = new GetDonationController()
 const generateReceiptController = new GenerateReceiptController()
 const createNgoController = new CreateNgoController()
+const findAllNgosController = new FindAllNgosController() 
 
 //importa os doadores
 donationRoutes.post("/import", ensureAuthenticated, upload.single("file"), importDonationsController.handle)
@@ -41,9 +43,15 @@ donationRoutes.get("/:id", /*ensureAuthenticated,*/getDonationController.handle)
 
 //cria a ong
 donationRoutes.post("/ngo/create/", ensureAuthenticated, createNgoController.handle)//cria a donation
+//acha as ongs
+donationRoutes.get("/ngo/list/", ensureAuthenticated, findAllNgosController.handle)//cria a donation
+
+
 
 //altera numero doação
 donationRoutes.put("/ngo/donation_counter/update", ensureAuthenticated, createNgoController.handle)//cria a donation
 
+
+//
 
 export { donationRoutes } 
