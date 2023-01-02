@@ -32,14 +32,21 @@ const createNgoController = new CreateNgoController()
 const findAllNgosController = new FindAllNgosController() 
 
 //importa os doadores
+//importa doaçoes
+
 donationRoutes.post("/import", ensureAuthenticated, upload.single("file"), importDonationsController.handle)
 
-donationRoutes.get("/list", ensureAuthenticated, listDonationsController.handle)
-donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationStatusController.handle)
+
+
+//
+// donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationStatusController.handle)
+
+donationRoutes.post("/create", ensureAuthenticated, createDonationController.handle)//cria a donation
 donationRoutes.post("/cancel-donation/:id", ensureAuthenticated, cancelDonationController.handle)
-donationRoutes.post("/create/:donor_id", ensureAuthenticated, createDonationController.handle)//cria a donation
-//donationRoutes.get("/receipt/:id", generateReceiptController.handle)
+
+donationRoutes.get("/list", ensureAuthenticated, listDonationsController.handle)
 donationRoutes.get("/:id", /*ensureAuthenticated,*/getDonationController.handle)
+//donationRoutes.get("/receipt/:id", generateReceiptController.handle)
 
 //cria a ong
 donationRoutes.post("/ngo/create/", ensureAuthenticated, createNgoController.handle)//cria a donation

@@ -90,6 +90,9 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
 
+        //FALTA
+        //employee name e assinatura do responsavel
+
 
 
         const pdfBytes = await doc.save() //cria um array de bytes 

@@ -1,7 +1,8 @@
-import upload from "@config/upload";
+
 import * as fs from "fs"
 import * as mime from "mime"
 import { resolve } from "path";
+import upload from "../../../../../config/upload";
 import { IFilePath, IStorageProvider } from "../IStorageProvider";
 
 

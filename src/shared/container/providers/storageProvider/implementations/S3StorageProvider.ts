@@ -1,6 +1,5 @@
 import { AWSError, S3 } from "aws-sdk";
 
-import upload from "@config/upload";
 
 import * as fs from "fs"
 
@@ -8,6 +7,7 @@ import * as mime from "mime"
 
 
 import { resolve } from "path";
+import upload from "../../../../../config/upload";
 
 import { IFilePath, IStorageProvider } from "../IStorageProvider";
 
@@ -34,8 +34,9 @@ class S3StorageProvider implements IStorageProvider {
             const bucketName = `${process.env.AWS_BUCKET}/${folder}`
 
             const fileContent = fs.readFileSync(originalname)
-
-            const contentType = mime.getType(originalname) as string
+            
+            // Antes mime.getType
+            const contentType = mime.extension(originalname) as string
 
             await this.client.putObject({
                 Bucket: bucketName,

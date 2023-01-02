@@ -1,21 +1,18 @@
-import { Generated, MigrationInterface, QueryRunner, Table } from "typeorm"
+import { MigrationInterface, QueryRunner, Table } from "typeorm"
 
-export class CreateTableDonations1650766391892 implements MigrationInterface {
+export class CreateTableDonations1672689224845 implements MigrationInterface {
+
 
     public async up(queryRunner: QueryRunner): Promise<void> {
+        
         await queryRunner.createTable(
-            new Table({
+            new Table ({
                 name: "donations",
                 columns: [
                     {
                         name: "id",
                         type: "uuid",
                         isPrimary: true
-                    },
-                    {
-                        name: "ngo_id", //ong
-                        type: "uuid",
-                        isNullable: false
                     },
                     {
                         name: "donation_number",
@@ -57,7 +54,7 @@ export class CreateTableDonations1650766391892 implements MigrationInterface {
                     {
                         name: "created_at",
                         type: "timestamp",
-                        default: "now()"
+                        isNullable: false
                     },
                     {
                         name: "payed_at",
@@ -125,6 +122,4 @@ export class CreateTableDonations1650766391892 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.dropTable("donations")
     }
-
-
 }

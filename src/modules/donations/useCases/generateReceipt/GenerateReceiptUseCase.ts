@@ -41,7 +41,7 @@ class GenerateReceiptUseCase {
         if (donation.is_payed !== true) {
             throw new AppError("Cant generate a receipt of a donation that wasn't payed")
         }
-        const filePath = "./templates/recibo.png" //template do recibo
+        const filePath = "./templates/grappec_template.jpg" //template do recibo
 
         // const stream = res.writeHead(200, {
         //     "Content-Type": "application/pdf",

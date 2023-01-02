@@ -13,7 +13,7 @@ import "./database"
 import "./shared/container"
 
 //redis e session
-import "shared/redis/redisConnect"
+import "./shared/redis/redisConnect"
 import session from "express-session"
 import { redisSession } from "./shared/session/redisSession"
 

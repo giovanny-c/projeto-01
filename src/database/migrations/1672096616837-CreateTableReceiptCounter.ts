@@ -42,7 +42,7 @@ export class CreateTableReceiptCounter1672096616837 implements MigrationInterfac
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("receipt_counter")
+        await queryRunner.dropTable("donation_counter")
     }
 
 }

@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 
 services:
 
@@ -15,6 +15,11 @@ services:
     volumes:
       - pgdata:/data/postgresql
 
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+
   app:
     build: .
     container_name: projeto01
@@ -25,8 +30,10 @@ services:
       - .:/usr/app
     links:
       - db_projeto01
+      - redis
     depends_on:
       - db_projeto01
+      - redis
 
 volumes:
   pgdata:
