@@ -98,7 +98,7 @@ class CreateDonationUseCase {
          })
 
 
-        let new_donation_number: number = +(donation_number + 1)
+        let new_donation_number: number = +(donation_number) + 1
 
         await this.donationCounterRepository.update(ngo_id, new_donation_number, donation_number )
 
@@ -112,7 +112,7 @@ class CreateDonationUseCase {
         const donationWithRelations = await this.donationsRepository.findOneById(donation.id)
 
         //dd/mm/yy
-        donationWithRelations.payed_at = this.dateProvider.formatDate(donation.payed_at, "DD/MM/YYYY")
+        donationWithRelations.payed_at = this.dateProvider.formatDate(donation.payed_at, "MM/DD/YYYY")
 
         await this.fileProvider.createFile(filePath, donationWithRelations)
         console.log(donationWithRelations)

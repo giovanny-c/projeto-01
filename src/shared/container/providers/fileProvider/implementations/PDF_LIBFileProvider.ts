@@ -26,66 +26,85 @@ class PDF_LIBFileProvider implements IFileProvider {
         page.setRotation(degrees(90))
 
         page.drawImage(templatePNG, { //"desenha" a imagem
-            x: 500,
+            x: 390,
             y: 10,
             width: 800,
-            height: 500,
+            height: 400,
             rotate: degrees(90)
         })
 
         //numero da doaçao
         page.drawText(data.donation_number.toString(), {
-            x: 85,
-            y: 350,
+            x: 138,
+            y: 160,
             rotate: degrees(90),
             color: rgb(0.95, 0.1, 0.1),
-            size: 30
+            size: 23
 
         })
 
         //valor numerico
         page.drawText(formatToBRL(data.donation_value as number).toString(), {
-            x: 85,
-            y: 570,
+            x: 138,
+            y: 550,
             rotate: degrees(90),
 
-            size: 30,
+            size: 23,
+
+
+        })
+
+        //nome
+        page.drawText(data.donor_name, {
+            x: 164,
+            y: 176,
+            rotate: degrees(90),
+
+            size: 23,
 
 
         })
 
         //valor por extenso
-        page.drawText(extenso(data.donation_value as number, {mode: "currency", currency: { type: "BRL"}, locale: "br"}), {
-            x: 142,
-            y: 280,
+        page.drawText(extenso(data.donation_value as number, {mode: "currency", currency: { type: "BRL"}, locale:"br"}), {
+            x: 213,
+            y: 164,
             rotate: degrees(90),
-            size: 30,
+            size: 23,
         })
 
-        //nome
-        page.drawText(data.donor_name, {
-            x: 142,
-            y: 220,
-            rotate: degrees(90),
-
-            size: 30,
-
-
-        })
 
 
         moment.locale("pt-br")
         //data do recibo 
         // telvez precise separar em 3 e fazer 3 draw diferente
-        const date = moment(data.payed_at).format("D MMMM YYYY")
+        const date = moment(data.payed_at).format("DD MMMM YY")
         const [dia, mes, ano] = date.split(" ")
 
-        page.drawText(date, {
-            x: 360,
-            y: 110,
+        page.drawText(dia, {
+            x: 315,
+            y: 415,
             rotate: degrees(90),
 
-            size: 25,
+            size: 23,
+
+
+        })
+        page.drawText(mes, {
+            x: 315,
+            y: 500,
+            rotate: degrees(90),
+
+            size: 23,
+
+
+        })
+        page.drawText(ano, {
+            x: 315,
+            y: 707,
+            rotate: degrees(90),
+
+            size: 23,
 
 
         })
@@ -99,7 +118,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //criar o pdf no dir
         //se mudar a estensao muda o arquivo?
-        fs.writeFile(`./tmp/receipts/${data.ngo.name}_${mes}_${data.donor_name}.pdf`, pdfBytes,
+        fs.writeFile(`./tmp/receipts/${data.ngo.name}_${mes}_${data.donor_name}_${data.donation_number}.pdf`, pdfBytes,
             (err) => {
                 if (err) throw err
             }) 
