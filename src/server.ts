@@ -10,7 +10,7 @@ import methodOverride from "method-override"//front
 
 import "./database"
 
-import "./shared/container"
+import "./shared/container" 
 
 //redis e session
 import "./shared/redis/redisConnect"

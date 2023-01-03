@@ -106,16 +106,14 @@ class CreateDonationUseCase {
         //temporario () fazer ele pegar o recibo usando o db
         const filePath = `./templates/grappec_template.jpg` //template do recibo
         
-        
-
+    
 
         const donationWithRelations = await this.donationsRepository.findOneById(donation.id)
 
-        //dd/mm/yy
-        donationWithRelations.payed_at = this.dateProvider.formatDate(donation.payed_at, "MM/DD/YYYY")
+        //format para ISO
+        donationWithRelations.payed_at = this.dateProvider.formatDate(donation.created_at, "YYYY/MM/DD")
 
         await this.fileProvider.createFile(filePath, donationWithRelations)
-        console.log(donationWithRelations)
 
         //mandar para uma rota para escolher o dono desse recibo, para mandar o email
         // mandar email do recibo no futuro

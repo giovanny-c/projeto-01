@@ -8,6 +8,7 @@ import { Donation } from "../../../../../modules/donations/entities/donation";
 import formatToBRL from "../../../../../../utils/formatToBRL";
 import extenso from "extenso"
 import moment from "moment"
+import { float } from "aws-sdk/clients/lightsail";
 
 
 class PDF_LIBFileProvider implements IFileProvider {
@@ -24,30 +25,33 @@ class PDF_LIBFileProvider implements IFileProvider {
         const page = doc.addPage()
 
         // page.setRotation(degrees(90))
-        page.setSize( 800, 400 )
+        page.setSize( 800, 380 )
 
         page.drawImage(templatePNG, { //"desenha" a imagem
-            y: 10,
-            x: 10,
+            y: 0,
+            x: 50,
             width: 800,
-            height: 400,
+            height: 380,
             // rotate: degrees(90)
         })
 
         //numero da doaçao
         page.drawText(data.donation_number.toString(), {
-            y: 261,
-            x: 160,
+            y: 239,
+            x: 200,
             // rotate: degrees(90),
             color: rgb(0.95, 0.1, 0.1),
             size: 23
 
         })
 
+
+        let [ , valor] = formatToBRL(data.donation_value as number).toString().split("$")
+
         //valor numerico
-        page.drawText(formatToBRL(data.donation_value as number).toString(), {
-            y: 260,
-            x: 545,
+        page.drawText(valor, {
+            y: 239,
+            x: 578,
             // rotate: degrees(90),
 
             size: 23,
@@ -57,8 +61,8 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //nome
         page.drawText(data.donor_name, {
-            y: 236,
-            x: 176,
+            y: 215,
+            x: 216,
             // rotate: degrees(90),
 
             size: 23,
@@ -67,24 +71,39 @@ class PDF_LIBFileProvider implements IFileProvider {
         })
 
         //valor por extenso
-        page.drawText(extenso(data.donation_value as number, {mode: "currency", currency: { type: "BRL"}, locale:"br"}), {
-            y: 187,
-            x: 164,
+
+        let valorPorExtenso = extenso(valor , {mode: "currency", currency: { type: "BRL"}, locale:"br"})
+        
+        //let res = vlp.match(/.{1, 51}g/)
+        // res=[51, 51, 51 ...]
+
+
+        if(valorPorExtenso.length >= 51){
+
+            if(valorPorExtenso.at(51).match(" ")){
+
+                valorPorExtenso.split()
+                //pegar so os primerios 51 e o resto
+                //(separar em 2 independent de quantos tenha na sugunda string)
+            }
+        }
+        
+        page.drawText(valorPorExtenso, {
+            y: 167,
+            x: 204,
             // rotate: degrees(90),
             size: 23,
         })
 
 
-
-        moment.locale("pt-br")
         //data do recibo 
-        // telvez precise separar em 3 e fazer 3 draw diferente
-        const date = moment(data.payed_at).format("DD MMMM YY")
+        
+        const date = moment(data.created_at).locale("pt-br").format("DD MMMM YY")
         const [dia, mes, ano] = date.split(" ")
 
         page.drawText(dia, {
-            y: 86,
-            x: 415,
+            y: 73,
+            x: 455,
             // rotate: degrees(90),
 
             size: 23,
@@ -92,8 +111,8 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
         page.drawText(mes, {
-            y: 86,
-            x: 500,
+            y: 73,
+            x: 540,
             // rotate: degrees(90),
 
             size: 23,
@@ -101,8 +120,8 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
         page.drawText(ano, {
-            y: 86,
-            x: 707,
+            y: 73,
+            x: 747,
             // rotate: degrees(90),
 
             size: 23,
@@ -112,6 +131,14 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //FALTA
         //employee name e assinatura do responsavel
+
+        let referingTo = "Doação" 
+        page.drawText(referingTo, {
+
+            y: 123,
+            x: 200,
+            size: 23
+        })
 
 
 
