@@ -23,21 +23,22 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const page = doc.addPage()
 
-        page.setRotation(degrees(90))
+        // page.setRotation(degrees(90))
+        page.setSize( 800, 400 )
 
         page.drawImage(templatePNG, { //"desenha" a imagem
-            x: 390,
             y: 10,
+            x: 10,
             width: 800,
             height: 400,
-            rotate: degrees(90)
+            // rotate: degrees(90)
         })
 
         //numero da doaçao
         page.drawText(data.donation_number.toString(), {
-            x: 138,
-            y: 160,
-            rotate: degrees(90),
+            y: 261,
+            x: 160,
+            // rotate: degrees(90),
             color: rgb(0.95, 0.1, 0.1),
             size: 23
 
@@ -45,9 +46,9 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //valor numerico
         page.drawText(formatToBRL(data.donation_value as number).toString(), {
-            x: 138,
-            y: 550,
-            rotate: degrees(90),
+            y: 260,
+            x: 545,
+            // rotate: degrees(90),
 
             size: 23,
 
@@ -56,9 +57,9 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //nome
         page.drawText(data.donor_name, {
-            x: 164,
-            y: 176,
-            rotate: degrees(90),
+            y: 236,
+            x: 176,
+            // rotate: degrees(90),
 
             size: 23,
 
@@ -67,9 +68,9 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //valor por extenso
         page.drawText(extenso(data.donation_value as number, {mode: "currency", currency: { type: "BRL"}, locale:"br"}), {
-            x: 213,
-            y: 164,
-            rotate: degrees(90),
+            y: 187,
+            x: 164,
+            // rotate: degrees(90),
             size: 23,
         })
 
@@ -82,27 +83,27 @@ class PDF_LIBFileProvider implements IFileProvider {
         const [dia, mes, ano] = date.split(" ")
 
         page.drawText(dia, {
-            x: 315,
-            y: 415,
-            rotate: degrees(90),
+            y: 86,
+            x: 415,
+            // rotate: degrees(90),
 
             size: 23,
 
 
         })
         page.drawText(mes, {
-            x: 315,
-            y: 500,
-            rotate: degrees(90),
+            y: 86,
+            x: 500,
+            // rotate: degrees(90),
 
             size: 23,
 
 
         })
         page.drawText(ano, {
-            x: 315,
-            y: 707,
-            rotate: degrees(90),
+            y: 86,
+            x: 707,
+            // rotate: degrees(90),
 
             size: 23,
 
