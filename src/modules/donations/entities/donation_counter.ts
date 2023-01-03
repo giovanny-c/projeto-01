@@ -21,7 +21,7 @@ class DonationCounter {
     donation_number: number
 
     @Column()
-    last_donotion_number: number
+    last_donation_number: number
 
     constructor() {
         if (!this.id) {

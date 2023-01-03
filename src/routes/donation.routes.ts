@@ -11,6 +11,8 @@ import { GenerateReceiptController } from "../modules/donations/useCases/generat
 import { GetDonationController } from "../modules/donations/useCases/getDonation/GetDonationController";
 import { ImportDonationsController } from "../modules/donations/useCases/importDonations/ImportDonationsController";
 import { ListDonationsController } from "../modules/donations/useCases/listDonations/ListDonationsController";
+import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
+
 import { UpdateDonationStatusController } from "../modules/donations/useCases/updateDonationStatus/UpdateDonationStatusController";
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated";
 
@@ -30,6 +32,7 @@ const getDonationController = new GetDonationController()
 const generateReceiptController = new GenerateReceiptController()
 const createNgoController = new CreateNgoController()
 const findAllNgosController = new FindAllNgosController() 
+const setDonationCounterController = new SetDonationCounterController()
 
 //importa os doadores
 //importa doaçoes
@@ -56,7 +59,7 @@ donationRoutes.get("/ngo/list/", ensureAuthenticated, findAllNgosController.hand
 
 
 //altera numero doação
-donationRoutes.put("/ngo/donation_counter/update", ensureAuthenticated, createNgoController.handle)//cria a donation
+donationRoutes.post("/ngo/donation_counter/set", ensureAuthenticated, setDonationCounterController.handle)//cria a donation
 
 
 //

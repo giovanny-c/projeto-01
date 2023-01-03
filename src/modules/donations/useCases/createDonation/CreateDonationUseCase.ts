@@ -97,7 +97,10 @@ class CreateDonationUseCase {
             created_at: this.dateProvider.dateNow()
          })
 
-        await this.donationCounterRepository.update(ngo_id, donation_number + 1, donation_number )
+
+        let new_donation_number: number = +(donation_number + 1)
+
+        await this.donationCounterRepository.update(ngo_id, new_donation_number, donation_number )
 
 
         //temporario () fazer ele pegar o recibo usando o db
@@ -112,6 +115,7 @@ class CreateDonationUseCase {
         donationWithRelations.payed_at = this.dateProvider.formatDate(donation.payed_at, "DD/MM/YYYY")
 
         await this.fileProvider.createFile(filePath, donationWithRelations)
+        console.log(donationWithRelations)
 
         //mandar para uma rota para escolher o dono desse recibo, para mandar o email
         // mandar email do recibo no futuro

@@ -19,7 +19,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         const uint8Array = fs.readFileSync(filePath) // le o tamplate do recibo
 
 
-        const templatePNG = await doc.embedPng(uint8Array) //poe o template no pdf
+        const templatePNG = await doc.embedJpg(uint8Array) //poe o template no pdf
 
         const page = doc.addPage()
 
@@ -63,7 +63,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         })
 
         //nome
-        page.drawText(data.donor.name, {
+        page.drawText(data.donor_name, {
             x: 142,
             y: 220,
             rotate: degrees(90),
@@ -98,6 +98,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         const pdfBytes = await doc.save() //cria um array de bytes 
 
         //criar o pdf no dir
+        //se mudar a estensao muda o arquivo?
         fs.writeFile(`./tmp/receipts/${data.ngo.name}_${mes}_${data.donor_name}.pdf`, pdfBytes,
             (err) => {
                 if (err) throw err
