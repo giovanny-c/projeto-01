@@ -59,40 +59,62 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
 
+
+        let nomeArray = data.donor_name.match(/.{1,56}\b/g)
         //nome
-        page.drawText(data.donor_name, {
+        page.drawText(nomeArray[0], {
             y: 215,
             x: 216,
             // rotate: degrees(90),
 
-            size: 23,
+            size: 20,
 
 
         })
 
+        if(nomeArray[1] && nomeArray[1].length){
+
+            page.drawText(nomeArray[1], {
+                y: 193,
+                x: 95,
+                // rotate: degrees(90),
+    
+                size: 20,
+    
+    
+            })
+        }
+
         //valor por extenso
 
         let valorPorExtenso = extenso(valor , {mode: "currency", currency: { type: "BRL"}, locale:"br"})
+        let vpeArray
         
-        //let res = vlp.match(/.{1, 51}g/)
-        // res=[51, 51, 51 ...]
+        if(valorPorExtenso.length >= 63){
 
+            vpeArray = valorPorExtenso.match(/.{1,62}\b/g)
 
-        if(valorPorExtenso.length >= 51){
-
-            if(valorPorExtenso.at(51).match(" ")){
-
-                valorPorExtenso.split()
-                //pegar so os primerios 51 e o resto
-                //(separar em 2 independent de quantos tenha na sugunda string)
-            }
+            //para separar com hifen (nao funcionou 100%)
+            // if(!vpeArray[0].match(/[ ,]$|( e)$/) ) {
+            //     vpeArray[0] = `${vpeArray[0]}-`
+            //    console.log(vpeArray)
+            
+            
         }
-        
-        page.drawText(valorPorExtenso, {
-            y: 167,
+
+       
+        page.drawText(vpeArray[0], {
+            y: 168,
             x: 204,
             // rotate: degrees(90),
-            size: 23,
+            size: 20,
+        })
+
+        page.drawText(vpeArray[1], {
+            y: 146,
+            x: 95,
+            // rotate: degrees(90),
+            size: 20,
         })
 
 
@@ -106,7 +128,7 @@ class PDF_LIBFileProvider implements IFileProvider {
             x: 455,
             // rotate: degrees(90),
 
-            size: 23,
+            size: 21,
 
 
         })
@@ -115,7 +137,7 @@ class PDF_LIBFileProvider implements IFileProvider {
             x: 540,
             // rotate: degrees(90),
 
-            size: 23,
+            size: 21,
 
 
         })
@@ -124,7 +146,7 @@ class PDF_LIBFileProvider implements IFileProvider {
             x: 747,
             // rotate: degrees(90),
 
-            size: 23,
+            size: 21,
 
 
         })
@@ -137,7 +159,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
             y: 123,
             x: 200,
-            size: 23
+            size: 20
         })
 
 
