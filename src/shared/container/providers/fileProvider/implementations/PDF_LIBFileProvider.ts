@@ -25,19 +25,19 @@ class PDF_LIBFileProvider implements IFileProvider {
         const page = doc.addPage()
 
         // page.setRotation(degrees(90))
-        page.setSize( 800, 380 )
+        page.setSize( 800, 365 )
 
         page.drawImage(templatePNG, { //"desenha" a imagem
             y: 0,
-            x: 50,
+            x: 40,
             width: 800,
-            height: 380,
+            height: 365,
             // rotate: degrees(90)
         })
 
         //numero da doaçao
         page.drawText(data.donation_number.toString(), {
-            y: 239,
+            y: 229,
             x: 200,
             // rotate: degrees(90),
             color: rgb(0.95, 0.1, 0.1),
@@ -50,8 +50,8 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //valor numerico
         page.drawText(valor, {
-            y: 239,
-            x: 578,
+            y: 230,
+            x: 576,
             // rotate: degrees(90),
 
             size: 23,
@@ -63,11 +63,11 @@ class PDF_LIBFileProvider implements IFileProvider {
         let nomeArray = data.donor_name.match(/.{1,56}\b/g)
         //nome
         page.drawText(nomeArray[0], {
-            y: 215,
-            x: 216,
+            y: 207,
+            x: 214,
             // rotate: degrees(90),
 
-            size: 20,
+            size: 19,
 
 
         })
@@ -75,18 +75,17 @@ class PDF_LIBFileProvider implements IFileProvider {
         if(nomeArray[1] && nomeArray[1].length){
 
             page.drawText(nomeArray[1], {
-                y: 193,
-                x: 95,
+                y: 186,
+                x: 93,
                 // rotate: degrees(90),
     
-                size: 20,
+                size: 19,
     
     
             })
         }
 
         //valor por extenso
-
         let valorPorExtenso = extenso(valor , {mode: "currency", currency: { type: "BRL"}, locale:"br"})
         let vpeArray
         
@@ -104,17 +103,17 @@ class PDF_LIBFileProvider implements IFileProvider {
 
        
         page.drawText(vpeArray[0], {
-            y: 168,
-            x: 204,
+            y: 161,
+            x: 199,
             // rotate: degrees(90),
-            size: 20,
+            size: 19,
         })
 
         page.drawText(vpeArray[1], {
-            y: 146,
+            y: 139,
             x: 95,
             // rotate: degrees(90),
-            size: 20,
+            size: 19,
         })
 
 
@@ -124,8 +123,8 @@ class PDF_LIBFileProvider implements IFileProvider {
         const [dia, mes, ano] = date.split(" ")
 
         page.drawText(dia, {
-            y: 73,
-            x: 455,
+            y: 70,
+            x: 450,
             // rotate: degrees(90),
 
             size: 21,
@@ -133,8 +132,8 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
         page.drawText(mes, {
-            y: 73,
-            x: 540,
+            y: 70,
+            x: 535,
             // rotate: degrees(90),
 
             size: 21,
@@ -142,8 +141,8 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
         page.drawText(ano, {
-            y: 73,
-            x: 747,
+            y: 70,
+            x: 739,
             // rotate: degrees(90),
 
             size: 21,
@@ -157,9 +156,9 @@ class PDF_LIBFileProvider implements IFileProvider {
         let referingTo = "Doação" 
         page.drawText(referingTo, {
 
-            y: 123,
-            x: 200,
-            size: 20
+            y: 118,
+            x: 195,
+            size: 19
         })
 
 
@@ -168,12 +167,24 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //criar o pdf no dir
         //se mudar a estensao muda o arquivo?
-        fs.writeFile(`./tmp/receipts/${data.ngo.name}_${mes}_${data.donor_name}_${data.donation_number}.pdf`, pdfBytes,
+
+        let dir = `./tmp/receipts/${data.ngo.name}/${ano}/${mes}`
+        let filename = `${data.donor_name}_${dia}_${data.donation_number}.pdf`
+
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true })
+        }
+
+        fs.writeFile(`${dir}/${filename}`, pdfBytes,
             (err) => {
                 if (err) throw err
             }) 
 
         return pdfBytes
+    }
+
+    async createBead(){
+
     }
 
 }

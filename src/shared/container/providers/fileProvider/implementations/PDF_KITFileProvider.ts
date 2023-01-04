@@ -41,6 +41,10 @@ class PDF_KITFileProvider implements IFileProvider {
 
     }
 
+    async createBead(){
+
+    }
+
 
 
 }
