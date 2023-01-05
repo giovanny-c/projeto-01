@@ -41,7 +41,7 @@ class GenerateReceiptUseCase {
         if (donation.is_payed !== true) {
             throw new AppError("Cant generate a receipt of a donation that wasn't payed")
         }
-        const filePath = "./templates/grappec_template.jpg" //template do recibo
+        const templatePath = "./templates/grappec_template.jpg" //template do recibo
 
         // const stream = res.writeHead(200, {
         //     "Content-Type": "application/pdf",
@@ -50,7 +50,7 @@ class GenerateReceiptUseCase {
 
         donation.payed_at = this.dateProvider.formatDate(donation.payed_at, "DD/MM/YYYY")
 
-        const pdfBytes = await this.fileProvider.createFile(filePath, donation)
+        const pdfBytes = await this.fileProvider.createFile(templatePath, donation)
 
         const buffer = Buffer.from(pdfBytes)
 

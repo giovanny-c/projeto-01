@@ -8,16 +8,18 @@ import { Donation } from "../../../../../modules/donations/entities/donation";
 import formatToBRL from "../../../../../../utils/formatToBRL";
 import extenso from "extenso"
 import moment from "moment"
-import { float } from "aws-sdk/clients/lightsail";
+
+import {resolve} from "path"
+import { page } from "pdfkit";
 
 
 class PDF_LIBFileProvider implements IFileProvider {
 
-    async createFile(filePath: string, data?: Donation,) {
+    async createFile(templatePath: string, data?: Donation,) {
 
         const doc = await PDFDocument.create()
 
-        const uint8Array = fs.readFileSync(filePath) // le o tamplate do recibo
+        const uint8Array = fs.readFileSync(templatePath) // le o tamplate do recibo
 
 
         const templatePNG = await doc.embedJpg(uint8Array) //poe o template no pdf
@@ -168,8 +170,11 @@ class PDF_LIBFileProvider implements IFileProvider {
         //criar o pdf no dir
         //se mudar a estensao muda o arquivo?
 
+
+       //const dir = resolve(__dirname, "..", "tmp", "receipts", "")
+        
         let dir = `./tmp/receipts/${data.ngo.name}/${ano}/${mes}`
-        let filename = `${data.donor_name}_${dia}_${data.donation_number}.pdf`
+        let filename = `${data.donor_name}_${dia}_${data.donation_number}_${data.id}.pdf`
 
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true })
@@ -183,7 +188,79 @@ class PDF_LIBFileProvider implements IFileProvider {
         return pdfBytes
     }
 
-    async createBead(){
+    async createBead(data?: Donation[]){
+
+        const doc = await PDFDocument.create()
+
+        let pageIndex = 0
+
+        data.forEach(async (donation, index = 1) => {
+            //para pegar o arquivo
+            const date = moment(donation.created_at).format("YYYY MM DD")
+            
+            const [dia, mes, ano] = moment(date).locale("pt-br").format("DD MMMM YY").split(" ")
+               
+            const filePath = resolve(__dirname, 
+                "..", "..", "..", "..", "tmp", "receipts", 
+                donation.ngo.name, ano, mes,
+                `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`)
+
+
+            
+            const uint8Array = fs.readFileSync(filePath)
+    
+            // sera que vai
+            const receipt = await doc.embedJpg(uint8Array)
+            // para pegar o arquivo fim //
+                
+            //se for 1 cria uma pagina
+            if(index === 1 ){
+
+                const page = doc.addPage()
+                page.setSize(800, 1095)
+
+            }
+
+            //pega a pagina atual
+            const page = doc.getPage(pageIndex)
+
+            const y = 365 * (index - 1) //posição y
+
+            //coloca a img no pdf
+            page.drawImage(receipt, {
+
+                y: y,
+                x: 40,
+                width: 800,
+                height: 365,
+
+            })
+            
+            //se chegar a 3 acabou a pagina 
+            if(index === 3){
+                index = 0  
+                pageIndex ++
+            }
+
+            index ++
+        });
+        
+        const pdf = await doc.save()
+
+
+        //salva
+        let dir = `./tmp/print/${data[0].ngo.name}`
+        
+        let filename = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
+       
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true })
+        }
+
+        fs.writeFile(`${dir}/${filename}`, pdf,
+            (err) => {
+                if (err) throw err
+            }) 
 
     }
 

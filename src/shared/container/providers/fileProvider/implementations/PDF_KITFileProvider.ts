@@ -11,7 +11,7 @@ import { IFileProvider } from "../IFileProvider"
 class PDF_KITFileProvider implements IFileProvider {
 
 
-    createFile(filePath: string, /*dataCallback, endCallback*/) {
+    createFile(templatePath: string, /*dataCallback, endCallback*/) {
 
         const pdfdocument = new pdfkit
 
@@ -23,7 +23,7 @@ class PDF_KITFileProvider implements IFileProvider {
         //pdfdocument.on("end", endCallback)
 
 
-        pdfdocument.image(filePath, {
+        pdfdocument.image(templatePath, {
             align: "center",
             valign: "center"
         })
