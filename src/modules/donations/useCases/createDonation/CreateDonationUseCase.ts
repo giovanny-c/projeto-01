@@ -104,7 +104,7 @@ class CreateDonationUseCase {
 
 
         //temporario () fazer ele pegar o recibo usando o db
-        const templatePath = `./templates/grappec_template.jpg` //template do recibo
+        const templatePath = `./templates/grapecc_template.jpg` //template do recibo
         
     
 

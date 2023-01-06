@@ -13,7 +13,7 @@ class GenerateBeadController {
 
         await generateBead.execute({first_number,last_number,ngo_id})
 
-        return res.status(200)
+        return res.status(200).send()
     }   
 
 

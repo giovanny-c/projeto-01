@@ -202,16 +202,20 @@ class PDF_LIBFileProvider implements IFileProvider {
         const doc = await PDFDocument.create()
 
         let pageIndex = 0
+        let index = 1
 
-        data.forEach(async (donation, index = 1) => {
+        data.forEach(async (donation) => {
             //para pegar o arquivo
              
-            const [dia, mes, ano] = moment(moment(donation.created_at).format("YYYY/MM/DD")).locale("pt-br").format("DD MMMM YY").split(" ")
+            
+
+            const [dia, mes, ano] = moment(donation.created_at).locale("pt-br").format("DD MMMM YY").split(" ")
                
-            let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
-            let filename = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
+            // let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+            // let filename = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
-
+            let dir = `./templates`
+            let filename = `grapecc_template.jpg`
             
             const uint8Array = fs.readFileSync(`${dir}/${filename}`)
     
@@ -221,15 +225,15 @@ class PDF_LIBFileProvider implements IFileProvider {
                 
             //se for 1 cria uma pagina
             if(index === 1 ){
-
-                const page = doc.addPage()
-                page.setSize(800, 1095)
-
+        
+                doc.addPage()   
+                
             }
 
             //pega a pagina atual
             const page = doc.getPage(pageIndex)
-
+            page.setSize(800, 1095)
+            
             const y = 365 * (index - 1) //posição y
 
             //coloca a img no pdf
@@ -244,11 +248,13 @@ class PDF_LIBFileProvider implements IFileProvider {
             
             //se chegar a 3 acabou a pagina 
             if(index === 3){
-                index = 0  
+                index = index - 3  
                 pageIndex ++
             }
 
+            
             index ++
+
         });
         
         const pdf = await doc.save()
