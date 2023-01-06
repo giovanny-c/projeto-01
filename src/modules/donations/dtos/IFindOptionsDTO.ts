@@ -6,7 +6,7 @@ interface IFindOptions {
     offset?: number
     startDate?: Date
     endDate?: Date
-    donationNumberInterval?: number[]
+    donation_number_interval?: number[]
 
 }
 

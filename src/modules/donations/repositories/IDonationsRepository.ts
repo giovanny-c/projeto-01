@@ -12,7 +12,7 @@ interface IDonationsRepository {
     findDonationsBy(data: IFindOptions): Promise<Donation[]>
     findDonationsByWorker(worker_id: string, data: IFindOptions): Promise<Donation[]>
     countDonationsValues(worker_id: string, data: IFindOptions)
-    findForGenerateBead({donationNumberInterval, orderBy, ngo_id}:IFindOptions)
+    findForGenerateBead({donation_number_interval, ngo_id}:IFindOptions): Promise<Donation[]>
 
     //findByCreated_atOrPayed_at(data: Date, dateType: string(criado ou pago))
     // findByIsPayedOrIsCanceled (isTrue: boolean, payOrCanceled: string)

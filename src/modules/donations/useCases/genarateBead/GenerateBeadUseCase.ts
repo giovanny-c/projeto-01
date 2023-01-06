@@ -3,8 +3,8 @@ import { IFileProvider } from "../../../../shared/container/providers/fileProvid
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 
 interface IRequest {
-    firstNumber: number
-    lastNumber: number
+    first_number: number
+    last_number: number
     ngo_id: string
 }
 
@@ -22,13 +22,20 @@ class GenerateBeadUseCase {
     }
 
 
-    async execute({firstNumber, lastNumber, ngo_id}: IRequest):Promise<void>{
+    async execute({first_number, last_number, ngo_id}: IRequest):Promise<void>{
 
-        const donations = await this.donationsRepository.findDonationsBy({
-            donationNumberInterval: [firstNumber, lastNumber],
-            orderBy: "created_at"
-        })
+
+        const donations = await this.donationsRepository.findForGenerateBead({
+            donation_number_interval: [first_number, last_number],
+            ngo_id
+        })  
+
+        console.log(donations[0])
+
+        await this.fileProvider.createBead(donations)
 
 
     }
 }
+
+export {GenerateBeadUseCase}

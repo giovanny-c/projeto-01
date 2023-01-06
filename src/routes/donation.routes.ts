@@ -7,6 +7,7 @@ import { CancelDonationController } from "../modules/donations/useCases/cancelDo
 import { CreateDonationController } from "../modules/donations/useCases/createDonation/CreateDonationController";
 import { CreateNgoController } from "../modules/donations/useCases/createNgo/CreateNgoController";
 import { FindAllNgosController } from "../modules/donations/useCases/findAllNgos/FindAllNgosController";
+import { GenerateBeadController } from "../modules/donations/useCases/genarateBead/GenerateBeadController";
 import { GenerateReceiptController } from "../modules/donations/useCases/generateReceipt/GenerateReceiptController";
 import { GetDonationController } from "../modules/donations/useCases/getDonation/GetDonationController";
 import { ImportDonationsController } from "../modules/donations/useCases/importDonations/ImportDonationsController";
@@ -33,6 +34,7 @@ const generateReceiptController = new GenerateReceiptController()
 const createNgoController = new CreateNgoController()
 const findAllNgosController = new FindAllNgosController() 
 const setDonationCounterController = new SetDonationCounterController()
+const generateBeadController = new GenerateBeadController()
 
 //importa os doadores
 //importa doaçoes
@@ -57,6 +59,7 @@ donationRoutes.post("/ngo/create/", ensureAuthenticated, createNgoController.han
 donationRoutes.get("/ngo/list/", ensureAuthenticated, findAllNgosController.handle)//cria a donation
 
 
+donationRoutes.get("/ngo/create-bead", ensureAuthenticated, generateBeadController.handle)
 
 //altera numero doação
 donationRoutes.post("/ngo/donation_counter/set", ensureAuthenticated, setDonationCounterController.handle)//cria a donation

@@ -65,14 +65,14 @@ class DonationsRepository implements IDonationsRepository {
         return totalValue[0].sum
     }
 
-    async findForGenerateBead({ donationNumberInterval, ngo_id }: IFindOptions): Promise<Donation[]> {
+    async findForGenerateBead({ donation_number_interval, ngo_id }: IFindOptions): Promise<Donation[]> {
         return await this.repository.createQueryBuilder("donations")
-        .leftJoin("donations.worker", "workers")
-        .leftJoin("donations.donor", "donors")
-        .leftJoin("donations.ngo", "ngos")
+        .leftJoinAndSelect("donations.worker", "workers")
+        .leftJoinAndSelect("donations.donor", "donors")
+        .leftJoinAndSelect("donations.ngo", "ngos")
         .select(["donations","workers","donors","ngos"])
         .where("donations.ngo_id = :ngo_id", {ngo_id})
-        .andWhere(`donations.donation_number BETWEEN ${donationNumberInterval[0]} AND ${donationNumberInterval[1]} `)
+        .andWhere(`donations.donation_number BETWEEN ${donation_number_interval[0]} AND ${donation_number_interval[1]} `)
         .getMany()
 
     }

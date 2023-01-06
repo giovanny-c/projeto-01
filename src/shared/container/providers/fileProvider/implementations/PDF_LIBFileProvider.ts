@@ -15,7 +15,7 @@ import { page } from "pdfkit";
 
 class PDF_LIBFileProvider implements IFileProvider {
 
-    async createFile(templatePath: string, data?: Donation,) {
+    async createFile(templatePath: string, data: Donation) {
 
         const doc = await PDFDocument.create()
 
@@ -100,23 +100,32 @@ class PDF_LIBFileProvider implements IFileProvider {
             //     vpeArray[0] = `${vpeArray[0]}-`
             //    console.log(vpeArray)
             
-            
-        }
-
-       
-        page.drawText(vpeArray[0], {
+            page.drawText(vpeArray[0], {
             y: 161,
             x: 199,
             // rotate: degrees(90),
             size: 19,
-        })
+            })
 
-        page.drawText(vpeArray[1], {
-            y: 139,
-            x: 95,
-            // rotate: degrees(90),
-            size: 19,
-        })
+            page.drawText(vpeArray[1], {
+                y: 139,
+                x: 95,
+                // rotate: degrees(90),
+                size: 19,
+            })
+        }
+        if(valorPorExtenso.length < 63){
+
+            page.drawText(valorPorExtenso, {
+                y: 161,
+                x: 199,
+                // rotate: degrees(90),
+                size: 19,
+                })
+        }
+
+       
+        
 
 
         //data do recibo 
@@ -188,7 +197,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         return pdfBytes
     }
 
-    async createBead(data?: Donation[]){
+    async createBead(data: Donation[]){
 
         const doc = await PDFDocument.create()
 
@@ -196,18 +205,15 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         data.forEach(async (donation, index = 1) => {
             //para pegar o arquivo
-            const date = moment(donation.created_at).format("YYYY MM DD")
-            
-            const [dia, mes, ano] = moment(date).locale("pt-br").format("DD MMMM YY").split(" ")
+             
+            const [dia, mes, ano] = moment(moment(donation.created_at).format("YYYY/MM/DD")).locale("pt-br").format("DD MMMM YY").split(" ")
                
-            const filePath = resolve(__dirname, 
-                "..", "..", "..", "..", "tmp", "receipts", 
-                donation.ngo.name, ano, mes,
-                `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`)
+            let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+            let filename = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
 
             
-            const uint8Array = fs.readFileSync(filePath)
+            const uint8Array = fs.readFileSync(`${dir}/${filename}`)
     
             // sera que vai
             const receipt = await doc.embedJpg(uint8Array)
