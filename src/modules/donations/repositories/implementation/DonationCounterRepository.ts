@@ -1,5 +1,6 @@
 import { Repository } from "typeorm";
 import { dataSource } from "../../../../database";
+import { IFindOptions } from "../../dtos/IFindOptionsDTO";
 import { DonationCounter } from "../../entities/donation_counter";
 import { IDonationCounterRepository } from "../IDonationCounterRepository";
 
@@ -13,6 +14,7 @@ class DonationCounterRepository implements IDonationCounterRepository{
 
         this.repository = dataSource.getRepository(DonationCounter)
     }
+    
 
     
     async create(ngo_id: string, donation_number: number): Promise<DonationCounter> {
@@ -28,6 +30,7 @@ class DonationCounterRepository implements IDonationCounterRepository{
     async findById(id: string): Promise<DonationCounter> {
         return  await this.repository.findOneBy({id})
     }
+
     async findByNgoId(ngo_id: string): Promise<DonationCounter> {
         return  await this.repository.findOneBy({ngo_id})
     }

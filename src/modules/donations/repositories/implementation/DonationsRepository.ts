@@ -65,6 +65,18 @@ class DonationsRepository implements IDonationsRepository {
         return totalValue[0].sum
     }
 
+    async findForGenerateBead({ donationNumberInterval, ngo_id }: IFindOptions): Promise<Donation[]> {
+        return await this.repository.createQueryBuilder("donations")
+        .leftJoin("donations.worker", "workers")
+        .leftJoin("donations.donor", "donors")
+        .leftJoin("donations.ngo", "ngos")
+        .select(["donations","workers","donors","ngos"])
+        .where("donations.ngo_id = :ngo_id", {ngo_id})
+        .andWhere(`donations.donation_number BETWEEN ${donationNumberInterval[0]} AND ${donationNumberInterval[1]} `)
+        .getMany()
+
+    }
+
     async findDonationsBy({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
         // buscar tbm por is payed or is_canceled
         let query = `select donations.*,
