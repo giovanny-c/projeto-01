@@ -11,6 +11,7 @@ import moment from "moment"
 
 import {resolve} from "path"
 import { page } from "pdfkit";
+import { height } from "pdfkit/js/page";
 
 
 class PDF_LIBFileProvider implements IFileProvider {
@@ -201,6 +202,8 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const doc = await PDFDocument.create()
 
+        
+
         let pageIndex = 0
         let index = 1
 
@@ -211,40 +214,43 @@ class PDF_LIBFileProvider implements IFileProvider {
 
             const [dia, mes, ano] = moment(donation.created_at).locale("pt-br").format("DD MMMM YY").split(" ")
                
-            // let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
-            // let filename = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
+            let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+            let filename = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
-            let dir = `./templates`
-            let filename = `grapecc_template.jpg`
+            // let dir = `./templates`
+            // let filename = `grapecc_template.jpg`
             
-            const uint8Array = fs.readFileSync(`${dir}/${filename}`)
+            const receitpPdf = fs.readFileSync(`${dir}/${filename}`)
     
             // sera que vai
-            const receipt = await doc.embedJpg(uint8Array)
+            const [receipt] = await doc.embedPdf(receitpPdf, [0])
             // para pegar o arquivo fim //
                 
             //se for 1 cria uma pagina
             if(index === 1 ){
         
-                doc.addPage()   
+                  doc.addPage() 
                 
             }
-
+            
+            
             //pega a pagina atual
             const page = doc.getPage(pageIndex)
             page.setSize(800, 1095)
+            console.log(page)
             
             const y = 365 * (index - 1) //posição y
 
             //coloca a img no pdf
-            page.drawImage(receipt, {
-
-                y: y,
-                x: 40,
+            page.drawPage(receipt, {
+    
+                y,
+                x: 0,
                 width: 800,
                 height: 365,
-
+                
             })
+
             
             //se chegar a 3 acabou a pagina 
             if(index === 3){
@@ -257,6 +263,40 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         });
         
+        ////////////////////////////////
+        // const [dia, mes, ano] = moment(data[0].created_at).locale("pt-br").format("DD MMMM YY").split(" ")
+        // let _dir = `./tmp/receipts/${data[0].ngo.name}/${ano}/${mes}`
+        // let _filename = `${data[0].donor_name}_${dia}_${data[0].donation_number}_${data[0].id}.pdf`
+
+        // // let _dir = `./templates`
+        // // let _filename = `grapecc_template.jpg`
+        
+        // const receitpPdf = fs.readFileSync(`${_dir}/${_filename}`)
+
+        // // sera que vai
+        // const [receipt] = await doc.embedPdf(receitpPdf, [0])
+
+        // const page = doc.addPage()
+        // page.setSize(800,1095)
+
+        // page.drawPage(receipt, {
+        //     y: 0,
+        //     x: 0,
+        //     width: 800,
+        //     height: 365
+        // })
+
+        // page.drawPage(receipt, {
+        //     y: 400,
+        //     x: 0,
+        //     width: 800,
+        //     height: 365
+        // })
+
+
+
+//////////////////////////////////
+
         const pdf = await doc.save()
 
 
