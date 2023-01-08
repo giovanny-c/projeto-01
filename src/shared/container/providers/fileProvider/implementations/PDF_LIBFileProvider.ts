@@ -63,30 +63,33 @@ class PDF_LIBFileProvider implements IFileProvider {
         })
 
 
-        let nomeArray = data.donor_name.match(/.{1,56}\b/g)
+        //let nomeArray = data.donor_name.match(/.{1,56}\b/g)
         //nome
-        page.drawText(nomeArray[0], {
+        page.drawText(data.donor_name, {
             y: 207,
             x: 214,
             // rotate: degrees(90),
 
             size: 19,
-
+            maxWidth: 560,
+            wordBreaks: [" ", "-", "s", "n", "t"],
+            lineHeight: 21,
+            
 
         })
 
-        if(nomeArray[1] && nomeArray[1].length){
+        // if(nomeArray[1] && nomeArray[1].length){
 
-            page.drawText(nomeArray[1], {
-                y: 186,
-                x: 93,
-                // rotate: degrees(90),
+        //     page.drawText(nomeArray[1], {
+        //         y: 186,
+        //         x: 93,
+        //         // rotate: degrees(90),
     
-                size: 19,
+        //         size: 19,
     
     
-            })
-        }
+        //     })
+        // }
 
         //valor por extenso
         let valorPorExtenso = extenso(valor , {mode: "currency", currency: { type: "BRL"}, locale:"br"})
@@ -241,7 +244,7 @@ class PDF_LIBFileProvider implements IFileProvider {
             page.setSize(800, 1095)
             
             
-            const y = 365 * (index - 1) //posição y
+            const y = 1095 - 365 * index //posição y
             
             //coloca a img no pdf
             page.drawPage(receipt, {
