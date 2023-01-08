@@ -207,10 +207,10 @@ class PDF_LIBFileProvider implements IFileProvider {
         let pageIndex = 0
         let index = 1
 
-        data.forEach(async (donation) => {
+        const promises = data.map(async(donation) => {
             //para pegar o arquivo
              
-            
+           
 
             const [dia, mes, ano] = moment(donation.created_at).locale("pt-br").format("DD MMMM YY").split(" ")
                
@@ -225,22 +225,24 @@ class PDF_LIBFileProvider implements IFileProvider {
             // sera que vai
             const [receipt] = await doc.embedPdf(receitpPdf, [0])
             // para pegar o arquivo fim //
-                
+              
             //se for 1 cria uma pagina
-            if(index === 1 ){
+            if(index === 1){
         
-                  doc.addPage() 
+                  doc.addPage()
                 
             }
             
             
             //pega a pagina atual
-            const page = doc.getPage(pageIndex)
+            let page = doc.getPage(pageIndex)
+            
+            
             page.setSize(800, 1095)
-            console.log(page)
+            
             
             const y = 365 * (index - 1) //posição y
-
+            
             //coloca a img no pdf
             page.drawPage(receipt, {
     
@@ -256,46 +258,21 @@ class PDF_LIBFileProvider implements IFileProvider {
             if(index === 3){
                 index = index - 3  
                 pageIndex ++
+            
+                
             }
 
             
             index ++
 
-        });
-        
-        ////////////////////////////////
-        // const [dia, mes, ano] = moment(data[0].created_at).locale("pt-br").format("DD MMMM YY").split(" ")
-        // let _dir = `./tmp/receipts/${data[0].ngo.name}/${ano}/${mes}`
-        // let _filename = `${data[0].donor_name}_${dia}_${data[0].donation_number}_${data[0].id}.pdf`
+            return page
 
-        // // let _dir = `./templates`
-        // // let _filename = `grapecc_template.jpg`
-        
-        // const receitpPdf = fs.readFileSync(`${_dir}/${_filename}`)
+        })
+ 
 
-        // // sera que vai
-        // const [receipt] = await doc.embedPdf(receitpPdf, [0])
+        const pages = await Promise.all(promises)
 
-        // const page = doc.addPage()
-        // page.setSize(800,1095)
-
-        // page.drawPage(receipt, {
-        //     y: 0,
-        //     x: 0,
-        //     width: 800,
-        //     height: 365
-        // })
-
-        // page.drawPage(receipt, {
-        //     y: 400,
-        //     x: 0,
-        //     width: 800,
-        //     height: 365
-        // })
-
-
-
-//////////////////////////////////
+        doc.embedPages(pages)
 
         const pdf = await doc.save()
 
