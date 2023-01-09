@@ -1,4 +1,4 @@
-import { degrees, PDFDocument, rgb } from "pdf-lib"
+import { degrees, PDFDocument, PrintScaling, rgb } from "pdf-lib"
 import fs from "fs"
 
 
@@ -20,6 +20,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const doc = await PDFDocument.create()
 
+        
         const uint8Array = fs.readFileSync(templatePath) // le o tamplate do recibo
 
 
@@ -33,18 +34,18 @@ class PDF_LIBFileProvider implements IFileProvider {
         page.drawImage(templatePNG, { //"desenha" a imagem
             y: 0,
             x: 40,
-            width: 800,
-            height: 365,
+            width: 800, //*0.75?
+            height: 365,//*0.75?
             // rotate: degrees(90)
         })
 
         //numero da doaçao
         page.drawText(data.donation_number.toString(), {
-            y: 229,
-            x: 200,
+            y: 229,//*0.75?
+            x: 200,//*0.75?
             // rotate: degrees(90),
             color: rgb(0.95, 0.1, 0.1),
-            size: 23
+            size: 23//*0.75?
 
         })
 
@@ -62,34 +63,34 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
 
-
-        //let nomeArray = data.donor_name.match(/.{1,56}\b/g)
+//"sas".
+        let nomeArray = data.donor_name.match(/.{1,56}\b/g)
         //nome
-        page.drawText(data.donor_name, {
+        page.drawText(nomeArray[0], {
             y: 207,
             x: 214,
             // rotate: degrees(90),
 
             size: 19,
-            maxWidth: 560,
-            wordBreaks: [" ", "-", "s", "n", "t"],
-            lineHeight: 21,
+            // maxWidth: 560,
+            // wordBreaks: [" ", "-"],
+            // lineHeight: 21,
             
 
         })
 
-        // if(nomeArray[1] && nomeArray[1].length){
+        if(nomeArray[1] && nomeArray[1].length){
 
-        //     page.drawText(nomeArray[1], {
-        //         y: 186,
-        //         x: 93,
-        //         // rotate: degrees(90),
+            page.drawText(nomeArray[1], {
+                y: 186,
+                x: 93,
+                // rotate: degrees(90),
     
-        //         size: 19,
+                size: 19,
     
     
-        //     })
-        // }
+            })
+        }
 
         //valor por extenso
         let valorPorExtenso = extenso(valor , {mode: "currency", currency: { type: "BRL"}, locale:"br"})
@@ -176,7 +177,7 @@ class PDF_LIBFileProvider implements IFileProvider {
             size: 19
         })
 
-
+        page.scale(0.75, 0.75)
 
         const pdfBytes = await doc.save() //cria um array de bytes 
 
@@ -204,6 +205,8 @@ class PDF_LIBFileProvider implements IFileProvider {
     async createBead(data: Donation[]){
 
         const doc = await PDFDocument.create()
+
+        //doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault)
 
         
 
@@ -236,25 +239,28 @@ class PDF_LIBFileProvider implements IFileProvider {
                 
             }
             
-            
             //pega a pagina atual
             let page = doc.getPage(pageIndex)
+
+            //page.setSize(receipt.width, receipt.height * 3)
             
-            
-            page.setSize(800, 1095)
-            
-            
-            const y = 1095 - 365 * index //posição y
+            const y = page.getHeight() - receipt.height * index //posição y
             
             //coloca a img no pdf
             page.drawPage(receipt, {
     
                 y,
                 x: 0,
-                width: 800,
-                height: 365,
-                
+                width: page.getWidth() - 30
             })
+
+            // page.drawLine({
+            //     start: {x:0 ,y},
+            //     end: {x:page.getWidth(), y },
+            //     color: rgb(0.2, 0.2, 0.2),
+            //     lineCap:
+            //     thickness: 0.1
+            // })
 
             
             //se chegar a 3 acabou a pagina 
