@@ -1,4 +1,5 @@
-import { degrees, PDFDocument, PrintScaling, rgb } from "pdf-lib"
+import { PDFDocument, PrintScaling, rgb } from "pdf-lib"
+import fontkit from "@pdf-lib/fontkit"
 import fs from "fs"
 
 
@@ -9,9 +10,7 @@ import formatToBRL from "../../../../../../utils/formatToBRL";
 import extenso from "extenso"
 import moment from "moment"
 
-import {resolve} from "path"
-import { page } from "pdfkit";
-import { height } from "pdfkit/js/page";
+
 
 
 class PDF_LIBFileProvider implements IFileProvider {
@@ -20,7 +19,15 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const doc = await PDFDocument.create()
 
+        doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault)
+
+        doc.registerFontkit(fontkit)
+
+        const fontBuffer = fs.readFileSync("./fonts/Roustel.ttf")
+
+        const font = await doc.embedFont(fontBuffer)
         
+
         const uint8Array = fs.readFileSync(templatePath) // le o tamplate do recibo
 
 
@@ -75,7 +82,8 @@ class PDF_LIBFileProvider implements IFileProvider {
             // maxWidth: 560,
             // wordBreaks: [" ", "-"],
             // lineHeight: 21,
-            
+            font,
+            color: rgb(0.122, 0.160, 0.717)
 
         })
 
@@ -87,7 +95,8 @@ class PDF_LIBFileProvider implements IFileProvider {
                 // rotate: degrees(90),
     
                 size: 19,
-    
+                font,
+                color: rgb(0.122, 0.160, 0.717)
     
             })
         }
@@ -110,6 +119,8 @@ class PDF_LIBFileProvider implements IFileProvider {
             x: 199,
             // rotate: degrees(90),
             size: 19,
+            font,
+            color: rgb(0.122, 0.160, 0.717)
             })
 
             page.drawText(vpeArray[1], {
@@ -117,6 +128,8 @@ class PDF_LIBFileProvider implements IFileProvider {
                 x: 95,
                 // rotate: degrees(90),
                 size: 19,
+                font,
+                color: rgb(0.122, 0.160, 0.717)
             })
         }
         if(valorPorExtenso.length < 63){
@@ -126,6 +139,8 @@ class PDF_LIBFileProvider implements IFileProvider {
                 x: 199,
                 // rotate: degrees(90),
                 size: 19,
+                font,
+                color: rgb(0.122, 0.160, 0.717)
                 })
         }
 
@@ -144,6 +159,8 @@ class PDF_LIBFileProvider implements IFileProvider {
             // rotate: degrees(90),
 
             size: 21,
+            font,
+            color: rgb(0.122, 0.160, 0.717)
 
 
         })
@@ -153,7 +170,8 @@ class PDF_LIBFileProvider implements IFileProvider {
             // rotate: degrees(90),
 
             size: 21,
-
+            font,
+            color: rgb(0.122, 0.160, 0.717)
 
         })
         page.drawText(ano, {
@@ -162,7 +180,8 @@ class PDF_LIBFileProvider implements IFileProvider {
             // rotate: degrees(90),
 
             size: 21,
-
+            font,
+            color: rgb(0.122, 0.160, 0.717)
 
         })
 
@@ -174,7 +193,9 @@ class PDF_LIBFileProvider implements IFileProvider {
 
             y: 118,
             x: 195,
-            size: 19
+            size: 19,
+            font,
+            color: rgb(0.122, 0.160, 0.717)
         })
 
         page.scale(0.75, 0.75)
@@ -208,25 +229,24 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault)
 
-        
 
         let pageIndex = 0
         let index = 1
 
         const promises = data.map(async(donation) => {
             //para pegar o arquivo
-             
-           
+            
 
             const [dia, mes, ano] = moment(donation.created_at).locale("pt-br").format("DD MMMM YY").split(" ")
                
             let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
             let filename = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
-            // let dir = `./templates`
-            // let filename = `grapecc_template.jpg`
+    // fazer error handling para arquivos que nao existirem
             
             const receitpPdf = fs.readFileSync(`${dir}/${filename}`)
+
+            
     
             // sera que vai
             const [receipt] = await doc.embedPdf(receitpPdf, [0])
@@ -251,16 +271,16 @@ class PDF_LIBFileProvider implements IFileProvider {
     
                 y,
                 x: 0,
-                width: page.getWidth() - 30
+                width: page.getWidth() - 40
             })
 
-            // page.drawLine({
-            //     start: {x:0 ,y},
-            //     end: {x:page.getWidth(), y },
-            //     color: rgb(0.2, 0.2, 0.2),
-            //     lineCap:
-            //     thickness: 0.1
-            // })
+            page.drawLine({
+                start: {x:0 ,y: y + 0.5},
+                end: {x:page.getWidth(), y: y + 0.5 },
+                color: rgb(0.5, 0.5, 0.5),
+                lineCap: 1,
+                thickness: 0.1
+            })
 
             
             //se chegar a 3 acabou a pagina 

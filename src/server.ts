@@ -33,16 +33,17 @@ app.use(express.urlencoded({ extended: true }));//front
 
 
 //front
+app.use(express.static("public"))
+
 app.use(methodOverride('_method'));//front
 
-nunjucks.configure("views", {
+
+nunjucks.configure("public", {
     express: app,
     autoescape: true,
     noCache: true
 })
-
-app.set("view engine", ".njk")
-app.use(express.static("../public"))
+app.set("view engine", "njk")
 
 
 //session redis
