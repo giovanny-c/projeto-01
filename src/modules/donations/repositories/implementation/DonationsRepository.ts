@@ -42,27 +42,25 @@ class DonationsRepository implements IDonationsRepository {
 
     }
 
-    async countDonationsValues(worker_id: string, { startDate, endDate }: IFindOptions) {
-        let querySum = `select sum (donations.donation_value)
-            from donations left join workers on donations.worker_id = workers.id
-            where `
+    async countDonationsValues(worker_id: string, { startDate, endDate, donation_number_interval }: IFindOptions) {
         
-        
+        let query = await this.repository.createQueryBuilder("donations")
+        .leftJoin("donations.worker", "workers")
+        .leftJoin("donations.ngo", "ngos")
+        .leftJoinAndSelect("donations.donor", "donors")
+        .select(["donations", "workers", "ngos", "donors"])
+        .where("donation.is_donation_canceled != true")
+
+        if((!startDate || !endDate) && (donation_number_interval && donation_number_interval.length)){
+            query = query.andWhere(`donations.donation_number BETWEEN ${donation_number_interval[0]} AND ${donation_number_interval[1]}` )
+        }
+
+        query = query.andWhere(`donations.created_at BETWEEN ${startDate} AND ${endDate}`)
+
         if(worker_id){
-            querySum += `    
-            donations.worker_id = '${worker_id} and'  
-         `
+            query = query.andWhere("donations.worker_id = :worker_id", {worker_id})
         }
 
-        querySum += ` donations.is_payed = true and is_donation_canceled = false`
-
-        if (startDate && endDate) { // se tiver datas, junta com o 1 valor
-            querySum += `and donations.created_at between '${startDate}' and '${endDate}' `
-        }
-
-        const totalValue = await this.repository.query(querySum)
-
-        return totalValue[0].sum
     }
 
     async findForGenerateBead({ donation_number_interval, ngo_id }: IFindOptions): Promise<Donation[]> {
@@ -77,6 +75,7 @@ class DonationsRepository implements IDonationsRepository {
 
     }
 
+    //REFAZER COM QUERY BUILDER
     async findDonationsBy({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
         // buscar tbm por is payed or is_canceled
         let query = `select donations.*,

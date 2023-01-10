@@ -65,17 +65,20 @@ class PDF_LIBFileProvider implements IFileProvider {
             x: 576,
             // rotate: degrees(90),
 
-            size: 23,
-
+            size: 30,
+            font,
+            color: rgb(0.122, 0.160, 0.797)
 
         })
 
-//"sas".
+//se terminar em a e i o u nao seguido de n m r s z o e
+
         let nomeArray: string[] = data.donor_name.match(/.{1,56}\b/g)
         if(font){
-            nomeArray = data.donor_name.match(/.{1,63}\b/g)
+            nomeArray = data.donor_name.match(/.{1,56}\b/g)
         }
         //nome
+        
         page.drawText(nomeArray[0], {
             y: 207,
             x: 214,
@@ -87,7 +90,6 @@ class PDF_LIBFileProvider implements IFileProvider {
             // lineHeight: 21,
             font,
             color: rgb(0.122, 0.160, 0.797)
-
         })
 
         if(nomeArray[1] && nomeArray[1].length){
@@ -155,7 +157,7 @@ class PDF_LIBFileProvider implements IFileProvider {
             x: 450,
             // rotate: degrees(90),
 
-            size: 24,
+            size: 25,
             font,
             color: rgb(0.122, 0.160, 0.797)
 
@@ -167,7 +169,7 @@ class PDF_LIBFileProvider implements IFileProvider {
             x: 535,
             // rotate: degrees(90),
 
-            size: 24,
+            size: 25,
             font,
             color: rgb(0.122, 0.160, 0.797)
 
@@ -177,7 +179,7 @@ class PDF_LIBFileProvider implements IFileProvider {
             x: 739,
             // rotate: degrees(90),
 
-            size: 24,
+            size: 25,
             font,
             color: rgb(0.122, 0.160, 0.797)
 
@@ -195,6 +197,27 @@ class PDF_LIBFileProvider implements IFileProvider {
             font,
             color: rgb(0.122, 0.160, 0.797)
         })
+
+
+        page.drawText(data.worker.name, {
+            y: 20,
+            x: 95,
+            size: 20,
+            font,
+            color: rgb(0.122, 0.160, 0.797)
+
+        })
+
+        if(data.is_donation_canceled){
+
+            page.drawText("CANCELADO", {
+                y: page.getHeight() / 3,
+                x: page.getWidth() - (page.getWidth() - 60),
+                color: rgb(0.95, 0.1, 0.1),
+                size: 74,
+
+            })
+        }
 
         page.scale(0.75, 0.75)
 
@@ -269,8 +292,19 @@ class PDF_LIBFileProvider implements IFileProvider {
     
                 y,
                 x: 0,
-                width: page.getWidth() - 40
+                width: page.getWidth() - 50
             })
+
+            if(donation.is_donation_canceled){
+
+                page.drawText("CANCELADO", {
+                    y: y + receipt.height / 3,
+                    x: receipt.width - (receipt.width - 60),
+                    color: rgb(0.95, 0.1, 0.1),
+                    size: 74,
+    
+                })
+            }
 
             page.drawLine({
                 start: {x:0 ,y: y + 0.5},
