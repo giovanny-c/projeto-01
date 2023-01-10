@@ -71,19 +71,22 @@ class PDF_LIBFileProvider implements IFileProvider {
         })
 
 //"sas".
-        let nomeArray = data.donor_name.match(/.{1,56}\b/g)
+        let nomeArray: string[] = data.donor_name.match(/.{1,56}\b/g)
+        if(font){
+            nomeArray = data.donor_name.match(/.{1,63}\b/g)
+        }
         //nome
         page.drawText(nomeArray[0], {
             y: 207,
             x: 214,
             // rotate: degrees(90),
 
-            size: 19,
+            size: 23,
             // maxWidth: 560,
             // wordBreaks: [" ", "-"],
             // lineHeight: 21,
             font,
-            color: rgb(0.122, 0.160, 0.717)
+            color: rgb(0.122, 0.160, 0.797)
 
         })
 
@@ -94,55 +97,48 @@ class PDF_LIBFileProvider implements IFileProvider {
                 x: 93,
                 // rotate: degrees(90),
     
-                size: 19,
+                size: 23,
                 font,
-                color: rgb(0.122, 0.160, 0.717)
+                color: rgb(0.122, 0.160, 0.797)
     
             })
         }
 
         //valor por extenso
         let valorPorExtenso = extenso(valor , {mode: "currency", currency: { type: "BRL"}, locale:"br"})
-        let vpeArray
         
-        if(valorPorExtenso.length >= 63){
+        let vpeArray: string[] = valorPorExtenso.match(/.{1,63}\b/g)
 
-            vpeArray = valorPorExtenso.match(/.{1,62}\b/g)
+        //para separar com hifen (nao funcionou 100%)
+        // if(!vpeArray[0].match(/[ ,]$|( e)$/) ) {
+        //     vpeArray[0] = `${vpeArray[0]}-`
+        //    console.log(vpeArray)
+        
+        //primeira letra maiuscula
+        
+        vpeArray[0] = vpeArray[0].at(0).toUpperCase() + vpeArray[0].substring(1)
 
-            //para separar com hifen (nao funcionou 100%)
-            // if(!vpeArray[0].match(/[ ,]$|( e)$/) ) {
-            //     vpeArray[0] = `${vpeArray[0]}-`
-            //    console.log(vpeArray)
-            
-            page.drawText(vpeArray[0], {
-            y: 161,
-            x: 199,
-            // rotate: degrees(90),
-            size: 19,
-            font,
-            color: rgb(0.122, 0.160, 0.717)
-            })
+        page.drawText(vpeArray[0], {
+        y: 161,
+        x: 199,
+        // rotate: degrees(90),
+        size: 23,
+        font,
+        color: rgb(0.122, 0.160, 0.797)
+        })
+
+        if(vpeArray[1] && vpeArray[1].length){
 
             page.drawText(vpeArray[1], {
                 y: 139,
                 x: 95,
                 // rotate: degrees(90),
-                size: 19,
+                size: 23,
                 font,
-                color: rgb(0.122, 0.160, 0.717)
+                color: rgb(0.122, 0.160, 0.797)
             })
         }
-        if(valorPorExtenso.length < 63){
 
-            page.drawText(valorPorExtenso, {
-                y: 161,
-                x: 199,
-                // rotate: degrees(90),
-                size: 19,
-                font,
-                color: rgb(0.122, 0.160, 0.717)
-                })
-        }
 
        
         
@@ -152,26 +148,28 @@ class PDF_LIBFileProvider implements IFileProvider {
         
         const date = moment(data.created_at).locale("pt-br").format("DD MMMM YY")
         const [dia, mes, ano] = date.split(" ")
+        let mesUpper = mes.at(0).toUpperCase() + mes.substring(1)
 
         page.drawText(dia, {
             y: 70,
             x: 450,
             // rotate: degrees(90),
 
-            size: 21,
+            size: 24,
             font,
-            color: rgb(0.122, 0.160, 0.717)
+            color: rgb(0.122, 0.160, 0.797)
 
 
         })
-        page.drawText(mes, {
+
+        page.drawText(mesUpper, {
             y: 70,
             x: 535,
             // rotate: degrees(90),
 
-            size: 21,
+            size: 24,
             font,
-            color: rgb(0.122, 0.160, 0.717)
+            color: rgb(0.122, 0.160, 0.797)
 
         })
         page.drawText(ano, {
@@ -179,9 +177,9 @@ class PDF_LIBFileProvider implements IFileProvider {
             x: 739,
             // rotate: degrees(90),
 
-            size: 21,
+            size: 24,
             font,
-            color: rgb(0.122, 0.160, 0.717)
+            color: rgb(0.122, 0.160, 0.797)
 
         })
 
@@ -193,9 +191,9 @@ class PDF_LIBFileProvider implements IFileProvider {
 
             y: 118,
             x: 195,
-            size: 19,
+            size: 22,
             font,
-            color: rgb(0.122, 0.160, 0.717)
+            color: rgb(0.122, 0.160, 0.797)
         })
 
         page.scale(0.75, 0.75)
