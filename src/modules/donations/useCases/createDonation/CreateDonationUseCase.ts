@@ -103,17 +103,12 @@ class CreateDonationUseCase {
         await this.donationCounterRepository.update(ngo_id, new_donation_number, donation_number )
 
 
-        //temporario () fazer ele pegar o recibo usando o db
-        const templatePath = `./templates/grapecc_template.jpg` //template do recibo
-        
-    
-
         const donationWithRelations = await this.donationsRepository.findOneById(donation.id)
 
         //format para ISO
         donationWithRelations.payed_at = this.dateProvider.formatDate(donation.created_at, "YYYY/MM/DD")
 
-        await this.fileProvider.createFile(templatePath, donationWithRelations)
+        await this.fileProvider.createFile(donationWithRelations)
 
         //mandar para uma rota para escolher o dono desse recibo, para mandar o email
         // mandar email do recibo no futuro

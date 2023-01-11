@@ -9,24 +9,35 @@ import { Donation } from "../../../../../modules/donations/entities/donation";
 import formatToBRL from "../../../../../../utils/formatToBRL";
 import extenso from "extenso"
 import moment from "moment"
+import { AppError } from "../../../../errors/AppError";
 
 
 
 
 class PDF_LIBFileProvider implements IFileProvider {
 
-    async createFile(templatePath: string, data: Donation) {
+    async createFile(data: Donation): Promise<Uint8Array> {
 
+
+        console.log(data)
+        if (!data.donation_number){
+            throw new AppError("Doação nao encontrada", 404)
+        }
+        
         const doc = await PDFDocument.create()
-
+        
+        //config de impressao
         doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault)
-
+        
+        //pega a fonte
         doc.registerFontkit(fontkit)
-
+        
         const fontBuffer = fs.readFileSync("./fonts/Roustel.ttf")
-
+        
         const font = await doc.embedFont(fontBuffer)
         
+        //pega o template
+        const templatePath = `./templates/${data.ngo.name}_template.jpg` //template do recibo
 
         const uint8Array = fs.readFileSync(templatePath) // le o tamplate do recibo
 
@@ -244,7 +255,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         return pdfBytes
     }
 
-    async createBead(data: Donation[]){
+    async createBead(data: Donation[]): Promise<Uint8Array> {
 
         const doc = await PDFDocument.create()
 
@@ -264,9 +275,26 @@ class PDF_LIBFileProvider implements IFileProvider {
             let filename = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
     // fazer error handling para arquivos que nao existirem
-            
-            const receitpPdf = fs.readFileSync(`${dir}/${filename}`)
 
+            let receitpPdf: Uint8Array | ArrayBuffer
+            if(fs.existsSync(`${dir}/${filename}`)){
+
+                receitpPdf = fs.readFileSync( `${dir}/${filename}`)
+
+            }else{
+                
+                receitpPdf = await this.createFile(donation)
+                // receitpPdf = await this.createFile(donation).then(
+                // (value) => {
+                //     return Promise.resolve(value)
+                // },
+                // (err)=> {
+                //     throw new AppError(err, 500)
+                // }
+                // )
+                
+                    
+            }
             
     
             // sera que vai
@@ -327,32 +355,37 @@ class PDF_LIBFileProvider implements IFileProvider {
             index ++
 
             return page
-
+                
         })
  
-
+     
         const pages = await Promise.all(promises)
 
         doc.embedPages(pages)
 
-        const pdf = await doc.save()
+        const pdfBytes = await doc.save()
 
 
         //salva
         let dir = `./tmp/print/${data[0].ngo.name}`
         
         let filename = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
-       
+    
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true })
         }
 
-        fs.writeFile(`${dir}/${filename}`, pdf,
+        fs.writeFile(`${dir}/${filename}`, pdfBytes,
             (err) => {
                 if (err) throw err
             }) 
 
+
+            
+        return pdfBytes
     }
+
+       
 
 }
 

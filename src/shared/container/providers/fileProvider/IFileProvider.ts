@@ -3,8 +3,8 @@ import { Donation } from "../../../../modules/donations/entities/donation"
 
 interface IFileProvider {
 
-    createFile(templatePath: string, data: Donation/*dataCallback: Function, endCallback: Function*/)
-    createBead(data: Donation[])
+    createFile(data: Donation): Promise<Uint8Array>
+    createBead(data: Donation[]): Promise<Uint8Array>
 }
 
 export { IFileProvider }
