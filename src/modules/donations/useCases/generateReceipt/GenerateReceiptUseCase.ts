@@ -50,7 +50,7 @@ class GenerateReceiptUseCase {
 
         donation.payed_at = this.dateProvider.formatDate(donation.payed_at, "DD/MM/YYYY")
 
-        const pdfBytes = await this.fileProvider.createFile(templatePath, donation)
+        const pdfBytes = await this.fileProvider.createFile(donation)
 
         const buffer = Buffer.from(pdfBytes)
 

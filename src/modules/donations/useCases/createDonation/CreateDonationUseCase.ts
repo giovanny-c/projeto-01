@@ -23,6 +23,12 @@ interface IRequest {
     
 }
 
+
+interface IResponse {
+    donation: Donation,
+    file: string
+    file_name: string
+}
 @injectable()
 class CreateDonationUseCase {
 
@@ -46,7 +52,7 @@ class CreateDonationUseCase {
         private fileProvider: IFileProvider,
     ) { }
 
-    async execute({ ngo_id, donor_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<Donation> {
+    async execute({ ngo_id, donor_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<IResponse> {
 
 //TESTAR
 
@@ -108,15 +114,18 @@ class CreateDonationUseCase {
         //format para ISO
         donationWithRelations.payed_at = this.dateProvider.formatDate(donation.created_at, "YYYY/MM/DD")
 
-        await this.fileProvider.createFile(donationWithRelations)
+        const pdfBytes = await this.fileProvider.createFile(donationWithRelations)
 
+    
+        const buffer = Buffer.from(pdfBytes)
+
+        return  {
+            donation: donationWithRelations,
+            file: buffer.toString("base64"),
+            file_name: `recibo_${donationWithRelations.ngo.name}_${donation.donor_name}_${donation.donation_number}.pdf`
+        }
         //mandar para uma rota para escolher o dono desse recibo, para mandar o email
         // mandar email do recibo no futuro
-
-        //const buffer = Buffer.from(pdfBytes)
-
-        return donationWithRelations
-
     }
 
 }

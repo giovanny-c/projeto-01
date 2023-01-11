@@ -34,7 +34,7 @@ class GenerateBeadUseCase {
             ngo_id
         })  
 
-        console.log(donations[0])
+        
 
         await this.fileProvider.createBead(donations)
 

@@ -7,11 +7,20 @@
     <link rel="stylesheet" href="/styles/index.css">
     <title>Document</title>
 </head>
+
+
 <body>
 
-    <a href="data:application/pdf;base64,{{document.file}}" download="recibo{{document.name}}.pdf">Baixar Recibo</a> 
+    <p>
+        N°:{{response.donation.donation_number}}
+        Valor: {{response.donation.donation_value}}
+
+    </p>
+
+
+    <a href="data:application/pdf;base64,{{response.file}}" download="{{response.file_name}}">Baixar Recibo</a> 
     {# <script>
-        const downloadLink = document.getElement('a');
+        const downloadLink = response.getElement('a');
     
         downloadLink.click();
     </script> #}
@@ -21,7 +30,7 @@
     {% if condition %}
         
     {% endif %} #}
-    <iframe name="recibo" src="data:application/pdf;base64,{{document.file}}"></iframe>
+    <iframe name="recibo" src="data:application/pdf;base64,{{response.file}}"></iframe>
 </body>
 
 </html>

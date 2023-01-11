@@ -19,7 +19,7 @@ class PDF_LIBFileProvider implements IFileProvider {
     async createFile(data: Donation): Promise<Uint8Array> {
 
 
-        console.log(data)
+      
         if (!data.donation_number){
             throw new AppError("Doação nao encontrada", 404)
         }
@@ -257,6 +257,12 @@ class PDF_LIBFileProvider implements IFileProvider {
 
     async createBead(data: Donation[]): Promise<Uint8Array> {
 
+        if(!data[0].donation_number){
+            
+            throw new AppError("Doação nao encontrada", 404)
+            
+        }
+
         const doc = await PDFDocument.create()
 
         //doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault)
@@ -277,31 +283,22 @@ class PDF_LIBFileProvider implements IFileProvider {
     // fazer error handling para arquivos que nao existirem
 
             let receitpPdf: Uint8Array | ArrayBuffer
-            if(fs.existsSync(`${dir}/${filename}`)){
 
-                receitpPdf = fs.readFileSync( `${dir}/${filename}`)
-
-            }else{
-                
-                receitpPdf = await this.createFile(donation)
-                // receitpPdf = await this.createFile(donation).then(
-                // (value) => {
-                //     return Promise.resolve(value)
-                // },
-                // (err)=> {
-                //     throw new AppError(err, 500)
-                // }
-                // )
-                
-                    
-            }
+            try {
+                receitpPdf = fs.readFileSync(`${dir}/${filename}`)
             
+            } catch (error) {
+                
+                if(error){
+
+                    receitpPdf = await this.createFile(donation)
+            
+                }
+                
+            }
     
-            // sera que vai
             const [receipt] = await doc.embedPdf(receitpPdf, [0])
-            // para pegar o arquivo fim //
-              
-            //se for 1 cria uma pagina
+          
             if(index === 1){
         
                   doc.addPage()
@@ -342,7 +339,7 @@ class PDF_LIBFileProvider implements IFileProvider {
                 thickness: 0.1
             })
 
-            
+        
             //se chegar a 3 acabou a pagina 
             if(index === 3){
                 index = index - 3  
@@ -359,6 +356,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         })
  
      
+
         const pages = await Promise.all(promises)
 
         doc.embedPages(pages)

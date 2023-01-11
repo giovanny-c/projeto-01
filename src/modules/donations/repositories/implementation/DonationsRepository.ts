@@ -73,6 +73,7 @@ class DonationsRepository implements IDonationsRepository {
         .select(["donations","workers","donors","ngos"])
         .where("donations.ngo_id = :ngo_id", {ngo_id})
         .andWhere(`donations.donation_number BETWEEN ${donation_number_interval[0]} AND ${donation_number_interval[1]} `)
+        .orderBy("donations.donation_number", "ASC")
         .getMany()
 
     }
