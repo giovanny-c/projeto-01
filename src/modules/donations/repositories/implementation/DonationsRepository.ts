@@ -1,3 +1,4 @@
+import { query } from "express";
 import { Between, FindOptionsOrderValue, ILike, QueryBuilder, Repository } from "typeorm";
 import { dataSource } from "../../../../database";
 import { Donor } from "../../../donor/entities/donor";
@@ -42,7 +43,7 @@ class DonationsRepository implements IDonationsRepository {
 
     }
 
-    async countDonationsValues(worker_id: string, { startDate, endDate, donation_number_interval }: IFindOptions) {
+    async countDonationsValues(worker_id: string, { startDate, endDate, donation_number_interval }: IFindOptions): Promise<[Donation[], number]> {
         
         let query = await this.repository.createQueryBuilder("donations")
         .leftJoin("donations.worker", "workers")
@@ -61,6 +62,7 @@ class DonationsRepository implements IDonationsRepository {
             query = query.andWhere("donations.worker_id = :worker_id", {worker_id})
         }
 
+        return query.getManyAndCount()
     }
 
     async findForGenerateBead({ donation_number_interval, ngo_id }: IFindOptions): Promise<Donation[]> {
@@ -76,50 +78,20 @@ class DonationsRepository implements IDonationsRepository {
     }
 
     //REFAZER COM QUERY BUILDER
-    async findDonationsBy({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
+    async findDonationsBy({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<[Donation[], number]> {
         // buscar tbm por is payed or is_canceled
-        let query = `select donations.*,
-         donors.name as donor, 
-         workers.name as worker 
-         from donations
-         left join donors on donations.donor_id = donors.id
-         left join workers on donations.worker_id = workers.id `
+        let query = await this.repository.createQueryBuilder("donations")
+        .leftJoinAndSelect("donations.worker", "workers")
+        .leftJoinAndSelect("donations.donor", "donors")
+        .leftJoinAndSelect("donations.ngo", "ngos")
+        .select(["donations","workers","donors","ngos"])
+        .where("")
 
-        if (value) {//se tiver valor
-            query += `where donors.name ilike '%${value}%' `
-
-            if (startDate && endDate) { // se tiver datas, junta com o 1 valor
-                query += `and donations.created_at between '${startDate}' and '${endDate}' `
-            }
-
-            //poe o segundo parametro de valor
-            query += `or 
-                      workers.name ilike '%${value}%' `
-
-            if (startDate && endDate) { // junta com o segundo valor
-                query += `and donations.created_at between '${startDate}' and '${endDate}' `
-            }
-        }
-
-        if (!value && (startDate && endDate)) { //se nao tiver valor mas tiver datas
-
-            query += ` where donations.created_at between '${startDate}' and '${endDate}' `
-        }
+        //continuar amanha
 
 
-        if (orderBy) {
-            query += `order by donations.created_at ${orderBy} `
-        }
-
-        if (limit) {
-            query += `limit ${limit} `
-        }
-
-        if (offset) {
-            query += `offset ${offset} `
-        }
-
-        const results = await this.repository.query(query)
+        return query.getManyAndCount()
+        
 
         // `select donations.*, 
         // donors.name as donor, 
@@ -134,72 +106,7 @@ class DonationsRepository implements IDonationsRepository {
         // limit 10
         // offset 0`
 
-
-        // const results = await this.repository.find({
-
-        //     relations: {
-        //         user: true,
-        //         donor: true,
-        //         worker: true
-        //     },
-        //     select: {
-
-        //         donor: {
-        //             name: true,
-        //             email: true
-        //         },
-
-        //         user: {
-        //             name: true
-        //         },
-        //         worker: {
-        //             name: true
-        //         }
-
-
-
-        //     },
-
-        //     where: [//colchete no where = OR 
-
-        //         //chaves na coluna ou relaçao = OR
-
-        //         {
-        //             donor: [
-        //                 { name: ILike(`%${value}%`) },
-        //                 //OR 
-        //                 { email: ILike(`%${value}%`) }
-        //             ],
-        //             //AND
-        //             created_at: Between(startDate, endDate)
-        //         },
-        //         //OR
-        //         {
-        //             worker: [
-        //                 { name: ILike(`%${value}%`) }
-        //             ],
-        //             created_at: Between(startDate, endDate)
-        //         },
-        //         {
-        //             user: [
-        //                 { name: ILike(`%${value}%`) },
-        //             ],
-        //             created_at: Between(startDate, endDate),
-
-        //         },
-
-        //     ],
-        //     order: {
-        //         created_at: orderBy as FindOptionsOrderValue
-        //     },
-        //     skip: offset,
-        //     take: limit
-        //     
-        //     
-
-        // })
-
-        return results
+        
     }
 
     async findOneById(value: string): Promise<Donation> {
@@ -233,7 +140,7 @@ class DonationsRepository implements IDonationsRepository {
     }
     
     async findDonationsByWorker(worker_id: string, { orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
-
+        //FAZER COM QUERYBUILDER E GET MANY AND COUNT
         let query = `select donations.*
          from donations
          left join workers on donations.worker_id = workers.id

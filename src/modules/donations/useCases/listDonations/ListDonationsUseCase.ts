@@ -59,7 +59,7 @@ class ListDonationsUseCase {
             offset,
             startDate: startD,
             endDate: endD
-        })
+        })[0]
 
 
     }
