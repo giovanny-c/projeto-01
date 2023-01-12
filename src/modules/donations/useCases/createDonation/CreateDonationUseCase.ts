@@ -114,7 +114,7 @@ class CreateDonationUseCase {
         //format para ISO
         donationWithRelations.payed_at = this.dateProvider.formatDate(donation.created_at, "YYYY/MM/DD")
 
-        const pdfBytes = await this.fileProvider.createFile(donationWithRelations)
+        const pdfBytes = await this.fileProvider.createFile(donationWithRelations, true)
 
     
         const buffer = Buffer.from(pdfBytes)

@@ -65,7 +65,7 @@ class DonationsRepository implements IDonationsRepository {
         return query.getManyAndCount()
     }
 
-    async findForGenerateBead({ donation_number_interval, ngo_id }: IFindOptions): Promise<Donation[]> {
+    async findForGenerateBooklet({ donation_number_interval, ngo_id }: IFindOptions): Promise<Donation[]> {
         return await this.repository.createQueryBuilder("donations")
         .leftJoinAndSelect("donations.worker", "workers")
         .leftJoinAndSelect("donations.donor", "donors")

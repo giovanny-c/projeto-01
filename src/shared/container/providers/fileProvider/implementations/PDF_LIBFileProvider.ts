@@ -1,4 +1,4 @@
-import { PDFDocument, PrintScaling, rgb } from "pdf-lib"
+import { PDFDocument, PDFFont, PDFImage, PrintScaling, rgb } from "pdf-lib"
 import fontkit from "@pdf-lib/fontkit"
 import fs from "fs"
 
@@ -16,11 +16,18 @@ import { AppError } from "../../../../errors/AppError";
 
 class PDF_LIBFileProvider implements IFileProvider {
 
-    async createFile(data: Donation): Promise<Uint8Array> {
+    private createReceiptMethods = {
+
+        GRAPECC: this.createReciptForGrapecc,
+        GOTA: ""
+
+    }
+
+    async createFile(donation: Donation, saveFile: boolean): Promise<Uint8Array> {
 
 
       
-        if (!data.donation_number){
+        if (!donation.donation_number){
             throw new AppError("Doação nao encontrada", 404)
         }
         
@@ -37,19 +44,151 @@ class PDF_LIBFileProvider implements IFileProvider {
         const font = await doc.embedFont(fontBuffer)
         
         //pega o template
-        const templatePath = `./templates/${data.ngo.name}_template.jpg` //template do recibo
+        const templatePath = `./templates/${donation.ngo.name}_template.jpg` //template do recibo
 
         const uint8Array = fs.readFileSync(templatePath) // le o tamplate do recibo
 
-
         const templatePNG = await doc.embedJpg(uint8Array) //poe o template no pdf
 
+        //vai chamar o metodo de criação de pdf dinamicamente
+
+        const createReceipt = this.createReceiptMethods
+        
+        const pdfBytes = await createReceipt[donation.ngo.name](doc, donation, saveFile, templatePNG, font)
+        
+        return  pdfBytes
+
+       
+    }
+
+    async createBooklet(data: Donation[]): Promise<Uint8Array> {
+
+        if(!data[0].donation_number){
+            
+            throw new AppError("Doação nao encontrada", 404)
+            
+        }
+
+        const doc = await PDFDocument.create()
+
+        //doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault)
+
+
+        let pageIndex = 0
+        let index = 1
+
+        const promises = data.map(async(donation) => {
+            //para pegar o arquivo
+            
+
+            const {dia, mes, ano} = this.getFormatedDateForReceipt(donation.created_at)
+               
+            let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+            let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
+
+    // fazer error handling para arquivos que nao existirem
+
+            let receitpPdf: Uint8Array | ArrayBuffer
+
+            try {
+                receitpPdf = fs.readFileSync(`${dir}/${file_name}`)
+            
+            } catch (error) {
+                
+                if(error){
+
+                    receitpPdf = await this.createFile(donation, true)
+                    
+                 
+                }
+                
+            }
+    
+            const [receipt] = await doc.embedPdf(receitpPdf, [0])
+          
+            if(index === 1){
+        
+                  doc.addPage()
+                
+            }
+            
+            //pega a pagina atual
+            let page = doc.getPage(pageIndex)
+
+            //page.setSize(receipt.width, receipt.height * 3)
+            
+            const y = page.getHeight() - receipt.height * index //posição y
+            
+            //coloca a img no pdf
+            page.drawPage(receipt, {
+    
+                y,
+                x: 0,
+                width: page.getWidth() - 50
+            })
+
+            // if(donation.is_donation_canceled){
+
+            //     page.drawText("CANCELADO", {
+            //         y: y + receipt.height / 3,
+            //         x: receipt.width - (receipt.width - 60),
+            //         color: rgb(0.95, 0.1, 0.1),
+            //         size: 74,
+    
+            //     })
+            // }
+
+            page.drawLine({
+                start: {x:0 ,y: y + 0.5},
+                end: {x:page.getWidth(), y: y + 0.5 },
+                color: rgb(0.5, 0.5, 0.5),
+                lineCap: 1,
+                thickness: 0.1
+            })
+
+        
+            //se chegar a 3 acabou a pagina 
+            if(index === 3){
+                index = index - 3  
+                pageIndex ++
+            
+                
+            }
+
+            
+            index ++
+
+            return page
+                
+        })
+ 
+     
+
+        const pages = await Promise.all(promises)
+
+        doc.embedPages(pages)
+
+        const pdfBytes = await doc.save()
+
+        //salva
+        let dir = `./tmp/print/${data[0].ngo.name}`
+        
+        let file_name = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
+    
+        this.saveReceipt(dir, file_name, pdfBytes)
+            
+        return pdfBytes
+    }
+
+
+    async createReciptForGrapecc(doc: PDFDocument, donation: Donation, saveFile: boolean, templatePng: PDFImage, font?: PDFFont): Promise<Uint8Array>{
+        
         const page = doc.addPage()
 
         // page.setRotation(degrees(90))
         page.setSize( 800, 365 )
 
-        page.drawImage(templatePNG, { //"desenha" a imagem
+        page.drawImage(templatePng, { //"desenha" a imagem
             y: 0,
             x: 40,
             width: 800, //*0.75?
@@ -58,7 +197,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         })
 
         //numero da doaçao
-        page.drawText(data.donation_number.toString(), {
+        page.drawText(donation.donation_number.toString(), {
             y: 229,//*0.75?
             x: 200,//*0.75?
             // rotate: degrees(90),
@@ -68,7 +207,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         })
 
 
-        let [ , valor] = formatToBRL(data.donation_value as number).toString().split("$")
+        let [ , valor] = formatToBRL(donation.donation_value as number).toString().split("$")
 
         //valor numerico
         page.drawText(valor, {
@@ -84,9 +223,9 @@ class PDF_LIBFileProvider implements IFileProvider {
 
 //se terminar em a e i o u nao seguido de n m r s z o e
 
-        let nomeArray: string[] = data.donor_name.match(/.{1,56}\b/g)
+        let nomeArray: string[] = donation.donor_name.match(/.{1,56}\b/g)
         if(font){
-            nomeArray = data.donor_name.match(/.{1,56}\b/g)
+            nomeArray = donation.donor_name.match(/.{1,56}\b/g)
         }
         //nome
         
@@ -153,14 +292,11 @@ class PDF_LIBFileProvider implements IFileProvider {
         }
 
 
-       
-        
-
-
         //data do recibo 
         
-        const date = moment(data.created_at).locale("pt-br").format("DD MMMM YY")
-        const [dia, mes, ano] = date.split(" ")
+        let {dia, mes ,ano} = this.getFormatedDateForReceipt(donation.created_at)
+
+
         let mesUpper = mes.at(0).toUpperCase() + mes.substring(1)
 
         page.drawText(dia, {
@@ -210,7 +346,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         })
 
 //workwe
-        page.drawText(data.worker.name, {
+        page.drawText(donation.worker.name, {
             y: 16,
             x: 95,
             size: 20,
@@ -219,13 +355,13 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         })
 
-        if(data.is_donation_canceled){
+        if(donation.is_donation_canceled){
 
             page.drawText("CANCELADO", {
                 y: page.getHeight() / 3,
-                x: page.getWidth() - (page.getWidth() - 60),
+                x: page.getWidth() - (page.getWidth() - 86),
                 color: rgb(0.95, 0.1, 0.1),
-                size: 74,
+                size: 110,
 
             })
         }
@@ -240,149 +376,41 @@ class PDF_LIBFileProvider implements IFileProvider {
 
        //const dir = resolve(__dirname, "..", "tmp", "receipts", "")
         
-        let dir = `./tmp/receipts/${data.ngo.name}/${ano}/${mes}`
-        let filename = `${data.donor_name}_${dia}_${data.donation_number}_${data.id}.pdf`
+       if(saveFile){
+        let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+        let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
+
+        this.saveReceipt(dir, file_name, pdfBytes)
+    }
+    
+
+        return pdfBytes
+    }
+
+    saveReceipt(dir: string, file_name:string, file: Uint8Array ): void{
+       
 
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true })
         }
 
-        fs.writeFile(`${dir}/${filename}`, pdfBytes,
+        fs.writeFile(`${dir}/${file_name}`, file,
             (err) => {
                 if (err) throw err
-            }) 
+        })  
 
-        return pdfBytes
     }
 
-    async createBead(data: Donation[]): Promise<Uint8Array> {
-
-        if(!data[0].donation_number){
-            
-            throw new AppError("Doação nao encontrada", 404)
-            
+    getFormatedDateForReceipt(date: Date){
+       
+        const [dia, mes, ano] =  moment(date).locale("pt-br").format("DD MMMM YY").split(" ")
+        
+        return {
+            dia,
+            mes,
+            ano
         }
-
-        const doc = await PDFDocument.create()
-
-        //doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault)
-
-
-        let pageIndex = 0
-        let index = 1
-
-        const promises = data.map(async(donation) => {
-            //para pegar o arquivo
-            
-
-            const [dia, mes, ano] = moment(donation.created_at).locale("pt-br").format("DD MMMM YY").split(" ")
-               
-            let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
-            let filename = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
-
-    // fazer error handling para arquivos que nao existirem
-
-            let receitpPdf: Uint8Array | ArrayBuffer
-
-            try {
-                receitpPdf = fs.readFileSync(`${dir}/${filename}`)
-            
-            } catch (error) {
-                
-                if(error){
-
-                    receitpPdf = await this.createFile(donation)
-            
-                }
-                
-            }
-    
-            const [receipt] = await doc.embedPdf(receitpPdf, [0])
-          
-            if(index === 1){
-        
-                  doc.addPage()
-                
-            }
-            
-            //pega a pagina atual
-            let page = doc.getPage(pageIndex)
-
-            //page.setSize(receipt.width, receipt.height * 3)
-            
-            const y = page.getHeight() - receipt.height * index //posição y
-            
-            //coloca a img no pdf
-            page.drawPage(receipt, {
-    
-                y,
-                x: 0,
-                width: page.getWidth() - 50
-            })
-
-            if(donation.is_donation_canceled){
-
-                page.drawText("CANCELADO", {
-                    y: y + receipt.height / 3,
-                    x: receipt.width - (receipt.width - 60),
-                    color: rgb(0.95, 0.1, 0.1),
-                    size: 74,
-    
-                })
-            }
-
-            page.drawLine({
-                start: {x:0 ,y: y + 0.5},
-                end: {x:page.getWidth(), y: y + 0.5 },
-                color: rgb(0.5, 0.5, 0.5),
-                lineCap: 1,
-                thickness: 0.1
-            })
-
-        
-            //se chegar a 3 acabou a pagina 
-            if(index === 3){
-                index = index - 3  
-                pageIndex ++
-            
-                
-            }
-
-            
-            index ++
-
-            return page
-                
-        })
- 
-     
-
-        const pages = await Promise.all(promises)
-
-        doc.embedPages(pages)
-
-        const pdfBytes = await doc.save()
-
-
-        //salva
-        let dir = `./tmp/print/${data[0].ngo.name}`
-        
-        let filename = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
-    
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true })
-        }
-
-        fs.writeFile(`${dir}/${filename}`, pdfBytes,
-            (err) => {
-                if (err) throw err
-            }) 
-
-
-            
-        return pdfBytes
     }
-
        
 
 }

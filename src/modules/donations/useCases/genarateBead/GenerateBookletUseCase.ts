@@ -11,7 +11,7 @@ interface IRequest {
 
 
 @injectable()
-class GenerateBeadUseCase {
+class GenerateBookletUseCase {
 
     constructor(
         @inject("FileProvider")
@@ -29,17 +29,17 @@ class GenerateBeadUseCase {
             throw new AppError("O numero inicial deve ser menor que o numero final", 400)
         }
 
-        const donations = await this.donationsRepository.findForGenerateBead({
+        const donations = await this.donationsRepository.findForGenerateBooklet({
             donation_number_interval: [first_number, last_number],
             ngo_id
         })  
 
         
 
-        await this.fileProvider.createBead(donations)
+        await this.fileProvider.createBooklet(donations)
 
 
     }
 }
 
-export {GenerateBeadUseCase}
+export {GenerateBookletUseCase}
