@@ -1,0 +1,47 @@
+{% extends "views/layout.njk" %}
+
+{% block head %}
+    
+    <title>Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+    
+   
+        <div class="ngos">Instituições</div>
+
+            
+        <div class="ngos-grid">
+
+            {% for ngo in ngos %}
+                
+               <!-- <img src="{{ngo.image}}" alt="Imagem de Instituição">
+                -->
+                
+                <div class="index-ngo">
+                    <a href="/doacao/instituicao/listagem">
+                        <div class="ngo_info">
+
+                        
+
+                            <div class="ngo_name">{{ngo.name}}</div>
+
+                            <div class="ngo_full_name">{{ngo.full_name}}</div>
+                        
+                        </div>
+                    </a>
+                </div>
+            
+            {% endfor %}
+
+
+        </div>
+
+        
+
+
+        <script src="/scripts/scripts.js"></script>
+            
+
+{% endblock %}

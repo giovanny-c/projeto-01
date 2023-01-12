@@ -25,7 +25,7 @@ class CreateDonationController {
             payed_at, 
         })
 
-        return res.status(201).render("donations/donationReceipt", { response })
+        return res.status(201).render("views/donations/donationReceipt", { response })
 
     }
 }

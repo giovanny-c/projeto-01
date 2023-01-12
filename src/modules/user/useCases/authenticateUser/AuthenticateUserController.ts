@@ -5,7 +5,7 @@ import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase";
 
 class AuthenticateUserController {
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
         const { name, password } = req.body
 
@@ -16,7 +16,7 @@ class AuthenticateUserController {
         req.session.user = response.user
         req.session.created_at = response.created_at
 
-        return res.json({"session": req.session})
+        return res.redirect("/doacao/instituicao/listagem")
     }
 
 

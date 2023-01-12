@@ -39,30 +39,30 @@ const generateBookletController = new GenerateBookletController()
 //importa os doadores
 //importa doaçoes
 
-donationRoutes.post("/import", ensureAuthenticated, upload.single("file"), importDonationsController.handle)
+donationRoutes.post("/importar", ensureAuthenticated, upload.single("file"), importDonationsController.handle)
 
 
 
 //
 // donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationStatusController.handle)
 
-donationRoutes.post("/create", ensureAuthenticated, createDonationController.handle)//cria a donation
-donationRoutes.post("/cancel-donation/:id", ensureAuthenticated, cancelDonationController.handle)
-
-donationRoutes.get("/list", ensureAuthenticated, listDonationsController.handle)
+donationRoutes.post("/criar", ensureAuthenticated, createDonationController.handle)//cria a donation
+donationRoutes.get("/listar", ensureAuthenticated, listDonationsController.handle)
+donationRoutes.post("/cancelar-doacao/:id", ensureAuthenticated, cancelDonationController.handle)
 donationRoutes.get("/:id", /*ensureAuthenticated,*/getDonationController.handle)
 //donationRoutes.get("/receipt/:id", generateReceiptController.handle)
 
 //cria a ong
-donationRoutes.post("/ngo/create/", ensureAuthenticated, createNgoController.handle)//cria a donation
+donationRoutes.post("/instituicao/criar", ensureAuthenticated, createNgoController.handle)
+
 //acha as ongs
-donationRoutes.get("/ngo/list/", ensureAuthenticated, findAllNgosController.handle)//cria a donation
+donationRoutes.get("/instituicao/listagem", ensureAuthenticated, findAllNgosController.handle)
 
 
-donationRoutes.get("/ngo/create-booklet", ensureAuthenticated, generateBookletController.handle)
+donationRoutes.get("/instituicao/:id/gerar-talao", ensureAuthenticated, generateBookletController.handle)
 
 //altera numero doação
-donationRoutes.post("/ngo/donation_counter/set", ensureAuthenticated, setDonationCounterController.handle)//cria a donation
+donationRoutes.post("/instituicao/:id/contador/definir", ensureAuthenticated, setDonationCounterController.handle)
 
 
 //

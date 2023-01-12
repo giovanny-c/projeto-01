@@ -13,9 +13,9 @@ const authenticateUserController = new AuthenticateUserController()
 const sendForgotPasswordController = new SendForgotPasswordController()
 
 
-userRoutes.post("/", createUserController.handle)
+userRoutes.post("/criar", createUserController.handle)
 
-userRoutes.post("/sessions", authenticateUserController.handle)
+userRoutes.post("/sessao", authenticateUserController.handle)
 
 userRoutes.post("/forgot", sendForgotPasswordController.handle)
 

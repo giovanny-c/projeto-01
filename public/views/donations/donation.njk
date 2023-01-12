@@ -1,0 +1,23 @@
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+   
+    <title>Doação nº {{donation.donation_number}}</title>
+
+{% endblock %}
+
+{% block content %}
+
+    <p>
+        N°:{{donation.donation_number}}
+        Valor: {{donation.donation_value}}
+
+    </p>
+
+    <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a>
+
+{% endblock %}  
+
+

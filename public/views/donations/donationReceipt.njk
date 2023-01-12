@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {# <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> #}
+{% extends "views/layout.njk" %}
+
+
+
+{% block head %}
     <link rel="stylesheet" href="/styles/index.css">
     <title>Document</title>
-</head>
+{% endblock %}   
 
-
-<body>
-
+{% block content %}
     <p>
         N°:{{response.donation.donation_number}}
         Valor: {{response.donation.donation_value}}
@@ -31,6 +28,4 @@
         
     {% endif %} #}
     <iframe name="recibo" src="data:application/pdf;base64,{{response.file}}"></iframe>
-</body>
-
-</html>
+{% endblock %}   

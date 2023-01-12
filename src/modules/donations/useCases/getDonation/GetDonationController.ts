@@ -15,7 +15,7 @@ class GetDonationController {
         const donation = await getDonationUseCase.execute(id)
 
 
-        return res.status(200).render("donations/donation", { donation })
+        return res.status(200).render("views/donations/donation", { donation })
     }
 }
 

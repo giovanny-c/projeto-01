@@ -16,7 +16,7 @@ class GenerateReceiptController {
 
         const document = await generateReceiptUseCase.execute(id, res)
 
-        return res.status(201).render("donations/donationReceipt", { document })
+        return res.status(201).render("views/donations/donationReceipt", { document })
 
     }
 }
