@@ -19,19 +19,19 @@
                <!-- <img src="{{ngo.image}}" alt="Imagem de Instituição">
                 -->
                 
-                <div class="index-ngo">
-                    <a href="/doacao/instituicao/listagem">
-                        <div class="ngo_info">
+            
+                <a class="index-ngo"href="/doacao/instituicao/{{ngo.id}}">
+                    <div class="ngo_info">
 
-                        
+                    
 
-                            <div class="ngo_name">{{ngo.name}}</div>
+                        <div class="ngo_name">{{ngo.name}}</div>
 
-                            <div class="ngo_full_name">{{ngo.full_name}}</div>
-                        
-                        </div>
-                    </a>
-                </div>
+                        <div class="ngo_full_name">{{ngo.full_name}}</div>
+                    
+                    </div>
+                </a>
+               
             
             {% endfor %}
 

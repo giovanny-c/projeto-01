@@ -5,24 +5,41 @@ iframe {
 
 .index-ngo {
 
-    background-color: cadetblue;
-    color: rgba(0, 0, 0, 0.03);
+    align-self: center;
+    align-items: center;
+    background-color: rgb(58, 112, 182);
     border-radius: 4px;
     box-shadow: 2px;
+    text-decoration: none;
+    margin-right: 24px;
+    width: 0.90fr;
+    height: 0.90fr
+}
 
+.index-ngo a:hover {
+    color: rgb(246, 246, 248);
+    border-bottom: 1px solid rgb(218, 225, 230);
+}
+
+.ngo_name,
+.ngo_full_name {
+    margin: 6px;
+    text-align: left;
+    border: 5px;
+    text-decoration: none;
 }
 
 /* -------------presentantion--------------- */
 
-.presentation {
+.ngos-grid {
 
-    width: 940px;
-    height: 360px;
+    width: 800px;
+    height: 240px;
     margin: 0 auto;
-    background-color: rgba(251, 223, 219, 1);
-    border-radius: 30px;
+    background-color: rgb(193, 204, 219);
+    border-radius: 4px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 0.90fr;
 
 
 }

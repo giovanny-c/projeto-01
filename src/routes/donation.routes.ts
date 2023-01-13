@@ -10,6 +10,7 @@ import { FindAllNgosController } from "../modules/donations/useCases/findAllNgos
 import { GenerateBookletController } from "../modules/donations/useCases/genarateBead/GenerateBookletController";
 import { GenerateReceiptController } from "../modules/donations/useCases/generateReceipt/GenerateReceiptController";
 import { GetDonationController } from "../modules/donations/useCases/getDonation/GetDonationController";
+import { GetNgoController } from "../modules/donations/useCases/getNgo/GetNgoController";
 import { ImportDonationsController } from "../modules/donations/useCases/importDonations/ImportDonationsController";
 import { ListDonationsController } from "../modules/donations/useCases/listDonations/ListDonationsController";
 import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
@@ -35,6 +36,7 @@ const createNgoController = new CreateNgoController()
 const findAllNgosController = new FindAllNgosController() 
 const setDonationCounterController = new SetDonationCounterController()
 const generateBookletController = new GenerateBookletController()
+const getNgoController = new GetNgoController()
 
 //importa os doadores
 //importa doaçoes
@@ -59,6 +61,10 @@ donationRoutes.post("/instituicao/criar", ensureAuthenticated, createNgoControll
 donationRoutes.get("/instituicao/listagem", ensureAuthenticated, findAllNgosController.handle)
 
 
+//pagina da ong
+donationRoutes.get("/instituicao/:id", ensureAuthenticated, getNgoController.handle)
+
+//gerar talao
 donationRoutes.get("/instituicao/:id/gerar-talao", ensureAuthenticated, generateBookletController.handle)
 
 //altera numero doação
