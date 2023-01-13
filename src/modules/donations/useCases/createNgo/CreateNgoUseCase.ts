@@ -8,7 +8,7 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 interface IRequest {
     name: string
     full_name: string
-    
+    alias: string
 }
 
 @injectable()
@@ -21,7 +21,7 @@ class CreateNgoUseCase {
         private ngoRepository: INgoRepository,
     ) { }
 
-    async execute({ full_name, name}: IRequest): Promise<Ngo> {
+    async execute({ full_name, name, alias}: IRequest): Promise<Ngo> {
 
 
 
@@ -33,7 +33,7 @@ class CreateNgoUseCase {
         }
 
         
-        const ngo = await this.ngoRepository.create(name, full_name)
+        const ngo = await this.ngoRepository.create(name, full_name, alias)
 
         return ngo  
         

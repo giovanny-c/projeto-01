@@ -9,7 +9,7 @@
 {% block content %}
     
    
-        <div class="ngos">Instituições</div>
+        <div class="page-title">Instituições</div>
 
             
         <div class="ngos-grid">
@@ -20,16 +20,13 @@
                 -->
                 
             
-                <a class="index-ngo"href="/doacao/instituicao/{{ngo.id}}">
-                    <div class="ngo_info">
-
+                <a class="index-ngo"href="/{{ngo.name}}">
                     
-
-                        <div class="ngo_name">{{ngo.name}}</div>
+                        <div class="ngo_name">{{ngo.name}}:</div>
 
                         <div class="ngo_full_name">{{ngo.full_name}}</div>
                     
-                    </div>
+                    
                 </a>
                
             

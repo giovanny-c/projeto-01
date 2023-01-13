@@ -24,9 +24,9 @@ class GetNgoUseCase {
 
     }
 
-    async execute(id: string){
+    async execute(name: string){
 
-        const ngo = await this.ngoRepository.findById(id)
+        const ngo = await this.ngoRepository.findByName(name)
 
         const ngo_donation_counter = await this.donationCounterRepository.findByNgoId(ngo.id)
 

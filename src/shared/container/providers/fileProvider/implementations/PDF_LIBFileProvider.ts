@@ -50,7 +50,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //vai chamar o metodo de criação de pdf dinamicamente
 
-        const reciptProvider = new createReceiptMethods["GRAPECC"]
+        const reciptProvider = new createReceiptMethods[donation.ngo.alias]
     
         const pdfBytes = await reciptProvider.createRecipt(doc, donation, saveFile, templatePNG, font)
         
@@ -69,7 +69,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const doc = await PDFDocument.create()
 
-        const reciptProvider = new createReceiptMethods["GRAPECC"]
+        const reciptProvider = new createReceiptMethods[data[0].ngo.alias]
 
         const pdfBytes = await reciptProvider.creatBooklet(doc, data)
 

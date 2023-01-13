@@ -44,22 +44,11 @@ const getNgoController = new GetNgoController()
 donationRoutes.post("/importar", ensureAuthenticated, upload.single("file"), importDonationsController.handle)
 
 
-
-//
-// donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationStatusController.handle)
-
-donationRoutes.post("/criar", ensureAuthenticated, createDonationController.handle)//cria a donation
-donationRoutes.get("/listar", ensureAuthenticated, listDonationsController.handle)
-donationRoutes.post("/cancelar-doacao/:id", ensureAuthenticated, cancelDonationController.handle)
-donationRoutes.get("/:id", /*ensureAuthenticated,*/getDonationController.handle)
-//donationRoutes.get("/receipt/:id", generateReceiptController.handle)
+//pagina inicial mostra todas as ongs
+donationRoutes.get("/", ensureAuthenticated, findAllNgosController.handle)
 
 //cria a ong
-donationRoutes.post("/instituicao/criar", ensureAuthenticated, createNgoController.handle)
-
-//acha as ongs
-donationRoutes.get("/instituicao/listagem", ensureAuthenticated, findAllNgosController.handle)
-
+donationRoutes.post("/criar", ensureAuthenticated, createNgoController.handle)
 
 //pagina da ong
 donationRoutes.get("/instituicao/:id", ensureAuthenticated, getNgoController.handle)
@@ -69,6 +58,17 @@ donationRoutes.get("/instituicao/:id/gerar-talao", ensureAuthenticated, generate
 
 //altera numero doação
 donationRoutes.post("/instituicao/:id/contador/definir", ensureAuthenticated, setDonationCounterController.handle)
+
+donationRoutes.post("/instituicao/:id/doacao/criar", ensureAuthenticated, createDonationController.handle)//cria a donation
+donationRoutes.get("/instituicao/:id/doacao/listar", ensureAuthenticated, listDonationsController.handle)
+donationRoutes.post("/instituicao/:id/doacao/cancelar-doacao/:id", ensureAuthenticated, cancelDonationController.handle)
+donationRoutes.get("/instituicao/:id/doacao/:id", ensureAuthenticated, getDonationController.handle)
+//donationRoutes.get("/receipt/:id", generateReceiptController.handle)
+
+
+// donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationStatusController.handle)
+
+
 
 
 //

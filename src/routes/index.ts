@@ -13,7 +13,7 @@ const router = Router()
 router.use(loginRoutes)
 router.use("/usuario", userRoutes)
 router.use("/doador", donorRoutes)
-router.use("/doacao", donationRoutes)
+router.use(donationRoutes)
 router.use("/funcionarios", workerRoutes)
 
 export default router

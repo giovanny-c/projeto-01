@@ -12,6 +12,9 @@ class Ngo {
     name: string
 
     @Column()
+    alias: string
+
+    @Column()
     full_name: string
     
     constructor() {

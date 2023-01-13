@@ -4,6 +4,7 @@
 <head>
     
     <link rel="stylesheet" href="/styles/index.css">
+    <link rel="stylesheet" href="/styles/header.css">
     {% block head %}{% endblock %}
 
 
@@ -15,6 +16,8 @@
    
 
     <div class="body">
+
+    {% include "views/parts/header.njk" %}
 
     {% block content %}{% endblock %}
         
