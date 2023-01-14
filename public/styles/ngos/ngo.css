@@ -12,7 +12,7 @@
 
     width: 266px;
     height: 80px;
-    background-color: rgb(56, 56, 56);
+    background-color: var(--color-theme);
     color: grey;
     border-radius: 4px;
     box-shadow: 2px 1px 4px;
@@ -21,7 +21,7 @@
 
 .ngo_actions a:hover {
 
-    background-color: rgb(95, 95, 95);
+    background-color: var(--color-hover);
 
 }
 

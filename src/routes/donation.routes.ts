@@ -62,8 +62,8 @@ donationRoutes.get("/instituicao/:id", ensureAuthenticated, getNgoController.han
 donationRoutes.get("/instituicao/:id/gerar-talao", ensureAuthenticated, generateBookletController.handle)
 
 //altera numero doação
-donationRoutes.get("/instituicao/:id/contador/", ensureAuthenticated, loadDonationCounterPageController.handle)
-donationRoutes.post("/instituicao/:id/contador/definir", ensureAuthenticated, setDonationCounterController.handle)
+donationRoutes.get("/instituicao/:id/contador/",  ensureAuthenticated,   loadDonationCounterPageController.handle)
+donationRoutes.post("/instituicao/:id/contador/definir", upload.none(), ensureAuthenticated, setDonationCounterController.handle)
 
 donationRoutes.post("/instituicao/:id/doacao/nova", ensureAuthenticated, createDonationController.handle)//cria a donation
 donationRoutes.get("/instituicao/:id/doacao/listar", ensureAuthenticated, listDonationsController.handle)

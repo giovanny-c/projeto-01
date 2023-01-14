@@ -4,6 +4,16 @@ html {
 
 }
 
+:root {
+
+
+    --color-theme: rgba(56, 56, 56, 1);
+    --color-hover: rgb(95, 95, 95);
+    --color-letters: white;
+    --color-background: ivory;
+}
+
+
 
 
 body {
@@ -32,7 +42,7 @@ a {
 }
 
 #title {
-    color: rgb(56, 56, 56);
+    color: var(--color-theme);
 
 }
 
@@ -44,7 +54,7 @@ a {
 }
 
 .sub-title {
-    color: rgb(56, 56, 56);
+    color: var(--color-theme);
     margin: 0 auto;
     width: 800px;
     font-size: 22px;

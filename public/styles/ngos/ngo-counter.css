@@ -10,11 +10,47 @@
 
 .form {
     width: 800px;
-    margin: 40px auto;
+    margin: 30px auto;
+    padding: 0px 40px;
     align-items: center;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+
 }
 
-.items {
+.item {
+    color: rgb(56, 56, 56);
+}
 
-    margin: 0px 20px;
+.item input {
+
+    width: 180px;
+    height: 32px;
+    border-radius: 4px;
+    font-size: 30px;
+    border: none;
+    color: white;
+    background-color: rgb(56, 56, 56);
+    box-shadow: 2px 1px 3px rgb(56, 56, 56);
+    text-align: center;
+    margin: 0px 10px;
+    padding: 0px;
+}
+
+.button button {
+    margin: 40px 10px;
+    width: 180px;
+    height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 4px;
+    border: 1px;
+    box-shadow: 2px 1px 3px rgb(56, 56, 56);
+}
+
+.button button:hover {
+
+    color: white;
+    background-color: rgb(56, 56, 56);
 }

@@ -11,12 +11,12 @@ class SetDonationCounterController {
 
         const { id } = req.params
         const { donation_number } = req.body
-
+        
         const setDonatoionCounter = container.resolve(SetDonationCounterUseCase)
 
         const response = await setDonatoionCounter.execute({id, new_donation_number: +(donation_number)})
 
-        return res.status(201).render("views/ngos/donation-counter", {response})
+        return res.status(201).redirect(`/instituicao/${response.ngo.id}/contador`)
 
     }
 

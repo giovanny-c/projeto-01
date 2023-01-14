@@ -14,7 +14,7 @@
 
     margin: 0 20px;
     padding: 12px;
-    background-color: rgb(56, 56, 56);
+    background-color: var(--color-theme);
     border-radius: 4px;
     border-bottom: 1px rgb(29, 29, 29);
     text-decoration: none;
@@ -26,9 +26,7 @@
 .index-ngo:hover {
 
 
-    background-color: rgb(95, 95, 95);
-
-
+    background-color: var(--color-hover)
 }
 
 .ngo_name {
@@ -38,7 +36,7 @@
 
 .ngo_name,
 .ngo_full_name {
-    color: rgb(255, 255, 255);
+    color: white;
     padding-left: 12px;
     line-height: 22px;
     text-decoration: none;
