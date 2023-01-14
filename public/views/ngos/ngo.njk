@@ -2,7 +2,7 @@
 
 {% block head %}
     
-    <title>Castanharo Telemarketing</title>
+    <title>{{ngo.name}} - Castanharo Telemarketing</title>
 
     <link rel="stylesheet" href="/styles/ngos/ngo.css">
 
@@ -12,21 +12,21 @@
     
    
         <div class="page-title">
-            <a id="title" href="/instituicao/{{response.ngo.id}}">
-                {{response.ngo.name}}
-            </a>
+        
+                {{ngo.name}}
+           
         </div>
 
-            
+        <p>{{ngo_id}}</p>
         
 
         <div class="ngo_actions">
 
-            <a href="/instituicao/{{response.ngo.id}}/contador">
+            <a href="/instituicao/{{ngo.id}}/contador">
                 <p>Definir Número do Contador</p>
             </a>
 
-            <a href="/instituicao/{{response.ngo.id}}/doacao/nova">
+            <a href="/instituicao/{{ngo.id}}/doacao/nova">
                 <p>Nova Doação</p>
             </a>
 

@@ -6,6 +6,7 @@ declare namespace Express {
             id: string
             admin?: boolean
         }
+       
         session: Session & Partial<SessionData> & CustomSessionFields
     }
 

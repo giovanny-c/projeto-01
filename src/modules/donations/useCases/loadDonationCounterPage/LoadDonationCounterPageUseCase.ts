@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 
 import { AppError } from "../../../../shared/errors/AppError";
 import { DonationCounter } from "../../entities/donation_counter";
@@ -14,7 +15,7 @@ interface IRequest {
 
 interface IResponse {
     ngo: Ngo
-    counter: DonationCounter | Partial<DonationCounter>
+    ngo_donation_counter: DonationCounter | Partial<DonationCounter>
 }
 
 @injectable()
@@ -26,19 +27,29 @@ class LoadDonationCounterPageUseCase {
         private ngoRepository: INgoRepository,
         @inject("DonationCounterRepository")
         private donationCounterRepository: IDonationCounterRepository,
+        @inject("CacheProvider")
+        private cacheProvider: ICacheProvider
 
     ) { }
 
-    async execute({ id}: IRequest): Promise<IResponse> {
+    async execute({id}: IRequest): Promise<IResponse> {
         
-        const ngo =  await this.ngoRepository.findById(id)
+        let ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${id}`))
 
-        const counter = await this.donationCounterRepository.findByNgoId(ngo.id)
+        if(!ngo.id){
+            ngo =  await this.ngoRepository.findById(id)
+
+            if(!ngo) throw new AppError("Instituição nao encontrada", 404)
+
+        }
+
+        
+        const donation_counter = await this.donationCounterRepository.findByNgoId(ngo.id)
 
 
         return  {
             ngo,
-            counter
+            ngo_donation_counter: donation_counter
         }
         
     

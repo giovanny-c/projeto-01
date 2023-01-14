@@ -16,7 +16,7 @@ class AuthenticateUserController {
         req.session.user = response.user
         req.session.created_at = response.created_at
 
-        return res.redirect("/doacao/instituicao/listagem")
+        return res.redirect("/")
     }
 
 

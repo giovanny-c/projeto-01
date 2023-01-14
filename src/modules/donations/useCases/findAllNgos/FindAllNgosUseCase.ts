@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { Ngo } from "../../entities/ngos";
 import { INgoRepository } from "../../repositories/INgoRepository";
 
@@ -9,14 +10,23 @@ class FindAllNgosUseCase {
 
     constructor(
         @inject("NgoRepository")
-        private ngosRepository: INgoRepository 
+        private ngosRepository: INgoRepository,
+        @inject("CacheProvider")
+        private cacheProvider: ICacheProvider, 
     ){
 
     }
 
     async execute(): Promise<Ngo[]>{
+        
+        const ngos = await this.ngosRepository.findAll()
 
-        return await this.ngosRepository.findAll()
+        ngos.forEach(async(ngo) => {
+
+            await this.cacheProvider.setRedis(`ngo-${ngo.id}`, JSON.stringify(ngo))
+        });
+
+        return ngos
     }
 }
 

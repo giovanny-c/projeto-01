@@ -13,7 +13,9 @@ import { GetDonationController } from "../modules/donations/useCases/getDonation
 import { GetNgoController } from "../modules/donations/useCases/getNgo/GetNgoController";
 import { ImportDonationsController } from "../modules/donations/useCases/importDonations/ImportDonationsController";
 import { ListDonationsController } from "../modules/donations/useCases/listDonations/ListDonationsController";
-import { LoadDonationCounterPageController } from "../modules/donations/useCases/loadDonationCounterPage/loadDonationCounterPageController";
+import { LoadCreateDonationController } from "../modules/donations/useCases/loadCreateDonationPage/LoadCreateDonationController";
+import { LoadDonationCounterPageController } from "../modules/donations/useCases/loadDonationCounterPage/LoadDonationCounterPageController";
+
 import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
 
 import { UpdateDonationStatusController } from "../modules/donations/useCases/updateDonationStatus/UpdateDonationStatusController";
@@ -39,7 +41,7 @@ const setDonationCounterController = new SetDonationCounterController()
 const generateBookletController = new GenerateBookletController()
 const getNgoController = new GetNgoController()
 const loadDonationCounterPageController = new LoadDonationCounterPageController()
-
+const loadCreateDonationController = new LoadCreateDonationController()
 
 
 //importa os doadores
@@ -65,7 +67,10 @@ donationRoutes.get("/instituicao/:id/gerar-talao", ensureAuthenticated, generate
 donationRoutes.get("/instituicao/:id/contador/",  ensureAuthenticated,   loadDonationCounterPageController.handle)
 donationRoutes.post("/instituicao/:id/contador/definir", upload.none(), ensureAuthenticated, setDonationCounterController.handle)
 
-donationRoutes.post("/instituicao/:id/doacao/nova", ensureAuthenticated, createDonationController.handle)//cria a donation
+//criar nova doação
+donationRoutes.get("/instituicao/:id/doacao/nova", ensureAuthenticated, loadCreateDonationController.handle )
+donationRoutes.post("/instituicao/:id/doacao/nova/criar", ensureAuthenticated, createDonationController.handle)//cria a donation
+
 donationRoutes.get("/instituicao/:id/doacao/listar", ensureAuthenticated, listDonationsController.handle)
 donationRoutes.get("/instituicao/:id/doacao/:id", ensureAuthenticated, getDonationController.handle)
 donationRoutes.post("/instituicao/:id/doacao/:id/cancelar-doacao/", ensureAuthenticated, cancelDonationController.handle)

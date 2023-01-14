@@ -1,0 +1,54 @@
+
+
+
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+   
+    <title>Criar doacão - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+
+        <div class="page-title">
+            <a id="title" href="/instituicao/{{response.ngo.id}}">
+                {{response.ngo.name}}
+            </a>
+        </div>
+
+        <div class="sub-title">
+            Definir Número do Contador
+        </div>
+        <div class="actual_number">
+            Nº Atual: {{response.counter.donation_number}}
+        </div>
+
+
+        <form class="form" id="#form" action="/instituicao/{{response.ngo.id}}/contador/definir" method="post" enctype="multipart/form-data">
+
+                
+                
+            <div class="item">
+
+                    <div>
+                        
+                    <input      
+                        type="number" name="donation_number" value="{{response.counter.donation_number}}"/>
+                    </div>
+
+            </div>
+
+            <div class="button"><button type="submit">Definir</button> </div>
+               
+            
+
+        </form>
+
+    <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a>
+
+{% endblock %}  
+
+

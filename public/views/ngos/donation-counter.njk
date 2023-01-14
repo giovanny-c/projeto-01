@@ -2,7 +2,7 @@
 
 {% block head %}
     
-    <title>Castanharo Telemarketing</title>
+    <title>Contador - {{ngo.name}} - Castanharo Telemarketing </title>
 
     <link rel="stylesheet" href="/styles/ngos/ngo-counter.css">
 
@@ -12,20 +12,20 @@
     
    
         <div class="page-title">
-            <a id="title" href="/instituicao/{{response.ngo.id}}">
-                {{response.ngo.name}}
-            </a>
+            
+                {{ngo.name}}
+                
         </div>
 
         <div class="sub-title">
             Definir Número do Contador
         </div>
         <div class="actual_number">
-            Nº Atual: {{response.counter.donation_number}}
+            Nº Atual: {{ngo_donation_counter.donation_number}}
         </div>
 
 
-        <form class="form" action="/instituicao/{{response.ngo.id}}/contador/definir" method="post" enctype="multipart/form-data">
+        <form class="form" id="#form" action="/instituicao/{{ngo.id}}/contador/definir" method="post" enctype="multipart/form-data">
 
                 
                 
@@ -34,12 +34,12 @@
                     <div>
                         
                     <input      
-                        type="number" name="donation_number" value="{{response.counter.donation_number}}"/>
+                        type="number" name="donation_number" value="{{ngo_donation_counter.donation_number}}"/>
                     </div>
 
             </div>
 
-            <div class="button"><button type="submit">Definir</button></div>
+            <div class="button"><button type="submit">Definir</button> </div>
                
             
 
@@ -51,7 +51,22 @@
         
 
 
-        <script src="/scripts/scripts.js"></script>
+        <script>
+
+            const form = document.querySelector("form")
+
+            form.addEventListener("submit", function(event){
+
+                    const confirmation = confirm("Deseja alterar o numero do contador?")
+
+                    if(!confirmation){
+                            event.preventDefault()
+                    }   
+
+            })
+
+            
+        </script>
             
 
 {% endblock %}

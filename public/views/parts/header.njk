@@ -19,16 +19,16 @@
                     <div class="links">
 
                         
-                        <a href="/">Início</a>
-                        <a href="">Usuários</a>
+                        <a href="/">Instituições</a>
+                        {% if ngo %}
+                        <a href="/instituicao/{{ngo.id}}">{{ngo.name}}</a>
+                        {% endif %}
+                        <a href="">Doações</a>
                         <a href="">Funcionários</a>
                         <a href="">Doadores</a>
-                        
-                        
-                        {% if response.ngo.id %}
-                            <a href="">Doação</a>
+                        <a href="">Usuários</a>
 
-                        {% endif %}
+                        
                         
                         
 
