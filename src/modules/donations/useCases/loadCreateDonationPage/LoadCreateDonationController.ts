@@ -13,9 +13,9 @@ class LoadCreateDonationController {
         
         const loadCreateDonation = container.resolve(LoadCreateDonationUseCase)
 
-        const {ngo, ngo_donation_counter} = await loadCreateDonation.execute({id})
+        const {ngo, ngo_donation_counter, workers} = await loadCreateDonation.execute({id})
 
-        return res.status(200).render("views/donations/create-donation", {ngo, ngo_donation_counter})
+        return res.status(200).render("views/donations/create-donation", {ngo, ngo_donation_counter, workers})
 
     }
 

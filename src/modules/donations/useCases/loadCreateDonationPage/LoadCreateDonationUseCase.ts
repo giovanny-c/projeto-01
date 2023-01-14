@@ -2,6 +2,8 @@ import { inject, injectable } from "tsyringe";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 
 import { AppError } from "../../../../shared/errors/AppError";
+import { Worker } from "../../../workers/entities/worker";
+import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 import { DonationCounter } from "../../entities/donation_counter";
 
 import { Ngo } from "../../entities/ngos";
@@ -14,8 +16,10 @@ interface IRequest {
 }
 
 interface IResponse {
+    
     ngo: Ngo
     ngo_donation_counter: DonationCounter | Partial<DonationCounter>
+    workers: Worker[]
 }
 
 @injectable()
@@ -28,7 +32,9 @@ class LoadCreateDonationUseCase {
         @inject("DonationCounterRepository")
         private donationCounterRepository: IDonationCounterRepository,
         @inject("CacheProvider")
-        private cacheProvider: ICacheProvider
+        private cacheProvider: ICacheProvider,
+        @inject("WorkersRepository")
+        private workersRepository: IWorkersReposiroty
 
     ) { }
 
@@ -45,10 +51,12 @@ class LoadCreateDonationUseCase {
         
         const counter = await this.donationCounterRepository.findByNgoId(ngo.id)
 
+        const workers = await this.workersRepository.find()
 
         return  {
             ngo,
-            ngo_donation_counter: counter
+            ngo_donation_counter: counter,
+            workers
         }
         
     

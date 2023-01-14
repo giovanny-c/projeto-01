@@ -13,12 +13,11 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 
 interface IRequest {
     ngo_id:string 
-    donor_id:string 
     donor_name: string
     user_id:string 
     worker_id:string 
     donation_value: number
-    is_payed: boolean
+    is_payed: string
     payed_at?: Date
     
 }
@@ -29,6 +28,9 @@ interface IResponse {
     file: string
     file_name: string
 }
+
+
+
 @injectable()
 class CreateDonationUseCase {
 
@@ -52,7 +54,9 @@ class CreateDonationUseCase {
         private fileProvider: IFileProvider,
     ) { }
 
-    async execute({ ngo_id, donor_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<IResponse> {
+
+
+    async execute({ ngo_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<IResponse> {
 
 //TESTAR
 
@@ -83,7 +87,6 @@ class CreateDonationUseCase {
         }
         const {donation_number} = await this.donationCounterRepository.findByNgoId(ngo_id)
 
-        
 
         if(is_payed && !payed_at){//se for pago mas nao tiver data
 
@@ -98,7 +101,7 @@ class CreateDonationUseCase {
             user_id, 
             donation_number,
             donation_value,
-            is_payed,
+            is_payed: true,
             payed_at: payed_at,
             created_at: this.dateProvider.dateNow()
          })

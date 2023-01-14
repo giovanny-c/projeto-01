@@ -14,32 +14,59 @@
 {% block content %}
 
         <div class="page-title">
-            <a id="title" href="/instituicao/{{response.ngo.id}}">
-                {{response.ngo.name}}
-            </a>
+           
+                {{ngo.name}}
         </div>
 
         <div class="sub-title">
-            Definir Número do Contador
+            Criar doação Nº: {{ngo_donation_counter.donation_number}} 
         </div>
         <div class="actual_number">
-            Nº Atual: {{response.counter.donation_number}}
+            
         </div>
 
 
-        <form class="form" id="#form" action="/instituicao/{{response.ngo.id}}/contador/definir" method="post" enctype="multipart/form-data">
+        <form class="form" id="#form" action="/instituicao/{{ngo.id}}/doacao/nova/criar" method="post" enctype="multipart/form-data">
 
                 
                 
             <div class="item">
-
                     <div>
-                        
                     <input      
-                        type="number" name="donation_number" value="{{response.counter.donation_number}}"/>
+                        type="text" name="donor_name" value="" placeholder="Nome do Doador"/>
                     </div>
-
             </div>
+
+            <div class="item">
+                    <div>
+                    <input      
+                        type="text" name="donation_value" value="" placeholder="00,00"/>
+                    </div>
+            </div>
+
+            
+            <select name="worker_id">
+            
+            {% for worker in workers %}
+                    <option value="" selected disabled hidden>Escolha o funcionário</option>
+                    <option value="{{worker.id}}"
+                         
+                        >
+                        
+                        {{worker.name}}
+                        
+                    </option>
+            {% endfor %}
+
+            </select>
+
+            <div class="item">
+                    <div>
+                    <input      
+                        type="hidden" name="is_payed" value="true" placeholder="Nome do Doador"/>
+                    </div>
+            </div>
+
 
             <div class="button"><button type="submit">Definir</button> </div>
                
