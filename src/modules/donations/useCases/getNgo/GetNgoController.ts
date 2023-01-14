@@ -8,13 +8,13 @@ class GetNgoController {
 
     async handle(req: Request, res: Response): Promise<any>{
 
-        const {ngo_name: name} = req.params
+        const {id} = req.params
 
         const getNgo = container.resolve(GetNgoUseCase)
 
-        const response = await getNgo.execute(name)
+        const response = await getNgo.execute(id)
 
-        return res.status(200).render("views/ngos/ngo")
+        return res.status(200).render("views/ngos/ngo", {response})
     }
 
 }

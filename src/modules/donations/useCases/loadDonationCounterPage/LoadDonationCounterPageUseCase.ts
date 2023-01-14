@@ -1,41 +1,49 @@
 import { inject, injectable } from "tsyringe";
+
+import { AppError } from "../../../../shared/errors/AppError";
 import { DonationCounter } from "../../entities/donation_counter";
+
 import { Ngo } from "../../entities/ngos";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
-import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
+
+
+interface IRequest {
+   id: string
+}
 
 interface IResponse {
     ngo: Ngo
-    ngo_donation_counter: DonationCounter
+    counter: DonationCounter | Partial<DonationCounter>
 }
 
 @injectable()
-class GetNgoUseCase {
+class LoadDonationCounterPageUseCase {
+
 
     constructor(
         @inject("NgoRepository")
         private ngoRepository: INgoRepository,
         @inject("DonationCounterRepository")
         private donationCounterRepository: IDonationCounterRepository,
-        @inject("DonationsRepository")
-        private donationsRepository: IDonationsRepository
-    ){
 
-    }
+    ) { }
 
-    async execute(id: string){
+    async execute({ id}: IRequest): Promise<IResponse> {
+        
+        const ngo =  await this.ngoRepository.findById(id)
 
-        const ngo = await this.ngoRepository.findById(id)
-
-        const ngo_donation_counter = await this.donationCounterRepository.findByNgoId(ngo.id)
+        const counter = await this.donationCounterRepository.findByNgoId(ngo.id)
 
 
-        return {ngo, ngo_donation_counter}
-
-
-    }
-
+        return  {
+            ngo,
+            counter
+        }
+        
     
+    }
+
 }
-export {GetNgoUseCase}
+
+export { LoadDonationCounterPageUseCase }

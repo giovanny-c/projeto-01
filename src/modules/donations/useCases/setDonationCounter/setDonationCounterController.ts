@@ -7,16 +7,16 @@ import { SetDonationCounterUseCase } from "./SetDonationCounterUseCase";
 
 class SetDonationCounterController {
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
         const { id } = req.params
-        const { ngo_id, donation_number } = req.body
+        const { donation_number } = req.body
 
         const setDonatoionCounter = container.resolve(SetDonationCounterUseCase)
 
-        const resp = await setDonatoionCounter.execute({ngo_id, new_donation_number: +(donation_number)})
+        const response = await setDonatoionCounter.execute({id, new_donation_number: +(donation_number)})
 
-        return res.json(resp)
+        return res.status(201).render("views/ngos/donation-counter", {response})
 
     }
 

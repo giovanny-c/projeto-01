@@ -1,0 +1,20 @@
+.actual_number {
+
+    color: rgb(56, 56, 56);
+    margin: 20px auto;
+    width: 800px;
+    font-size: 22px;
+
+
+}
+
+.form {
+    width: 800px;
+    margin: 40px auto;
+    align-items: center;
+}
+
+.items {
+
+    margin: 0px 20px;
+}

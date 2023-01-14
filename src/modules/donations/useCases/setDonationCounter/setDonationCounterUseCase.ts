@@ -5,11 +5,17 @@ import { DonationCounter } from "../../entities/donation_counter";
 
 import { Ngo } from "../../entities/ngos";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
+import { INgoRepository } from "../../repositories/INgoRepository";
 
 
 interface IRequest {
    new_donation_number: number
-   ngo_id: string
+   id: string
+}
+
+interface IResponse {
+    ngo: Ngo
+    counter: DonationCounter | Partial<DonationCounter>
 }
 
 @injectable()
@@ -17,32 +23,41 @@ class SetDonationCounterUseCase {
 
 
     constructor(
-       
+        @inject("NgoRepository")
+        private ngoRepository: INgoRepository,
         @inject("DonationCounterRepository")
         private donationCounterRepository: IDonationCounterRepository,
+
     ) { }
 
-    async execute({ ngo_id, new_donation_number}: IRequest): Promise<DonationCounter | Partial<DonationCounter>> {
+    async execute({ id, new_donation_number}: IRequest): Promise<IResponse> {
         
-        const existCounter = await this.donationCounterRepository.findByNgoId(ngo_id)
+        const ngo =  await this.ngoRepository.findById(id)
+
+        const existCounter = await this.donationCounterRepository.findByNgoId(ngo.id)
+
+        let counter
 
         if(!existCounter){
     
-            const res = await this.donationCounterRepository.create(ngo_id, new_donation_number)
+            counter = await this.donationCounterRepository.create(ngo.id, new_donation_number)
 
-            return res
-            
+            return {
+                ngo,
+                counter
+            }
         }
 
     
 
-        const res = await this.donationCounterRepository.update(ngo_id, new_donation_number, existCounter.donation_number)
+       counter = await this.donationCounterRepository.update(ngo.id, new_donation_number, existCounter.donation_number)
 
         
 
-        return res
-
-        
+        return  {
+            ngo,
+            counter
+        }
         
     
     }

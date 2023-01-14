@@ -19,10 +19,16 @@
                     <div class="links">
 
                         
-                        <a href="/">Inicio</a>
+                        <a href="/">Início</a>
+                        <a href="">Usuários</a>
+                        <a href="">Funcionários</a>
+                        <a href="">Doadores</a>
                         
                         
-                        
+                        {% if response.ngo.id %}
+                            <a href="">Doação</a>
+
+                        {% endif %}
                         
                         
 

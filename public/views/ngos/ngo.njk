@@ -1,0 +1,57 @@
+{% extends "views/layout.njk" %}
+
+{% block head %}
+    
+    <title>Castanharo Telemarketing</title>
+
+    <link rel="stylesheet" href="/styles/ngos/ngo.css">
+
+{% endblock %}
+
+{% block content %}
+    
+   
+        <div class="page-title">
+            <a id="title" href="/instituicao/{{response.ngo.id}}">
+                {{response.ngo.name}}
+            </a>
+        </div>
+
+            
+        
+
+        <div class="ngo_actions">
+
+            <a href="/instituicao/{{response.ngo.id}}/contador">
+                <p>Definir Número do Contador</p>
+            </a>
+
+            <a href="/instituicao/{{response.ngo.id}}/doacao/nova">
+                <p>Nova Doação</p>
+            </a>
+
+            <a href="">
+                <p>Importar Doações</p>
+            </a>
+
+            <a href="">
+                <p>Gerar Talão de Recibos</p>
+            </a>
+
+            <a href="">
+                <p>Procurar Doações</p>
+            </a>
+                    
+            
+        </div>
+
+
+        
+
+        
+
+
+        <script src="/scripts/scripts.js"></script>
+            
+
+{% endblock %}

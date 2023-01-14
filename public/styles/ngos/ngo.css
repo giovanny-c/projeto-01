@@ -1,0 +1,38 @@
+.ngo_actions {
+    margin: 70px auto;
+    width: 840px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 50px;
+
+}
+
+.ngo_actions a {
+
+    width: 266px;
+    height: 80px;
+    background-color: rgb(56, 56, 56);
+    color: grey;
+    border-radius: 4px;
+    box-shadow: 2px 1px 4px;
+
+}
+
+.ngo_actions a:hover {
+
+    background-color: rgb(95, 95, 95);
+
+}
+
+.ngo_actions a p {
+
+    font-size: 16px;
+    margin: 31px;
+    color: white;
+    text-align: center;
+
+
+
+
+}

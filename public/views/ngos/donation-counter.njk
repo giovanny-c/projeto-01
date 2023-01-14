@@ -1,0 +1,58 @@
+{% extends "views/layout.njk" %}
+
+{% block head %}
+    
+    <title>Castanharo Telemarketing</title>
+
+    <link rel="stylesheet" href="/styles/ngos/ngo-counter.css">
+
+{% endblock %}
+
+{% block content %}
+    
+   
+        <div class="page-title">
+            <a id="title" href="/instituicao/{{response.ngo.id}}">
+                {{response.ngo.name}}
+            </a>
+        </div>
+
+        <div class="sub-title">
+            Definir Número do Contador
+        </div>
+        <div class="actual_number">
+            Numero Atual: {{response.counter.donation_number}}
+        </div>
+
+
+        <form class="form" action="/instituicao/{{response.ngo.id}}/contador/definir" method="post" enctype="multipart/form-data">
+
+                
+                
+            <div class="item">
+
+                <div></div>
+
+                    <div>
+                    <input      
+                        type="number" name="name" value="{{response.counter.donation_number}}"/>
+                    </div>
+
+                </div>
+
+            <div class="button"><button type="submit">Definir</button></div>
+               
+            
+
+        </form>
+
+
+        
+
+        
+
+
+        <script src="/scripts/scripts.js"></script>
+            
+
+{% endblock %}
