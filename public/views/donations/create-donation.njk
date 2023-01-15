@@ -6,7 +6,7 @@
 
 {% block head %}
 
-   
+    <link rel="stylesheet" href="/styles/donations/create-donation.css">
     <title>Criar doacão - Castanharo Telemarketing</title>
 
 {% endblock %}
@@ -40,12 +40,12 @@
             <div class="item">
                     <div>
                     <input      
-                        type="text" name="donation_value" value="" placeholder="00,00"/>
+                        type="number" name="donation_value" value="" placeholder="00,00"/>
                     </div>
             </div>
 
             
-            <select name="worker_id">
+            <select class="item" name="worker_id">
             
             {% for worker in workers %}
                     <option value="" selected disabled hidden>Escolha o funcionário</option>

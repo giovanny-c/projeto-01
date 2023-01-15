@@ -1,7 +1,6 @@
 import { container } from "tsyringe";
 import { Request, Response } from "express";
 import { CreateDonationUseCase } from "./CreateDonationUseCase";
-import { AppError } from "../../../../shared/errors/AppError";
 
 
 class CreateDonationController {
@@ -25,7 +24,7 @@ class CreateDonationController {
             payed_at, 
         })
 
-        return res.status(201).render("views/donations/donationReceipt", { response })
+        return res.status(201).redirect(`/instituicao/${response.donation.ngo.id}/doacao/${response.donation.id}`)
 
     }
 }

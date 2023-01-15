@@ -1,0 +1,48 @@
+.form {
+    margin: 40px 40px
+}
+
+.item {
+    margin: 30px auto;
+
+
+}
+
+.item input,
+select {
+
+    font-size: 30px;
+    color: var(--color-letters);
+    background-color: var(--color-theme);
+    height: 32px;
+    width: 940px;
+    border-radius: 4px;
+    box-shadow: 2px 0px 5px gray;
+}
+
+/* .item input {
+
+
+    text-align: left;
+    width: 300px;
+
+} */
+
+
+.button button {
+    margin: 0px 10px;
+    width: 180px;
+    height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 4px;
+    border: 1px;
+    box-shadow: 2px 1px 3px rgb(56, 56, 56);
+}
+
+.button button:hover {
+
+    color: white;
+    background-color: rgb(56, 56, 56);
+}
