@@ -1,27 +1,30 @@
-import { PDFDocument, PDFFont, PDFImage, PrintScaling, rgb } from "pdf-lib"
-import fontkit from "@pdf-lib/fontkit"
+import { PDFDocument, PDFFont, PDFImage, rgb } from "pdf-lib"
+
 import fs from "fs"
 
 
-import { IFileProvider } from "../IFileProvider";
 
 import { Donation } from "../../../../../modules/donations/entities/donation";
 
 import formatToBRL from "../../../../../../utils/formatToBRL";
 import extenso from "extenso"
 
-import { getFormatedDateForReceipt } from "../splitDateForReceipt";
-import {saveFileUtil } from "../../../../../../utils/saveFile"
+import { getFormatedDateForReceipt } from "../../../../../../utils/splitDateForReceipt";
+
 import { PDF_LIBFileProvider } from "./PDF_LIBFileProvider";
-import { inject } from "tsyringe";
+import { container } from "tsyringe";
 import { INGOReceiptProvider } from "../INGOReceiptProvider";
+import { LocalStorageProvider } from "../../storageProvider/implementations/LocalStorageProvider";
 
 
 class GRAPECCReceiptProvider implements INGOReceiptProvider {
     
     
+    
     async generateReceipt(doc: PDFDocument, donation: Donation, saveFile: boolean, templatePng: PDFImage, font?: PDFFont): Promise<Uint8Array>{
         
+        const storageProvider = container.resolve(LocalStorageProvider)
+
         const page = doc.addPage()
 
         // page.setRotation(degrees(90))
@@ -133,7 +136,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
         //data do recibo 
         
-        const {dia, mes, ano}= getFormatedDateForReceipt(donation.created_at)
+        const {dia, mes, ano} = getFormatedDateForReceipt(donation.created_at)
 
 
         let mesUpper = mes.at(0).toUpperCase() + mes.substring(1)
@@ -219,14 +222,16 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
         let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
-        saveFileUtil(dir, file_name, pdfBytes)
+        await storageProvider.saveFileReceipt(dir, file_name, pdfBytes)
     }
     
 
         return pdfBytes
     }
 
-    async creatBooklet(doc: PDFDocument, data: Donation[]): Promise<Uint8Array>{
+    async createBooklet(doc: PDFDocument, data: Donation[]): Promise<Uint8Array>{
+
+        const storageProvider = container.resolve(LocalStorageProvider)
 
         let pageIndex = 0
         let index = 1
@@ -330,7 +335,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         
         let file_name = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
     
-        saveFileUtil(dir, file_name, pdfBytes)
+        await storageProvider.saveFileReceipt(dir, file_name, pdfBytes)
             
         return pdfBytes
 

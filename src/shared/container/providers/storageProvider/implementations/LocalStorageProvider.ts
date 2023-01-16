@@ -3,10 +3,12 @@ import * as fs from "fs"
 import * as mime from "mime"
 import { resolve } from "path";
 import upload from "../../../../../config/upload";
+import { AppError } from "../../../../errors/AppError";
 import { IFilePath, IStorageProvider } from "../IStorageProvider";
 
 
 class LocalStorageProvider implements IStorageProvider {
+    
 
     async save({ file, folder }: IFilePath): Promise<string> {
         try {
@@ -62,6 +64,46 @@ class LocalStorageProvider implements IStorageProvider {
             throw error
         }
 
+    }
+
+    async saveFileReceipt(dir: string, file_name:string, file: Uint8Array ): Promise<void>{
+        
+
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true })
+        }
+
+        fs.writeFile(`${dir}/${file_name}`, file,
+            (err) => {
+                if (err) throw err
+        })  
+
+
+
+    }
+
+    async getFile(dir: string, file_name: string, returnInBase64: boolean): Promise<Buffer | string | void>{
+
+        let file_path = `${dir}/${file_name}`
+
+        let file
+        
+        try {   
+
+            file = fs.readFileSync(file_path)
+
+            
+            if(returnInBase64){
+
+                return file.toString("base64")
+            }
+            
+            return file
+
+        } catch (error) {
+
+            return
+        }
     }
 
 }

@@ -9,6 +9,7 @@ import { Donation } from "../../../../../modules/donations/entities/donation";
 
 import { AppError } from "../../../../errors/AppError";
 import { GRAPECCReceiptProvider } from "./GRAPECCReceiptProvider";
+import { container, InjectionToken } from "tsyringe";
 
 
 const generateReceiptMethods = {
@@ -48,11 +49,13 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const templatePNG = await doc.embedJpg(uint8Array) //poe o template no pdf
 
-        //vai chamar o metodo de criação de pdf dinamicamente
+        //vai injetar o metodo de criação de pdf dinamicamente
 
-        const reciptProvider = new generateReceiptMethods[donation.ngo.alias]
+        const provider: InjectionToken = generateReceiptMethods[donation.ngo.alias]   
+
+        const receiptProvider = container.resolve(provider)  
     
-        const pdfBytes = await reciptProvider.generateReceipt(doc, donation, saveFile, templatePNG, font)
+        const pdfBytes = await receiptProvider.generateReceipt(doc, donation, saveFile, templatePNG, font)
         
         return  pdfBytes
 
@@ -69,9 +72,12 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const doc = await PDFDocument.create()
 
-        const reciptProvider = new generateReceiptMethods[data[0].ngo.alias]
+        
+        const provider: InjectionToken = generateReceiptMethods[data[0].ngo.alias]   
 
-        const pdfBytes = await reciptProvider.creatBooklet(doc, data)
+        const receiptProvider = container.resolve(provider)  
+
+        const pdfBytes = await receiptProvider.createBooklet(doc, data)
 
         return pdfBytes
 

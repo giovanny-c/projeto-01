@@ -16,7 +16,9 @@
 
     </p>
 
-    <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a>
+    <iframe name="{{file_name}}" src="data:application/pdf;base64,{{file}}"></iframe>
+
+    {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 
 {% endblock %}  
 
