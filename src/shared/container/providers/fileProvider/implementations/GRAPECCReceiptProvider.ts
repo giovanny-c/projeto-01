@@ -20,7 +20,7 @@ import { INGOReceiptProvider } from "../INGOReceiptProvider";
 class GRAPECCReceiptProvider implements INGOReceiptProvider {
     
     
-    async createRecipt(doc: PDFDocument, donation: Donation, saveFile: boolean, templatePng: PDFImage, font?: PDFFont): Promise<Uint8Array>{
+    async generateReceipt(doc: PDFDocument, donation: Donation, saveFile: boolean, templatePng: PDFImage, font?: PDFFont): Promise<Uint8Array>{
         
         const page = doc.addPage()
 
@@ -252,7 +252,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
                 if(error){
 
                     const fileProvider = new PDF_LIBFileProvider()
-                    receitpPdf = await fileProvider.createFile(donation, true)
+                    receitpPdf = await fileProvider.generateFile(donation, true)
                     
                  
                 }

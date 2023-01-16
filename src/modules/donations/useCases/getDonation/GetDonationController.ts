@@ -8,14 +8,14 @@ class GetDonationController {
 
     async handle(req: Request, res: Response): Promise<any> {
 
-        const { id } = req.params
+        const { ngo_id, donation_id } = req.params
 
         const getDonationUseCase = container.resolve(GetDonationUseCase)
 
-        const donation = await getDonationUseCase.execute(id)
+        const {donation, ngo, file, file_name} = await getDonationUseCase.execute({ngo_id, donation_id})
 
 
-        return res.status(200).render("views/donations/donation", { donation })
+        return res.status(200).render("views/donations/donation", {donation, ngo, file, file_name})
     }
 }
 

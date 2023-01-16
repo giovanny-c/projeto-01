@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
 import { AppError } from "../../../../shared/errors/AppError";
@@ -7,6 +8,7 @@ import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 import { ICreateDonationsDTO } from "../../dtos/ICreateDonationsDTO";
 import { Donation } from "../../entities/donation";
+import { Ngo } from "../../entities/ngos";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
@@ -27,6 +29,7 @@ interface IResponse {
     donation: Donation,
     file: string
     file_name: string
+    ngo: Ngo
 }
 
 
@@ -52,6 +55,8 @@ class CreateDonationUseCase {
         private dateProvider: IDateProvider,
         @inject("FileProvider")
         private fileProvider: IFileProvider,
+        @inject("CacheProvider")
+        private cacheProvider: ICacheProvider
     ) { }
 
 
@@ -80,11 +85,15 @@ class CreateDonationUseCase {
 
         } 
 
-        const ngo = await this.ngoRepository.findById(ngo_id)
+        let ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
 
-        if(!ngo){
-            throw new AppError("This ngo does not exists")
+        if(!ngo.id){
+            
+            ngo = await this.ngoRepository.findById(ngo_id)
+
+            if(!ngo) throw new AppError("Instituição nao encontrada", 404)
         }
+
         const {donation_number} = await this.donationCounterRepository.findByNgoId(ngo_id)
 
 
@@ -117,12 +126,13 @@ class CreateDonationUseCase {
         //format para ISO
         donationWithRelations.payed_at = this.dateProvider.formatDate(donation.created_at, "YYYY/MM/DD")
 
-        const pdfBytes = await this.fileProvider.createFile(donationWithRelations, true)
+        const pdfBytes = await this.fileProvider.generateFile(donationWithRelations, true)
 
     
         const buffer = Buffer.from(pdfBytes)
 
         return  {
+            ngo,
             donation: donationWithRelations,
             file: buffer.toString("base64"),
             file_name: `recibo_${donationWithRelations.ngo.name}_${donation.donor_name}_${donation.donation_number}.pdf`

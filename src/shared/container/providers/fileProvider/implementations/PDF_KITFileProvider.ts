@@ -11,7 +11,7 @@
 // class PDF_KITFileProvider implements IFileProvider {
 
 
-//     createFile( /*dataCallback, endCallback*/) {
+//     generateFile( /*dataCallback, endCallback*/) {
 
 //         const pdfdocument = new pdfkit
 

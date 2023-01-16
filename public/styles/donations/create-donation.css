@@ -8,8 +8,7 @@
 
 }
 
-.item input,
-select {
+.item input {
 
     font-size: 30px;
     color: var(--color-letters);
@@ -29,8 +28,28 @@ select {
 } */
 
 
+.item:nth-child(2) input {
+
+    width: 300px;
+    text-align: end;
+}
+
+select.item {
+    margin: 0px;
+    font-size: 30px;
+    color: var(--color-letters);
+    background-color: var(--color-theme);
+    height: 32px;
+    width: 400px;
+    border-radius: 4px;
+    box-shadow: 2px 0px 5px gray;
+}
+
+
+
 .button button {
-    margin: 0px 10px;
+
+    margin-top: 20px;
     width: 180px;
     height: 32px;
     font-size: 20px;

@@ -11,7 +11,7 @@ import { AppError } from "../../../../errors/AppError";
 import { GRAPECCReceiptProvider } from "./GRAPECCReceiptProvider";
 
 
-const createReceiptMethods = {
+const generateReceiptMethods = {
 
     GRAPECC: GRAPECCReceiptProvider,
     
@@ -22,7 +22,7 @@ const createReceiptMethods = {
 class PDF_LIBFileProvider implements IFileProvider {
 
 
-    async createFile(donation: Donation, saveFile: boolean): Promise<Uint8Array> {
+    async generateFile(donation: Donation, saveFile: boolean): Promise<Uint8Array> {
 
       
         if (!donation.donation_number){
@@ -50,9 +50,9 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //vai chamar o metodo de criação de pdf dinamicamente
 
-        const reciptProvider = new createReceiptMethods[donation.ngo.alias]
+        const reciptProvider = new generateReceiptMethods[donation.ngo.alias]
     
-        const pdfBytes = await reciptProvider.createRecipt(doc, donation, saveFile, templatePNG, font)
+        const pdfBytes = await reciptProvider.generateReceipt(doc, donation, saveFile, templatePNG, font)
         
         return  pdfBytes
 
@@ -69,7 +69,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const doc = await PDFDocument.create()
 
-        const reciptProvider = new createReceiptMethods[data[0].ngo.alias]
+        const reciptProvider = new generateReceiptMethods[data[0].ngo.alias]
 
         const pdfBytes = await reciptProvider.creatBooklet(doc, data)
 
