@@ -34,7 +34,9 @@ class PDF_LIBFileProvider implements IFileProvider {
         
         //config de impressao
         doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault)
+        doc.setTitle(`${donation.donation_number}_${donation.donor_name}`)
         
+
         //pega a fonte
         doc.registerFontkit(fontkit)
         
@@ -72,6 +74,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const doc = await PDFDocument.create()
 
+        doc.setTitle(`${data[0].donation_number}__${data[data.length-1].donation_number}`)
         
         const provider: InjectionToken = generateReceiptMethods[data[0].ngo.alias]   
 
