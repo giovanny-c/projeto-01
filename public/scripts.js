@@ -1,3 +1,5 @@
+const { opacity } = require("pdfkit")
+
 const Mask = {
 
     apply(input, func) {
@@ -121,3 +123,31 @@ const Mask = {
 
 
 }
+
+
+function toggleIframe() {
+    var iframe = document.querySelector("iframe")
+
+    if (iframe.style.visibility === "visible") {
+
+        iframe.style.visibility = "hidden"
+
+    } else {
+
+        iframe.style.visibility = "visible"
+    }
+
+};
+
+
+
+
+// buttonOnClick(){
+
+//     const button = document.querySelector(".show")
+//     const iframe = document.querySelector("iframe")
+
+//     button.addEventListener(onclick(
+//         iframe.set
+//     ))
+// }

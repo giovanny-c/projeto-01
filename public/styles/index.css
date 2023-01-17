@@ -62,3 +62,9 @@ a {
     font-size: 22px;
 
 }
+
+button:focus {
+
+    background-color: var(--color-hover);
+
+}

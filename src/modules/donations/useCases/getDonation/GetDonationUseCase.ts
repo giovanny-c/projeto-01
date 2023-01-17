@@ -20,6 +20,7 @@ interface IRequest{
 
 interface IResponse {
     formated_value: string
+    formated_date: Date 
     donation: Donation,
     file: string | Buffer
     file_name: string
@@ -75,11 +76,20 @@ class GetDonationUseCase {
         let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
         let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
-        const file = await this.storageProvider.getFile(dir, file_name, true) as string | Buffer
+        let file = await this.storageProvider.getFile(dir, file_name, true)
 
+        if(!file){
+
+           file = Buffer.from(await this.fileProvider.generateFile(donation, true))
+
+           file = file.toString("base64")
+        }
+
+        
 
         return {
             formated_value: formatToBRL(donation.donation_value),
+            formated_date: this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY"),
             donation,
             ngo,
             file,

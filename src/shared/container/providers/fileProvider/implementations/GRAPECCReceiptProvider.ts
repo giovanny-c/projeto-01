@@ -256,7 +256,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
                 
                 if(error){
 
-                    const fileProvider = new PDF_LIBFileProvider()
+                    const fileProvider = container.resolve(PDF_LIBFileProvider)
                     receitpPdf = await fileProvider.generateFile(donation, true)
                     
                  

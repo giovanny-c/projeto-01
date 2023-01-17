@@ -9,19 +9,51 @@
 {% endblock %}
 
 {% block content %}
+    <div class="content">
 
-    <p>
-        Doação N°:{{donation.donation_number}}
-        Valor: {{formated_value}}
+        <div class="page-title">
+           
+                {{ngo.name}}
+        </div>
 
-    </p>
 
-    <div >
-    
-        <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}"></iframe>
+        <div class="donation-info">
+            <p>
+                Doação N°: <a>{{donation.donation_number}} </a>
+            </p>
+            <p>
+                Valor: {{formated_value}}
+            </p> 
+            <p>
+                Nome: {{donation.donor_name}} 
+            </p>
+           
+            <p>
+                Criado em: {{formated_date}}
+            </p>   
+                        
+            <p>
+                Funcionária: {{donation.worker.name}}
+            </p>
+        </div>
 
+        <div class="buttons">
+            <button class="show"
+            onclick="toggleIframe()">
+                Ver Recibo
+            </button>
+            <button>
+                Gerar Recibo
+            </button>
+        </div>
+        
+
+        <div >
+        
+            <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}"></iframe>
+
+        </div>
     </div>
-
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 
 {% endblock %}  
