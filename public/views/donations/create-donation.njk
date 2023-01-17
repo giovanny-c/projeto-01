@@ -25,55 +25,60 @@
             
         </div>
 
+        <div class="form">
+            <form id="#form" action="/instituicao/{{ngo.id}}/doacao/nova/criar" method="post" enctype="multipart/form-data">
 
-        <form class="form" id="#form" action="/instituicao/{{ngo.id}}/doacao/nova/criar" method="post" enctype="multipart/form-data">
+                    
+                    
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text" name="donor_name" value="" placeholder="Nome do Doador"/>
+                        </div>
+                </div>
+
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text" name="donation_value" value="" placeholder="00,00"
+                            onkeydown="Mask.apply(this, 'formatBRL')"
+                            />
+                        </div>
+                </div>
 
                 
+                <select class="item" name="worker_id">
                 
-            <div class="item">
-                    <div>
-                    <input      
-                        type="text" name="donor_name" value="" placeholder="Nome do Doador"/>
-                    </div>
-            </div>
+                {% for worker in workers %}
+                        <option value="" selected disabled hidden>Escolha o funcionário</option>
+                        <option value="{{worker.id}}"
+                            
+                            >
+                            
+                            {{worker.name}}
+                            
+                        </option>
+                {% endfor %}
 
-            <div class="item">
-                    <div>
-                    <input      
-                        type="number" name="donation_value" value="" placeholder="00,00"/>
-                    </div>
-            </div>
+                </select>
 
-            
-            <select class="item" name="worker_id">
-            
-            {% for worker in workers %}
-                    <option value="" selected disabled hidden>Escolha o funcionário</option>
-                    <option value="{{worker.id}}"
-                         
-                        >
-                        
-                        {{worker.name}}
-                        
-                    </option>
-            {% endfor %}
-
-            </select>
-
-            <div class="item">
-                    <div>
-                    <input      
-                        type="hidden" name="is_payed" value="true" placeholder="Nome do Doador"/>
-                    </div>
-            </div>
+                <div class="item">
+                        <div>
+                        <input      
+                            type="hidden" name="is_payed" value="true" placeholder="Nome do Doador"/>
+                        </div>
+                </div>
 
 
-            <div class="button"><button type="submit">Criar</button> </div>
-               
-            
+                <div class="button"><button type="submit">Criar</button> </div>
+                
+                
 
-        </form>
+            </form>
+        </div>
 
+
+        
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 
 {% endblock %}  

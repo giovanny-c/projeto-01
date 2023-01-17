@@ -1,5 +1,6 @@
 
 import { inject, injectable } from "tsyringe";
+import formatToBRL from "../../../../../utils/formatToBRL";
 import { getFormatedDateForReceipt } from "../../../../../utils/splitDateForReceipt";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
@@ -18,6 +19,7 @@ interface IRequest{
 }
 
 interface IResponse {
+    formated_value: string
     donation: Donation,
     file: string | Buffer
     file_name: string
@@ -77,6 +79,7 @@ class GetDonationUseCase {
 
 
         return {
+            formated_value: formatToBRL(donation.donation_value),
             donation,
             ngo,
             file,

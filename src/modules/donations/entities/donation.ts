@@ -49,7 +49,7 @@ class Donation {
 
 
     @Column()
-    donation_value: Number
+    donation_value: number
 
     @Column()
     created_at: Date

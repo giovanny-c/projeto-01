@@ -3,7 +3,7 @@
 
 {% block head %}
 
-   
+    <link rel="stylesheet" href="/styles/donations/donation.css">
     <title>Doação nº {{donation.donation_number}} - Castanharo Telemarketing</title>
 
 {% endblock %}
@@ -12,11 +12,15 @@
 
     <p>
         Doação N°:{{donation.donation_number}}
-        Valor: {{donation.donation_value}}
+        Valor: {{formated_value}}
 
     </p>
 
-    <iframe name="{{file_name}}" src="data:application/pdf;base64,{{file}}"></iframe>
+    <div >
+    
+        <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}"></iframe>
+
+    </div>
 
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 
