@@ -20,11 +20,11 @@ class UpdateDonationStatusUseCase {
 
     }
 
-    async execute(donation_id: string): Promise<Donation> {
+    async execute(ngo_id:string, donation_number: number): Promise<Donation> {
 
         const payedAt = this.dateProvider.dateNow()
 
-        const donationExists = await this.donationsRepository.findOneById(donation_id)
+        const donationExists = await this.donationsRepository.findDonationByNumberAndNgoId({donation_number, ngo_id})
 
         if (!donationExists) {
             throw new AppError("This donation does not exists")

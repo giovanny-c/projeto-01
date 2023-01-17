@@ -1,4 +1,4 @@
-const { opacity } = require("pdfkit")
+
 
 const Mask = {
 

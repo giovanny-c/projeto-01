@@ -31,7 +31,7 @@ class CreateDonationController {
             payed_at, 
         })
 
-        return res.status(201).redirect(`/instituicao/${response.donation.ngo.id}/doacao/${response.donation.id}`)
+        return res.status(201).redirect(`/instituicao/${response.donation.ngo.id}/doacao/${response.donation.donation_number}`)
 
     }
 }

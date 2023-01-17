@@ -7,11 +7,11 @@ class UpdateDonationStatusController {
 
     async handle(req: Request, res: Response): Promise<Response> {
 
-        const { id } = req.params
+        const {ngo_id, donation_number} = req.params
 
         const updateDonationStatusUseCase = container.resolve(UpdateDonationStatusUseCase)
 
-        const donation = await updateDonationStatusUseCase.execute(id)
+        const donation = await updateDonationStatusUseCase.execute(ngo_id, +(donation_number))
 
         return res.json(donation)
     }

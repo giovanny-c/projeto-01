@@ -54,3 +54,9 @@
     color: white;
     background-color: rgb(56, 56, 56);
 }
+
+button:active {
+
+    background-color: var(--color-hover);
+    /* border: 1px solid black; */
+}

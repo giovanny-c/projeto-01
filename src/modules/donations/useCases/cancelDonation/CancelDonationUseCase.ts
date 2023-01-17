@@ -13,27 +13,25 @@ class CancelDonationUseCase {
 
     }
 
-    async execute(id: string, confirmation: boolean): Promise<Donation> {
+    async execute(ngo_id: string, donation_number): Promise<Donation> {
 
-        if (confirmation !== true) {
-            throw new AppError("this operation was not complete")
-        }
+       
 
-        const donationExists = await this.donationsRepository.findOneById(id)
+        const donationExists = await this.donationsRepository.findOneById(donation_number)
 
         if (!donationExists) {
-            throw new AppError("this donations does not exists")
+            throw new AppError("Essa doação nao existe", 400)
         }
 
         if (donationExists.is_donation_canceled === true) {
-            throw new AppError("This donation was canceled already")
+            throw new AppError("Essa doação ja foi cancelada", 400)
         }
 
-        if (donationExists.is_payed === true) {
-            throw new AppError("This donation cant be canceled, because is already payed")
-        }
+        // if (donationExists.is_payed === true) {
+        //     throw new AppError("This donation cant be canceled, because is already payed")
+        // }
 
-        const donation = await this.donationsRepository.MarkDonationAsCanceled(id, confirmation)
+        const donation = await this.donationsRepository.MarkDonationAsCanceled(donationExists.id)
 
 
 

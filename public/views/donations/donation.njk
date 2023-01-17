@@ -16,6 +16,10 @@
                 {{ngo.name}}
         </div>
 
+         <div class="change">
+        <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float - 1}}"><< doação anterior</a> | <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float + 1}}">proxima doação >></a>
+        </div>
+
 
         <div class="donation-info">
             <p>
@@ -25,26 +29,39 @@
                 Valor: {{formated_value}}
             </p> 
             <p>
-                Nome: {{donation.donor_name}} 
-            </p>
-           
-            <p>
                 Criado em: {{formated_date}}
             </p>   
                         
             <p>
+                Nome: {{donation.donor_name}} 
+            </p>
+           
+            <p>
                 Funcionária: {{donation.worker.name}}
             </p>
+
+        {% if donation.is_canceled %}
+            <p>
+            CANCELADO
+            </p> 
+        {% endif %}
+            
         </div>
 
+       
         <div class="buttons">
             <button class="show"
             onclick="toggleIframe()">
                 Ver Recibo
             </button>
-            <button>
-                Gerar Recibo
-            </button>
+
+            <form name="form-delete" class="form-delete" action="/" method="method?=POST">
+
+                <button class="cancel"  type="submit">
+                    Cancelar Doação
+                </button>
+            </form>
+
         </div>
         
 
@@ -54,6 +71,21 @@
 
         </div>
     </div>
+
+    
+    <script>
+        const form = document.querySelector(".form-delete")
+
+            form.addEventListener("submit", function(event){
+
+                    const confirmation = confirm("Cancelar a doação?")
+
+                    if(!confirmation){
+                            event.preventDefault()
+                    }   
+
+            })
+    </script>
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 
 {% endblock %}  

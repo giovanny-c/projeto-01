@@ -15,7 +15,7 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 
 interface IRequest{
     ngo_id: string
-    donation_id: string
+    donation_number: number
 }
 
 interface IResponse {
@@ -48,7 +48,7 @@ class GetDonationUseCase {
 
     }
 
-    async execute({donation_id, ngo_id}: IRequest): Promise<IResponse> {
+    async execute({donation_number, ngo_id}: IRequest): Promise<IResponse> {
 
         let ngo: Ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
 
@@ -60,7 +60,7 @@ class GetDonationUseCase {
         }
 
 
-        const donation = await this.donationsRepository.findOneById(donation_id)
+        const donation = await this.donationsRepository.findDonationByNumberAndNgoId({donation_number, ngo_id})
 
         if (!donation) {
             throw new AppError("Doação nao encontrada", 404)

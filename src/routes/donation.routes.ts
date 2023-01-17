@@ -72,8 +72,8 @@ donationRoutes.get("/instituicao/:id/doacao/nova", ensureAuthenticated, loadCrea
 donationRoutes.post("/instituicao/:id/doacao/nova/criar", upload.none(), ensureAuthenticated, createDonationController.handle)//cria a donation
 
 donationRoutes.get("/instituicao/:id/doacao/listar", ensureAuthenticated, listDonationsController.handle)
-donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_id", ensureAuthenticated, getDonationController.handle)
-donationRoutes.post("/instituicao/:ngo_id/doacao/:donation_id/cancelar-doacao/", ensureAuthenticated, cancelDonationController.handle)
+donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number", ensureAuthenticated, getDonationController.handle)
+donationRoutes.post("/instituicao/:ngo_id/doacao/:donation_number/cancelar-doacao/", ensureAuthenticated, cancelDonationController.handle)
 //donationRoutes.get("/receipt/:id", generateReceiptController.handle)
 
 

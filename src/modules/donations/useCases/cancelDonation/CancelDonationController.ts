@@ -7,12 +7,12 @@ class CancelDonationController {
 
     async handle(req: Request, res: Response): Promise<Response> {
 
-        const { id } = req.params
-        const { confirmation } = req.body
+        const { ngo_id , donation_number } = req.params
+        
 
         const canceledDonationUseCase = container.resolve(CancelDonationUseCase)
 
-        const donation = await canceledDonationUseCase.execute(id, confirmation)
+        const donation = await canceledDonationUseCase.execute(ngo_id, +(donation_number))
 
         return res.json(donation)
 

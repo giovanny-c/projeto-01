@@ -175,23 +175,37 @@ class DonationsRepository implements IDonationsRepository {
 
     }
 
+    async findDonationByNumberAndNgoId({donation_number, ngo_id}: IFindOptions): Promise<Donation>{
+
+
+        return await this.repository.findOne({
+            relations: {
+                donor: true,
+                worker: true,
+                ngo: true
+            },
+            where:{donation_number, ngo_id}
+        })
+    }
+
     async MarkDonationAsPayed({ id, donation_number, donor_id, user_id, donation_value  }: ICreateDonationsDTO, payed_at: Date): Promise<Donation> {
 
+        throw new Error("Method not implemented!")
 
-        const payedDonation = this.repository.create({
-            id,
-            donation_number,
-            donor_id,
-            user_id,
-            donation_value,
-            is_payed: true,
-            payed_at,
+        // const payedDonation = this.repository.create({
+        //     id,
+        //     donation_number,
+        //     donor_id,
+        //     user_id,
+        //     donation_value,
+        //     is_payed: true,
+        //     payed_at,
 
-        })
+        // })
 
-        const donation = await this.repository.save(payedDonation)
+        // const donation = await this.repository.save(payedDonation)
 
-        return donation
+        // return donation
 
 
     }

@@ -9,7 +9,7 @@ interface ICreateDonationsDTO {
     donor_name: string
     worker_id?: string
     ngo_id: string
-    donation_value: Number
+    donation_value: number
     created_at?: Date
     is_payed?: boolean
     payed_at?: Date
