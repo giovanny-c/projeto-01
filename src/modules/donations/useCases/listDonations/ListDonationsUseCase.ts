@@ -1,20 +1,33 @@
 import dayjs from "dayjs";
 import { inject, injectable } from "tsyringe";
+import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IFindOptions } from "../../dtos/IFindOptionsDTO";
 import { Donation } from "../../entities/donation";
+import { Ngo } from "../../entities/ngos";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
+import { INgoRepository } from "../../repositories/INgoRepository";
 
 
 interface IRequest {
-    value: string
+    
     orderBy: string
     limit: number
     offset: number
-    startDate: string
-    endDate: string
+    startDate: string | Date
+    endDate: string | Date
+    ngo_id: string
+    donor_name: string
+    worker_name: string
 }
+
+interface IResponse {
+    ngo: Ngo
+    donations: Donation[],
+    sum: number
+}
+
 
 @injectable()
 class ListDonationsUseCase {
@@ -23,10 +36,24 @@ class ListDonationsUseCase {
         @inject("DonationsRepository")
         private donationsRepository: IDonationsRepository,
         @inject("DayjsDateProvider")
-        private dateProvider: IDateProvider
+        private dateProvider: IDateProvider,
+        @inject("CacheProvider")
+        private cacheProvider: ICacheProvider,
+        @inject("NgoRepository")
+        private ngoRepository: INgoRepository
     ) { }
 
-    async execute({ value, orderBy, limit, offset, startDate, endDate }: IRequest): Promise<Donation[]> {
+    async execute({ orderBy, limit, offset, startDate, endDate, ngo_id, worker_name, donor_name }: IRequest): Promise<IResponse> {
+
+
+        let ngo: Ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
+
+        if(!ngo.id){
+            
+            ngo = await this.ngoRepository.findById(ngo_id)
+
+            if(!ngo) throw new AppError("Instituição nao encontrada", 404)
+        }
 
         if (orderBy !== "ASC") orderBy = "DESC"
 
@@ -44,23 +71,31 @@ class ListDonationsUseCase {
         if (!endDate) endDate = this.dateProvider.addOrSubtractTime("add", "minute", 1439).toString()
 
         //converte para data
-        let startD = this.dateProvider.convertToDate(startDate)
-        let endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, this.dateProvider.convertToDate(endDate))
+        let start_date = this.dateProvider.convertToDate(startDate)
+        let end_date = this.dateProvider.addOrSubtractTime("add", "minute", 1439, this.dateProvider.convertToDate(endDate))
 
         //if (startD === endD) endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
 
         //if (this.dateProvider.IsToday(endD)) endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
+        
+        
 
-
-        return await this.donationsRepository.findDonationsBy({
-            value,
-            orderBy,
+        const [donations, sum] =  await this.donationsRepository.findDonationsBy({
+            ngo_id,
+            worker_name,
+            donor_name,
+            orderBy: orderBy as "ASC" | "DESC",
             limit,
             offset,
-            startDate: startD,
-            endDate: endD
-        })[0]
-
+            startDate: start_date,
+            endDate: end_date
+        })
+        
+        return {
+            donations,
+            sum,
+            ngo
+        }
 
     }
 }

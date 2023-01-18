@@ -79,7 +79,7 @@ class DonationsRepository implements IDonationsRepository {
     }
 
     //REFAZER COM QUERY BUILDER
-    async findDonationsBy({ value, ngo_id, orderBy, limit, offset, startDate, endDate, donor_name, worker_name }: IFindOptions): Promise<[Donation[], number]> {
+    async findDonationsBy({ value, ngo_id, orderBy, limit, offset, startDate, endDate, donor_name, worker_name, donation_number, }: IFindOptions): Promise<[Donation[], number]> {
         // buscar tbm por is payed or is_canceled
         let query = await this.repository.createQueryBuilder("donations")
         .leftJoinAndSelect("donations.worker", "workers")
@@ -94,6 +94,10 @@ class DonationsRepository implements IDonationsRepository {
 
         if(donor_name){
             query = query.andWhere("donations.donor_name ilike %:donor_name% ", {donor_name})
+        }
+
+        if(donation_number){
+            query = query.andWhere("donations.donation_number = :donation_number ", {donation_number})
         }
         
         if(worker_name){

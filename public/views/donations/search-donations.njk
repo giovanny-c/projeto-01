@@ -1,0 +1,43 @@
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/donations/donation.css">
+    <title>Doação nº {{donation.donation_number}} - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+
+        <div class="page-title">
+           
+                {{ngo.name}}
+        </div>
+
+         <div class="change">
+        <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float - 1}}"><< doação anterior</a> | <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float + 1}}">proxima doação >></a>
+        </div>
+
+
+
+    
+    <script>
+        const form = document.querySelector(".form-delete")
+
+            form.addEventListener("submit", function(event){
+
+                    const confirmation = confirm("Cancelar a doação?")
+
+                    if(!confirmation){
+                            event.preventDefault()
+                    }   
+
+            })
+    </script>
+    {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
+
+{% endblock %}  
+
+

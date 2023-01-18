@@ -72,7 +72,8 @@ donationRoutes.post("/instituicao/:id/contador/definir", upload.none(), ensureAu
 donationRoutes.get("/instituicao/:id/doacao/nova", ensureAuthenticated, loadCreateDonationController.handle )
 donationRoutes.post("/instituicao/:id/doacao/nova/criar", upload.none(), ensureAuthenticated, createDonationController.handle)//cria a donation
 
-donationRoutes.get("/instituicao/:id/doacao/listar", ensureAuthenticated, listDonationsController.handle)
+
+donationRoutes.get("/instituicao/:ngo_id/doacao/listar", ensureAuthenticated, listDonationsController.handle)
 
 //pegar doaçao
 donationRoutes.get("/instituicao/:ngo_id/doacao/ultima", ensureAuthenticated, getLastDonationController.handle)
