@@ -10,6 +10,7 @@ import { FindAllNgosController } from "../modules/donations/useCases/findAllNgos
 import { GenerateBookletController } from "../modules/donations/useCases/genarateBead/GenerateBookletController";
 import { GenerateReceiptController } from "../modules/donations/useCases/generateReceipt/GenerateReceiptController";
 import { GetDonationController } from "../modules/donations/useCases/getDonation/GetDonationController";
+import { GetLastDonationController } from "../modules/donations/useCases/getLasDonation/GetLastDonationController";
 import { GetNgoController } from "../modules/donations/useCases/getNgo/GetNgoController";
 import { ImportDonationsController } from "../modules/donations/useCases/importDonations/ImportDonationsController";
 import { ListDonationsController } from "../modules/donations/useCases/listDonations/ListDonationsController";
@@ -42,7 +43,7 @@ const generateBookletController = new GenerateBookletController()
 const getNgoController = new GetNgoController()
 const loadDonationCounterPageController = new LoadDonationCounterPageController()
 const loadCreateDonationController = new LoadCreateDonationController()
-
+const getLastDonationController = new GetLastDonationController()
 
 //importa os doadores
 
@@ -72,6 +73,9 @@ donationRoutes.get("/instituicao/:id/doacao/nova", ensureAuthenticated, loadCrea
 donationRoutes.post("/instituicao/:id/doacao/nova/criar", upload.none(), ensureAuthenticated, createDonationController.handle)//cria a donation
 
 donationRoutes.get("/instituicao/:id/doacao/listar", ensureAuthenticated, listDonationsController.handle)
+
+//pegar doaçao
+donationRoutes.get("/instituicao/:ngo_id/doacao/ultima", ensureAuthenticated, getLastDonationController.handle)
 donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number", ensureAuthenticated, getDonationController.handle)
 donationRoutes.post("/instituicao/:ngo_id/doacao/:donation_number/cancelar-doacao/", ensureAuthenticated, cancelDonationController.handle)
 //donationRoutes.get("/receipt/:id", generateReceiptController.handle)

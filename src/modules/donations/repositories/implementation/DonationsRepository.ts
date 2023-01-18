@@ -79,14 +79,42 @@ class DonationsRepository implements IDonationsRepository {
     }
 
     //REFAZER COM QUERY BUILDER
-    async findDonationsBy({ value, orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<[Donation[], number]> {
+    async findDonationsBy({ value, ngo_id, orderBy, limit, offset, startDate, endDate, donor_name, worker_name }: IFindOptions): Promise<[Donation[], number]> {
         // buscar tbm por is payed or is_canceled
         let query = await this.repository.createQueryBuilder("donations")
         .leftJoinAndSelect("donations.worker", "workers")
         .leftJoinAndSelect("donations.donor", "donors")
         .leftJoinAndSelect("donations.ngo", "ngos")
         .select(["donations","workers","donors","ngos"])
-        .where("")
+        .where("donations.ngo_id = :ngo_id ", {ngo_id})
+
+        if(startDate && endDate){
+            query = query.andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
+        }
+
+        if(donor_name){
+            query = query.andWhere("donations.donor_name ilike %:donor_name% ", {donor_name})
+        }
+        
+        if(worker_name){
+            query = query.andWhere("workers.name ilike %:worker_name% ", {worker_name})
+        }
+
+        if(orderBy){
+            query = query.orderBy("donations.donation_number", orderBy)
+        }
+
+
+        if(limit){
+            query = query.limit(limit)
+        }
+        if(offset){
+            query = query.offset(offset)
+        }
+
+
+
+
 
         //continuar amanha
 
