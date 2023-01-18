@@ -59,7 +59,7 @@ class ListDonationsUseCase {
 
 
 
-        if (!limit || limit === 0) limit = 10
+        if (!limit || limit === 0) limit = 30
         if (!offset) offset = 0
 
         //if ( se nao for number ) throw new AppError("this is not a valid limit")
@@ -90,6 +90,7 @@ class ListDonationsUseCase {
             startDate: start_date,
             endDate: end_date
         })
+
         
         return {
             donations,

@@ -1,0 +1,9 @@
+.table {
+    width: 1200px;
+    margin: 30px auto;
+    border: 1px solid black;
+}
+
+.table tr {
+    width: 940px;
+}

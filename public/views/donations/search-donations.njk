@@ -3,7 +3,7 @@
 
 {% block head %}
 
-    <link rel="stylesheet" href="/styles/donations/donation.css">
+    <link rel="stylesheet" href="/styles/donations/search-donation.css">
     <title>Doação nº {{donation.donation_number}} - Castanharo Telemarketing</title>
 
 {% endblock %}
@@ -16,26 +16,46 @@
                 {{ngo.name}}
         </div>
 
-         <div class="change">
-        <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float - 1}}"><< doação anterior</a> | <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float + 1}}">proxima doação >></a>
+        <div class="sub-title">
+
+            Pesquisar Doações
+
         </div>
 
+        
 
+                
+        <table class="table">
+            <tr>
+                <th>Nº</th>
+                <th>Valor</th>
+                <th>Doador</th>
+                <th>Funcionário</th>
+                <th>Data</th>
+                <th>Ver</th>
+            </tr>
+            
 
-    
-    <script>
-        const form = document.querySelector(".form-delete")
+            {% for donation in donations %}
+                <tr class="columns">
+                    <td>{{ donation.donation_number}}</td>
+                    <td class="donation_value"> 
+                        
+                        {{donation.donation_value}}
+                    </td>
+                    <td>{{donation.donor_name}}</td>
+                    <td>{{donation.worker.name}}</td>
+                    <td>{{donation.created_at}}</td>
+                    <td><a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}">VER</a></td>
+                </tr>
+            {% endfor %}
 
-            form.addEventListener("submit", function(event){
+        </table>
+                
+                
+    <script src="/scripts-for-list.js"></script>
 
-                    const confirmation = confirm("Cancelar a doação?")
-
-                    if(!confirmation){
-                            event.preventDefault()
-                    }   
-
-            })
-    </script>
+   
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 
 {% endblock %}  

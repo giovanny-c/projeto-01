@@ -98,7 +98,6 @@ const Mask = {
 
     },
 
-
     cep(value) {
 
         value = value.replace(/\D/g, "")
@@ -118,11 +117,8 @@ const Mask = {
     }
 
 
-
-
-
-
 }
+
 
 
 function toggleIframe() {
