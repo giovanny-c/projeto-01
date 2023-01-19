@@ -16,40 +16,37 @@ function formatToBRLStatic(tds) {
 
 
 }
+function formatDateStatic(tds) {
 
-var tds = document.getElementsByClassName("donation_value")
+    for (let i = 0; i < tds.length; i++) {
 
-formatToBRLStatic(tds)
+        const date = new Date(tds[i].innerHTML);
 
-// date(timestamp){
+        const year = date.getFullYear();
 
-//     const date = new Date(timestamp);
+        const month = `0${date.getMonth() + 1}`.slice(-2);
+        //slice(-2) vai pegar os dois ultimos caracteres da string
 
-//     const year = date.getFullYear();
+        const day = `0${date.getUTCDate()}`.slice(-2);
 
-//     const month = `0${date.getMonth() + 1}`.slice(-2);
-//     //slice(-2) vai pegar os dois ultimos caracteres da string
+        // const hour = date.getHours()
 
-//     const day = `0${date.getUTCDate()}`.slice(-2);
+        // const minutes = date.getMinutes()
 
-//     const hour = date.getHours()
-
-//     const minutes = date.getMinutes()
-    
-
-//     return { 
-//         day,
-//         month,
-//         year,
-//         hour,
-//         minutes,
-//         iso: `${year}-${month}-${day}`,//tipo ISO
-//         birthday: `${day}/${month}`,
-//         format: `${day}/${month}/${year}`
-
-//    }
-
-//     /*`${year}-${month}-${day}`*/
+        tds[i].innerHTML = `${day}/${month}/${year}`
+    }
+    /*`${year}-${month}-${day}`*/
 
 
-// },
+}
+
+
+var tdsValue = document.getElementsByClassName("donation_value")
+var tdsDate = document.getElementsByClassName("created_at")
+
+formatToBRLStatic(tdsValue)
+formatDateStatic(tdsDate)
+
+
+
+//deixar a formatação para o front
