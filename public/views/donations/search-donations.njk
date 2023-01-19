@@ -22,9 +22,68 @@
 
         </div>
 
-        
-
+        <form class="search" method="GET" action="/instituicao/{{ngo.id}}/doacao/listar">
                 
+            <input 
+                type="text"
+                name="doador"
+                placeholder="buscar por Doadores"
+                {% if search_terms %}
+                    value="{{search_terms.donor_name}}"
+                {% endif %}
+            >
+            <input 
+                type="text"
+                name="funcionario"
+                placeholder="buscar por Funcionarios"
+                {% if search_terms %}
+                    value="{{search_terms.worker_name}}"
+                {% endif %}
+            >
+            <input 
+                type="date"
+                name="data_de_inicio"
+                placeholder=""
+                {% if search_terms %}
+                    value="{{search_terms.startDate}}"
+                {% endif %}
+            >
+             <input 
+                type="date"
+                name="data_de_termino"
+                placeholder=""
+                {% if search_terms %}
+                    value="{{search_terms.endDate}}"
+                {% endif %}
+            >
+
+            <input 
+                type="radio"
+                name="ordenar"
+                placeholder=""
+                value="ASC" 
+                {% if search_terms.orderBy === "ASC" %}
+                    checked
+                {% endif %}
+            > <label for="ASC">crescente</label>
+             <input 
+                type="radio"
+                name="ordenar"
+                placeholder=""
+                value="DESC"
+                {% if search_terms.orderBy === "DESC" %}
+                    checked
+                {% endif %}
+            > <label for="DESC">decrescente</label>
+
+            
+            <button type="submit">Pesquisar</button>
+            
+            
+        </form>
+             
+
+
         <table class="table">
             <tr>
                 <th>Nº</th>

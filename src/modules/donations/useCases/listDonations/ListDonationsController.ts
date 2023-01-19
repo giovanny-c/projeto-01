@@ -9,13 +9,23 @@ class ListDonationsController {
 
     async handle(req: Request, res: Response): Promise<any> {
 
-        const { orderBy, limit, offset, startDate, endDate, worker_name, donor_name} = req.query
+        const { 
+            ordenar: orderBy, 
+            limit, 
+            offset, 
+            data_de_inicio: startDate, 
+            data_de_termino: endDate, 
+            funcionario: worker_name, 
+            doador: donor_name
+        } = req.query
+
+
         const {ngo_id} = req.params
         
 
         const listDonationsUseCase = container.resolve(ListDonationsUseCase)
 
-        const {sum, donations, ngo} = await listDonationsUseCase.execute({
+        const {sum, donations, ngo, search_terms} = await listDonationsUseCase.execute({
             orderBy: orderBy as string,
             limit: limit as any,
             offset: offset as any,
@@ -26,7 +36,7 @@ class ListDonationsController {
             worker_name: worker_name as string
         })
 
-        return res.status(200).render("views/donations/search-donations", {donations, sum, ngo})
+        return res.status(200).render("views/donations/search-donations", {donations, sum, ngo, search_terms})
     }
 }
 

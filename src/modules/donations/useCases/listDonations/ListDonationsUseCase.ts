@@ -26,6 +26,16 @@ interface IResponse {
     ngo: Ngo
     donations: Donation[],
     sum: number
+    search_terms: {
+        orderBy: string
+        limit: number
+        offset: number
+        startDate: string | Date
+        endDate: string | Date
+        ngo_id: string
+        donor_name: string
+        worker_name: string
+    }
 }
 
 
@@ -95,7 +105,17 @@ class ListDonationsUseCase {
         return {
             donations,
             sum,
-            ngo
+            ngo,
+            search_terms:{
+                ngo_id,
+                donor_name,
+                worker_name,
+                startDate,
+                endDate,
+                orderBy,
+                limit,
+                offset,
+            }
         }
 
     }

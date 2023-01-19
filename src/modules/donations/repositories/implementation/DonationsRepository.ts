@@ -93,7 +93,7 @@ class DonationsRepository implements IDonationsRepository {
         }
 
         if(donor_name){
-            query = query.andWhere("donations.donor_name ilike %:donor_name% ", {donor_name})
+            query = query.andWhere("donations.donor_name ilike :donor_name ", {donor_name: `%${donor_name}%`})
         }
 
         if(donation_number){
@@ -101,7 +101,7 @@ class DonationsRepository implements IDonationsRepository {
         }
         
         if(worker_name){
-            query = query.andWhere("workers.name ilike %:worker_name% ", {worker_name})
+            query = query.andWhere("workers.name ilike :worker_name ", {worker_name: `%${worker_name}%`})
         }
 
         if(orderBy){
@@ -121,7 +121,6 @@ class DonationsRepository implements IDonationsRepository {
 
 
         //continuar amanha
-
 
         return query.getManyAndCount()
         
