@@ -1,7 +1,7 @@
 import { container } from "tsyringe";
 import { Request, Response } from "express";
 import { ListDonationsUseCase } from "./ListDonationsUseCase";
-import { stringify } from "uuid";
+
 
 
 
@@ -12,7 +12,7 @@ class ListDonationsController {
         const { 
             ordenar: orderBy, 
             limit, 
-            offset, 
+            pagina: page, 
             data_de_inicio: startDate, 
             data_de_termino: endDate, 
             funcionario: worker_name, 
@@ -28,7 +28,7 @@ class ListDonationsController {
         const {sum, donations, ngo, search_terms} = await listDonationsUseCase.execute({
             orderBy: orderBy as string,
             limit: limit as any,
-            offset: offset as any,
+            page: page as any,
             startDate: startDate as string,
             endDate: endDate as string,
             donor_name: donor_name as string,

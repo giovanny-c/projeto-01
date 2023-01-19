@@ -14,7 +14,7 @@ interface IRequest {
     
     orderBy: string
     limit: number
-    offset: number
+    page: number
     startDate: string | Date
     endDate: string | Date
     ngo_id: string
@@ -29,7 +29,7 @@ interface IResponse {
     search_terms: {
         orderBy: string
         limit: number
-        offset: number
+        page: number
         startDate: string | Date
         endDate: string | Date
         ngo_id: string
@@ -53,7 +53,7 @@ class ListDonationsUseCase {
         private ngoRepository: INgoRepository
     ) { }
 
-    async execute({ orderBy, limit, offset, startDate, endDate, ngo_id, worker_name, donor_name }: IRequest): Promise<IResponse> {
+    async execute({ orderBy, limit, page, startDate, endDate, ngo_id, worker_name, donor_name }: IRequest): Promise<IResponse> {
 
 
         let ngo: Ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
@@ -68,9 +68,10 @@ class ListDonationsUseCase {
         if (orderBy !== "ASC") orderBy = "DESC"
 
 
-
-        if (!limit || limit === 0) limit = 30
-        if (!offset) offset = 0
+        page = page || 1
+        limit = limit || 30
+        
+        let offset = limit * (page - 1)
 
         //if ( se nao for number ) throw new AppError("this is not a valid limit")
         //if (offset.valueOf !== Number) throw new AppError("this is not a valid offset")
@@ -114,7 +115,7 @@ class ListDonationsUseCase {
                 endDate,
                 orderBy,
                 limit,
-                offset,
+                page,
             }
         }
 
