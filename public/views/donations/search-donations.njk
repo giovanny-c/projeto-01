@@ -22,24 +22,17 @@
 
         </div>
 
-        <div class="pagination">
-            {% if donations| length >= search_terms.limit %}
-                <a id="next_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float + 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_name}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}">
-                
-                Próxima página</a>  
-            {% endif %}
-            
-            {% if search_terms.page != 1 %}
-                <a id="previous_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float - 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_name}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}">
-                Página anterior</a>
-            {% endif %}
-        </div>
-
+       
 
         <div class="search-paramns">
+           
             <form class="search" method="GET" action="/instituicao/{{ngo.id}}/doacao/listar">
-                    
+         
+         
+         
+            
                 <input 
+                    class="text"
                     type="text"
                     name="doador"
                     placeholder="buscar por Doadores"
@@ -48,6 +41,7 @@
                     {% endif %}
                 >
                 <input 
+                    class="text"
                     type="text"
                     name="funcionario"
                     placeholder="buscar por Funcionarios"
@@ -71,26 +65,28 @@
                         value="{{search_terms.endDate}}"
                     {% endif %}
                 >
+                
 
-                <input 
-                    type="radio"
-                    name="ordenar"
-                    placeholder=""
-                    value="ASC" 
-                    {% if search_terms.orderBy === "ASC" %}
-                        checked
-                    {% endif %}
-                > <label for="ASC">crescente</label>
-                <input 
-                    type="radio"
-                    name="ordenar"
-                    placeholder=""
-                    value="DESC"
-                    {% if search_terms.orderBy === "DESC" %}
-                        checked
-                    {% endif %}
-                > <label for="DESC">decrescente</label>
-
+                <div class="radio">
+                    <input 
+                        type="radio"
+                        name="ordenar"
+                        placeholder=""
+                        value="ASC" 
+                        {% if search_terms.orderBy === "ASC" %}
+                            checked
+                        {% endif %}
+                    > <label for="ASC">crescente</label>
+                    <input 
+                        type="radio"
+                        name="ordenar"
+                        placeholder=""
+                        value="DESC"
+                        {% if search_terms.orderBy === "DESC" %}
+                            checked
+                        {% endif %}
+                    > <label for="DESC">decrescente</label>
+                </div>
                 
                 <button type="submit">Pesquisar</button>
                 
@@ -98,7 +94,18 @@
             </form> 
         </div>
              
-
+        <div class="pagination">
+            {% if donations| length >= search_terms.limit %}
+                <a id="next_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float + 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_name}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}">
+                
+                Próxima página</a>  
+            {% endif %}
+            
+            {% if search_terms.page != 1 %}
+                <a id="previous_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float - 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_name}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}">
+                Página anterior</a>
+            {% endif %}
+        </div> 
 
         <table class="table">
             <tr>
