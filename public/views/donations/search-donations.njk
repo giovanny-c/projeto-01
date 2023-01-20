@@ -65,6 +65,14 @@
                         value="{{search_terms.endDate}}"
                     {% endif %}
                 >
+
+                <input type="number" 
+                name="numero_da_doacao"
+                placeholder="buscar por Numero da doação"
+                {% if search_terms %}
+                        value="{{search_terms.donation_number}}"
+                {% endif %}
+                >
                 
 
                 <div class="radio">

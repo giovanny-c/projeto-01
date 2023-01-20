@@ -15,6 +15,7 @@ interface IRequest {
     orderBy: string
     limit: number
     page: number
+    donation_number: number
     startDate: string | Date
     endDate: string | Date
     ngo_id: string
@@ -27,6 +28,7 @@ interface IResponse {
     donations: Donation[],
     sum: number
     search_terms: {
+        donation_number: number
         orderBy: string
         limit: number
         page: number
@@ -53,7 +55,7 @@ class ListDonationsUseCase {
         private ngoRepository: INgoRepository
     ) { }
 
-    async execute({ orderBy, limit, page, startDate, endDate, ngo_id, worker_name, donor_name }: IRequest): Promise<IResponse> {
+    async execute({ orderBy, limit, page, startDate, endDate, ngo_id, worker_name, donor_name, donation_number }: IRequest): Promise<IResponse> {
 
 
         let ngo: Ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
@@ -95,6 +97,7 @@ class ListDonationsUseCase {
             ngo_id,
             worker_name,
             donor_name,
+            donation_number,
             orderBy: orderBy as "ASC" | "DESC",
             limit,
             offset,
@@ -108,6 +111,7 @@ class ListDonationsUseCase {
             sum,
             ngo,
             search_terms:{
+                donation_number,
                 ngo_id,
                 donor_name,
                 worker_name,

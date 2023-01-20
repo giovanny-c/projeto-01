@@ -16,7 +16,8 @@ class ListDonationsController {
             data_de_inicio: startDate, 
             data_de_termino: endDate, 
             funcionario: worker_name, 
-            doador: donor_name
+            doador: donor_name,
+            numero_da_doacao: donation_number
         } = req.query
 
 
@@ -27,8 +28,9 @@ class ListDonationsController {
 
         const {sum, donations, ngo, search_terms} = await listDonationsUseCase.execute({
             orderBy: orderBy as string,
-            limit: limit as any,
-            page: page as any,
+            limit: +(limit),
+            page: +(page),
+            donation_number: +(donation_number),
             startDate: startDate as string,
             endDate: endDate as string,
             donor_name: donor_name as string,
