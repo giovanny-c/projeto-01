@@ -107,15 +107,44 @@ div.search-paramns button {
     font-weight: bold;
     text-transform: uppercase;
     border: none;
-    box-shadow: 1px 1px 1px;
+    box-shadow: 1px 1px 1px var(--color-theme);
 
 }
 
 div.search-paramns button:hover {
-    background-color: rgb(209, 209, 191);
+    background-color: var(--color-theme);
+    color: var(--color-background);
+
 }
 
-.pagination {}
+div.search-paramns button:active {
+    background-color: rgb(109, 108, 108);
+}
+
+.pagination {
+    display: grid;
+    grid-template-columns: 13% 3px 13%;
+    width: 1200px;
+    margin: 20px auto;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+
+}
+
+.pagination a {
+    margin-left: 2px;
+    color: var(--color-theme);
+    text-decoration: none;
+    padding: 2px;
+    border-radius: 4px;
+    border: 1px solid var(--color-theme);
+}
+
+.pagination a:hover {
+    background-color: var(--color-theme);
+    color: var(--color-background);
+}
 
 .table tr:nth-child(odd) {
     background-color: rgb(128, 128, 128);

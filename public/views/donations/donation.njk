@@ -16,10 +16,7 @@
                 {{ngo.name}}
         </div>
 
-         <div class="change">
-        <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float - 1}}"><< doação anterior</a> | <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float + 1}}">proxima doação >></a>
-        </div>
-
+        
 
         <div class="donation-info">
             <p>
@@ -50,18 +47,22 @@
 
        
         <div class="buttons">
-            <button class="show"
-            onclick="toggleIframe()">
-                Ver Recibo
-            </button>
 
-            <form name="form-delete" class="form-delete" action="/" method="method?=POST">
+            <div>
+                <button class="show"
+                onclick="toggleIframe()">
+                    Ver Recibo
+                </button>
+            </div>
 
+            <div>
+                <form name="form-delete" class="form-delete" action="/" method="method?=POST">
                 <button class="cancel"  type="submit">
                     Cancelar Doação
                 </button>
-            </form>
-
+            
+                </form>
+            </div>
         </div>
         
 
@@ -70,6 +71,13 @@
             <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe>
 
         </div>
+    </div>
+
+    <div class="change">
+    <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float - 1}}"><< doação anterior</a> 
+      
+        {#caracter invisivel  #}
+    <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float + 1}}">proxima doação >></a>
     </div>
 
     

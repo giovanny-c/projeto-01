@@ -127,10 +127,12 @@ function toggleIframe() {
     if (iframe.style.visibility === "visible") {
 
         iframe.style.visibility = "hidden"
+        iframe.style.height = 0
 
     } else {
 
         iframe.style.visibility = "visible"
+        iframe.style.height = "500px"
     }
 
 };
