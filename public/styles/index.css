@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 html {
     background-color: ivory;
     min-width: 940px;
@@ -17,8 +21,11 @@ html {
 
 
 body {
+    min-height: 100vh;
     margin: 0px auto;
     border: 0px;
+    display: flex;
+    flex-direction: column;
     font-family: 'Roboto', sans-serif;
 
 }
