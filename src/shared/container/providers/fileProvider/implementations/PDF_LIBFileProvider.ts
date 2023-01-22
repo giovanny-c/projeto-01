@@ -9,7 +9,7 @@ import { Donation } from "../../../../../modules/donations/entities/donation";
 
 import { AppError } from "../../../../errors/AppError";
 import { GRAPECCReceiptProvider } from "./GRAPECCReceiptProvider";
-import { container, InjectionToken } from "tsyringe";
+import { container, InjectionToken, singleton } from "tsyringe";
 
 
 const generateReceiptMethods = {
@@ -19,7 +19,7 @@ const generateReceiptMethods = {
     GOTA: "",
         
 }
-
+@singleton()
 class PDF_LIBFileProvider implements IFileProvider {
 
 
@@ -27,7 +27,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
       
         if (!donation.donation_number){
-            throw new AppError("Doação nao encontrada", 404)
+            throw new AppError("generateReceiptcontrada", 404)
         }
         
         const doc = await PDFDocument.create()

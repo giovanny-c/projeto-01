@@ -1,0 +1,62 @@
+{% extends "views/layout.njk" %}
+
+{% block head %}
+    
+    <title>Contador - {{ngo.name}} - Castanharo Telemarketing </title>
+
+    <link rel="stylesheet" href="/styles/donations/generate-booklet.css">
+
+{% endblock %}
+
+{% block content %}
+    
+   
+        <div class="page-title">
+            
+                {{ngo.name}}
+                
+        </div>
+
+        <div class="sub-title">
+            Gerar Talão
+        </div>
+        <div class="actual_number">
+            Nº atual das Doações: {{donation_counter.donation_number}}
+        </div>
+
+
+        <form class="form" id="#form" action="/instituicao/{{ngo.id}}/gerar-talao" method="post" enctype="multipart/form-data">
+
+                
+            <div>Inicio</div> <div>Fim</div><div> </div>
+            <div class="item">
+
+                    <div>
+                        
+                    <input      
+                        type="number" name="first_number" value="" placeholder="0"/>
+                    </div>
+
+            </div> 
+
+           
+            <div class="item">
+
+                    <div>
+                       
+                    <input      
+                        type="number" name="last_number" value="" placeholder="0"/>
+                    </div>
+
+            </div>
+            
+            <div class="button"><button type="submit">Gerar</button> </div>
+               
+            
+
+        </form>
+
+
+
+    
+{% endblock %}    

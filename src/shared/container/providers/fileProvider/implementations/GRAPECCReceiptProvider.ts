@@ -12,11 +12,11 @@ import extenso from "extenso"
 import { getFormatedDateForReceipt } from "../../../../../../utils/splitDateForReceipt";
 
 import { PDF_LIBFileProvider } from "./PDF_LIBFileProvider";
-import { container } from "tsyringe";
+import { container, singleton } from "tsyringe";
 import { INGOReceiptProvider } from "../INGOReceiptProvider";
 import { LocalStorageProvider } from "../../storageProvider/implementations/LocalStorageProvider";
 
-
+@singleton()
 class GRAPECCReceiptProvider implements INGOReceiptProvider {
     
     

@@ -7,7 +7,7 @@ import { CancelDonationController } from "../modules/donations/useCases/cancelDo
 import { CreateDonationController } from "../modules/donations/useCases/createDonation/CreateDonationController";
 import { CreateNgoController } from "../modules/donations/useCases/createNgo/CreateNgoController";
 import { FindAllNgosController } from "../modules/donations/useCases/findAllNgos/FindAllNgosController";
-import { GenerateBookletController } from "../modules/donations/useCases/genarateBead/GenerateBookletController";
+import { GenerateBookletController } from "../modules/donations/useCases/generateBooklet/GenerateBookletController";
 import { GenerateReceiptController } from "../modules/donations/useCases/generateReceipt/GenerateReceiptController";
 import { GetDonationController } from "../modules/donations/useCases/getDonation/GetDonationController";
 import { GetLastDonationController } from "../modules/donations/useCases/getLasDonation/GetLastDonationController";
@@ -16,6 +16,7 @@ import { ImportDonationsController } from "../modules/donations/useCases/importD
 import { ListDonationsController } from "../modules/donations/useCases/listDonations/ListDonationsController";
 import { LoadCreateDonationController } from "../modules/donations/useCases/loadCreateDonationPage/LoadCreateDonationController";
 import { LoadDonationCounterPageController } from "../modules/donations/useCases/loadDonationCounterPage/LoadDonationCounterPageController";
+import { LoadGenerateBookletController } from "../modules/donations/useCases/loadGenerateBooklet/LoadGenerateBookletController";
 
 import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
 
@@ -44,6 +45,7 @@ const getNgoController = new GetNgoController()
 const loadDonationCounterPageController = new LoadDonationCounterPageController()
 const loadCreateDonationController = new LoadCreateDonationController()
 const getLastDonationController = new GetLastDonationController()
+const loadGenerateBookletController = new LoadGenerateBookletController()
 
 //importa os doadores
 
@@ -62,7 +64,8 @@ donationRoutes.get("/", ensureAuthenticated, findAllNgosController.handle)
 donationRoutes.get("/instituicao/:id", ensureAuthenticated, getNgoController.handle)
 
 //gerar talao
-donationRoutes.get("/instituicao/:id/gerar-talao", ensureAuthenticated, generateBookletController.handle)
+donationRoutes.get("/instituicao/:ngo_id/gerar-talao",  ensureAuthenticated, loadGenerateBookletController.handle)
+donationRoutes.post("/instituicao/:ngo_id/gerar-talao", upload.none(), ensureAuthenticated, generateBookletController.handle)
 
 //altera numero doação
 donationRoutes.get("/instituicao/:id/contador/",  ensureAuthenticated,   loadDonationCounterPageController.handle)

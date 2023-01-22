@@ -66,15 +66,19 @@ class DonationsRepository implements IDonationsRepository {
     }
 
     async findForGenerateBooklet({ donation_number_interval, ngo_id }: IFindOptions): Promise<Donation[]> {
-        return await this.repository.createQueryBuilder("donations")
+
+        let query = await this.repository.createQueryBuilder("donations")
         .leftJoinAndSelect("donations.worker", "workers")
         .leftJoinAndSelect("donations.donor", "donors")
         .leftJoinAndSelect("donations.ngo", "ngos")
         .select(["donations","workers","donors","ngos"])
         .where("donations.ngo_id = :ngo_id", {ngo_id})
-        .andWhere(`donations.donation_number BETWEEN ${donation_number_interval[0]} AND ${donation_number_interval[1]} `)
+        .andWhere("donations.donation_number BETWEEN :first AND :last ", {first: donation_number_interval[0], last: donation_number_interval[1]})
         .orderBy("donations.donation_number", "ASC")
         .getMany()
+    
+
+        return query
 
     }
 

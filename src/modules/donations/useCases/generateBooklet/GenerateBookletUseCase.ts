@@ -36,6 +36,8 @@ class GenerateBookletUseCase {
 
         
 
+        
+        
         await this.fileProvider.createBooklet(donations)
 
 
