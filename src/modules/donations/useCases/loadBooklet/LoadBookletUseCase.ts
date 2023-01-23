@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
+import { AppError } from "../../../../shared/errors/AppError";
 import { Ngo } from "../../entities/ngos";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
@@ -42,11 +43,11 @@ class LoadBookletUseCase {
 
         }
 
-        const donation_counter = await this.donationCounterRepository.findByNgoId(ngo_id)
+        
         
         return {
             ngo,
-            donation_counter
+            
         }
         
     }  

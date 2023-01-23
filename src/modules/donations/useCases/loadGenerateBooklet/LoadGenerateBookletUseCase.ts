@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
+import { IStorageProvider } from "../../../../shared/container/providers/storageProvider/IStorageProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { DonationCounter } from "../../entities/donation_counter";
 import { Ngo } from "../../entities/ngos";
@@ -26,7 +27,9 @@ class LoadGenerateBookletUseCase{
         private cacheProvider: ICacheProvider,
         @inject("DonationCounterRepository")
         private donationCounterRepository: IDonationCounterRepository,
-    ){
+        @inject("StorageProvider")
+        private storageProvider: IStorageProvider
+        ){
 
     }
 
@@ -40,6 +43,12 @@ class LoadGenerateBookletUseCase{
             if(!ngo) throw new AppError("Instituição nao encontrada", 404)
 
         }
+
+
+        let dir = "./tmp/booklet/"
+        const contents = await this.storageProvider.getFiles(dir)
+
+       
 
         const donation_counter = await this.donationCounterRepository.findByNgoId(ngo_id)
         

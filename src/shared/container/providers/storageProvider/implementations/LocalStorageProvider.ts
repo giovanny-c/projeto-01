@@ -1,5 +1,6 @@
 
 import * as fs from "fs"
+import * as path from "path"
 import * as mime from "mime"
 import { resolve } from "path";
 import upload from "../../../../../config/upload";
@@ -104,6 +105,29 @@ class LocalStorageProvider implements IStorageProvider {
 
             return
         }
+    }
+
+
+    async getFiles(dir: string): Promise<string[] | void>{
+        
+        let content
+
+        try {   
+
+            content = fs.readdirSync(dir)
+
+            return content
+            
+        } catch (error) {
+
+            return
+        }
+    }
+
+    async getLastCreatedFile(dir){
+
+        return fs.readFileSync(dir)
+        .filter((file) => fs.lstatSync(path.join))
     }
 
 }

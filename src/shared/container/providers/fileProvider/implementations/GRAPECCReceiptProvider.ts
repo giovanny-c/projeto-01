@@ -15,6 +15,7 @@ import { PDF_LIBFileProvider } from "./PDF_LIBFileProvider";
 import { container, singleton } from "tsyringe";
 import { INGOReceiptProvider } from "../INGOReceiptProvider";
 import { LocalStorageProvider } from "../../storageProvider/implementations/LocalStorageProvider";
+import { DayjsDateProvider } from "../../dateProvider/implementations/DayjsDateProvider";
 
 @singleton()
 class GRAPECCReceiptProvider implements INGOReceiptProvider {
@@ -232,16 +233,21 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
     async createBooklet(doc: PDFDocument, data: Donation[]): Promise<Uint8Array>{
 
         const storageProvider = container.resolve(LocalStorageProvider)
+        const dateProvider = container.resolve(DayjsDateProvider)
+
+        const [month, year] = dateProvider.formatDate(dateProvider.dateNow(), "MM/YYYY").toString().split("/")
+    
 
         let pageIndex = 0
         let index = 1
 
+        
         const promises = data.map(async(donation) => {
             //para pegar o arquivo
             
 
-            const {dia, mes, ano} = getFormatedDateForReceipt(donation.created_at)
-               
+            let {dia, mes, ano} = getFormatedDateForReceipt(donation.created_at)
+            
             let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
             let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
@@ -331,7 +337,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         const pdfBytes = await doc.save()
 
         //salva
-        let dir = `./tmp/print/${data[0].ngo.name}`
+        let dir = `./tmp/booklet/${year}/${month}/${data[0].ngo.name}`
         
         let file_name = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
     
