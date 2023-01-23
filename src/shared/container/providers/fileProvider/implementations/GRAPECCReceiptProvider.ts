@@ -103,7 +103,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         //valor por extenso
         let valorPorExtenso = extenso(valor , {mode: "currency", currency: { type: "BRL"}, locale:"br"})
         
-        let vpeArray: string[] = valorPorExtenso.match(/.{1,63}\b/g)
+        let vpeArray: string[] = valorPorExtenso.match(/.{1,60}\b/g)
 
         //para separar com hifen (nao funcionou 100%)
         // if(!vpeArray[0].match(/[ ,]$|( e)$/) ) {

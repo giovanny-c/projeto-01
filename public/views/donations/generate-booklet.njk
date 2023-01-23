@@ -2,7 +2,7 @@
 
 {% block head %}
     
-    <title>Contador - {{ngo.name}} - Castanharo Telemarketing </title>
+    <title>Gerar Talão - {{ngo.name}} - Castanharo Telemarketing </title>
 
     <link rel="stylesheet" href="/styles/donations/generate-booklet.css">
 
@@ -21,7 +21,7 @@
             Gerar Talão
         </div>
         <div class="actual_number">
-            Nº atual das Doações: {{donation_counter.donation_number}}
+            Nº atual das Doações: {{donation_counter.donation_number|float - 1}}
         </div>
 
 

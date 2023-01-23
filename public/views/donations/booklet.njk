@@ -1,0 +1,30 @@
+{% extends "views/layout.njk" %}
+
+{% block head %}
+    
+    <title>Talão - {{ngo.name}} - Castanharo Telemarketing </title>
+
+    <link rel="stylesheet" href="/styles/donations/booklet.css">
+
+{% endblock %}
+
+{% block content %}
+    
+   
+        <div class="page-title">
+            
+                {{ngo.name}}
+                
+        </div>
+
+        <div class="sub-title">
+            Talão
+        </div>
+        
+
+       
+    <a href="data:application/pdf;base64,{{file}}" download="file">Baixar Talão</a> 
+
+    <iframe name="booklet" src="data:application/pdf;base64,{{file}}"></iframe>
+
+{% endblock %}    
