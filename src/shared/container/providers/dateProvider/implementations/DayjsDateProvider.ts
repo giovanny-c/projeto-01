@@ -1,6 +1,6 @@
 //import { AppError } from "../../../../errors/AppError"
 
-import { IDateProvider } from "../IDateProvider"
+import { IDateProvider, ISplitDateResponse } from "../IDateProvider"
 const customParseFormat = require('dayjs/plugin/customParseFormat')
 
 const dayjs = require("dayjs")
@@ -121,6 +121,20 @@ class DayjsDateProvider implements IDateProvider {
     formatDate(date: Date, formatType: string): Date {
 
         return dayjs(date).format(formatType)
+    }
+
+    splitDate(date: Date): ISplitDateResponse{
+
+        const [year, month, day, hours, minutes, seconds] = dayjs(date).format("YYYY/MM/DD HH:mm:ss").split(/\D/g)
+        
+        return {
+            year,
+            month,
+            day,
+            hours,
+            minutes,
+            seconds
+        }
     }
 
 

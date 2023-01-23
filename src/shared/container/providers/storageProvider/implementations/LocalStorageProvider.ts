@@ -108,7 +108,7 @@ class LocalStorageProvider implements IStorageProvider {
     }
 
 
-    async getFiles(dir: string): Promise<string[] | void>{
+    async getFilesFromDir(dir: string): Promise<string[] | void>{
         
         let content
 
@@ -124,11 +124,15 @@ class LocalStorageProvider implements IStorageProvider {
         }
     }
 
-    async getLastCreatedFile(dir){
+    // async getLastCreatedFile(dir){
 
-        return fs.readFileSync(dir)
-        .filter((file) => fs.lstatSync(path.join))
-    }
+    //     const result = fs.readdirSync(dir)
+    //     .filter((file) => fs.lstatSync(path.join(dir, file)).isFile())
+    //     .map((file) => ({file, mtime: fs.lstatSync(path.join(dir, file)).mtime}))
+    //     .sort((a, b) => b.mtime.getTime() - a.mtime.getTime())[0]
+        
+    //     return result
+    // }
 
 }
 

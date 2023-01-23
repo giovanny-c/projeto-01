@@ -56,6 +56,30 @@
 
         </form>
 
+        <div class="thisMonthBooklets">
+
+            <div>Esse Mes:</div>
+                {% for booklet in thisMonthBooklets %}
+                
+                    <a href="/instituicao/{{ngo.id}}/talao/{{thisMonth_Year}}/{{booklet}}">{{booklet}}</a>
+                    
+                {% endfor %}
+
+        </div>
+
+        <div class="lastMonthBooklets">
+
+            <div>Mes Passado:</div>
+                {% for booklet in lastMonthBooklets %}
+                
+                    <a href="/instituicao/{{ngo.id}}/talao/{{lastMonth_Year}}/{{booklet}}">{{booklet}}</a>
+                    
+                {% endfor %}
+
+        </div>
+
+        {# <form class="form" action="/instituicao/{{ngo.id}}/gerar-talao" method="get" enctype="multipart/form-data"></form> #}
+
 
 
     

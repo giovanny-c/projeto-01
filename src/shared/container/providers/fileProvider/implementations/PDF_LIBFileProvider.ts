@@ -3,7 +3,7 @@ import fontkit from "@pdf-lib/fontkit"
 import fs from "fs"
 
 
-import { IFileProvider } from "../IFileProvider";
+import { ICreateBooletResponse, IFileProvider } from "../IFileProvider";
 import { Donation } from "../../../../../modules/donations/entities/donation";
 
 
@@ -64,7 +64,7 @@ class PDF_LIBFileProvider implements IFileProvider {
        
     }
 
-    async createBooklet(data: Donation[]): Promise<Uint8Array> {
+    async createBooklet(data: Donation[]): Promise<ICreateBooletResponse> {
 
         if(!data[0].donation_number){
             
@@ -80,9 +80,8 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const receiptProvider = container.resolve(provider)  
 
-        const pdfBytes = await receiptProvider.createBooklet(doc, data)
-
-        return pdfBytes
+        
+        return await receiptProvider.createBooklet(doc, data)
 
         
     }

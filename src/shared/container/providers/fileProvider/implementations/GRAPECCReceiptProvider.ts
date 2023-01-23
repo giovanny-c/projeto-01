@@ -16,6 +16,7 @@ import { container, singleton } from "tsyringe";
 import { INGOReceiptProvider } from "../INGOReceiptProvider";
 import { LocalStorageProvider } from "../../storageProvider/implementations/LocalStorageProvider";
 import { DayjsDateProvider } from "../../dateProvider/implementations/DayjsDateProvider";
+import { ICreateBooletResponse } from "../IFileProvider";
 
 @singleton()
 class GRAPECCReceiptProvider implements INGOReceiptProvider {
@@ -230,7 +231,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         return pdfBytes
     }
 
-    async createBooklet(doc: PDFDocument, data: Donation[]): Promise<Uint8Array>{
+    async createBooklet(doc: PDFDocument, data: Donation[]): Promise<ICreateBooletResponse>{
 
         const storageProvider = container.resolve(LocalStorageProvider)
         const dateProvider = container.resolve(DayjsDateProvider)
@@ -343,7 +344,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
     
         await storageProvider.saveFileReceipt(dir, file_name, pdfBytes)
             
-        return pdfBytes
+        return {
+            file: pdfBytes,
+            file_name
+        }
 
 
     }

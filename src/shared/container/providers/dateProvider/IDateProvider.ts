@@ -1,5 +1,14 @@
 
 
+interface ISplitDateResponse{
+    year: string
+    month: string
+    day: string
+    hours: string
+    minutes: string
+    seconds: string
+}
+
 interface IDateProvider {
 
     dateNow(): Date
@@ -8,7 +17,7 @@ interface IDateProvider {
     IsToday(date: Date): boolean
     isValidDate(date: string | Date): boolean
     formatDate(date: Date, formatType: string): Date
-
+    splitDate(date: Date): ISplitDateResponse
 }
 
-export { IDateProvider }
+export { IDateProvider, ISplitDateResponse }

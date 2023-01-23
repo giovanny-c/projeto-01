@@ -1,5 +1,8 @@
+import { last } from "pdf-lib";
 import { inject, injectable } from "tsyringe";
+import { splitDate } from "../../../../../utils/splitDate";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
+import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { IStorageProvider } from "../../../../shared/container/providers/storageProvider/IStorageProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { DonationCounter } from "../../entities/donation_counter";
@@ -9,12 +12,18 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 
 interface IRequest{
     ngo_id: string
+    // year: string
+    // month: string
 }
 
 interface IResponse{
 
     ngo: Ngo
     donation_counter: DonationCounter
+    thisMonthBooklets: string[]
+    lastMonthBooklets: string[]
+    thisMonth_Year: string
+    lastMonth_Year: string
 }
 
 @injectable()
@@ -28,7 +37,9 @@ class LoadGenerateBookletUseCase{
         @inject("DonationCounterRepository")
         private donationCounterRepository: IDonationCounterRepository,
         @inject("StorageProvider")
-        private storageProvider: IStorageProvider
+        private storageProvider: IStorageProvider,
+        @inject("DayjsDateProvider")
+        private dateProvider: IDateProvider,
         ){
 
     }
@@ -44,9 +55,29 @@ class LoadGenerateBookletUseCase{
 
         }
 
+        
+        
+        let {month, year} = this.dateProvider.splitDate(this.dateProvider.dateNow())
+        
+        let last_month
+        let last_year = +(year)
 
-        let dir = "./tmp/booklet/"
-        const contents = await this.storageProvider.getFiles(dir)
+        if(+(month) > 1){
+            last_month = +(month) - 1
+        }else{
+            last_month = 12
+            last_year = +(year) - 1
+        }
+        
+        
+
+        let thisMonthDir = `./tmp/booklet/${year}/${month}/${ngo.name}/`  
+        const thisMonthBooklets = await this.storageProvider.getFilesFromDir(thisMonthDir) as string[]
+        
+
+        let lastMonthDir = `./tmp/booklet/${last_year}/${last_month}/${ngo.name}/` 
+        const lastMonthBooklets = await this.storageProvider.getFilesFromDir(lastMonthDir) as string[]
+
 
        
 
@@ -54,7 +85,12 @@ class LoadGenerateBookletUseCase{
         
         return {
             ngo,
-            donation_counter
+            donation_counter,
+            thisMonthBooklets,
+            lastMonthBooklets,
+            thisMonth_Year: `${year}/${month}`,
+            lastMonth_Year: `${last_year}/${last_month}`,
+            
         }
         
     }   

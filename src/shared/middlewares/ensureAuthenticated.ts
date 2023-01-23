@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { container } from "tsyringe";
 import { DayjsDateProvider } from "../container/providers/dateProvider/implementations/DayjsDateProvider";
 import { AppError } from "../errors/AppError";
 
@@ -16,7 +17,7 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
     }
 
     //funciona o constructor com inject() ?????????????
-    const dateProvider = new DayjsDateProvider()
+    const dateProvider = container.resolve(DayjsDateProvider)
 
     
     // 
