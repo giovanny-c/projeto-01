@@ -1,7 +1,10 @@
 {% extends "views/layout.njk" %}
 
 {% block head %}
-    
+    <script src="
+            https://cdn.jsdelivr.net/npm/pdfjs-dist@3.2.146/build/pdf.min.js
+        "></script>
+
     <title>Talão - {{ngo.name}} - Castanharo Telemarketing </title>
 
     <link rel="stylesheet" href="/styles/donations/booklet.css">
@@ -22,9 +25,19 @@
         </div>
         
 
-       
-    <a href="data:application/pdf;base64,{{file}}" download="file">Baixar Talão</a> 
 
-    <iframe name="booklet" src="data:application/pdf;base64,{{file}}"></iframe>
+        
+    {# <object 
+        type="application/pdf"
+        data="data:application/pdf;base64,{{file}}"
+        width="50%"
+        style="height: calc(50vh - 120px);"
+        >
+        Document preview
+    </object> #}
+       
+    {# <a href="data:application/pdf;base64,{{file}}" download="" target="_blank">Baixar Talão</a>  
+
+    <iframe name="booklet" src="data:application/pdf;base64,{{file}}"  loading="lazy"></iframe> #}
 
 {% endblock %}    

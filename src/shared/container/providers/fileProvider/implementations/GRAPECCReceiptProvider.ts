@@ -212,6 +212,8 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
         page.scale(0.75, 0.75)
 
+        
+
         const pdfBytes = await doc.save() //cria um array de bytes 
 
         //criar o pdf no dir

@@ -16,7 +16,7 @@ interface IRequest{
 interface IResponse{
 
     ngo: Ngo
-    file: string | Buffer
+    file: string | Buffer | Uint8Array
     
 }
 
@@ -50,14 +50,15 @@ class LoadBookletUseCase {
 
 
         let dir = `./tmp/booklet/${year}/${month}/${ngo.name}/`
-console.log(dir)
 
-        const file = await this.storageProvider.getFile(dir, file_name, true) as string
 
-        
+        const file = await this.storageProvider.getFile(dir, file_name, false) as Buffer
+
+        const uint8ArrayFile = new Uint8Array(file);
+
         return {
             ngo,
-            file
+            file: uint8ArrayFile
         }
         
     }  
