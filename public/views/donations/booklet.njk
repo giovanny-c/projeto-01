@@ -1,9 +1,7 @@
 {% extends "views/layout.njk" %}
 
 {% block head %}
-    <script src="
-            https://cdn.jsdelivr.net/npm/pdfjs-dist@3.2.146/build/pdf.min.js
-        "></script>
+
 
     <title>Talão - {{ngo.name}} - Castanharo Telemarketing </title>
 
@@ -35,9 +33,10 @@
         >
         Document preview
     </object> #}
-       
-    {# <a href="data:application/pdf;base64,{{file}}" download="" target="_blank">Baixar Talão</a>  
+    <iframe src="data:application/pdf;base64,{{file}}" ></iframe>
 
-    <iframe name="booklet" src="data:application/pdf;base64,{{file}}"  loading="lazy"></iframe> #}
+    <a href="data:application/pdf;base64,{{file}}" download="{{file_name}}">Baixar Talão</a> 
 
+    
+    
 {% endblock %}    
