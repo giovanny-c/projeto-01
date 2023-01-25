@@ -81,11 +81,13 @@ class ListDonationsUseCase {
         //se nao tiver data inicial cria uma data 1 mes antes da atual
         if (!startDate) startDate = this.dateProvider.addOrSubtractTime("sub", "month", 1).toString()
         //se nao tiver data final cria uma do dia atual + 23:59 min
-        if (!endDate) endDate = this.dateProvider.addOrSubtractTime("add", "minute", 1439).toString()
+        if (!endDate) endDate = this.dateProvider.dateNow()
 
+        
         //converte para data
         let start_date = this.dateProvider.convertToDate(startDate)
-        let end_date = this.dateProvider.addOrSubtractTime("add", "minute", 1439, this.dateProvider.convertToDate(endDate))
+        let end_date = this.dateProvider.addOrSubtractTime("add", "second", 86399, this.dateProvider.convertToDate(endDate))
+        
 
         //if (startD === endD) endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
 

@@ -119,11 +119,15 @@
 
             {% for donation in donations %}
                 <tr class="columns">
-                    <td>{{ donation.donation_number}}</td>
-                    <td class="donation_value"> 
-                        
-                        {{donation.donation_value}}
+                    
+                    <td
+                        {% if donation.is_donation_canceled %}
+                               class="donation-canceled" 
+                        {% endif %}
+                    >{{ donation.donation_number}}
                     </td>
+
+                    <td class="donation_value">{{donation.donation_value}}</td>
                     <td>{{donation.donor_name}}</td>
                     <td>{{donation.worker.name}}</td>
                     <td class="created_at">{{donation.created_at}}</td>

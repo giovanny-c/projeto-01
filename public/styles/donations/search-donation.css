@@ -1,18 +1,3 @@
-.table {
-
-
-    width: 1200px;
-    margin: 30px auto;
-
-    border: 3px solid var(--color-theme);
-    border-radius: 8px;
-    border-style: ridge;
-    background-color: rgb(151, 151, 151);
-    color: black;
-    padding: 4px 4px;
-    box-shadow: 1px 1px 10px grey;
-}
-
 div.search-paramns {
     width: 1200px;
     margin: 30px auto;
@@ -146,6 +131,22 @@ div.search-paramns button:active {
     color: var(--color-background);
 }
 
+.table {
+
+
+    width: 1200px;
+    margin: 30px auto;
+
+    border: 3px solid var(--color-theme);
+    border-radius: 8px;
+    border-style: ridge;
+    background-color: rgb(151, 151, 151);
+    color: black;
+    padding: 4px 4px;
+    box-shadow: 1px 1px 10px grey;
+
+}
+
 .table tr:nth-child(odd) {
     background-color: rgb(128, 128, 128);
 }
@@ -157,12 +158,16 @@ div.search-paramns button:active {
     border-radius: 4px;
     padding: 4px 12px;
     font-size: 20px;
+
 }
+
+
 
 .table td {
     padding: 4px 0px;
     border-radius: 2px;
     font-size: 20px;
+
 
 
 
@@ -173,14 +178,16 @@ div.search-paramns button:active {
 }
 
 .table td:nth-child(1),
-.table td:nth-child(4),
+.table td:nth-child(5),
 .table td:nth-child(6) {
     text-align: center;
 
 }
 
 .table td:nth-child(2),
-.table td:nth-child(3) {
+.table td:nth-child(3),
+.table td:nth-child(4),
+.table td:nth-child(5) {
     padding: 0px 6px;
 }
 
@@ -190,4 +197,9 @@ div.search-paramns button:active {
 
 .table td a:hover {
     text-decoration: underline;
+}
+
+
+.table td.donation-canceled {
+    color: red;
 }

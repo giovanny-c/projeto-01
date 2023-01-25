@@ -175,6 +175,7 @@ class DonationsRepository implements IDonationsRepository {
         
     }
     
+    // ja tem countDonationsValues ja faz isso
     async findDonationsByWorker(worker_id: string, { orderBy, limit, offset, startDate, endDate }: IFindOptions): Promise<Donation[]> {
         //FAZER COM QUERYBUILDER E GET MANY AND COUNT
         let query = `select donations.*

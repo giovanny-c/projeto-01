@@ -39,7 +39,7 @@
                 Funcionária: {{donation.worker.name}}
             </p>
 
-            {% if donation.is_canceled %}
+            {% if donation.is_donation_canceled %}
                 <p>
                 CANCELADO
                 </p> 
@@ -60,7 +60,9 @@
             {# button para escolher doador para enviar email #}
 
             <div>
-                <form name="form-delete" class="form-delete" action="/" method="method?=POST">
+                <form name="form-delete" class="form-delete" action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/cancelar-doacao" method="POST" enctype="multipart/form-data">
+                
+
                 <button class="cancel"  type="submit">
                     Cancelar Doação
                 </button>

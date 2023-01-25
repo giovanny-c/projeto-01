@@ -1,23 +1,44 @@
 import { inject, injectable } from "tsyringe";
+import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { Donation } from "../../entities/donation";
+import { Ngo } from "../../entities/ngos";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
+import { INgoRepository } from "../../repositories/INgoRepository";
+
+
+interface IResponse {
+    donation: Donation
+    ngo: Ngo
+}
 
 @injectable()
 class CancelDonationUseCase {
 
     constructor(
         @inject("DonationsRepository")
-        private donationsRepository: IDonationsRepository
+        private donationsRepository: IDonationsRepository,
+        @inject("NgoRepository")
+        private ngoRepository: INgoRepository,
+        @inject("CacheProvider")
+        private cacheProvider: ICacheProvider,
     ) {
 
     }
 
-    async execute(ngo_id: string, donation_number): Promise<Donation> {
+    async execute(ngo_id: string, donation_number): Promise<IResponse> {
 
-       
+        let ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
 
-        const donationExists = await this.donationsRepository.findOneById(donation_number)
+        if(!ngo.id){
+            ngo =  await this.ngoRepository.findById(ngo_id)
+
+            if(!ngo) throw new AppError("Instituição nao encontrada", 404)
+
+        }   
+
+
+        const donationExists = await this.donationsRepository.findDonationByNumberAndNgoId({donation_number, ngo_id})
 
         if (!donationExists) {
             throw new AppError("Essa doação nao existe", 400)
@@ -31,11 +52,14 @@ class CancelDonationUseCase {
         //     throw new AppError("This donation cant be canceled, because is already payed")
         // }
 
-        const donation = await this.donationsRepository.MarkDonationAsCanceled(donationExists.id)
+       await this.donationsRepository.MarkDonationAsCanceled(donationExists.id)
 
 
 
-        return donation
+        return {
+            donation: donationExists,
+            ngo
+        }
 
     }
 }
