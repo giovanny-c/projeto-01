@@ -9,14 +9,20 @@
 }
 
 .form {
-    width: 800px;
-    margin: 30px auto;
+    width: 900px;
+    margin: 30px auto 80px auto;
+
     padding: 0px 40px;
-    align-items: center;
+    justify-items: center;
     display: grid;
-    grid-template-columns: 200px 200px 1fr;
+    grid-template-columns: 200px 200px 200px;
 
 }
+
+.form .label {
+    text-transform: uppercase;
+}
+
 
 .item {
     color: rgb(56, 56, 56);
@@ -38,7 +44,7 @@
 }
 
 .button button {
-    margin: 40px 10px;
+
     width: 180px;
     height: 32px;
     font-size: 20px;
@@ -59,4 +65,29 @@ button:active {
 
     background-color: var(--color-hover);
     /* border: 1px solid black; */
+}
+
+.thisMonthBooklets,
+.lastMonthBooklets {
+
+
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 800px;
+    margin: 30px auto 20px auto;
+}
+
+.thisMonthBooklets a,
+.lastMonthBooklets a {
+
+    margin: 4px;
+    text-decoration: none;
+    color: var(--color-theme);
+}
+
+.thisMonthBooklets a:hover,
+.lastMonthBooklets a:hover {
+
+    text-decoration: underline;
+
 }

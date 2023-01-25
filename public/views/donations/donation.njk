@@ -11,12 +11,14 @@
 {% block content %}
     <div class="content">
 
-        <div class="page-title">
-           
-                {{ngo.name}}
-        </div>
+        <div class="wrap-title">
+            <div class="page-title">
+            
+                    {{ngo.name}}
+            </div>
 
-        
+            <div class="new-donation"><a href="/instituicao/{{ngo.id}}/doacao/nova">Nova doação</a></div>
+        </div>
 
         <div class="donation-info">
             <p>
@@ -37,11 +39,11 @@
                 Funcionária: {{donation.worker.name}}
             </p>
 
-        {% if donation.is_canceled %}
-            <p>
-            CANCELADO
-            </p> 
-        {% endif %}
+            {% if donation.is_canceled %}
+                <p>
+                CANCELADO
+                </p> 
+            {% endif %}
             
         </div>
 
@@ -73,15 +75,15 @@
             <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe>
 
         </div>
-    </div>
-
-    <div class="change">
-    <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float - 1}}"><< doação anterior</a> 
-      
-        {#caracter invisivel  #}
-    <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float + 1}}">proxima doação >></a>
-    </div>
-
+    
+</div>
+        <div class="change">
+            <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float - 1}}"><< doação anterior</a> 
+              
+                {#caracter invisivel  #}
+            <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float + 1}}">proxima doação >></a>
+        </div>
+    
     
     <script>
         const form = document.querySelector(".form-delete")

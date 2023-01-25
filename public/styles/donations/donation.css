@@ -5,18 +5,51 @@ iframe {
     visibility: hidden;
 }
 
+
+.wrap-title {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.wrap-title .page-title,
+.wrap-title .new-donation {
+    margin: 30px 0px;
+    width: 50%;
+}
+
+.wrap-title .new-donation {
+    text-align: end;
+}
+
+.wrap-title .new-donation a {
+    text-decoration: none;
+    font-size: 22px;
+    color: var(--color-theme);
+    border: 1px solid var(--color-theme);
+    padding: 3px;
+    border-radius: 4px;
+}
+
+.wrap-title .new-donation a:hover {
+    background-color: var(--color-theme);
+    color: var(--color-background);
+}
+
+
 .content {
     width: 940px;
+
     margin: 40px auto;
 
 }
 
 .change {
 
-    margin-top: 120px;
+    margin-top: 180px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 0px;
+    margin-bottom: 40px;
     display: grid;
     grid-template-columns: 17% 3px 17%;
     width: 940px;
@@ -24,6 +57,7 @@ iframe {
     justify-content: center;
     text-align: center;
     font-weight: bold;
+
 
 }
 
@@ -43,7 +77,7 @@ iframe {
 
 .donation-info {
 
-    margin: auto;
+    margin: 40px auto;
     display: flex;
     flex-wrap: wrap;
     padding-bottom: 15px;

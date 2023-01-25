@@ -3,3 +3,28 @@ iframe {
     width: 1200px;
     height: 800px;
 }
+
+.download {
+
+    margin: 60px auto;
+    width: 800px;
+}
+
+.download a {
+
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 24px;
+
+    color: var(--color-theme);
+    padding: 6px;
+    border: 1px solid var(--color-theme);
+    border-radius: 6px;
+}
+
+.download a:hover {
+
+    background-color: var(--color-theme);
+    color: var(--color-background);
+
+}

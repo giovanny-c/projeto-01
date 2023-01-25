@@ -22,9 +22,9 @@
             Talão
         </div>
         
-
-
-        
+        <div class="download">
+            <a href="data:application/pdf;base64,{{file}}" download="{{file_name}}">Baixar Talão</a> 
+        </div>
     {# <object 
         type="application/pdf"
         data="data:application/pdf;base64,{{file}}"
@@ -33,9 +33,8 @@
         >
         Document preview
     </object> #}
-    <iframe src="data:application/pdf;base64,{{file}}" ></iframe>
+    {# <iframe src="data:application/pdf;base64,{{file}}" ></iframe> #}
 
-    <a href="data:application/pdf;base64,{{file}}" download="{{file_name}}">Baixar Talão</a> 
 
     
     
