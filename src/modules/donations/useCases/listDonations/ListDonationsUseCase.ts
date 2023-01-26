@@ -26,7 +26,6 @@ interface IRequest {
 interface IResponse {
     ngo: Ngo
     donations: Donation[],
-    sum: number
     search_terms: {
         donation_number: number
         orderBy: string
@@ -78,24 +77,14 @@ class ListDonationsUseCase {
         //if ( se nao for number ) throw new AppError("this is not a valid limit")
         //if (offset.valueOf !== Number) throw new AppError("this is not a valid offset")
 
-        //se nao tiver data inicial cria uma data 1 mes antes da atual
-        if (!startDate) startDate = this.dateProvider.addOrSubtractTime("sub", "month", 1).toString()
-        //se nao tiver data final cria uma do dia atual + 23:59 min
-        if (!endDate) endDate = this.dateProvider.dateNow()
-
+        //se nao tiver data inicial cria uma data 1 mes antes da atual no formato yyyy-mm-dd
+        if (!startDate) startDate = this.dateProvider.formatDate(this.dateProvider.addOrSubtractTime("sub", "month", 1), "YYYY-MM-DD")
         
-        //converte para data
-        let start_date = this.dateProvider.convertToDate(startDate)
-        let end_date = this.dateProvider.addOrSubtractTime("add", "second", 86399, this.dateProvider.convertToDate(endDate))
-        
+        //se nao tiver data final cria uma do momento atal, se tiver poe 86399 segundo a ela
+        !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
+       console.log(endDate)
 
-        //if (startD === endD) endD = this.dateProvider.addOrSubtractTime("add", "day", 1, endD)
-
-        //if (this.dateProvider.IsToday(endD)) endD = this.dateProvider.addOrSubtractTime("add", "minute", 1439, endD)
-        
-        
-
-        const [donations, sum] =  await this.donationsRepository.findDonationsBy({
+        const donations =  await this.donationsRepository.findDonationsBy({
             ngo_id,
             worker_name,
             donor_name,
@@ -103,14 +92,15 @@ class ListDonationsUseCase {
             orderBy: orderBy as "ASC" | "DESC",
             limit,
             offset,
-            startDate: start_date,
-            endDate: end_date
+            startDate: startDate as Date,
+            endDate: endDate as Date
         })
+
+
 
         
         return {
             donations,
-            sum,
             ngo,
             search_terms:{
                 donation_number,
@@ -118,7 +108,7 @@ class ListDonationsUseCase {
                 donor_name,
                 worker_name,
                 startDate,
-                endDate,
+                endDate: this.dateProvider.formatDate(endDate as Date, "YYYY-MM-DD"),
                 orderBy,
                 limit,
                 page,

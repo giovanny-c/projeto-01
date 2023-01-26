@@ -43,26 +43,29 @@ class DonationsRepository implements IDonationsRepository {
 
     }
 
-    async countDonationsValues(worker_id: string, { startDate, endDate, donation_number_interval }: IFindOptions): Promise<[Donation[], number]> {
+    async countDonationsValues({startDate, endDate, ngo_id, worker_id, limit, offset, orderBy }: IFindOptions): Promise<Donation[]> {
         
-        let query = await this.repository.createQueryBuilder("donations")
-        .leftJoin("donations.worker", "workers")
-        .leftJoin("donations.ngo", "ngos")
+        let query = this.repository.createQueryBuilder("donations")
+        .leftJoinAndSelect("donations.worker", "workers")
+        .leftJoinAndSelect("donations.ngo", "ngos")
         .leftJoinAndSelect("donations.donor", "donors")
-        .select(["donations", "workers", "ngos", "donors"])
-        .where("donation.is_donation_canceled != true")
+        .where("donations.is_donation_canceled IS NOT true")
+        .andWhere("donations.ngo_id = :ngo_id", {ngo_id})
 
-        if((!startDate || !endDate) && (donation_number_interval && donation_number_interval.length)){
-            query = query.andWhere(`donations.donation_number BETWEEN ${donation_number_interval[0]} AND ${donation_number_interval[1]}` )
-        }
-
-        query = query.andWhere(`donations.created_at BETWEEN ${startDate} AND ${endDate}`)
+        // if((!startDate || !endDate) && (donation_number_interval && donation_number_interval.length)){
+        //     query = query.andWhere(`donations.donation_number BETWEEN ${donation_number_interval[0]} AND ${donation_number_interval[1]}` )
+        // }
+        query.andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
 
         if(worker_id){
-            query = query.andWhere("donations.worker_id = :worker_id", {worker_id})
+            query.andWhere("donations.worker_id = :worker_id", {worker_id})
         }
-
-        return query.getManyAndCount()
+        query.loadRelationCountAndMap
+        query.orderBy("donations.donation_number", orderBy).limit(limit).offset(offset)
+        
+        const results = await query.getMany()
+        //FAZER O COUNT DE donations e se precisar refazer pagination
+        return results
     }
 
     async findForGenerateBooklet({ donation_number_interval, ngo_id }: IFindOptions): Promise<Donation[]> {
@@ -83,9 +86,9 @@ class DonationsRepository implements IDonationsRepository {
     }
 
     //REFAZER COM QUERY BUILDER
-    async findDonationsBy({ value, ngo_id, orderBy, limit, offset, startDate, endDate, donor_name, worker_name, donation_number, }: IFindOptions): Promise<[Donation[], number]> {
+    async findDonationsBy({ value, ngo_id, orderBy, limit, offset, startDate, endDate, donor_name, worker_name, donation_number, }: IFindOptions): Promise<Donation[]> {
         // buscar tbm por is payed or is_canceled
-        let query = await this.repository.createQueryBuilder("donations")
+        let query = this.repository.createQueryBuilder("donations")
         .leftJoinAndSelect("donations.worker", "workers")
         .leftJoinAndSelect("donations.donor", "donors")
         .leftJoinAndSelect("donations.ngo", "ngos")
@@ -93,40 +96,38 @@ class DonationsRepository implements IDonationsRepository {
         .where("donations.ngo_id = :ngo_id ", {ngo_id})
 
         if(startDate && endDate){
-            query = query.andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
+            query.andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
         }
 
         if(donor_name){
-            query = query.andWhere("donations.donor_name ilike :donor_name ", {donor_name: `%${donor_name}%`})
+            query.andWhere("donations.donor_name ilike :donor_name ", {donor_name: `%${donor_name}%`})
         }
 
         if(donation_number){
-            query = query.andWhere("donations.donation_number = :donation_number ", {donation_number})
+            query.andWhere("donations.donation_number = :donation_number ", {donation_number})
         }
         
         if(worker_name){
-            query = query.andWhere("workers.name ilike :worker_name ", {worker_name: `%${worker_name}%`})
+            query.andWhere("workers.name ilike :worker_name ", {worker_name: `%${worker_name}%`})
         }
 
         if(orderBy){
-            query = query.orderBy("donations.donation_number", orderBy)
+            query.orderBy("donations.donation_number", orderBy)
         }
 
 
         if(limit){
-            query = query.limit(limit)
+            query.limit(limit)
         }
         if(offset){
-            query = query.offset(offset)
+            query.offset(offset)
         }
 
 
+        const results = await query.getMany()
 
-
-
-        //continuar amanha
-
-        return query.getManyAndCount()
+      
+        return results
         
 
         // `select donations.*, 

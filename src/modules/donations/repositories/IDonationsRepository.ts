@@ -9,12 +9,12 @@ interface IDonationsRepository {
     create(data: ICreateDonationsDTO): Promise<Donation>
     findOneById(id: string): Promise<Donation>
     findDonationsByDonorId(id: string): Promise<Donation[]>
-    findDonationsBy(data: IFindOptions): Promise<[Donation[], number]>
+    findDonationsBy(data: IFindOptions): Promise<Donation[]>
     findDonationsByWorker(worker_id: string, data: IFindOptions): Promise<Donation[]>
     findForGenerateBooklet({donation_number_interval, ngo_id}:IFindOptions): Promise<Donation[]>
     findDonationByNumberAndNgoId({donation_number, ngo_id}: IFindOptions): Promise<Donation>
 
-    countDonationsValues(worker_id: string, data: IFindOptions): Promise<[Donation[], number]>
+    countDonationsValues(data: IFindOptions): Promise<Donation[]>
    
 
     //findByCreated_atOrPayed_at(data: Date, dateType: string(criado ou pago))

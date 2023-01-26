@@ -3,6 +3,7 @@ interface IFindOptions {
     value?: string
     donor_name?: string
     worker_name?: string
+    worker_id?: string
     orderBy?: "ASC" | "DESC"
     limit?: number
     offset?: number

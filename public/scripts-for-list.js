@@ -43,6 +43,9 @@ function formatDateStatic(tds) {
 
 var tdsValue = document.getElementsByClassName("donation_value")
 var tdsDate = document.getElementsByClassName("created_at")
+var totalValue = document.querySelector(".total p")
+
+console.log(totalValue)
 
 formatToBRLStatic(tdsValue)
 formatDateStatic(tdsDate)

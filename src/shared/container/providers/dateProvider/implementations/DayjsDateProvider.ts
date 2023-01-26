@@ -81,7 +81,8 @@ class DayjsDateProvider implements IDateProvider {
 
             // throw new AppError("this is not a valid date")
         }
-
+        // direita, esquerda
+        // formatos que aceita, formato para qual converte
         const d = dayjs(date, ["YYYY-MM-DD", "YYYY-MM-DDTHH:mm:ssZ[Z]"]).format("YYYY-MM-DDTHH:mm:ss")
 
 
