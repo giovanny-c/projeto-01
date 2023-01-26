@@ -5,7 +5,7 @@ import { Donor } from "../../../donor/entities/donor";
 import { ICreateDonationsDTO } from "../../dtos/ICreateDonationsDTO";
 import { IFindOptions } from "../../dtos/IFindOptionsDTO";
 import { Donation } from "../../entities/donation";
-import { IDonationsRepository } from "../IDonationsRepository";
+import { ICountDonationsValueResponse, IDonationsRepository } from "../IDonationsRepository";
 
 
 
@@ -43,29 +43,43 @@ class DonationsRepository implements IDonationsRepository {
 
     }
 
-    async countDonationsValues({startDate, endDate, ngo_id, worker_id, limit, offset, orderBy }: IFindOptions): Promise<Donation[]> {
-        
+    async countDonationsValues({startDate, endDate, ngo_id, worker_id, limit, offset, orderBy }: IFindOptions): Promise<ICountDonationsValueResponse> {
+
+        const sum = await this.repository.createQueryBuilder("donations")
+        .select("SUM(donations.donation_value)", "total")
+        .where("donations.is_donation_canceled IS NOT true")
+        .andWhere("donations.ngo_id = :ngo_id", {ngo_id})
+        .andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
+
+
         let query = this.repository.createQueryBuilder("donations")
         .leftJoinAndSelect("donations.worker", "workers")
         .leftJoinAndSelect("donations.ngo", "ngos")
         .leftJoinAndSelect("donations.donor", "donors")
         .where("donations.is_donation_canceled IS NOT true")
         .andWhere("donations.ngo_id = :ngo_id", {ngo_id})
-
-        // if((!startDate || !endDate) && (donation_number_interval && donation_number_interval.length)){
-        //     query = query.andWhere(`donations.donation_number BETWEEN ${donation_number_interval[0]} AND ${donation_number_interval[1]}` )
-        // }
-        query.andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
+        .andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
 
         if(worker_id){
             query.andWhere("donations.worker_id = :worker_id", {worker_id})
+            sum.andWhere("donations.worker_id = :worker_id", {worker_id})
+
         }
-        query.loadRelationCountAndMap
-        query.orderBy("donations.donation_number", orderBy).limit(limit).offset(offset)
         
-        const results = await query.getMany()
-        //FAZER O COUNT DE donations e se precisar refazer pagination
-        return results
+        query.skip(offset).take(limit)
+
+        query.orderBy("donations.donation_number", orderBy)
+        
+        
+        // query.groupBy("donations.id, workers.id, ngos.id, donors.id")
+        
+        const {total} = await sum.getRawOne()
+        const queryResults = await query.getMany()
+
+        return {
+            donations: queryResults,
+            sum: +(total)
+        }
     }
 
     async findForGenerateBooklet({ donation_number_interval, ngo_id }: IFindOptions): Promise<Donation[]> {

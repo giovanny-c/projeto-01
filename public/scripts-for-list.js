@@ -1,4 +1,4 @@
-function formatToBRLStatic(tds) {
+function formatToBRLStaticLoop(tds) {
 
     for (let i = 0; i < tds.length; i++) {
 
@@ -39,15 +39,28 @@ function formatDateStatic(tds) {
 
 
 }
+function formatToBRLStatic(tag) {
 
+
+    var value = tag.innerHTML
+
+    tag.innerHTML = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+
+    }).format(value)
+
+
+
+
+}
 
 var tdsValue = document.getElementsByClassName("donation_value")
 var tdsDate = document.getElementsByClassName("created_at")
 var totalValue = document.querySelector(".total p")
 
-console.log(totalValue)
-
-formatToBRLStatic(tdsValue)
+formatToBRLStatic(totalValue)
+formatToBRLStaticLoop(tdsValue)
 formatDateStatic(tdsDate)
 
 

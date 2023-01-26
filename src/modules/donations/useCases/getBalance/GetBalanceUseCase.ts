@@ -24,6 +24,7 @@ interface IResponse{
     ngo: Ngo,
     workers: Worker[]
     donations: Donation[]
+    sum: number
     search_terms: {
         orderBy: string
         limit: number
@@ -82,7 +83,7 @@ class GetBalanceUseCase {
          //se nao tiver data final cria uma do momento atal, se tiver poe 86399 segundo a ela
          !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
 
-        const donations =  await this.donationsRepository.countDonationsValues({
+        const {donations, sum} =  await this.donationsRepository.countDonationsValues({
             ngo_id,
             worker_id,
             startDate: startDate as Date,
@@ -97,6 +98,7 @@ class GetBalanceUseCase {
             ngo,
             workers,
             donations,
+            sum,
             search_terms: {
                 ngo_id,
                 startDate,

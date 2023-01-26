@@ -2,7 +2,10 @@ import { ICreateDonationsDTO } from "../dtos/ICreateDonationsDTO"
 import { IFindOptions } from "../dtos/IFindOptionsDTO"
 import { Donation } from "../entities/donation"
 
-
+interface ICountDonationsValueResponse{
+    donations: Donation[]
+    sum: number
+}
 
 interface IDonationsRepository {
 
@@ -14,7 +17,7 @@ interface IDonationsRepository {
     findForGenerateBooklet({donation_number_interval, ngo_id}:IFindOptions): Promise<Donation[]>
     findDonationByNumberAndNgoId({donation_number, ngo_id}: IFindOptions): Promise<Donation>
 
-    countDonationsValues(data: IFindOptions): Promise<Donation[]>
+    countDonationsValues(data: IFindOptions): Promise<ICountDonationsValueResponse>
    
 
     //findByCreated_atOrPayed_at(data: Date, dateType: string(criado ou pago))
@@ -23,4 +26,4 @@ interface IDonationsRepository {
     MarkDonationAsCanceled(id: string): Promise<Donation>
 }
 
-export { IDonationsRepository }
+export { IDonationsRepository, ICountDonationsValueResponse }
