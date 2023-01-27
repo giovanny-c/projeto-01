@@ -3,6 +3,7 @@
 
 {% block head %}
 
+    <link rel="stylesheet" href="/styles/donations/balance.css">
     <link rel="stylesheet" href="/styles/donations/search-donation.css">
     <link rel="stylesheet" href="/styles/footer.css">
 
@@ -126,9 +127,15 @@
             {% endfor %}
 
 
-        <div class="total">
+        <div class="div-total">
 
-            <p>{{sum}}</p>
+            <div> 
+                <p class="total-date">Total do periodo de {{search_terms.startDate}} a {{search_terms.endDate}}:</p>
+            
+                <p class="total">{{sum}}</p>
+            </div>
+
+            
         </div>
         
         </table>

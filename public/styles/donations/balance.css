@@ -1,0 +1,11 @@
+.div-total div {
+    display: flex;
+    flex-direction: row;
+}
+
+.div-total div p {
+
+    padding: 3px;
+    font-size: 20px;
+
+}

@@ -16,7 +16,22 @@ function formatToBRLStaticLoop(tds) {
 
 
 }
-function formatDateStatic(tds) {
+function formatToBRLStatic(tag) {
+
+
+    var value = tag.innerHTML
+
+    tag.innerHTML = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+
+    }).format(value)
+
+
+
+
+}
+function formatDateStaticLoop(tds) {
 
     for (let i = 0; i < tds.length; i++) {
 
@@ -39,29 +54,39 @@ function formatDateStatic(tds) {
 
 
 }
-function formatToBRLStatic(tag) {
+
+function formatDateStatic(pDates) {
+
+    var dates = pDates.innerHTML.match(/\d+-\d+-\d+/g)
+
+    for (let i = 0; i < dates.length; i++) {
+
+        var date = new Date(dates[i]);
+        const year = date.getFullYear();
+        const month = `0${date.getMonth() + 1}`.slice(-2);
+        const day = `0${date.getUTCDate()}`.slice(-2);
+
+        var formatedDate = `${day}/${month}/${year}`
 
 
-    var value = tag.innerHTML
+        pDates.innerHTML.replace("a", formatedDate)
 
-    tag.innerHTML = new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-
-    }).format(value)
-
-
-
-
+    }
 }
 
 var tdsValue = document.getElementsByClassName("donation_value")
+var totalValue = document.querySelector("p.total")
 var tdsDate = document.getElementsByClassName("created_at")
-var totalValue = document.querySelector(".total p")
+var totalDates = document.querySelector("p.total-date")
+
+
+
+
 
 formatToBRLStatic(totalValue)
 formatToBRLStaticLoop(tdsValue)
-formatDateStatic(tdsDate)
+formatDateStaticLoop(tdsDate)
+formatDateStatic(totalDates)
 
 
 
