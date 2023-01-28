@@ -4,7 +4,6 @@
 {% block head %}
 
     <link rel="stylesheet" href="/styles/donations/balance.css">
-    <link rel="stylesheet" href="/styles/donations/search-donation.css">
     <link rel="stylesheet" href="/styles/footer.css">
 
     <title>Pesquisar Doações {{ngo.name}} - Castanharo Telemarketing</title>
@@ -32,6 +31,7 @@
             <form class="search" method="GET" action="/instituicao/{{ngo.id}}/balanco">
          
                 <input 
+                    class="input-date"
                     type="date"
                     name="data_de_inicio"
                     placeholder=""
@@ -40,6 +40,7 @@
                     {% endif %}
                 >
                 <input 
+                    class="input-date"
                     type="date"
                     name="data_de_termino"
                     placeholder=""

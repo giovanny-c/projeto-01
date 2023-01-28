@@ -1,11 +1,252 @@
+.div-total {
+    width: 1200px;
+    margin: 30px auto;
+
+    border: 2px solid var(--color-theme);
+    border-style: ridge;
+    border-radius: 8px;
+    background-color: rgb(156, 156, 156);
+    box-shadow: 1px 1px 10px gray;
+
+}
+
+select.item {
+    margin: 30px 10px;
+    font-size: 28px;
+    color: var(--color-theme);
+    background-color: var(--color-background);
+    height: 31px;
+    width: 37.5%;
+    border-radius: 4px;
+    box-shadow: 2px 0px 5px gray;
+
+}
+
+
+
 .div-total div {
+    margin-left: 10px;
     display: flex;
     flex-direction: row;
 }
 
 .div-total div p {
 
+
     padding: 3px;
+    font-size: 24px;
+    color: var(--color-background);
+    text-align: center;
+
+}
+
+p.total {
+    text-decoration: underline;
+}
+
+div.search-paramns {
+    width: 1200px;
+    margin: 30px auto;
+
+    border: 2px solid var(--color-theme);
+    border-style: ridge;
+    border-radius: 8px;
+    background-color: rgb(156, 156, 156);
+    box-shadow: 1px 1px 10px gray;
+
+}
+
+div.search-paramns .search {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div.search-paramns .search input {
+    width: 200px;
+    height: 22px;
+    margin: 30px 10px;
+    border-radius: 5px;
+    height: 28px;
+    color: var(--color-theme);
+    background-color: var(--color-background);
+    border: none;
+    box-shadow: 1px 1px 1px;
     font-size: 20px;
 
+
+}
+
+
+div.search-paramns .search input.text {
+    margin-top: 40px;
+    width: 47.66%;
+
+}
+
+div.search-paramns .search input[type=number] {
+    width: 24%;
+    text-align: center;
+
+}
+
+div.search-paramns .search input[type=date] {
+    height: 30px;
+    width: 24%;
+    text-align: center;
+}
+
+div.search-paramns .search .radio {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-content: center;
+    margin-top: 8px;
+    margin-left: 6px;
+    /* border: 2px solid var(--color-theme); */
+    background-color: var(--color-background);
+    padding: 4px;
+    border-radius: 6px;
+    box-shadow: 1px 1px 1px;
+}
+
+
+div.search-paramns .search input[type=radio] {
+    margin: 0px;
+    width: 22px;
+    box-shadow: none;
+
+
+
+}
+
+div.search-paramns .search label {
+
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--color-theme);
+}
+
+div.search-paramns button {
+
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    margin: 20px 4px 4px 4px;
+    background-color: var(--color-background);
+    color: var(--color-theme);
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    box-shadow: 1px 1px 1px var(--color-theme);
+
+}
+
+div.search-paramns button:hover {
+    background-color: var(--color-theme);
+    color: var(--color-background);
+
+}
+
+div.search-paramns button:active {
+    background-color: rgb(109, 108, 108);
+}
+
+.pagination {
+    display: grid;
+    grid-template-columns: 13% 3px 13%;
+    width: 1200px;
+    margin: 20px auto;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+
+}
+
+.pagination a {
+    margin-left: 2px;
+    color: var(--color-theme);
+    text-decoration: none;
+    padding: 2px;
+    border-radius: 4px;
+    border: 1px solid var(--color-theme);
+}
+
+.pagination a:hover {
+    background-color: var(--color-theme);
+    color: var(--color-background);
+}
+
+.table {
+
+
+    width: 1200px;
+    margin: 30px auto;
+
+    border: 3px solid var(--color-theme);
+    border-radius: 8px;
+    border-style: ridge;
+    background-color: rgb(151, 151, 151);
+    color: black;
+    padding: 4px 4px;
+    box-shadow: 1px 1px 10px grey;
+
+}
+
+.table tr:nth-child(odd) {
+    background-color: rgb(128, 128, 128);
+}
+
+
+
+.table th {
+
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 20px;
+
+}
+
+
+
+.table td {
+    padding: 4px 0px;
+    border-radius: 2px;
+    font-size: 20px;
+
+
+
+
+}
+
+.table td:nth-child(odd) {
+    color: var(--color-background);
+}
+
+.table td:nth-child(1),
+.table td:nth-child(5),
+.table td:nth-child(6) {
+    text-align: center;
+
+}
+
+.table td:nth-child(2),
+.table td:nth-child(3),
+.table td:nth-child(4),
+.table td:nth-child(5) {
+    padding: 0px 6px;
+}
+
+.table td a {
+    color: black;
+}
+
+.table td a:hover {
+    text-decoration: underline;
+}
+
+
+.table td.donation-canceled {
+    color: red;
 }

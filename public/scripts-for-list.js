@@ -55,13 +55,14 @@ function formatDateStaticLoop(tds) {
 
 }
 
-function formatDateStatic(pDates) {
+function formatDateStaticP(pDates) {
 
     var dates = pDates.innerHTML.match(/\d+-\d+-\d+/g)
 
-    for (let i = 0; i < dates.length; i++) {
 
+    for (let i = 0; i < dates.length; i++) {
         var date = new Date(dates[i]);
+
         const year = date.getFullYear();
         const month = `0${date.getMonth() + 1}`.slice(-2);
         const day = `0${date.getUTCDate()}`.slice(-2);
@@ -69,9 +70,15 @@ function formatDateStatic(pDates) {
         var formatedDate = `${day}/${month}/${year}`
 
 
-        pDates.innerHTML.replace("a", formatedDate)
 
+        var text = pDates.innerHTML
+        //pega so a primeira ocorrencia de yyyy-mm-dd
+        var newText = text.replace(/(\d+-\d+-\d+){1}/, formatedDate)
+
+        pDates.innerHTML = newText
     }
+
+
 }
 
 var tdsValue = document.getElementsByClassName("donation_value")
@@ -86,7 +93,7 @@ var totalDates = document.querySelector("p.total-date")
 formatToBRLStatic(totalValue)
 formatToBRLStaticLoop(tdsValue)
 formatDateStaticLoop(tdsDate)
-formatDateStatic(totalDates)
+formatDateStaticP(totalDates)
 
 
 
