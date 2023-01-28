@@ -14,7 +14,7 @@ class ImportDonationsController {
 
         const importDonationsUseCase = container.resolve(ImportDonationsUseCase)
 
-        let response = await importDonationsUseCase.execute(file, user_id, ngo_id)
+        let response = await importDonationsUseCase.execute({file, user_id, ngo_id})
 
 
         if (response) {

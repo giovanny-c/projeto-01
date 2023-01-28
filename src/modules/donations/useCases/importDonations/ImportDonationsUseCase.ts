@@ -15,20 +15,16 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { Ngo } from "../../entities/ngos";
 
-
+interface IRequest {
+    file: Express.Multer.File
+    user_id: string
+    ngo_id: string
+}
 
 interface IImportDonation {
-    ngo_name: string
-    donation_value: number
-    donation_number?: number
-    worker_name: string //worker
-    donor_name: string
-    email: string
-    phone?: string
-    created_at: Date
-    is_payed: string
-    payed_at?: Date
-    is_canceled?: string
+    valor: string
+    doador: string
+    funcionario: string
 }
 
 
@@ -57,25 +53,17 @@ class ImportDonationsUseCase {
 
     loadDonations(file: Express.Multer.File): IImportDonation[] { //talvez tenha que ser asincrona
 
-        let donationsObj: IImportDonation[]
+        let donations: IImportDonation[]
 
         const excelData = xlsx.readFile(file.path, { cellDates: true }) //diskstorage
 
-
-
-        Object.keys(excelData.Sheets).map(name => ({
-            //cria um array de objs onde dentro de cada obj tem as donations
-
-            donations: xlsx.utils.sheet_to_json(excelData.Sheets[name], { raw: false, dateNF: 'yyyy-mm-dd' }) as IImportDonation[],
-
-
-        })).forEach(object => {
-
-            donationsObj = object.donations
-
-        })
-
-        return donationsObj
+        //pega o nome da primeira planilha
+        //let sheet = Object.keys(excelData.Sheets)[0]
+        
+        //poe o conteudo da 1ª planilha em donations    
+        donations = xlsx.utils.sheet_to_json(excelData.Sheets[0], { raw: false, dateNF: 'yyyy-mm-dd' }) as IImportDonation[]
+        
+        return donations
 
     }
 
@@ -85,28 +73,13 @@ class ImportDonationsUseCase {
         object.forEach(data => {
 
             // if (!data.email) throw new AppError(`Please fill the email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
-            if (!data.donation_value) throw new AppError(`Please fill the donation_value field at line ${object.indexOf(data) + 1}`, 400)
-            if (!data.created_at) throw new AppError(`Please fill the created_at field at line ${object.indexOf(data) + 1}`, 400)
-            if (!data.worker_name) throw new AppError(`Please fill the worker_name field at line ${object.indexOf(data) + 1}`, 400)
-            if (!data.donor_name) throw new AppError(`Please fill the donor_name field at line ${object.indexOf(data) + 1}`, 400)
-            // if (!data.phone) throw new AppError(`Please fill the phone field at line ${object.indexOf(data) + 1}`, 400)
-            if (data.is_payed === "true" && data.is_canceled === "true") throw new AppError(`There cant be a donation payed mark as canceled, on line: ${object.indexOf(data) + 1}`, 400)
-
-            
-            
-
-            // Fazer para created_at tbm
-            if (!this.dateProviderRepository.isValidDate(data.created_at)) {
-                throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`, 400)
-            }
-
-            // ve se a data de pagamento é validaq
-            // if (!this.dateProviderRepository.isValidDate(data.payed_at)) {
-            //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`, 400)// status code
+            if (!data.valor) throw new AppError(`Please fill the donation_value field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.funcionario) throw new AppError(`Please fill the worker_name field at line ${object.indexOf(data) + 1}`, 400)
+            if (!data.doador) throw new AppError(`Please fill the donor_name field at line ${object.indexOf(data) + 1}`, 400)
+            // if (!this.dateProviderRepository.isValidDate(data.created_at)) {
+            //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`, 400)
             // }
-
-            
-
+          
         });
 
     }
@@ -121,43 +94,23 @@ class ImportDonationsUseCase {
         object.forEach(async (data): Promise<any> => {
 
 
-
-            //Validação de campos
-            //try {
-            let is_payed: boolean, is_canceled: boolean
-
-            if (data.is_payed === "true") is_payed = true
-
-            if (data.is_canceled === "true") is_canceled = true
-
-
-            if (data.created_at) this.dateProviderRepository.convertToDate(data.created_at)
+            const created_at = this.dateProviderRepository.dateNow()
             //se tiver, converte a data de pagamento 
-            if (data.payed_at) this.dateProviderRepository.convertToDate(data.payed_at)
+            const payed_at =  this.dateProviderRepository.dateNow()
 
 
-            //PODE HAVER ERROS DE DIGITAÇAO NOS CAMPOS QUE CAUSEM A CRIAÇAO DE NOVOS DONOR E WORKERS
-            //procura donor
-            // let donor = await this.donorsRepository.findByEmail(data.email)
-            // //se nao existir, cria
-            // if (!donor) {
-            //     donor = await this.donorsRepository.create({
-            //         name: data.donor_name,
-            //         email: data.email,
-            //         phone: data.phone
-            //     })
-            // }
-
+          
             //procura worker
-            let worker = await this.workersRepository.findByName(data.worker_name)
-            //se  nao existir, cria
-            if (!worker) {
-                worker = await this.workersRepository.create(data.worker_name)
-            }
+            let worker = await this.workersRepository.findByName(data.funcionario)
+            // //se  nao existir, cria
+            //melhor deixar null
+            // if (!worker) {
+            //     worker = await this.workersRepository.create(data.funcionario)
+            // }
 
 
             try {
-                let donationValue = +(String(data.donation_value).replace(/(?!\,+)[\D]/g,"").replace(/\,/,"."))
+                let donationValue = +(data.valor.replace(/(?!\,+)[\D]/g,"").replace(/\,/,"."))
                 let {donation_number} = await this.donationCounterRepository.findByNgoId(ngo_id)
                 
                 //CRIA A DONATION
@@ -165,13 +118,13 @@ class ImportDonationsUseCase {
 
                     donation_number,
                     donation_value: donationValue,
-                    donor_name: data.donor_name,
+                    donor_name: data.doador,
                     user_id: user_id,
                     worker_id: worker.id,
-                    created_at: data.created_at,
-                    is_payed: is_payed,
-                    payed_at: data.payed_at || null,
-                    is_donation_canceled: is_canceled,
+                    created_at,
+                    is_payed: true,
+                    payed_at,
+                    is_donation_canceled: false,
                     ngo_id
 
                 })
@@ -188,9 +141,7 @@ class ImportDonationsUseCase {
 
             //poe a data da ultima doaçao no donor se for paga
             // if (is_payed === true) {
-
             //     await this.donorsRepository.create({ id: donor.id, last_donation: data.payed_at })
-
             // }
 
         })
@@ -200,7 +151,7 @@ class ImportDonationsUseCase {
     }
 
 
-    async execute(file: Express.Multer.File, user_id: string, ngo_id: string): Promise<any> {
+    async execute({file, user_id ,ngo_id}: IRequest): Promise<any> {
 
         const ngoExistis = await this.ngoRepository.findById(ngo_id)
 
@@ -208,12 +159,14 @@ class ImportDonationsUseCase {
             throw new AppError("Essa instituiçao nao existe", 400)
         }
 
-        //vai fazer para cada donation
-        const result = await this.proccessDonations(this.loadDonations(file), user_id, ngo_id)
+        const a = this.loadDonations(file)
+console.log(a)
+        // //vai fazer para cada donation
+        // const result = await this.proccessDonations(this.loadDonations(file), user_id, ngo_id)
 
-        fs.unlinkSync(file.path)
+        // fs.unlinkSync(file.path)
 
-        return result
+        // return result
 
 
     }

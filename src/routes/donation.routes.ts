@@ -85,7 +85,7 @@ donationRoutes.get("/instituicao/:ngo_id/doacao/listar", ensureAuthenticated, li
 
 //importar
 donationRoutes.get("/instituicao/:ngo_id/doacao/importar", ensureAuthenticated, loadImportDonationsController.handle)
-donationRoutes.post("/instituicao/:ngo_id/doacao/importar", ensureAuthenticated, upload.single("donations"), importDonationsController.handle)
+donationRoutes.post("/instituicao/:ngo_id/doacao/importar", ensureAuthenticated, upload.single("file"), importDonationsController.handle)
 
 //pegar doaçao
 donationRoutes.get("/instituicao/:ngo_id/doacao/ultima", ensureAuthenticated, getLastDonationController.handle)
