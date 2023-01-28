@@ -19,6 +19,7 @@ import { LoadBookletController } from "../modules/donations/useCases/loadBooklet
 import { LoadCreateDonationController } from "../modules/donations/useCases/loadCreateDonationPage/LoadCreateDonationController";
 import { LoadDonationCounterPageController } from "../modules/donations/useCases/loadDonationCounterPage/LoadDonationCounterPageController";
 import { LoadGenerateBookletController } from "../modules/donations/useCases/loadGenerateBooklet/LoadGenerateBookletController";
+import { LoadImportDonationsController } from "../modules/donations/useCases/loadImportDonations/LoadImportDonationsController";
 
 import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
 
@@ -50,6 +51,7 @@ const getLastDonationController = new GetLastDonationController()
 const loadGenerateBookletController = new LoadGenerateBookletController()
 const loadBookletController = new LoadBookletController()
 const getBalanceController = new GetBalanceController()
+const loadImportDonationsController = new LoadImportDonationsController()
 
 
 
@@ -81,6 +83,10 @@ donationRoutes.post("/instituicao/:id/doacao/nova/criar", upload.none(), ensureA
 //listar
 donationRoutes.get("/instituicao/:ngo_id/doacao/listar", ensureAuthenticated, listDonationsController.handle)
 
+//importar
+donationRoutes.get("/instituicao/:ngo_id/doacao/importar", ensureAuthenticated, loadImportDonationsController.handle)
+donationRoutes.post("/instituicao/:ngo_id/doacao/importar", ensureAuthenticated, upload.single("donations"), importDonationsController.handle)
+
 //pegar doaçao
 donationRoutes.get("/instituicao/:ngo_id/doacao/ultima", ensureAuthenticated, getLastDonationController.handle)
 donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number", ensureAuthenticated, getDonationController.handle)
@@ -88,12 +94,9 @@ donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number", ensureAuthent
 //deletar doaçao
 donationRoutes.post("/instituicao/:ngo_id/doacao/:donation_number/cancelar-doacao/", ensureAuthenticated, cancelDonationController.handle)
 
-//importa doaçoes
-donationRoutes.post("/importar", ensureAuthenticated, upload.single("file"), importDonationsController.handle)
-
-
 //balanco
 donationRoutes.get("/instituicao/:ngo_id/balanco", ensureAuthenticated, getBalanceController.handle)
+
 
 // donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationStatusController.handle)
 
