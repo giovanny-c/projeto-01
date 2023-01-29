@@ -53,8 +53,11 @@ class LoadBookletUseCase {
         let dir = `./tmp/booklet/${year}/${month}/${ngo.name}/`
 
 
-        const file = await this.storageProvider.getFile(dir, file_name, true) as string
+        
 
+        
+        let file = await this.storageProvider.getFile(dir, file_name, true) as string
+        
         
 
         return {

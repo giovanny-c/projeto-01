@@ -3,6 +3,8 @@ import { container } from "tsyringe";
 import { AppError } from "../../../../shared/errors/AppError";
 import { ImportDonationsUseCase } from "./ImportDonationsUseCase";
 
+import * as crypto from "crypto"
+
 class ImportDonationsController {
 
     async handle(req: Request, res: Response): Promise<any> {
@@ -10,8 +12,7 @@ class ImportDonationsController {
         const { file } = req
         const { id: user_id} = req.user
         const {ngo_id} = req.params
-        
-
+console.log(file)
         const importDonationsUseCase = container.resolve(ImportDonationsUseCase)
 
         let {ngo} = await importDonationsUseCase.execute({file, user_id, ngo_id})

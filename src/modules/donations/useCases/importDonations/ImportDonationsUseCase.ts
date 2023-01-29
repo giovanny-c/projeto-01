@@ -59,7 +59,7 @@ class ImportDonationsUseCase {
 
     loadDonations(file: Express.Multer.File): IImportDonation[] { //talvez tenha que ser asincrona
 
-    
+    //file.path
         const excelData = xlsx.readFile(file.path, { cellDates: true }) //diskstorage
 
         //pega o nome da primeira planilha
@@ -71,25 +71,34 @@ class ImportDonationsUseCase {
 
     }
 
-    validateFields(data: IImportDonation[]): void {
+    validateFields(data: IImportDonation[], file_path): void {
 
         data.forEach((donation, index) => {
             
         
             // if (!data.email) throw new AppError(`Please fill the email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
-            if (!donation.valor) throw new AppError(`Por favor preencha o campo valor, na linha ${index + 1}`, 400)
-            if (!donation.funcionario) throw new AppError(`Por favor preencha o campo funcionario, na linha ${index + 1}`, 400)
-            if (!donation.doador) throw new AppError(`Por favor preencha o campo doador, na linha ${index + 1}`, 400)
+            if (!donation.valor){
+                fs.unlinkSync(file_path)
+                throw new AppError(`Por favor preencha o campo valor, na linha ${index + 1}`, 400)
+            } 
+            if (!donation.funcionario) {
+                fs.unlinkSync(file_path)
+                throw new AppError(`Por favor preencha o campo funcionario, na linha ${index + 1}`, 400)
+            }
+            if (!donation.doador) {
+                fs.unlinkSync(file_path)
+                throw new AppError(`Por favor preencha o campo doador, na linha ${index + 1}`, 400)
+            }
             // if (!this.dateProviderRepository.isValidDate(donation.created_at)) {
             //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(donation) + 1}`, 400)
             // }
         })
     }
 
-    async proccessDonations(donations: IImportDonation[], user_id: string, ngo_id): Promise<void | string> {
+    async proccessDonations(donations: IImportDonation[], user_id: string, ngo_id, file_path: string): Promise<void | string> {
         
 
-        this.validateFields(donations)
+        this.validateFields(donations, file_path)
 
         for (const donation of donations) {
             
@@ -137,7 +146,7 @@ class ImportDonationsUseCase {
                 
 
             } catch (err) {
-
+                fs.unlinkSync(file_path)
                 throw new AppError(`It was not possible to create donations. Error: ${err} | on: ${donations.indexOf(donation) + 1}`)
                 //return `It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`
             }
@@ -156,15 +165,23 @@ class ImportDonationsUseCase {
 
     async execute({file, user_id ,ngo_id}: IRequest): Promise<IResponse> {
 
+        
         const ngoExistis = await this.ngoRepository.findById(ngo_id)
 
         if(!ngoExistis){
+            fs.unlinkSync(file.path)
             throw new AppError("Essa instituiçao nao existe", 400)
         }
-
     
-        //vai fazer para cada donation
-        await this.proccessDonations(this.loadDonations(file), user_id, ngo_id)
+        try {
+            //vai fazer para cada donation
+            await this.proccessDonations(this.loadDonations(file), user_id, ngo_id, file.path)
+
+        } catch (error) {
+            fs.unlinkSync(file.path)
+            throw error
+        }
+        
 
         fs.unlinkSync(file.path)
 

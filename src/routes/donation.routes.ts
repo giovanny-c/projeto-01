@@ -2,6 +2,7 @@
 import { Router } from "express";
 
 import multer from "multer"
+import uploadConfig from "../config/upload"
 
 import { CancelDonationController } from "../modules/donations/useCases/cancelDonation/CancelDonationController";
 import { CreateDonationController } from "../modules/donations/useCases/createDonation/CreateDonationController";
@@ -26,9 +27,9 @@ import { SetDonationCounterController } from "../modules/donations/useCases/setD
 import { UpdateDonationStatusController } from "../modules/donations/useCases/updateDonationStatus/UpdateDonationStatusController";
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated";
 
-const upload = multer({
-    dest: "./tmp/"
-})
+
+
+const upload = multer(uploadConfig)
 
 const donationRoutes = Router()
 
