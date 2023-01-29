@@ -59,7 +59,7 @@ class GetLastDonationUseCase {
         }
 
 
-        const [donations] = await this.donationsRepository.findDonationsBy({ngo_id, orderBy: "DESC"})
+        const donations = await this.donationsRepository.findDonationsBy({ngo_id, orderBy: "DESC"})
 
         const donation = donations[0]
 

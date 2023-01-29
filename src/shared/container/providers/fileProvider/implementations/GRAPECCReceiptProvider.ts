@@ -1,4 +1,4 @@
-import { PDFDocument, PDFFont, PDFImage, rgb } from "pdf-lib"
+import { PDFDocument, PDFFont, PDFImage, PDFPage, rgb } from "pdf-lib"
 
 import fs from "fs"
 
@@ -245,10 +245,9 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         let index = 1
 
         
-        const promises = data.map(async(donation) => {
+        const files_promises = await Promise.all( data.map( async(donation) => {
             //para pegar o arquivo
             
-
             let {dia, mes, ano} = getFormatedDateForReceipt(donation.created_at)
             
             let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
@@ -266,18 +265,25 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
                 if(error){
 
                     const fileProvider = container.resolve(PDF_LIBFileProvider)
+                    
                     receitpPdf = await fileProvider.generateFile(donation, true)
+                    
                     
                  
                 }
                 
             }
-    
-            const [receipt] = await doc.embedPdf(receitpPdf, [0])
+        
+            return receitpPdf
+        }))
+
+        const pages_promises = await Promise.all( files_promises.map( async(file) => {
+
+            const [receipt] = await doc.embedPdf(file, [0])
           
             if(index === 1){
         
-                  doc.addPage()
+                doc.addPage()
                 
             }
             
@@ -327,16 +333,17 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             
             index ++
 
+            
             return page
                 
-        })
  
-     
+        }))
 
-        const pages = await Promise.all(promises)
-
-        doc.embedPages(pages)
-
+       
+            
+        doc.embedPages(pages_promises) 
+        
+        
         const pdfBytes = await doc.save()
 
         //salva
