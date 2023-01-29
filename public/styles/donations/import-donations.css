@@ -1,0 +1,59 @@
+.form {
+    max-width: 800px;
+    margin: 30px auto;
+
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.item input {
+    width: 400px;
+    margin: 30px auto;
+}
+
+
+.item .file-input::-webkit-file-upload-button {
+    width: 220px;
+    margin: 30px 10px 30px 0px;
+    height: 32px;
+    font-size: 23px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    box-shadow: 1px 1px 4px gray;
+    background-color: var(--color-theme);
+    color: var(--color-background);
+    cursor: pointer;
+
+}
+
+.item .file-input::-webkit-file-upload-button:hover {
+    background-color: var(--color-hover);
+
+}
+
+.button {
+    margin: 0px
+}
+
+button {
+    width: 220px;
+
+    height: 32px;
+    font-size: 23px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    box-shadow: 1px 1px 4px gray;
+    background-color: var(--color-theme);
+    color: var(--color-background);
+    cursor: pointer;
+
+}
+
+button:hover {
+    background-color: var(--color-hover);
+}
