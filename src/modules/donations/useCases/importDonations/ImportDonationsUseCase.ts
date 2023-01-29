@@ -21,10 +21,16 @@ interface IRequest {
     ngo_id: string
 }
 
+interface IResponse {
+   
+    ngo: Ngo
+}
+
 interface IImportDonation {
-    valor: string
+    valor: number
     doador: string
     funcionario: string
+    
 }
 
 
@@ -53,72 +59,68 @@ class ImportDonationsUseCase {
 
     loadDonations(file: Express.Multer.File): IImportDonation[] { //talvez tenha que ser asincrona
 
-        let donations: IImportDonation[]
-
+    
         const excelData = xlsx.readFile(file.path, { cellDates: true }) //diskstorage
 
         //pega o nome da primeira planilha
-        //let sheet = Object.keys(excelData.Sheets)[0]
-        
+        let sheet = Object.keys(excelData.Sheets)[0]
+
         //poe o conteudo da 1ª planilha em donations    
-        donations = xlsx.utils.sheet_to_json(excelData.Sheets[0], { raw: false, dateNF: 'yyyy-mm-dd' }) as IImportDonation[]
+        return  xlsx.utils.sheet_to_json(excelData.Sheets[sheet], { raw: true, dateNF: 'yyyy-mm-dd' }) as IImportDonation[]
         
-        return donations
 
     }
 
-    async validateFields(object: IImportDonation[]): Promise<void> {
+    validateFields(data: IImportDonation[]): void {
 
-
-        object.forEach(data => {
-
+        data.forEach((donation, index) => {
+            
+        
             // if (!data.email) throw new AppError(`Please fill the email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
-            if (!data.valor) throw new AppError(`Please fill the donation_value field at line ${object.indexOf(data) + 1}`, 400)
-            if (!data.funcionario) throw new AppError(`Please fill the worker_name field at line ${object.indexOf(data) + 1}`, 400)
-            if (!data.doador) throw new AppError(`Please fill the donor_name field at line ${object.indexOf(data) + 1}`, 400)
-            // if (!this.dateProviderRepository.isValidDate(data.created_at)) {
-            //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(data) + 1}`, 400)
+            if (!donation.valor) throw new AppError(`Por favor preencha o campo valor, na linha ${index + 1}`, 400)
+            if (!donation.funcionario) throw new AppError(`Por favor preencha o campo funcionario, na linha ${index + 1}`, 400)
+            if (!donation.doador) throw new AppError(`Por favor preencha o campo doador, na linha ${index + 1}`, 400)
+            // if (!this.dateProviderRepository.isValidDate(donation.created_at)) {
+            //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(donation) + 1}`, 400)
             // }
-          
-        });
-
+        })
     }
 
-    async proccessDonations(object: IImportDonation[], user_id: string, ngo_id): Promise<void | string> {
-
-//////////////// TRABALHAR AQUI ///////////////
+    async proccessDonations(donations: IImportDonation[], user_id: string, ngo_id): Promise<void | string> {
         
 
-        this.validateFields(object)
+        this.validateFields(donations)
 
-        object.forEach(async (data): Promise<any> => {
-
-
-            const created_at = this.dateProviderRepository.dateNow()
-            //se tiver, converte a data de pagamento 
-            const payed_at =  this.dateProviderRepository.dateNow()
-
-
+        for (const donation of donations) {
+            
           
+            const created_at = this.dateProviderRepository.dateNow()
+         
+            const payed_at =  this.dateProviderRepository.dateNow()
+        
             //procura worker
-            let worker = await this.workersRepository.findByName(data.funcionario)
+            let worker = await this.workersRepository.findByName(donation.funcionario)
+
+            
             // //se  nao existir, cria
             //melhor deixar null
             // if (!worker) {
             //     worker = await this.workersRepository.create(data.funcionario)
             // }
-
-
+            
+            //let donationValue = +(donation.valor.replace(/(?!\,+)[\D]/g,"").replace(/\,/,"."))
+            
             try {
-                let donationValue = +(data.valor.replace(/(?!\,+)[\D]/g,"").replace(/\,/,"."))
+
+                
                 let {donation_number} = await this.donationCounterRepository.findByNgoId(ngo_id)
                 
                 //CRIA A DONATION
                 await this.donationsRepository.create({
 
                     donation_number,
-                    donation_value: donationValue,
-                    donor_name: data.doador,
+                    donation_value: donation.valor,
+                    donor_name: donation.doador,
                     user_id: user_id,
                     worker_id: worker.id,
                     created_at,
@@ -129,13 +131,14 @@ class ImportDonationsUseCase {
 
                 })
 
-                await this.donationCounterRepository.update(ngo_id, donation_number + 1, donation_number)
+                let new_donation_number = +(donation_number) + 1
+                await this.donationCounterRepository.update(ngo_id, new_donation_number, donation_number)
 
                 
 
             } catch (err) {
 
-                throw new AppError(`It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`)
+                throw new AppError(`It was not possible to create donations. Error: ${err} | on: ${donations.indexOf(donation) + 1}`)
                 //return `It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`
             }
 
@@ -143,15 +146,15 @@ class ImportDonationsUseCase {
             // if (is_payed === true) {
             //     await this.donorsRepository.create({ id: donor.id, last_donation: data.payed_at })
             // }
+            
 
-        })
-
+        }
 
 
     }
 
 
-    async execute({file, user_id ,ngo_id}: IRequest): Promise<any> {
+    async execute({file, user_id ,ngo_id}: IRequest): Promise<IResponse> {
 
         const ngoExistis = await this.ngoRepository.findById(ngo_id)
 
@@ -159,14 +162,15 @@ class ImportDonationsUseCase {
             throw new AppError("Essa instituiçao nao existe", 400)
         }
 
-        const a = this.loadDonations(file)
-console.log(a)
-        // //vai fazer para cada donation
-        // const result = await this.proccessDonations(this.loadDonations(file), user_id, ngo_id)
+    
+        //vai fazer para cada donation
+        await this.proccessDonations(this.loadDonations(file), user_id, ngo_id)
 
-        // fs.unlinkSync(file.path)
+        fs.unlinkSync(file.path)
 
-        // return result
+        return {
+            ngo: ngoExistis
+        }
 
 
     }

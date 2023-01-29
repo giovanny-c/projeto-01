@@ -10,7 +10,7 @@ interface IDonationCounterRepository {
     findById(id: string): Promise<DonationCounter>
     findByNgoId(ngo_id: string): Promise<DonationCounter>
     findAll(): Promise<DonationCounter[]>
-    update(ngo_id: string, donation_number: number, last_donation_number: number): Promise<Partial<DonationCounter>>
+    update(ngo_id: string, new_donation_number: number, current_donation_number: number): Promise<Partial<DonationCounter>>
 
 }
 

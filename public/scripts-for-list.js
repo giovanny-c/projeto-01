@@ -90,10 +90,19 @@ var totalDates = document.querySelector("p.total-date")
 
 
 
-formatToBRLStatic(totalValue)
-formatToBRLStaticLoop(tdsValue)
-formatDateStaticLoop(tdsDate)
-formatDateStaticP(totalDates)
+
+if (totalValue) {
+    formatToBRLStatic(totalValue)
+}
+if (tdsValue) {
+    formatToBRLStaticLoop(tdsValue)
+}
+if (tdsDate) {
+    formatDateStaticLoop(tdsDate)
+}
+if (totalDates) {
+    formatDateStaticP(totalDates)
+}
 
 
 

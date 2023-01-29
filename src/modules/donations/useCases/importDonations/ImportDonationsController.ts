@@ -5,7 +5,7 @@ import { ImportDonationsUseCase } from "./ImportDonationsUseCase";
 
 class ImportDonationsController {
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
         const { file } = req
         const { id: user_id} = req.user
@@ -14,16 +14,9 @@ class ImportDonationsController {
 
         const importDonationsUseCase = container.resolve(ImportDonationsUseCase)
 
-        let response = await importDonationsUseCase.execute({file, user_id, ngo_id})
+        let {ngo} = await importDonationsUseCase.execute({file, user_id, ngo_id})
 
-
-        if (response) {
-
-            throw new AppError(response, 400)
-
-        }
-
-        return res.status(201).send()
+        return res.status(201).redirect(`/instituicao/${ngo.id}/doacao/listar`)
     }
 }
 

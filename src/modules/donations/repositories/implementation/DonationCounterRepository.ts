@@ -37,11 +37,14 @@ class DonationCounterRepository implements IDonationCounterRepository{
     async findAll(): Promise<DonationCounter[]> {
         return await this.repository.find()
     }
-    async update(ngo_id: string, donation_number: number, last_donation_number: number): Promise<Partial<DonationCounter>> {
+    async update(ngo_id: string, new_donation_number: number, current_donation_number: number): Promise<Partial<DonationCounter>> {
         
         return await this.repository.createQueryBuilder()
         .update(DonationCounter)
-        .set({donation_number, last_donation_number})
+        .set({
+            donation_number: new_donation_number, 
+            last_donation_number: current_donation_number
+        })
         .where("ngo_id = :ngo_id", {ngo_id})
         .returning(["donation_number"])
         .execute() as Partial<DonationCounter>
