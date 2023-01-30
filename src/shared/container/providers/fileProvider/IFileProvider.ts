@@ -3,7 +3,7 @@ import { Donation } from "../../../../modules/donations/entities/donation"
 
 interface ICreateBooletResponse{
 
-    file: Uint8Array
+    file: Uint8Array | string
     file_name: string
 }
 

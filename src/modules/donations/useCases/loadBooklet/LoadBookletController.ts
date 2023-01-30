@@ -14,7 +14,7 @@ class LoadBookletController{
         const loadBookletUseCase = container.resolve(LoadBookletUseCase)
 
         const {file, file_name,  ngo} = await loadBookletUseCase.execute({ngo_id, year, month, file_name: fileName})
-
+        
         return res.status(200).render("views/donations/booklet", {file, file_name, ngo})
     }
 }

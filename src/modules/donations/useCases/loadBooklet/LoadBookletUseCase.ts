@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { getExecutionTime } from "../../../../../utils/decorators/executionTime";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IStorageProvider } from "../../../../shared/container/providers/storageProvider/IStorageProvider";
 import { AppError } from "../../../../shared/errors/AppError";
@@ -37,7 +38,8 @@ class LoadBookletUseCase {
     ){
 
     }
-
+    
+    @getExecutionTime()
     async execute({ngo_id, file_name, month, year}: IRequest): Promise<IResponse>{
         
         let ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
@@ -54,7 +56,7 @@ class LoadBookletUseCase {
 
 
         
-
+        
         
         let file = await this.storageProvider.getFile(dir, file_name, true) as string
         

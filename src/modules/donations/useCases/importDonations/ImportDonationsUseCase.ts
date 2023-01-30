@@ -14,6 +14,7 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { Ngo } from "../../entities/ngos";
+import { getExecutionTime } from "../../../../../utils/decorators/executionTime";
 
 interface IRequest {
     file: Express.Multer.File
@@ -95,12 +96,17 @@ class ImportDonationsUseCase {
         })
     }
 
+    @getExecutionTime()
     async proccessDonations(donations: IImportDonation[], user_id: string, ngo_id, file_path: string): Promise<void | string> {
         
 
         this.validateFields(donations, file_path)
 
-        for (const donation of donations) {
+        //ver qual e mais rapido
+        //promise all ou
+        //voltar para o for?
+        //testar o map sem async await ?
+        await Promise.all(donations.map(async(donation) => {
             
           
             const created_at = this.dateProviderRepository.dateNow()
@@ -155,10 +161,9 @@ class ImportDonationsUseCase {
             // if (is_payed === true) {
             //     await this.donorsRepository.create({ id: donor.id, last_donation: data.payed_at })
             // }
-            
-
-        }
-
+           
+        }))
+        
 
     }
 

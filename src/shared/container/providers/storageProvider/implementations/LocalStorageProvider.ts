@@ -6,6 +6,7 @@ import { resolve } from "path";
 import upload from "../../../../../config/upload";
 import { AppError } from "../../../../errors/AppError";
 import { IFilePath, IStorageProvider } from "../IStorageProvider";
+import { getExecutionTime } from "../../../../../../utils/decorators/executionTime";
 
 
 class LocalStorageProvider implements IStorageProvider {
@@ -67,6 +68,7 @@ class LocalStorageProvider implements IStorageProvider {
 
     }
 
+    @getExecutionTime()
     async saveFileReceipt(dir: string, file_name:string, file: Uint8Array ): Promise<void>{
         
 
@@ -83,6 +85,7 @@ class LocalStorageProvider implements IStorageProvider {
 
     }
 
+    @getExecutionTime()
     async getFile(dir: string, file_name: string, returnInBase64: boolean): Promise<Buffer | string | void>{
 
         let file_path = `${dir}/${file_name}`
@@ -107,6 +110,22 @@ class LocalStorageProvider implements IStorageProvider {
         }
     }
 
+
+    getFileStream(dir: string, file_name: string): string{
+
+        let data: string
+
+        const readStream = fs.createReadStream(`${dir}/${file_name}`, "base64")
+        readStream.on("error", (error) => {
+            console.error(error)
+            throw new AppError("Nao foi possivel ler o arquivo", 500)})
+        readStream.on("data", (chunk) => data += chunk)
+        readStream.on("end", () => console.log("stream ended"))
+        
+        return data
+    }
+
+   
 
     async getFilesFromDir(dir: string): Promise<string[] | void>{
         

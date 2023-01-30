@@ -17,6 +17,8 @@ import { INGOReceiptProvider } from "../INGOReceiptProvider";
 import { LocalStorageProvider } from "../../storageProvider/implementations/LocalStorageProvider";
 import { DayjsDateProvider } from "../../dateProvider/implementations/DayjsDateProvider";
 import { ICreateBooletResponse } from "../IFileProvider";
+import { AppError } from "../../../../errors/AppError";
+import { getExecutionTime } from "../../../../../../utils/decorators/executionTime";
 
 @singleton()
 class GRAPECCReceiptProvider implements INGOReceiptProvider {
@@ -233,6 +235,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         return pdfBytes
     }
 
+    @getExecutionTime()
     async createBooklet(doc: PDFDocument, data: Donation[]): Promise<ICreateBooletResponse>{
 
         const storageProvider = container.resolve(LocalStorageProvider)
@@ -333,7 +336,8 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             
             index ++
 
-            
+            //? pra retornar so a ultima vez que densenhar a page
+            //if(pageIndex > lastPageIndex) return page
             return page
                 
  
@@ -343,7 +347,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             
         doc.embedPages(pages_promises) 
         
-        
+        //save()
         const pdfBytes = await doc.save()
 
         //salva
@@ -351,7 +355,9 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         
         let file_name = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
     
+        
         await storageProvider.saveFileReceipt(dir, file_name, pdfBytes)
+        
             
         return {
             file: pdfBytes,

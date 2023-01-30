@@ -80,6 +80,7 @@ button:active {
 .thisMonthBooklets a,
 .lastMonthBooklets a {
 
+    width: min-content;
     margin: 4px;
     text-decoration: none;
     color: var(--color-theme);
