@@ -7,6 +7,7 @@ interface IFilePath {
 interface IStorageProvider {
     save({ file, folder }: IFilePath): Promise<string>
     saveFileReceipt(dir: string, file_name:string, file: Uint8Array ): Promise<void>
+    saveFileBooklet(dir: string, file_name:string, file: Uint8Array ): Promise<void>
     delete({ file, folder }: IFilePath): Promise<void>
     getFile(dir: string, file_name: string, returnInBase64: boolean): Promise<Buffer | string | void>
     getFileStream(dir: string, file_name: string): string

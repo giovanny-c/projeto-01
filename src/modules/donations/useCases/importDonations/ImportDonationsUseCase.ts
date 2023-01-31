@@ -79,15 +79,21 @@ class ImportDonationsUseCase {
         
             // if (!data.email) throw new AppError(`Please fill the email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
             if (!donation.valor){
-                fs.unlinkSync(file_path)
+                fs.unlink(file_path, (err)=> {
+                    if (err) throw err
+                })
                 throw new AppError(`Por favor preencha o campo valor, na linha ${index + 1}`, 400)
             } 
             if (!donation.funcionario) {
-                fs.unlinkSync(file_path)
+                fs.unlink(file_path, (err)=> {
+                    if (err) throw err
+                })
                 throw new AppError(`Por favor preencha o campo funcionario, na linha ${index + 1}`, 400)
             }
             if (!donation.doador) {
-                fs.unlinkSync(file_path)
+                fs.unlink(file_path, (err)=> {
+                    if (err) throw err
+                })
                 throw new AppError(`Por favor preencha o campo doador, na linha ${index + 1}`, 400)
             }
             // if (!this.dateProviderRepository.isValidDate(donation.created_at)) {
@@ -106,9 +112,11 @@ class ImportDonationsUseCase {
         //promise all ou
         //voltar para o for?
         //testar o map sem async await ?
-        await Promise.all(donations.map(async(donation) => {
+        
             
-          
+        for (const donation of donations) {
+            
+        
             const created_at = this.dateProviderRepository.dateNow()
          
             const payed_at =  this.dateProviderRepository.dateNow()
@@ -152,7 +160,9 @@ class ImportDonationsUseCase {
                 
 
             } catch (err) {
-                fs.unlinkSync(file_path)
+                fs.unlink(file_path, (err)=> {
+                    if (err) throw err
+                })
                 throw new AppError(`It was not possible to create donations. Error: ${err} | on: ${donations.indexOf(donation) + 1}`)
                 //return `It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`
             }
@@ -162,10 +172,10 @@ class ImportDonationsUseCase {
             //     await this.donorsRepository.create({ id: donor.id, last_donation: data.payed_at })
             // }
            
-        }))
-        
-
+        }
     }
+
+
 
 
     async execute({file, user_id ,ngo_id}: IRequest): Promise<IResponse> {
@@ -174,7 +184,9 @@ class ImportDonationsUseCase {
         const ngoExistis = await this.ngoRepository.findById(ngo_id)
 
         if(!ngoExistis){
-            fs.unlinkSync(file.path)
+            fs.unlink(file.path, (err)=> {
+                if (err) throw err
+            })
             throw new AppError("Essa instituiçao nao existe", 400)
         }
     
@@ -183,12 +195,16 @@ class ImportDonationsUseCase {
             await this.proccessDonations(this.loadDonations(file), user_id, ngo_id, file.path)
 
         } catch (error) {
-            fs.unlinkSync(file.path)
+            fs.unlink(file.path, (err)=> {
+                if (err) throw err
+            })
             throw error
         }
         
 
-        fs.unlinkSync(file.path)
+        fs.unlink(file.path, (err)=> {
+            if (err) throw err
+        })
 
         return {
             ngo: ngoExistis

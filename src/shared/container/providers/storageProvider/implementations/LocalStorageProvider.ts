@@ -1,5 +1,6 @@
 
 import * as fs from "fs"
+import * as fsPromises from "fs/promises"
 import * as path from "path"
 import * as mime from "mime"
 import { resolve } from "path";
@@ -11,7 +12,7 @@ import { getExecutionTime } from "../../../../../../utils/decorators/executionTi
 
 class LocalStorageProvider implements IStorageProvider {
     
-
+    //pega do tmp folde (multer)
     async save({ file, folder }: IFilePath): Promise<string> {
         try {
 
@@ -23,12 +24,19 @@ class LocalStorageProvider implements IStorageProvider {
             //let dir = resolve(`${upload.tmpFolder}/${folder}`)
 
             if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true })
+                fs.mkdir(dir, { recursive: true },
+                    (err) => {
+                        if (err) throw err
+                    }    
+                )
             }
 
-            fs.renameSync( //poe o file outro lugar
+            fs.rename( //poe o file outro lugar
                 resolve(upload.tmpFolder, file),
-                resolve(dir, file)
+                resolve(dir, file),
+                (err) => {
+                    if (err) throw err
+                }
             )
 
             return file
@@ -49,17 +57,24 @@ class LocalStorageProvider implements IStorageProvider {
             const file_name = resolve(dir, file)
 
             try { //se nao existir o arquivo retorn a func
-                fs.statSync(file_name)
+                fs.stat(file_name,
+                    (err) => {
+                        if(err) throw err
+                })
             } catch {
                 return
             }
 
-            fs.unlinkSync(file_name)
+            fs.unlink(file_name,  (err) => {
+                if(err) throw err
+            })
 
             let files = fs.readdirSync(dir)
 
             if (!files.length) {
-                fs.rmdirSync(dir)
+                fs.rmdir(dir,  (err) => {
+                    if(err) throw err
+                })
             }
 
         } catch (error) {
@@ -68,18 +83,48 @@ class LocalStorageProvider implements IStorageProvider {
 
     }
 
-    @getExecutionTime()
+    @getExecutionTime() //pode ser sincrono pois é poucos kbs
     async saveFileReceipt(dir: string, file_name:string, file: Uint8Array ): Promise<void>{
-        
 
         if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true })
+            fs.mkdir(dir, { recursive: true },(err) =>  {if (err)throw err})
+  
         }
 
-        fs.writeFile(`${dir}/${file_name}`, file,
-            (err) => {
-                if (err) throw err
-        })  
+        try { 
+           fs.writeFile(`${dir}/${file_name}`, file,
+                    (err) => {
+                        if (err) throw err
+            })
+        } catch (error) {
+            throw error
+        }   
+            
+
+
+
+    }
+
+    @getExecutionTime() //await asyncrono tem que escrever tudo para que o getFile consiga pegar sem erros
+    async saveFileBooklet(dir: string, file_name:string, file: Uint8Array ): Promise<void>{
+
+        if (!fs.existsSync(dir)) {
+            await fsPromises.mkdir(dir, { recursive: true })
+                //  (err) => {if (err) throw err}
+            
+        }
+//writeFileSync?
+//fsPromise.writeFile lento porem consegue escrever
+        try { 
+            await fsPromises.writeFile(`${dir}/${file_name}`, file)
+            /*,
+                    (err) => {
+                        if (err) throw err
+                }*/  
+        } catch (error) {
+            throw error
+        }   
+            
 
 
 
@@ -93,8 +138,8 @@ class LocalStorageProvider implements IStorageProvider {
         let file
         
         try {   
-
-            file = fs.readFileSync(file_path)
+//readFile? muito rapido nao le o talao
+            file = await fsPromises.readFile(file_path)
 
             
             if(returnInBase64){
@@ -103,48 +148,66 @@ class LocalStorageProvider implements IStorageProvider {
             }
             
             return file
-
+            
         } catch (error) {
-
+            
             return
         }
     }
+    
+    
+    
+    async getFilesFromDir(dir: string): Promise<string[] | void>{
+        
+        let content
+        
+        try {   
 
+            content = await fsPromises.readdir(dir)
+            
+            return content
+            
+        } catch (error) {
+            
+            return
+        }
+    }
+    
 
     getFileStream(dir: string, file_name: string): string{
-
+        
         let data: string
 
         const readStream = fs.createReadStream(`${dir}/${file_name}`, "base64")
+        
         readStream.on("error", (error) => {
+            if (error) {
             console.error(error)
-            throw new AppError("Nao foi possivel ler o arquivo", 500)})
+            throw new AppError("Nao foi possivel ler o arquivo", 500)}
+        })
+
         readStream.on("data", (chunk) => data += chunk)
         readStream.on("end", () => console.log("stream ended"))
         
         return data
     }
-
-   
-
-    async getFilesFromDir(dir: string): Promise<string[] | void>{
         
-        let content
+        
+        
+    @getExecutionTime()
+    saveFileStream(dir: string, file_name: string, file: Uint8Array | Buffer){
 
-        try {   
+        const stream = fs.createWriteStream(`${dir}/${file_name}`)
 
-            content = fs.readdirSync(dir)
-
-            return content
-            
-        } catch (error) {
-
-            return
-        }
+        stream.write(file, (err) => {
+            if (err) throw err
+        })
+        stream.end()
+        
     }
-
-    // async getLastCreatedFile(dir){
-
+        
+        // async getLastCreatedFile(dir){
+            
     //     const result = fs.readdirSync(dir)
     //     .filter((file) => fs.lstatSync(path.join(dir, file)).isFile())
     //     .map((file) => ({file, mtime: fs.lstatSync(path.join(dir, file)).mtime}))

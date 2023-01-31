@@ -356,7 +356,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         let file_name = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
     
         
-        await storageProvider.saveFileReceipt(dir, file_name, pdfBytes)
+        await storageProvider.saveFileBooklet(dir, file_name, pdfBytes)
         
             
         return {

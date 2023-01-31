@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { y } from "pdfkit";
+
 import { container } from "tsyringe";
 import { GenerateBookletUseCase } from "./GenerateBookletUseCase";
 
