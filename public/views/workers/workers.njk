@@ -1,0 +1,72 @@
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/donations/search-donation.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+
+    <title>Funcionários - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+    
+
+        <div class="page-title">
+           
+                Funcionários
+        </div>
+
+       
+    
+
+        <table class="table">
+            <tr>
+                <th>Funcionário</th>
+                
+                <th>Ver</th>
+            </tr>
+            
+
+            {% for worker in workers %}
+                <tr class="columns">
+                    
+                
+                    <td class="worker">{{worker.name}}</td>
+                    
+                    <td><a href="/funcionarios/{{worker.id}}">VER</a></td>
+                </tr>
+            {% endfor %}
+
+        </table>
+                
+        {# <div class="pagination">
+            <div>
+               
+            {% if workers.length > 20 %}
+                <a id="previous_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float - 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_name}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}">
+                << Página anterior </a>
+            {% endif %}
+            </div>
+                  
+                {# caracter invisivel #}
+            {# <div>
+            {% if donations| length >= search_terms.limit %}
+                <a id="next_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float + 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_name}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}">
+                
+                Próxima página >></a>  
+            {% endif %}
+            </div>
+        </div>  
+        #} 
+                
+    {# <script src="/scripts-for-list.js"></script> #}
+
+
+
+   
+    {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
+
+{% endblock %}  
+

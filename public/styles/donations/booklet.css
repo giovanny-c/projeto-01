@@ -28,3 +28,10 @@ iframe {
     color: var(--color-background);
 
 }
+
+.download a:active {
+
+    background-color: var(--color-letter);
+    color: var(--color-background);
+
+}

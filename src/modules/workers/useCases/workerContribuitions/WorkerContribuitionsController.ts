@@ -1,29 +1,22 @@
 import { container } from "tsyringe"
 import { Request, Response } from "express"
-import { WorkerContribuitionsUseCase } from "./WorkerContribuitionsUseCase"
+import { GetWorkerUseCase } from "./WorkerContribuitionsUseCase"
 
-class WorkerContirbuitionsController {
+class GetWorkerController {
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
-        const { orderBy, limit, offset, startDate, endDate } = req.query
-        const { id } = req.params
+        
+        const { worker_id } = req.params
 
 
-        const workerContirbuitionsUseCase = container.resolve(WorkerContribuitionsUseCase)
+        const getWorker = container.resolve(GetWorkerUseCase)
 
-        const results = await workerContirbuitionsUseCase.execute(
-            id as string,
-            {
-                orderBy: orderBy as string,
-                limit: limit as any,
-                offset: offset as any,
-                startDate: startDate as string,
-                endDate: endDate as string
-            })
+        const {worker} = await getWorker.execute({worker_id})
+           
 
-        return res.json(results)
+        return res.status(200).render("views/workers/worker", {worker})
     }
 }
 
-export { WorkerContirbuitionsController }
+export { GetWorkerController }

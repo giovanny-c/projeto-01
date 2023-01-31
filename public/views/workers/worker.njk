@@ -1,0 +1,76 @@
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/donations/donation.css">
+    <title>Funcionário - {{worker.name}} - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+
+        <div class="wrap-title">
+            <div class="page-title">
+            
+                    {{worker.name}}
+            </div>
+
+        </div>
+
+        
+
+       
+        <div class="buttons">
+
+          
+
+            {# button para escolher doador para enviar email #}
+
+
+            <div class="form-update">
+
+                    <form name="form-delete" class="form-delete" action="/funcionario/{{worker.id}}/atualizar" method="PUT" enctype="multipart/form-data">
+                
+
+                <button class="cancel"  type="submit">
+                    Atualizar
+                </button>
+            </div>
+
+            <div>
+                <form name="form-delete" class="form-delete" action="/funcionario/{{worker.id}}/deletar" method="DELETE" enctype="multipart/form-data">
+                
+
+                <button class="cancel"  type="submit">
+                    Deletar
+                </button>
+            
+                </form>
+            </div>
+
+        </div>
+        
+    
+
+    </div>
+    
+    <script>
+        const form = document.querySelector(".form-delete")
+
+            form.addEventListener("submit", function(event){
+
+                    const confirmation = confirm("Deletar usuario?")
+
+                    if(!confirmation){
+                            event.preventDefault()
+                    }   
+
+            })
+    </script>
+    {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
+
+{% endblock %}  
+
+
