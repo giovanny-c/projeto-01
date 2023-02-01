@@ -27,15 +27,16 @@ import { AppError } from "./shared/errors/AppError"
 const app = express()
 
 
+//front
+app.use(express.static("public"))
+
+app.use(methodOverride('_method'));//front
+
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));//front 
 
 
-//front
-app.use(express.static("public"))
-
-app.use(methodOverride('_method'));//front
 
 
 nunjucks.configure("public", {

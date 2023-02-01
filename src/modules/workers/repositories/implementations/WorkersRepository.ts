@@ -30,12 +30,12 @@ class WorkersRepository implements IWorkersReposiroty {
     }
     async findById(id: string): Promise<Worker> {
 
-        const worker = await this.repository.findOneBy({ id })
+        const worker = await this.repository.findOne({where: {id}})
 
         return worker
     }
     async findByName(name: string): Promise<Worker> {
-        const worker = await this.repository.findOneBy({ name })
+        const worker = await this.repository.findOne({where: {name}})
 
         return worker
     }

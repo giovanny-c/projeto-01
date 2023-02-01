@@ -3,23 +3,16 @@
 
 {% block head %}
 
-    <link rel="stylesheet" href="/styles/donations/donation.css">
+    <link rel="stylesheet" href="/styles/workers/worker.css">
     <title>Funcionário - {{worker.name}} - Castanharo Telemarketing</title>
 
 {% endblock %}
 
 {% block content %}
-    <div class="content">
 
-        <div class="wrap-title">
-            <div class="page-title">
-            
-                    {{worker.name}}
-            </div>
+    <div class="wrap">
 
-        </div>
-
-        
+        <div class="worker"><p>Funcionário: {{worker.name}} </p></div>
 
        
         <div class="buttons">
@@ -31,21 +24,22 @@
 
             <div class="form-update">
 
-                    <form name="form-delete" class="form-delete" action="/funcionario/{{worker.id}}/atualizar" method="PUT" enctype="multipart/form-data">
+                    <form name="form-update" class="form-update" action="/funcionario/{{worker.id}}/atualizar?_method=PUT" method="POST" enctype="multipart/form-data">
                 
 
-                <button class="cancel"  type="submit">
-                    Atualizar
-                </button>
+                    <button class="update"  type="submit">
+                        Atualizar
+                    </button>
+                    </form>
             </div>
 
             <div>
-                <form name="form-delete" class="form-delete" action="/funcionario/{{worker.id}}/deletar" method="DELETE" enctype="multipart/form-data">
+                <form name="form-delete" class="form-delete" action="/funcionario/{{worker.id}}/deletar?_method=DELETE" method="POST" enctype="multipart/form-data">
                 
 
-                <button class="cancel"  type="submit">
-                    Deletar
-                </button>
+                    <button class="cancel"  type="submit">
+                        Deletar
+                    </button>
             
                 </form>
             </div>

@@ -6,16 +6,16 @@ import { CreateWorkerUseCase } from "./CreateWorkerUseCase";
 
 class CreateWorkerController {
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
-        const { name } = req.body
+        const { worker_name: name } = req.body
 
         const createWorkerUseCase = container.resolve(CreateWorkerUseCase)
 
         await createWorkerUseCase.execute(name)
 
 
-        return res.status(201).send()
+        return res.status(201).redirect("/funcionarios")
     }
 
 

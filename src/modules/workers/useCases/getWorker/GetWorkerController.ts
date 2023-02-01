@@ -1,6 +1,6 @@
 import { container } from "tsyringe"
 import { Request, Response } from "express"
-import { GetWorkerUseCase } from "./WorkerContribuitionsUseCase"
+import { GetWorkerUseCase } from "./GetWorkerUseCase"
 
 class GetWorkerController {
 

@@ -3,7 +3,7 @@
 
 {% block head %}
 
-    <link rel="stylesheet" href="/styles/donations/search-donation.css">
+    <link rel="stylesheet" href="/styles/workers/workers.css">
     <link rel="stylesheet" href="/styles/footer.css">
 
     <title>Funcionários - Castanharo Telemarketing</title>
@@ -12,34 +12,28 @@
 
 {% block content %}
     
-
+        <div class="wrap">
         <div class="page-title">
            
                 Funcionários
         </div>
-
+        <div class=new-worker>
+            <a href="/funcionarios/criar">Novo Funcionário</a>
+        </div>
+        </div>
        
-    
 
-        <table class="table">
-            <tr>
-                <th>Funcionário</th>
-                
-                <th>Ver</th>
-            </tr>
-            
 
+     
+        <div class="columns">
             {% for worker in workers %}
-                <tr class="columns">
-                    
+            
                 
-                    <td class="worker">{{worker.name}}</td>
-                    
-                    <td><a href="/funcionarios/{{worker.id}}">VER</a></td>
-                </tr>
+                <p class="worker"><a href="/funcionarios/{{worker.id}}">{{worker.name}}</a></p>
+                
             {% endfor %}
-
-        </table>
+        </div>
+        
                 
         {# <div class="pagination">
             <div>

@@ -1,0 +1,52 @@
+
+
+
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/donations/create-donation.css">
+    <title>Criar Funcionário - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+
+        <div class="page-title">
+           
+                Criar Funcionário
+        </div>
+
+        
+            
+        </div>
+
+        <div class="form">
+            <form id="#form" method="post" action="/funcionarios/criar"  enctype="multipart/form-data">
+
+                    
+                    
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text" name="worker_name"  value="" placeholder="Nome do Funcionário"/>
+                        </div>
+                </div>
+
+ 
+
+                <div class="button"><button type="submit">Criar</button> </div>
+                
+                
+
+            </form>
+        </div>
+
+
+        
+    {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
+
+{% endblock %}  
+
+
