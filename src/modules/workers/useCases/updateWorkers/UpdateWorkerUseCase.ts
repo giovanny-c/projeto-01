@@ -15,12 +15,17 @@ class UpdateWorkerUseCase {
 
     async execute(id: string, name: string): Promise<void> {
 
+        
         const workerExists = await this.workersRepository.findById(id)
-
+        
         if (!workerExists) {
-            throw new AppError("this worker does not exists")
+            throw new AppError("Usuário nao foi encontrado", 404)
         }
-
+        
+        if(name === "" || name === undefined){
+            throw new AppError("Campo nome nao possui um valor")
+        }
+        
         await this.workersRepository.create(name, id)
 
 

@@ -22,8 +22,32 @@
             
         </div>
 
-        <div class="form">
-            <form id="#form" method="post" action="/funcionarios/criar"  enctype="multipart/form-data">
+{% if worker %}
+    <div class="form">
+            <form id="#form" method="POST" action="/funcionarios/{{worker.id}}/atualizar?_method=PUT"  enctype="multipart/form-data">
+
+                    
+                    
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text" name="worker_name"  value="{{worker.name}}"/>
+                        </div>
+                </div>
+
+ 
+
+                <div class="button"><button type="submit">Atualizar</button> </div>
+                
+                
+
+            </form>
+        </div>
+{% endif %}
+{% if not worker %}
+
+    <div class="form">
+            <form id="#form" method="POST" action="/funcionarios/criar"  enctype="multipart/form-data">
 
                     
                     
@@ -43,6 +67,8 @@
             </form>
         </div>
 
+{% endif %}
+        
 
         
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}

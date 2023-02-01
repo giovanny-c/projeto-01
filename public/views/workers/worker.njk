@@ -24,17 +24,17 @@
 
             <div class="form-update">
 
-                    <form name="form-update" class="form-update" action="/funcionario/{{worker.id}}/atualizar?_method=PUT" method="POST" enctype="multipart/form-data">
+                    <form name="form-update" class="form-update" action="/funcionarios/{{worker.id}}/atualizar" method="GET" enctype="multipart/form-data">
                 
 
                     <button class="update"  type="submit">
-                        Atualizar
+                        Editar
                     </button>
                     </form>
             </div>
 
             <div>
-                <form name="form-delete" class="form-delete" action="/funcionario/{{worker.id}}/deletar?_method=DELETE" method="POST" enctype="multipart/form-data">
+                <form name="form-delete" class="form-delete" action="/funcionarios/{{worker.id}}/deletar?_method=DELETE" method="POST" enctype="multipart/form-data">
                 
 
                     <button class="cancel"  type="submit">
