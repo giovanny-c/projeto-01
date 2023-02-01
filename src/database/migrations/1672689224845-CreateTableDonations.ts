@@ -27,7 +27,7 @@ export class CreateTableDonations1672689224845 implements MigrationInterface {
                     {
                         name: "worker_id",
                         type: "uuid",
-                        isNullable: false
+                        isNullable: true
                     },
                     {
                         name: "donor_id",
@@ -43,7 +43,7 @@ export class CreateTableDonations1672689224845 implements MigrationInterface {
                     {
                         name: "ngo_id",
                         type: "uuid",
-                        isNullable: false
+                        isNullable: true
 
                     },
                     {
