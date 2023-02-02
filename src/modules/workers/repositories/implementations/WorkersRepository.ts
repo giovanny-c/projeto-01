@@ -40,6 +40,9 @@ class WorkersRepository implements IWorkersReposiroty {
         return worker
     }
 
+    async delete(id: string): Promise<void> {
+        await this.repository.delete(id)
+    }
 }
 
 export { WorkersRepository }

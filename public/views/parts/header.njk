@@ -20,12 +20,12 @@
 
                         
                         <a href="/">Instituições</a>
-                        {% if ngo %}
-                        <a href="/instituicao/{{ngo.id}}">{{ngo.name}}</a>
-                        {% endif %}
                         <a href="/funcionarios">Funcionários</a>
                         <a href="">Doadores</a>
                         <a href="">Usuários</a>
+                        {% if ngo %}
+                        <a href="/instituicao/{{ngo.id}}">{{ngo.name}}</a>
+                        {% endif %}
 
                         
                         
@@ -54,5 +54,19 @@
 
                 
             </div>
+
+             <script>
+                const a = document.querySelector(".logout")
+
+                    a.addEventListener("click", function(event){
+
+                            const confirmation = confirm("Quer mesmo Sair?")
+
+                            if(!confirmation){
+                                    event.preventDefault()
+                            }   
+
+                    })
+            </script>
 
         </header>

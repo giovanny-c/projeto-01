@@ -7,6 +7,7 @@ interface IWorkersReposiroty {
     findById(id: string): Promise<Worker>
     findByName(name: string): Promise<Worker>
     find(): Promise<Worker[]>
+    delete(id:string): Promise<void>
 
 }
 
