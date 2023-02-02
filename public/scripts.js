@@ -1,5 +1,6 @@
 
 
+
 const Mask = {
 
     apply(input, func) {
@@ -41,6 +42,35 @@ const Mask = {
         //do real e substituida por vazio
         //  ex R$1,00 vira 100
         //quando formatar pra real de novo viraria R$100,00
+
+    },
+
+    formatPhone(value) {
+        // /(\(\d{2}\))*(\d{4,5}-\d{4})/g
+        // meu codigo
+        // value = value.replace(/([^\d\(\)])/g, "")
+
+
+        // let value1, value2
+
+        // if (value.length > 5) {
+
+
+
+        //     value1 = value.slice(0, 5)
+        //     value2 = value.slice(5)
+
+        //     return `${value1}-${value2}`
+        // }
+
+        // return value
+
+        return value.replace(/\D/g, '')
+            .replace(/^(\d)/, '($1')
+            .replace(/^(\(\d{2})(\d)/, '$1) $2')
+            .replace(/(\d{5})(\d{1,5})/, '$1-$2')
+            .replace(/(-\d{4})\d+?$/, '$1');
+
 
     },
 

@@ -11,8 +11,8 @@ const router = Router()
 
 
 router.use(loginRoutes)
-router.use("/usuario", userRoutes)
-router.use("/doador", donorRoutes)
+router.use("/usuarios", userRoutes)
+router.use("/doadores", donorRoutes)
 router.use(donationRoutes)
 router.use("/funcionarios", workerRoutes)
 

@@ -1,0 +1,55 @@
+{% extends "views/layout.njk" %}
+
+{% block head %}
+    
+    <title> Doadores - Castanharo Telemarketing</title>
+
+    <link rel="stylesheet" href="/styles/ngos/ngo.css">
+
+{% endblock %}
+
+{% block content %}
+    
+   
+        <div class="page-title">
+        
+                Doadores
+           
+        </div>
+
+        <p>{{ngo_id}}</p>
+        
+
+        <div class="ngo_actions">
+
+            
+
+            <a href="/doadores/criar">
+                <p>Adicionar Doador</p>
+            </a>
+
+            <a href="/doadores/listar">
+                <p>Procurar Doadores</p>
+            </a>
+
+            <a href="/doadores/importar">
+                <p>Importar Doadores</p>
+            </a>
+
+
+
+
+                    
+            
+        </div>
+
+
+        
+
+        
+
+
+        <script src="/scripts/scripts.js"></script>
+            
+
+{% endblock %}

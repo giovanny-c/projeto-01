@@ -59,23 +59,17 @@ class LoadGenerateBookletUseCase{
         
         let {month, year} = this.dateProvider.splitDate(this.dateProvider.dateNow())
         
-        let last_month
-        let last_year = +(year)
-
-        if(+(month) > 1){
-            last_month = +(month) - 1
-        }else{
-            last_month = 12
-            last_year = +(year) - 1
-        }
+        let last_date = this.dateProvider.addOrSubtractTime("sub", "month", 1, this.dateProvider.dateNow())
         
+        let {month: last_month, year: last_year} = this.dateProvider.splitDate(last_date)
+
         
 
         let thisMonthDir = `./tmp/booklet/${year}/${month}/${ngo.name}/`  
         const thisMonthBooklets = await this.storageProvider.getFilesFromDir(thisMonthDir) as string[]
         
-
         let lastMonthDir = `./tmp/booklet/${last_year}/${last_month}/${ngo.name}/` 
+        console.log(lastMonthDir)
         const lastMonthBooklets = await this.storageProvider.getFilesFromDir(lastMonthDir) as string[]
 
 

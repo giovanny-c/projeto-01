@@ -19,7 +19,8 @@ export class CreateTableDonors1650670753236 implements MigrationInterface {
                         },
                         {
                             name: "email",
-                            type: "varchar"
+                            type: "varchar",
+                            isNullable: true
                         },
                         {
                             name: "phone",
