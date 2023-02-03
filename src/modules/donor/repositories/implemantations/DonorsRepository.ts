@@ -51,7 +51,7 @@ class DonorsRepository implements IDonorsRepository {
         .orderBy("donors.name", "ASC", "NULLS LAST")
         .getMany()
 
-        console.log(donors)
+        
         return donors
         // const donors = await this.repository.find({
 
