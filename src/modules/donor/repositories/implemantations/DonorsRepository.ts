@@ -39,19 +39,32 @@ class DonorsRepository implements IDonorsRepository {
 
         return donor
     }
-    async findBy(value): Promise<Donor[]> {
+    async findBy(value: string, limit = 30, offset: number): Promise<Donor[]> {
 
-        const donors = await this.repository.find({
+         const donors = await this.repository.createQueryBuilder("donors")
+        .select("donors")
+        .where("donors.name ILIKE :name ", {name: `%${value}%`})
+        .orWhere("donors.email ILIKE :email ", {email: `%${value}%`})
+        .orWhere("donors.phone ILIKE :phone ", {phone: `%${value}%`})
+        .limit(limit)
+        .offset(offset)
+        .orderBy("donors.name", "ASC", "NULLS LAST")
+        .getMany()
 
-            where: [
-                { name: ILike(`%${value}%`) },
-                { email: ILike(`%${value}%`) },
-                { phone: ILike(`%${value}%`) },
-            ]
-
-        })
-
+        console.log(donors)
         return donors
+        // const donors = await this.repository.find({
+
+        //     where: [
+        //         { name: ILike(`%${value}%`) },
+        //         { email: ILike(`%${value}%`) },
+        //         { phone: ILike(`%${value}%`) },
+        //     ],
+            
+
+        // })
+
+        // return donors
     }
 
 

@@ -5,15 +5,19 @@ import { ListDonorsUseCase } from "./ListDonorsUseCase";
 
 class ListDonorsController {
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
-        const value = req.query.value as string
+        const {valor: value, limit, pagina: page} = req.query
 
         const listDonorsUseCase = container.resolve(ListDonorsUseCase)
 
-        const results = await listDonorsUseCase.execute(value)
+        const {donors, search_terms} = await listDonorsUseCase.execute(
+            value as string,
+            +(limit),
+            +(page)
+        )
 
-        return res.json(results)
+        return res.render("views/donors/search-donors", {donors, search_terms})
     }
 
 

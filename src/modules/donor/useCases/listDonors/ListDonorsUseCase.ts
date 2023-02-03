@@ -1,3 +1,4 @@
+import { off } from "pdfkit";
 import { inject, injectable } from "tsyringe";
 import { Donor } from "../../entities/donor";
 import { IDonorsRepository } from "../../repositories/IDonorsRepository";
@@ -12,12 +13,27 @@ class ListDonorsUseCase {
 
     }
 
-    async execute(value: string): Promise<Donor[]> {
+    async execute(value?: string, limit?: number, page?: number) {
 
 
-        const donors = await this.donorsRepository.findBy(value)
+        page = page || 1
+        limit = limit || 30
+        
+        let offset = limit * (page - 1)
 
-        return donors
+        const donors = await this.donorsRepository.findBy(value, +(limit), offset)
+
+        
+
+        return {
+            donors,
+            search_terms: {
+                value,
+                page,
+                limit
+            }
+            
+        }
     }
 }
 

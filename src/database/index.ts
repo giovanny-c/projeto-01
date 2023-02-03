@@ -1,6 +1,9 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
 
+import "dotenv/config"
+
+
 //CONECTA O APP COM O BD
 export const dataSource: DataSource = new DataSource({
     type: "postgres",
@@ -8,10 +11,10 @@ export const dataSource: DataSource = new DataSource({
     //se for rodar o app sem o docker 
     //ou em ambiente de produção, 
     //deixar host como localhost
-    port: 5432,
-    username: "docker",
-    password: "1234",
-    database: "projeto01_database", //nome do banco de dados (environment POSTGRES_DB=)
+    port: +(process.env.DB_PORT),
+    username: process.env.DB_USER as string,
+    password: process.env.DB_PASSWORD as string,
+    database: process.env.DB_NAME as string, //nome do banco de dados (environment POSTGRES_DB=)
     //migrationsRun: true,
     //logging: true,
     entities: [
@@ -21,8 +24,7 @@ export const dataSource: DataSource = new DataSource({
         "./src/database/migrations/*.ts"
     ],
 
-
-
+   
 
 
 })

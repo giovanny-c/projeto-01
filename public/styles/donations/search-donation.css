@@ -30,6 +30,11 @@ div.search-paramns .search input {
 
 }
 
+div.search-paramns .search input.value {
+    margin-top: 40px;
+    width: 98.5%;
+
+}
 
 div.search-paramns .search input.text {
     margin-top: 40px;
