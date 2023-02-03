@@ -10,9 +10,11 @@ class CreateDonorController {
 
         const { name, email, phone } = req.body
 
+        const _phone = phone.replace(/[\(\)]/,"") //tira os ()
+
         const createDonorUseCase = container.resolve(CreateDonorUseCase)
 
-        const result = await createDonorUseCase.execute({ name, email, phone })
+        await createDonorUseCase.execute({ name, email, phone: _phone })
 
         return res.redirect("/doadores")
     }

@@ -30,12 +30,20 @@ class ImportDonorsUseCase{
 
             parseFile.on("data", async(line) => {
 
-                const [name, email, phone] = line
-            
+                const [first_name, last_name, middle_name, ] = line
+                
+                let email = line.find( value => value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/))//filtar até por qual.quer_e-mail@ser.edu.com.br
+                let phone = line.find( value => value.match(/(\d\d )?(\d{4,5}-\d{4})/)) as string // filtra 11 99999-0000 
+                
+                if(phone){
+
+                    phone = phone.replace(/(\+\d\d )/, "")//e tira o +55 no final
+                }
+
                 donors.push({
-                    name,
+                    name: `${first_name} ${middle_name} ${last_name}`,
                     email,
-                    phone
+                    phone: phone || ""
                 })
 
             }).on("end", () => {

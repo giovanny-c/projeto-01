@@ -46,7 +46,7 @@ const Mask = {
     },
 
     formatPhone(value) {
-        // /(\(\d{2}\))*(\d{4,5}-\d{4})/g
+        // /(\(\d{2}\))*(\d{4,5}-\d{4})/g 
         // meu codigo
         // value = value.replace(/([^\d\(\)])/g, "")
 
