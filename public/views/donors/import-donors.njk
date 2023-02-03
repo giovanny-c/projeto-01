@@ -1,0 +1,52 @@
+{% extends "views/layout.njk" %}
+
+{% block head %}
+
+
+    <title>Talão - {{ngo.name}} - Castanharo Telemarketing </title>
+
+    <link rel="stylesheet" href="/styles/donations/booklet.css">
+    <link rel="stylesheet" href="/styles/donations/import-donations.css">
+
+{% endblock %}
+
+{% block content %}
+    
+   
+        <div class="page-title">
+            
+                {{ngo.name}}
+                
+        </div>
+
+        <div class="sub-title">
+            Importar doações:
+        </div>
+
+
+         <div class="form">
+            <form id="#form" action="/doadores/importar" method="post" enctype="multipart/form-data">
+
+                    
+                    
+                <div class="item">
+                        <div>
+                        <input      
+                            type="file" class="file-input" name="file" value="" placeholder="Escolha o arquivo"/>
+                        </div>
+                </div>
+
+
+                <div class="button"><button type="submit">Importar</button> </div>
+                
+                
+
+            </form>
+        </div>
+
+        
+       
+
+    
+    
+{% endblock %}    

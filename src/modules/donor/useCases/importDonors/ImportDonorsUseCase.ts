@@ -24,7 +24,11 @@ class ImportDonorsUseCase{
 
             const donors: IImportDonors[] = []
 
-            csvParse().on("data", async(line) => {
+            const parseFile = csvParse()
+
+            stream.pipe(parseFile)
+
+            parseFile.on("data", async(line) => {
 
                 const [name, email, phone] = line
             
@@ -44,7 +48,7 @@ class ImportDonorsUseCase{
 
 
                 fs.promises.unlink(file.path)
-                
+
                 reject(err)
 
             })
@@ -72,6 +76,8 @@ class ImportDonorsUseCase{
             }
 
         })
+
+        return
     }
 
 
