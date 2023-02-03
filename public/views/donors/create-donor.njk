@@ -7,7 +7,7 @@
 {% block head %}
 
     
-    <link rel="stylesheet" href="/styles/donations/create-donation.css">
+    <link rel="stylesheet" href="/styles/workers/create-worker.css">
     <title>Criar doacão - {{ngo.name}} - Castanharo Telemarketing</title>
 
 {% endblock %}
@@ -27,14 +27,14 @@
         </div>
 
         <div class="form">
-            <form id="#form" action="/instituicao/{{ngo.id}}/doacao/nova/criar" method="post" enctype="multipart/form-data">
+            <form id="#form" action="/doadores/criar" method="post" enctype="multipart/form-data">
 
                     
                     
                 <div class="item">
                         <div>
                         <input      
-                            type="text" name="donor_name" value="" placeholder="Nome do Doador"/>
+                            type="text" name="name" value="" placeholder="Nome do Doador"/>
                         </div>
                 </div>
 
@@ -43,7 +43,9 @@
                 <div class="item">
                         <div>
                         <input      
-                            type="email" name="email" value="" placeholder="email"/>
+                            type="email" name="email" value="" placeholder="email"
+                            onkeydown="Mask.apply(this, 'formatEmail')"/
+                            style height=34px>
                         </div>
                 </div>
             

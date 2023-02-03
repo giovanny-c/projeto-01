@@ -74,6 +74,11 @@ const Mask = {
 
     },
 
+    formatEmail(value) {
+
+        return value.replace(/[^\w\d@._\-]/g, "")
+    },
+
     cpfCnpj(value) {
 
         value = value.replace(/\D/g, "")//só pega numeros

@@ -20,6 +20,15 @@
     box-shadow: 2px 0px 5px gray;
 }
 
+.item input[type="email"] {
+    height: 36px;
+    width: 600px;
+}
+
+.item:nth-of-type(3) input {
+    width: 300px;
+}
+
 /* .item input {
 
 
@@ -29,11 +38,6 @@
 } */
 
 
-.item:nth-child(2) input {
-
-    width: 300px;
-    text-align: end;
-}
 
 select.item {
     margin: 0px;
@@ -72,8 +76,4 @@ button:active {
 
     background-color: var(--color-hover);
     /* border: 1px solid black; */
-}
-
-.email input[type="email"] {
-    height: 35px;
 }

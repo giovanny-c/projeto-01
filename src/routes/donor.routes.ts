@@ -25,7 +25,7 @@ const loadCreateDonorController = new LoadCreateDonorController()
 donorRoutes.get("/", ensureAuthenticated, loadDonorsHubController.handle)
 
 donorRoutes.get("/criar", ensureAuthenticated, loadCreateDonorController.handle)
-donorRoutes.post("/criar", ensureAuthenticated, createDonorController.handle)
+donorRoutes.post("/criar", ensureAuthenticated, upload.none(), createDonorController.handle)
 
 donorRoutes.get("/listar", ensureAuthenticated, listDonorController.handle)
 

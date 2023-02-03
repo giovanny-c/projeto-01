@@ -14,16 +14,16 @@ class CreateDonorUseCase {
 
     async execute({ name, email, phone }: ICreateDonorDTO): Promise<Donor> {
 
-        const donorAlreadyExists = this.donorsRepository.findByEmail(email)
+        const donorAlreadyExists = await this.donorsRepository.findByEmail(email)
 
         if (donorAlreadyExists) {
-            throw new AppError("This donor already exists")
+            throw new AppError("Esse doador ja existe")
 
         }
 
 
         if (!name || !email || !phone) {
-            throw new AppError("Please fill all fields")
+            throw new AppError("Preencha todos os campos")
         }
 
         const donor = await this.donorsRepository.create({ name, email, phone })

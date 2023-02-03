@@ -6,7 +6,7 @@ import { CreateDonorUseCase } from "./CreateDonorUseCase";
 
 class CreateDonorController {
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
         const { name, email, phone } = req.body
 
@@ -14,7 +14,7 @@ class CreateDonorController {
 
         const result = await createDonorUseCase.execute({ name, email, phone })
 
-        return res.json(result)
+        return res.redirect("/doadores")
     }
 
 
