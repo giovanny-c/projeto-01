@@ -5,7 +5,7 @@ import { Donor } from "../../entities/donor";
 import { IDonorsRepository } from "../../repositories/IDonorsRepository";
 
 @injectable()
-class UpdateDonorUseCase {
+class DeleteDonorUseCase {
 
     constructor(
         @inject("DonorsRepository")
@@ -13,7 +13,7 @@ class UpdateDonorUseCase {
     ) {
     }
 
-    async execute({ id, name, email, phone }: ICreateDonorDTO): Promise<Donor> {
+    async execute({ id}: ICreateDonorDTO){
 
         const donorExists = await this.donorsRepository.findById(id)
 
@@ -21,17 +21,11 @@ class UpdateDonorUseCase {
             throw new AppError("Doador nao encontrado", 404)
         }
 
-        if (!name) name = donorExists.name
-        if (!email) email = donorExists.email
-        if (!phone) phone = donorExists.phone
-
-        phone = phone.replace(/(\+\d\d )/g, "").replace(/[\(\)]/g,"") //tira os () e o +55 se tiver
-
-        const donor = await this.donorsRepository.create({ id: donorExists.id, name, email, phone })
+        await this.donorsRepository.delete(id)
 
 
-        return donor
+        
     }
 }
 
-export { UpdateDonorUseCase }
+export { DeleteDonorUseCase }

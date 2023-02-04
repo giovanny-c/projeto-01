@@ -9,7 +9,7 @@ interface IDonorsRepository {
     findByEmail(email: string): Promise<Donor>
     findById(id: string): Promise<Donor>
     findBy(value: string, limit: number, offset: number): Promise<Donor[]>
-
+    delete(id:string)
 
 
 }

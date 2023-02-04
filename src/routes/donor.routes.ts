@@ -5,6 +5,7 @@ import multer from "multer";
 import uploadConfig from "../config/upload"
 
 import { CreateDonorController } from "../modules/donor/useCases/createDonor/CreateDonorController";
+import { DeleteDonorController } from "../modules/donor/useCases/deleteDonor/DeleteDonorController";
 import { GetDonorAndDonationsController } from "../modules/donor/useCases/GetDonoraAndDonations/GetDonorAndDonationsController";
 import { ImportDonorsController } from "../modules/donor/useCases/importDonors/ImportDonorsController";
 import { ListDonorsController } from "../modules/donor/useCases/listDonors/ListDonorsController";
@@ -28,6 +29,7 @@ const loadCreateDonorController = new LoadCreateDonorController()
 const loadImportDonorsController = new LoadImportDonorController()
 const importDonorsController = new ImportDonorsController()
 const loadUpdateDonorController = new LoadUpdateDonorController()
+const deleteDonorController = new DeleteDonorController()
 
 donorRoutes.get("/", ensureAuthenticated, loadDonorsHubController.handle)
 
@@ -44,6 +46,7 @@ donorRoutes.get("/:donor_id", ensureAuthenticated, getDonorAndDonationsControlle
 donorRoutes.get("/:donor_id/editar", ensureAuthenticated, loadUpdateDonorController.handle)
 donorRoutes.put("/:donor_id/editar", ensureAuthenticated, upload.none(), updateDonorController.handle)
 
+donorRoutes.delete("/:donor_id/deletar", ensureAuthenticated, deleteDonorController.handle)
 
 export { donorRoutes }
 

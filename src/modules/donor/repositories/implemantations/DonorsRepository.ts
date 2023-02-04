@@ -67,6 +67,10 @@ class DonorsRepository implements IDonorsRepository {
         // return donors
     }
 
+    async delete(id: string) {
+        await this.repository.delete(id)
+    }
+
 
 }
 
