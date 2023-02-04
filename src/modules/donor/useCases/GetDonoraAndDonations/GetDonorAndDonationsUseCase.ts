@@ -8,7 +8,7 @@ import { Donor } from "../../entities/donor";
 interface IResponse {
 
     donor: Donor
-    donations: Donation[]
+   // donations: Donation[]
 
 }
 
@@ -27,14 +27,16 @@ class GetDonorAndDonationsUseCase {
         const donorExists = await this.donorsRepository.findById(donor_id)
 
         if (!donorExists) {
-            throw new AppError("This donor does not exists or its a invalid id")
+            throw new AppError("Doador nao encontrado", 404)
         }
 
-        const donations = await this.donationsRepository.findDonationsByDonorId(donorExists.id)
+       // const donations = await this.donationsRepository.findDonationsByDonorId(donorExists.id)
+
+        
 
         const results = {
-            donor: donorExists,
-            donations
+            donor: donorExists
+            //donations
         }
         return results
 

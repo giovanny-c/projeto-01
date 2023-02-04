@@ -1,0 +1,95 @@
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    
+    <link rel="stylesheet" href="/styles/donors/donor.css">
+    <title>Doador {{donor.name}} - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+
+        <div class="wrap-title">
+            <div class="page-title">
+            
+                    Doador
+            </div>
+
+            <div class="new-donation"><a href="/doadores/criar">Novo doador</a></div>
+        </div>
+
+        <div class="donation-info">
+            <p>
+                Nome: <a> {{donor.name}} </a>
+            </p>
+            <p>
+                Email: {{donor.email}}
+            </p> 
+            <p class="phone">
+                Telefone: {{donor.phone}}
+            </p>   
+                        
+            <p class="date">
+                Criado em: {{donor.created_at}} 
+            </p>
+           
+            
+        </div>
+
+       <div class="buttons">
+
+          
+
+            {# button para escolher doador para enviar email #}
+
+
+            <div class="form-update">
+
+                    <form name="form-update" class="form-update" action="/doadores/{{donor.id}}/editar" method="GET" enctype="multipart/form-data">
+                
+
+                    <button class="update"  type="submit">
+                        Editar
+                    </button>
+                    </form>
+            </div>
+
+            <div>
+                <form name="form-delete" class="form-delete" action="/doadores/{{donor.id}}/deletar?_method=DELETE" method="POST" enctype="multipart/form-data">
+                
+
+                    <button class="cancel"  type="submit">
+                        Deletar
+                    </button>
+            
+                </form>
+            </div>
+
+        </div>
+        
+    
+
+    </div>
+    
+    <script src="/scripts-for-donors.js"></script>
+    <script>
+        const form = document.querySelector(".form-delete")
+
+            form.addEventListener("submit", function(event){
+
+                    const confirmation = confirm("Deletar Doador?")
+
+                    if(!confirmation){
+                            event.preventDefault()
+                    }   
+
+            })
+    </script>
+        
+
+{% endblock %}  
+
+

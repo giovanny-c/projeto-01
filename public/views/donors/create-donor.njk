@@ -8,7 +8,7 @@
 
     
     <link rel="stylesheet" href="/styles/workers/create-worker.css">
-    <title>Criar doacão - {{ngo.name}} - Castanharo Telemarketing</title>
+    <title>Criar Doador - Castanharo Telemarketing</title>
 
 {% endblock %}
 
@@ -16,25 +16,38 @@
 
         <div class="page-title">
            
-                {{ngo.name}}
+                
         </div>
 
         <div class="sub-title">
-            Criar doação Nº: {{ngo_donation_counter.donation_number}} 
+            Criar Doador 
         </div>
         <div class="actual_number">
             
         </div>
 
         <div class="form">
-            <form id="#form" action="/doadores/criar" method="post" enctype="multipart/form-data">
+            <form id="#form" 
+        {% if donor %}
+            action="/doadores/{{donor.id}}/editar?_method=PUT"
+        {% else%}
+            action="/doadores/criar" 
+        {% endif %}
+            method="post" enctype="multipart/form-data">
 
                     
                     
                 <div class="item">
                         <div>
+                           
                         <input      
-                            type="text" name="name" value="" placeholder="Nome do Doador"/>
+                            type="text" name="name" 
+                            {% if donor %}
+                            value="{{donor.name}}"
+                            {% else %}
+                            value=""
+                            {% endif %}
+                            placeholder="Nome do Doador"/>
                         </div>
                 </div>
 
@@ -43,8 +56,14 @@
                 <div class="item">
                         <div>
                         <input      
-                            type="email" name="email" value="" placeholder="email"
-                            onkeydown="Mask.apply(this, 'formatEmail')"/
+                            type="email" name="email" 
+                            {% if donor %}
+                            value="{{donor.email}}"
+                            {% else %}
+                            value=""
+                            {% endif %}
+                            placeholder="email"
+                            onkeydown="Mask.apply(this, 'formatEmail')"
                             style height=34px>
                         </div>
                 </div>
@@ -52,8 +71,15 @@
                     
                 <div class="item">
                         <div>
-                        <input      
-                            type="text" name="phone" value="" placeholder="telefone"
+                        <input
+                        class="phone"      
+                            type="text" name="phone" 
+                            {% if donor %}
+                            value="{{donor.phone}}"
+                            {% else %}
+                            value=""
+                            {% endif %}
+                            placeholder="telefone"
                             onkeydown="Mask.apply(this, 'formatPhone')"/>
                         </div>
                 </div>
@@ -61,13 +87,21 @@
 
 
 
-                <div class="button"><button type="submit">Criar</button> </div>
+                <div class="button"><button type="submit">
+                    {% if donor %}
+                    Editar
+                    {% else %}
+                    Criar 
+                    {% endif %}
+                   
+                    </button> </div>
                 
                 
 
             </form>
         </div>
 
+        
 
         
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}

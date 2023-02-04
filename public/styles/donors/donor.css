@@ -1,0 +1,180 @@
+iframe {
+
+    width: 940px;
+    height: 0px;
+    visibility: hidden;
+}
+
+
+.wrap-title {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.wrap-title .page-title,
+.wrap-title .new-donation {
+    margin: 30px 0px;
+    width: 50%;
+}
+
+.wrap-title .new-donation {
+    text-align: end;
+}
+
+.wrap-title .new-donation a {
+    text-decoration: none;
+    font-size: 22px;
+    color: var(--color-theme);
+    border: 1px solid var(--color-theme);
+    padding: 3px;
+    border-radius: 4px;
+}
+
+.wrap-title .new-donation a:hover {
+    background-color: var(--color-theme);
+    color: var(--color-background);
+}
+
+
+.content {
+    width: 940px;
+
+    margin: 40px auto;
+
+}
+
+.change {
+
+    margin-top: 180px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: 17% 3px 17%;
+    width: 940px;
+
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+
+
+}
+
+.change a {
+    margin-left: 2px;
+    color: var(--color-theme);
+    text-decoration: none;
+    padding: 2px;
+    border-radius: 4px;
+    border: 1px solid var(--color-theme);
+}
+
+.change a:hover {
+    background-color: var(--color-theme);
+    color: var(--color-background);
+}
+
+.donation-info {
+
+    margin: 40px auto;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 15px;
+
+    /* border-bottom: 0.5px outset var(--color-theme); */
+
+}
+
+.donation-info>p {
+
+
+    font-size: 20px;
+
+}
+
+.donation-info p {
+    width: 313px;
+}
+
+
+
+.donation-info p:nth-child(2) {
+    text-align: center;
+}
+
+.donation-info p:nth-child(3) {
+    text-align: end;
+}
+
+
+.donation-info p:nth-child(4) {
+    width: 940px;
+    line-height: 30px;
+}
+
+.donation-info p:nth-child(5) {
+    width: 470px;
+}
+
+
+.donation-info p:nth-child(6) {
+
+    width: 470px;
+    text-align: end;
+}
+
+/* 
+.donation-info p:nth-child(5) {} */
+
+.buttons {
+    margin: 40px auto;
+    width: 940px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    justify-items: center;
+
+
+
+}
+
+
+
+button {
+    width: auto;
+    margin: auto;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 4px;
+    border: 1px;
+    box-shadow: 2px 1px 3px rgb(56, 56, 56);
+}
+
+button.cancel {
+    background-color: rgb(214, 33, 33);
+    color: white;
+}
+
+button:hover {
+
+    color: white;
+    background-color: rgb(56, 56, 56);
+}
+
+button:active {
+
+    background-color: var(--color-hover);
+    /* border: 1px solid black; */
+}
+
+button.cancel:hover {
+
+    background-color: rgb(134, 7, 7);
+    color: white;
+}
+
+button.cancel:active {
+    background-color: brown;
+}

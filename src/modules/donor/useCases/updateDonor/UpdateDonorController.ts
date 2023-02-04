@@ -5,9 +5,9 @@ import { UpdateDonorUseCase } from "./UpdateDonorUseCase";
 
 class UpdateDonorController {
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
-        const { id } = req.params
+        const { donor_id: id } = req.params
 
         const { name, email, phone } = req.body
 
@@ -15,7 +15,7 @@ class UpdateDonorController {
 
         const result = await updateDonorUseCase.execute({ id, name, email, phone })
 
-        return res.json(result)
+        return res.redirect("/doadores/listar")
     }
 
 

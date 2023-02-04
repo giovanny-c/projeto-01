@@ -25,6 +25,8 @@ class UpdateDonorUseCase {
         if (!email) email = donorExists.email
         if (!phone) phone = donorExists.phone
 
+        phone = phone.replace(/(\+\d\d )/g, "").replace(/[\(\)]/g,"") //tira os () e o +55 se tiver
+
         const donor = await this.donorsRepository.create({ id: donorExists.id, name, email, phone })
 
 

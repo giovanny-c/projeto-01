@@ -5,16 +5,16 @@ import { GetDonorAndDonationsUseCase } from "./GetDonorAndDonationsUseCase";
 
 class GetDonorAndDonationsController {
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
-        const { id } = req.params
+        const { donor_id: id } = req.params
 
         const getDonorAndDonationsUseCase = container.resolve(GetDonorAndDonationsUseCase)
 
-        const results = await getDonorAndDonationsUseCase.execute(id)
+        const {donor} = await getDonorAndDonationsUseCase.execute(id)
 
 
-        return res.json(results)
+        return res.render("views/donors/donor", {donor} )
     }
 }
 export { GetDonorAndDonationsController }

@@ -11,6 +11,7 @@ import { ListDonorsController } from "../modules/donor/useCases/listDonors/ListD
 import { LoadCreateDonorController } from "../modules/donor/useCases/loadCreateDonor/LoadCreateDonorController";
 import { LoadDonorsHubController } from "../modules/donor/useCases/loadDonorsHub/LoadDonorsHubController";
 import { LoadImportDonorController } from "../modules/donor/useCases/loadImportDonor/LoadImportDonorController";
+import { LoadUpdateDonorController } from "../modules/donor/useCases/loadUpdateDonor/LoadUpdateDonorsController";
 import { UpdateDonorController } from "../modules/donor/useCases/updateDonor/UpdateDonorController";
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated";
 
@@ -26,6 +27,7 @@ const loadDonorsHubController = new LoadDonorsHubController()
 const loadCreateDonorController = new LoadCreateDonorController()
 const loadImportDonorsController = new LoadImportDonorController()
 const importDonorsController = new ImportDonorsController()
+const loadUpdateDonorController = new LoadUpdateDonorController()
 
 donorRoutes.get("/", ensureAuthenticated, loadDonorsHubController.handle)
 
@@ -35,14 +37,12 @@ donorRoutes.post("/criar", ensureAuthenticated, upload.none(), createDonorContro
 donorRoutes.get("/importar", ensureAuthenticated, loadImportDonorsController.handle)
 donorRoutes.post("/importar", ensureAuthenticated, upload.single("file"), importDonorsController.handle)
 
-
 donorRoutes.get("/listar", ensureAuthenticated, listDonorController.handle)
 
-donorRoutes.get("/:id", ensureAuthenticated, getDonorAndDonationsController.handle)
+donorRoutes.get("/:donor_id", ensureAuthenticated, getDonorAndDonationsController.handle)
 
-
-
-donorRoutes.put("/:id/editar", ensureAuthenticated, upload.none(), updateDonorController.handle)
+donorRoutes.get("/:donor_id/editar", ensureAuthenticated, loadUpdateDonorController.handle)
+donorRoutes.put("/:donor_id/editar", ensureAuthenticated, upload.none(), updateDonorController.handle)
 
 
 export { donorRoutes }
