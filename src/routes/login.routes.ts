@@ -9,5 +9,6 @@ const loadLoginPageController = new LoadLoginPageController()
 
 loginRoutes.get("/entrar", loadLoginPageController.handle)
 
+loginRoutes.post("/sair") //fazer
 
 export {loginRoutes}
