@@ -5,6 +5,7 @@ import { inject, injectable } from "tsyringe";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 import { User } from "../../entities/user";
+import { instanceToPlain } from "class-transformer";
 
 interface IRequest {
     name: string
@@ -24,7 +25,8 @@ class LoadUsersUseCase {
 
         const users = await this.usersRepository.find()
         
-        return users
+        
+        return instanceToPlain(users) as User[]
         
     }
 }

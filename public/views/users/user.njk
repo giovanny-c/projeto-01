@@ -1,0 +1,68 @@
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/workers/worker.css">
+    <title>Usuário - {{user.name}} - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="wrap">
+
+        <div class="worker"><p>Usuário: {{user.name}} </p></div>
+       
+        <div class="buttons">
+
+          
+
+
+
+            <div class="form-update">
+
+                    <form name="form-update" class="form-update" action="/usuarios/{{user.id}}/atualizar" method="GET" enctype="multipart/form-data">
+                
+
+                    <button class="update"  type="submit">
+                        Editar
+                    </button>
+                    </form>
+            </div>
+
+            <div>
+                <form name="form-delete" class="form-delete" action="/usuarios/{{user.id}}/deletar?_method=DELETE" method="POST" enctype="multipart/form-data">
+                
+
+                    <button class="cancel"  type="submit">
+                        Deletar
+                    </button>
+            
+                </form>
+            </div>
+
+        </div>
+        
+    
+
+    </div>
+    
+    <script>
+        const form = document.querySelector(".form-delete")
+
+            form.addEventListener("submit", function(event){
+
+                    const confirmation = confirm("Deletar Usuário?")
+
+                    if(!confirmation){
+                            event.preventDefault()
+                    }   
+
+            })
+    </script>
+    {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
+
+{% endblock %}  
+
+

@@ -33,6 +33,7 @@ const deleteDonorController = new DeleteDonorController()
 
 donorRoutes.get("/", ensureAuthenticated, loadDonorsHubController.handle)
 
+
 donorRoutes.get("/criar", ensureAuthenticated, loadCreateDonorController.handle)
 donorRoutes.post("/criar", ensureAuthenticated, upload.none(), createDonorController.handle)
 

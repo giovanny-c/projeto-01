@@ -46,7 +46,7 @@ class AuthenticateUserUseCase {
             throw new AppError("name or password incorrect")
         }
 
-        const passwordMatch = await  validatePassword(password, user.salt, user.password_hash)
+        const passwordMatch = validatePassword(password, user.salt, user.password_hash)
 
         if (!passwordMatch) { //trocar para validate password
             throw new AppError("name or password incorrect")

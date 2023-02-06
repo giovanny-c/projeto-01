@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { Entity, Column, PrimaryColumn } from "typeorm";
 import { v4 as uuidV4 } from "uuid"
 
@@ -10,9 +11,11 @@ class User {
     @Column()
     name: string
 
+    @Exclude()
     @Column()
     password_hash: string
 
+    @Exclude()
     @Column()
     salt: string
 
