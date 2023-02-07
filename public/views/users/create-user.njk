@@ -1,0 +1,108 @@
+
+
+
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/users/create-user.css">
+    <title>Criar Usuário - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+
+        <div class="page-title">
+           
+                Criar Usuário
+        </div>
+
+        
+            
+        </div>
+
+{% if user %}
+    <div class="form">
+            <form id="#form" method="POST" action="/usuarios/{{user.id}}/atualizar?_method=PUT"  enctype="multipart/form-data">
+
+                    
+                    
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text" name="user_name"  value="{{user.name}}" placeholder="Nome do Usuário"/>
+                        </div>
+                </div>
+
+                <div class="item">
+                        <div>
+                        <input      
+                            type="password" name="password"  value="" placeholder="Digite a senha"/>
+                        </div>
+                </div>
+                
+                <div class="item">
+                        <div>
+                        <input      
+                            type="password" name="confirm_password"  value="" placeholder="Digite a confirmação da senha"/>
+                        </div>
+                </div>
+
+
+ 
+
+                <div class="button"><button type="submit">Atualizar</button> </div>
+                
+                
+
+            </form>
+        </div>
+{% endif %}
+{% if not user %}
+
+    <div class="form">
+            <form id="#form" method="POST" action="/usuarios/criar"  enctype="multipart/form-data">
+
+                    
+                    
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text"  name="user_name"  value="" placeholder="Nome do Usuário"/>
+                        </div>
+                </div>
+
+                
+                <div class="item">
+                        <div>
+                        <input      
+                            type="password" name="password"  value="" placeholder="Digite a senha"/>
+                        </div>
+                </div>
+                
+                <div class="item">
+                        <div>
+                        <input      
+                            type="password" name="confirm_password"  value="" placeholder="Digite a confirmação da senha"/>
+                        </div>
+                </div>
+
+ 
+
+                <div class="button"><button type="submit">Criar</button> </div>
+                
+                
+
+            </form>
+        </div>
+
+{% endif %}
+        
+
+        
+    {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
+
+{% endblock %}  
+
+

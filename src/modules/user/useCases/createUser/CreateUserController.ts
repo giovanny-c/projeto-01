@@ -5,15 +5,15 @@ import { container } from "tsyringe"
 class CreateUserController {
 
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response): Promise<any> {
 
-        const { name, password } = req.body
+        const { user_name: name, password, confirm_password } = req.body
 
         const createUserUseCase = container.resolve(CreateUserUseCase)
 
-        await createUserUseCase.execute({ name, password })
+        const user = await createUserUseCase.execute({ name, password, confirm_password })
 
-        return res.status(201).send()
+        return res.status(201).redirect(`/usuarios/${user.id}`)
     }
 
 }

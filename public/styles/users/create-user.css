@@ -15,18 +15,19 @@
     color: var(--color-letters);
     background-color: var(--color-theme);
     height: 32px;
-    width: 600px;
+    width: 800px;
     border-radius: 4px;
     box-shadow: 2px 0px 5px gray;
 }
 
 .item input[type="email"] {
     height: 36px;
-    width: 600px;
+    width: 620px;
 }
 
-.item:nth-of-type(3) input {
-    width: 300px;
+input[type="password"] {
+
+    width: 420px;
 }
 
 /* .item input {
