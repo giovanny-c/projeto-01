@@ -62,7 +62,7 @@ class AuthenticateUserUseCase {
             user: {
                 id: user.id,
                 name: user.name,
-                admin: true // criar campo adm depois
+                admin: user.admin // criar campo adm depois
             },
             created_at
         }

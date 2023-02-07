@@ -6,6 +6,7 @@ import { CreateUserController } from "../modules/user/useCases/createUser/Create
 import { LoadCreateUserController } from "../modules/user/useCases/loadCreateUser/LoadCreateUserController.ts"
 import { LoadUserController } from "../modules/user/useCases/loadUser/LoadUserController"
 import { LoadUsersController } from "../modules/user/useCases/loadUsers/LoadUsersController"
+import { LoadUserUpdateController } from "../modules/user/useCases/loadUserUpdate/LoadUserUpdateController"
 
 import { SendForgotPasswordController } from "../modules/user/useCases/sendForgotPassword/SendForgotPasswordController"
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated"
@@ -20,27 +21,27 @@ const sendForgotPasswordController = new SendForgotPasswordController()
 const loadUsersController = new LoadUsersController()
 const loadUserController = new LoadUserController()
 const loadCreateUserController = new LoadCreateUserController()
+const loadUserUpdateController = new LoadUserUpdateController()
 
 //load all users
-
 userRoutes.get("/", ensureAuthenticated, loadUsersController.handle)
 
 
 //load criar
-
 userRoutes.get("/criar", ensureAuthenticated, loadCreateUserController.handle)
 userRoutes.post("/criar", ensureAuthenticated, upload.none() ,createUserController.handle)
 
 //load forgot
 userRoutes.post("/forgot",  ensureAuthenticated ,sendForgotPasswordController.handle)
 
-//load ver e editar 
-
-
 userRoutes.post("/sessao", authenticateUserController.handle)
 
-
+//load ver
 userRoutes.get("/:user_id", ensureAuthenticated, loadUserController.handle)
+
+//editar 
+userRoutes.get("/:user_id/editar", ensureAuthenticated, loadUserUpdateController.handle)
+//userRoutes.post("/:user_id/editar", ensureAuthenticated, loadUserUpdateController.handle)
 
 
 export { userRoutes }

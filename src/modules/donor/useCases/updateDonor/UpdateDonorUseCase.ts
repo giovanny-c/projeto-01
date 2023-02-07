@@ -15,6 +15,11 @@ class UpdateDonorUseCase {
 
     async execute({ id, name, email, phone }: ICreateDonorDTO): Promise<Donor> {
 
+    
+        if(!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+            throw new AppError("formato de Email invalido", 400)
+        }
+
         const donorExists = await this.donorsRepository.findById(id)
 
         if (!donorExists) {

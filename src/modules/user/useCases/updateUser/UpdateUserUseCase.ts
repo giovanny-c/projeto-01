@@ -7,15 +7,16 @@ import { instanceToPlain } from "class-transformer"
 import { User } from "../../entities/user";
 
 interface IRequest {
+    id: string
     name: string
     password: string
     confirm_password: string
-    email: string
     admin: boolean
+    email: string
 }
 
 @injectable()
-class CreateUserUseCase {
+class UpdateUserUseCase {
 
 
     constructor(
@@ -23,10 +24,12 @@ class CreateUserUseCase {
         private usersRepository: IUsersRepository) {
     }
 
-    async execute({ name, password, confirm_password, admin, email}: IRequest): Promise<User> {
+    async execute({id, name, password, confirm_password, admin, email}: IRequest): Promise<User> {
+
 
         admin? admin = true : admin = false
-       
+
+
         if((!name || name === undefined) || !name.match(/([A-Za-z0-9ãõç]{3,})/g)){
             throw new AppError("Forneça um nome de usuário valido", 400)
         }
@@ -36,7 +39,6 @@ class CreateUserUseCase {
         }
 
         if ((!password || password === undefined) || !password.match(/([A-Za-z0-9ãõç\-.*&$#@!?=+_]{4,})/g)) {
-
             throw new AppError("Forneça um senha valida", 400)
         }
 
@@ -48,20 +50,20 @@ class CreateUserUseCase {
 
         const userAlreadyExists = await this.usersRepository.findByNameOrEmail(name, email)
 
-        if (userAlreadyExists.length) {
+        if (userAlreadyExists.filter(user => user.id !== id )) {// se tiver encontrado um user com id diferente
+            
             throw new AppError("Esse usuário ja existe", 400)
+        
         }
-
-
-        //fazer um match password com o joi
+        
 
         const {salt, hash} = genPassword(password)
 
-        const user = await this.usersRepository.create({ name, password_hash: hash, salt, email, admin})
+        const user = await this.usersRepository.create({ name, password_hash: hash, salt, admin, email})
 
 
         return instanceToPlain(user) as User
     }
 }
 
-export { CreateUserUseCase }
+export { UpdateUserUseCase }

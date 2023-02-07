@@ -2,6 +2,7 @@ import "reflect-metadata"
 import { DataSource } from "typeorm"
 
 //RODA AS MIGRATIONS
+import "dotenv/config"
 
 export const dataSource: DataSource = new DataSource({
     type: "postgres",

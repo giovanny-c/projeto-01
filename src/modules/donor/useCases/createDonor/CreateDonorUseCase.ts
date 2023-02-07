@@ -14,16 +14,21 @@ class CreateDonorUseCase {
 
     async execute({ name, email, phone }: ICreateDonorDTO): Promise<Donor> {
 
+        
+
+        if(!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+            throw new AppError("formato de Email invalido", 400)
+        }
+
+        if (!name || !email || !phone) {
+            throw new AppError("Preencha todos os campos")
+        }
+
         const donorAlreadyExists = await this.donorsRepository.findByEmail(email)
 
         if (donorAlreadyExists) {
             throw new AppError("Esse doador ja existe")
 
-        }
-
-
-        if (!name || !email || !phone) {
-            throw new AppError("Preencha todos os campos")
         }
 
         const donor = await this.donorsRepository.create({ name, email, phone })

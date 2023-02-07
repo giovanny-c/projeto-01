@@ -19,6 +19,12 @@ class User {
     @Column()
     salt: string
 
+    @Column()
+    admin: boolean
+
+    @Column()
+    email: string
+
 
     constructor() {
         if (!this.id) {
