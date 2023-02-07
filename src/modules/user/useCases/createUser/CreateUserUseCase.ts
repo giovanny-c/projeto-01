@@ -26,7 +26,8 @@ class CreateUserUseCase {
     async execute({ name, password, confirm_password, admin, email}: IRequest): Promise<User> {
 
         admin? admin = true : admin = false
-       
+
+
         if((!name || name === undefined) || !name.match(/([A-Za-z0-9ãõç]{3,})/g)){
             throw new AppError("Forneça um nome de usuário valido", 400)
         }

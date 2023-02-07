@@ -10,7 +10,7 @@ interface IRequest {
     id: string
     name: string
     password: string
-    confirm_password: string
+
     admin: boolean
     email: string
 }
@@ -24,7 +24,7 @@ class UpdateUserUseCase {
         private usersRepository: IUsersRepository) {
     }
 
-    async execute({id, name, password, confirm_password, admin, email}: IRequest): Promise<User> {
+    async execute({id, name, password, admin, email}: IRequest): Promise<User> {
 
 
         admin? admin = true : admin = false
@@ -38,15 +38,7 @@ class UpdateUserUseCase {
             throw new AppError("Forneça um email valido", 400)
         }
 
-        if ((!password || password === undefined) || !password.match(/([A-Za-z0-9ãõç\-.*&$#@!?=+_]{4,})/g)) {
-            throw new AppError("Forneça um senha valida", 400)
-        }
-
-        if(password !== confirm_password){
-
-            throw new AppError("A senha e a confirmação não combinam", 400)
-        }
-
+        
 
         const userAlreadyExists = await this.usersRepository.findByNameOrEmail(name, email)
 
@@ -55,6 +47,8 @@ class UpdateUserUseCase {
             throw new AppError("Esse usuário ja existe", 400)
         
         }
+
+
         
 
         const {salt, hash} = genPassword(password)

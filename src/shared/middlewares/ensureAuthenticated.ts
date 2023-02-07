@@ -35,7 +35,7 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
     req.user = {
 
         id: req.session.user.id,
-        admin: req.session.user.admin || false,
+        admin: req.session.user.admin,
 
     }
 

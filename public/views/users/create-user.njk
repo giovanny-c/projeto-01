@@ -24,6 +24,7 @@
 {% if user %}
 
     <div class="form">
+        
             <form id="#form" method="POST" action="/usuarios/{{user.id}}/atualizar?_method=PUT"  enctype="multipart/form-data">
 
                     
@@ -41,18 +42,12 @@
                             type="password" name="password"  value="" placeholder="Digite a senha"/>
                         </div>
                 </div>
-                
-                <div class="item">
-                        <div>
-                        <input      
-                            type="password" name="confirm_password"  value="" placeholder="Digite a confirmação da senha"/>
-                        </div>
-                </div>
+             
 
                 <div class="item">
                         <div>
                         <input      
-                            type="email" name="email"  value="" placeholder="Digite o email" onkeydown="Mask.apply(this, 'formatEmail')"/>
+                            type="email" name="email"  value="{{user.email}}" placeholder="Digite o email" onkeydown="Mask.apply(this, 'formatEmail')"/>
                         </div>
                 </div>
 
@@ -60,7 +55,10 @@
                         <div>
                             Admin
                         <input      
-                            type="checkbox" name="admin"  value="" placeholder=""/>
+                            type="checkbox" name="admin"  value="true" placeholder="" 
+                            {% if user.admin %}
+                                checked
+                            {% endif %}/>
                         </div>
                 </div>
 
@@ -115,7 +113,7 @@
                         <div>
                             Admin
                         <input      
-                            type="checkbox" name="admin"  value="" placeholder=""/>
+                            type="checkbox" name="admin"  value="true" placeholder=""/>
                         </div>
                 </div>
 

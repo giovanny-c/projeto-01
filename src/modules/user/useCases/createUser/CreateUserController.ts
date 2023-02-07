@@ -10,12 +10,11 @@ class CreateUserController {
 
         const { user_name: name, password, confirm_password, email, admin } = req.body
 
-        console.log(email)
-        // const createUserUseCase = container.resolve(CreateUserUseCase)
+        const createUserUseCase = container.resolve(CreateUserUseCase)
 
-        // const user = await createUserUseCase.execute({ name, password, confirm_password, email, admin })
+        const user = await createUserUseCase.execute({ name, password, confirm_password, email, admin })
 
-        // return res.status(201).redirect(`/usuarios/${user.id}`)
+        return res.status(201).redirect(`/usuarios/${user.id}`)
     }
 
 }
