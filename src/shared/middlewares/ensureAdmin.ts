@@ -1,0 +1,26 @@
+import { NextFunction, Request, Response } from "express";
+import { container } from "tsyringe";
+import { DayjsDateProvider } from "../container/providers/dateProvider/implementations/DayjsDateProvider";
+import { AppError } from "../errors/AppError";
+
+
+
+
+
+export async function ensureAdmin(req: Request, res: Response, next: NextFunction) {
+
+   
+   if(!req.session.user || !req.session.user.admin ){
+
+    let back = req.headers.referer
+    req.session.error = "Apenas administradores podem acessar esse conteudo"
+    
+    return res.redirect(back)
+
+   }
+
+
+    next()
+
+
+}

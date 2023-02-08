@@ -10,6 +10,7 @@ import { LoadUserUpdateController } from "../modules/user/useCases/loadUserUpdat
 
 import { SendForgotPasswordController } from "../modules/user/useCases/sendForgotPassword/SendForgotPasswordController"
 import { UpdateUserController } from "../modules/user/useCases/updateUser/UpdateUserController"
+import { ensureAdmin } from "../shared/middlewares/ensureAdmin"
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated"
 
 const upload = multer()
@@ -30,7 +31,7 @@ userRoutes.get("/", ensureAuthenticated, loadUsersController.handle)
 
 
 //load criar
-userRoutes.get("/criar", ensureAuthenticated, loadCreateUserController.handle)
+userRoutes.get("/criar", ensureAuthenticated, ensureAdmin, loadCreateUserController.handle)
 userRoutes.post("/criar", ensureAuthenticated, upload.none() ,createUserController.handle)
 
 //load forgot
