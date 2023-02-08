@@ -8,11 +8,11 @@ class CreateUserController {
     async handle(req: Request, res: Response): Promise<any> {
 
 
-        const { user_name: name, password, confirm_password, email, admin } = req.body
+        const { user_name: name, password, confirm_password, email, is_admin } = req.body
 
         const createUserUseCase = container.resolve(CreateUserUseCase)
 
-        const user = await createUserUseCase.execute({ name, password, confirm_password, email, admin })
+        const user = await createUserUseCase.execute({ name, password, confirm_password, email, is_admin })
 
         return res.status(201).redirect(`/usuarios/${user.id}`)
     }

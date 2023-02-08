@@ -9,6 +9,7 @@ import { LoadUsersController } from "../modules/user/useCases/loadUsers/LoadUser
 import { LoadUserUpdateController } from "../modules/user/useCases/loadUserUpdate/LoadUserUpdateController"
 
 import { SendForgotPasswordController } from "../modules/user/useCases/sendForgotPassword/SendForgotPasswordController"
+import { UpdateUserController } from "../modules/user/useCases/updateUser/UpdateUserController"
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated"
 
 const upload = multer()
@@ -22,6 +23,7 @@ const loadUsersController = new LoadUsersController()
 const loadUserController = new LoadUserController()
 const loadCreateUserController = new LoadCreateUserController()
 const loadUserUpdateController = new LoadUserUpdateController()
+const updateUserController = new UpdateUserController()
 
 //load all users
 userRoutes.get("/", ensureAuthenticated, loadUsersController.handle)
@@ -41,7 +43,7 @@ userRoutes.get("/:user_id", ensureAuthenticated, loadUserController.handle)
 
 //editar 
 userRoutes.get("/:user_id/editar", ensureAuthenticated, loadUserUpdateController.handle)
-//userRoutes.post("/:user_id/editar", ensureAuthenticated, loadUserUpdateController.handle)
+userRoutes.put("/:user_id/editar", ensureAuthenticated, upload.none(), updateUserController.handle)
 
 
 export { userRoutes }

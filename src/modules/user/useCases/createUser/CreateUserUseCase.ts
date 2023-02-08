@@ -11,7 +11,7 @@ interface IRequest {
     password: string
     confirm_password: string
     email: string
-    admin: boolean
+    is_admin: string
 }
 
 @injectable()
@@ -23,9 +23,10 @@ class CreateUserUseCase {
         private usersRepository: IUsersRepository) {
     }
 
-    async execute({ name, password, confirm_password, admin, email}: IRequest): Promise<User> {
+    async execute({ name, password, confirm_password, is_admin, email}: IRequest): Promise<User> {
 
-        admin? admin = true : admin = false
+        
+        
 
 
         if((!name || name === undefined) || !name.match(/([A-Za-z0-9ãõç]{3,})/g)){
@@ -58,7 +59,14 @@ class CreateUserUseCase {
 
         const {salt, hash} = genPassword(password)
 
-        const user = await this.usersRepository.create({ name, password_hash: hash, salt, email, admin})
+        const user = await this.usersRepository.create({ 
+            name, 
+            password_hash: 
+            hash, 
+            salt, 
+            email, 
+            admin: is_admin === "true" ? true : false  //se tiver marcado
+        })
 
 
         return instanceToPlain(user) as User

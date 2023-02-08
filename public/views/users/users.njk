@@ -29,8 +29,12 @@
             {% for user in users %}
             
                 
-                <p class="worker"><a href="/usuarios/{{user.id}}">{{user.name}}</a></p>
-                
+                <p class="worker"><a href="/usuarios/{{user.id}}">{{user.name}}
+                {% if user.admin %}
+                 - Admin
+                {% endif %}</a></p>
+                 
+                 
             {% endfor %}
         </div>
         

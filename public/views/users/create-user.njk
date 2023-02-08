@@ -25,7 +25,7 @@
 
     <div class="form">
         
-            <form id="#form" method="POST" action="/usuarios/{{user.id}}/atualizar?_method=PUT"  enctype="multipart/form-data">
+            <form id="#form" method="POST" action="/usuarios/{{user.id}}/editar?_method=PUT"  enctype="multipart/form-data">
 
                     
                     
@@ -55,7 +55,7 @@
                         <div>
                             Admin
                         <input      
-                            type="checkbox" name="admin"  value="true" placeholder="" 
+                            type="checkbox" name="is_admin"  value="true" placeholder="" 
                             {% if user.admin %}
                                 checked
                             {% endif %}/>
@@ -113,7 +113,7 @@
                         <div>
                             Admin
                         <input      
-                            type="checkbox" name="admin"  value="true" placeholder=""/>
+                            type="checkbox" name="is_admin"  value="true" placeholder=""/>
                         </div>
                 </div>
 

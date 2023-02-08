@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { AppError } from "../../../../shared/errors/AppError";
-import { genPassword } from "../../../../../utils/passwordUtils";
+import { genPassword, validatePassword } from "../../../../../utils/passwordUtils";
 import { instanceToPlain } from "class-transformer"
 import { User } from "../../entities/user";
 
@@ -10,9 +10,10 @@ interface IRequest {
     id: string
     name: string
     password: string
-
-    admin: boolean
     email: string
+    is_admin: string
+
+    admin_id: string
 }
 
 @injectable()
@@ -24,39 +25,55 @@ class UpdateUserUseCase {
         private usersRepository: IUsersRepository) {
     }
 
-    async execute({id, name, password, admin, email}: IRequest): Promise<User> {
+    async execute({id, name, password, is_admin, email, admin_id}: IRequest): Promise<User> {
 
-
-        admin? admin = true : admin = false
-
-
+        //se bate o nome
         if((!name || name === undefined) || !name.match(/([A-Za-z0-9ãõç]{3,})/g)){
             throw new AppError("Forneça um nome de usuário valido", 400)
         }
 
+        //se bate o email
         if((!email || email === undefined) || !email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
             throw new AppError("Forneça um email valido", 400)
         }
 
+    
+
+        //se tem usuarios com o mesmo email ou nome
+        const foundUsers = await this.usersRepository.findByNameOrEmail(name, email)
         
+        console.log(foundUsers.filter(user => user.id !== id )[0])
 
-        const userAlreadyExists = await this.usersRepository.findByNameOrEmail(name, email)
-
-        if (userAlreadyExists.filter(user => user.id !== id )) {// se tiver encontrado um user com id diferente
+        if (foundUsers.filter(user => user.id !== id ).length) {// se tiver encontrado um user com id diferente do que esta sendo editado
             
             throw new AppError("Esse usuário ja existe", 400)
         
         }
 
+        //pega o user correto
 
+        if(!id || id === undefined) throw new AppError("Usuario nao encontrado", 400)
         
+        const user = await this.usersRepository.findById(id)
 
-        const {salt, hash} = genPassword(password)
+        //se o user for outro admin
+        if(user.admin && (user.id !== admin_id )){
 
-        const user = await this.usersRepository.create({ name, password_hash: hash, salt, admin, email})
+            throw new AppError("Voce nao pode editar o usuário de outro admin", 400)
+        }
+        
+        //se estiver alterando o propio user e a senha nao for valida
+        if(user.id === admin_id && !validatePassword(password, user.salt, user.password_hash)){
+
+            throw new AppError("Digite a sua senha para editar seu cadastro", 400)
+        }
 
 
-        return instanceToPlain(user) as User
+        user.name = name
+        user.email = email
+        user.admin = is_admin === "true" ? true : false  //se admin nao for marcado = false
+
+        return instanceToPlain(await this.usersRepository.create({...user})) as User
     }
 }
 
