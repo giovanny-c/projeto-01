@@ -5,6 +5,7 @@ import { LoadLoginPageController } from "../modules/user/useCases/loadLoginPage/
 import { LogOutController } from "../modules/user/useCases/logOut/LogOutController"
 
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated"
+import { handleMessage } from "../shared/middlewares/handleMessage"
 
 
 const loginRoutes = Router()
@@ -13,7 +14,7 @@ const loadLoginPageController = new LoadLoginPageController()
 const logOutController = new LogOutController()
 const authenticateUserController = new AuthenticateUserController()
 
-loginRoutes.get("/entrar", loadLoginPageController.handle)
+loginRoutes.get("/entrar", handleMessage, loadLoginPageController.handle)
 
 loginRoutes.post("/sessao", authenticateUserController.handle)
 

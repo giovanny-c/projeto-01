@@ -7,13 +7,15 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
     if (err instanceof AppError) {
 
         
-
+        console.error(err)
         req.session.error = {
             message: err.message,
             status: err.statusCode
         }
+
+        let back = req.headers.referer
         
-        return res.redirect("back")
+        return res.redirect(back)
 
 
     }
@@ -25,6 +27,6 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
         message: `Internal server error - ${err.message}`,
         status: 500
     }
-
-    return res.redirect("back")
+    let back = req.headers.referer
+    return res.redirect(back)
 }

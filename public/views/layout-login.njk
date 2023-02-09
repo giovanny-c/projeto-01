@@ -5,6 +5,7 @@
 
     <link rel="stylesheet" href="/styles/login/styles-login-layout.css">
     <link rel="stylesheet" href="/styles/login/styles-login.css">
+     <link rel="stylesheet" href="/styles/messages.css">
     {% block head %}{% endblock %}
 
    
@@ -36,6 +37,7 @@
 
         </header>
         
+        {% include "views/parts/messages.njk" %} 
 
         {% block content %}{% endblock %}
         

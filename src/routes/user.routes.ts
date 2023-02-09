@@ -12,6 +12,7 @@ import { SendForgotPasswordController } from "../modules/user/useCases/sendForgo
 import { UpdateUserController } from "../modules/user/useCases/updateUser/UpdateUserController"
 import { ensureAdmin } from "../shared/middlewares/ensureAdmin"
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated"
+import { handleMessage } from "../shared/middlewares/handleMessage"
 
 const upload = multer()
 
@@ -28,11 +29,11 @@ const updateUserController = new UpdateUserController()
 userRoutes.use(ensureAuthenticated, ensureAdmin)
 
 //load all users
-userRoutes.get("/",  loadUsersController.handle)
+userRoutes.get("/",  handleMessage, loadUsersController.handle)
 
 
 //load criar
-userRoutes.get("/criar",loadCreateUserController.handle)
+userRoutes.get("/criar", handleMessage, loadCreateUserController.handle)
 userRoutes.post("/criar",  upload.none() ,createUserController.handle)
 
 //load forgot
@@ -40,10 +41,10 @@ userRoutes.post("/forgot", sendForgotPasswordController.handle)
 
 
 //load ver
-userRoutes.get("/:user_id",  loadUserController.handle)
+userRoutes.get("/:user_id", handleMessage, loadUserController.handle)
 
 //editar 
-userRoutes.get("/:user_id/editar",  loadUserUpdateController.handle)
+userRoutes.get("/:user_id/editar", handleMessage, loadUserUpdateController.handle)
 userRoutes.put("/:user_id/editar",  upload.none(), updateUserController.handle)
 
 
