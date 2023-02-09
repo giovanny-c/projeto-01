@@ -14,6 +14,7 @@ import { LoadDonorsHubController } from "../modules/donor/useCases/loadDonorsHub
 import { LoadImportDonorController } from "../modules/donor/useCases/loadImportDonor/LoadImportDonorController";
 import { LoadUpdateDonorController } from "../modules/donor/useCases/loadUpdateDonor/LoadUpdateDonorsController";
 import { UpdateDonorController } from "../modules/donor/useCases/updateDonor/UpdateDonorController";
+import { ensureAdmin } from "../shared/middlewares/ensureAdmin";
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated";
 
 const upload = multer(uploadConfig)
@@ -31,23 +32,25 @@ const importDonorsController = new ImportDonorsController()
 const loadUpdateDonorController = new LoadUpdateDonorController()
 const deleteDonorController = new DeleteDonorController()
 
-donorRoutes.get("/", ensureAuthenticated, loadDonorsHubController.handle)
+donorRoutes.use(ensureAuthenticated)
+
+donorRoutes.get("/",  loadDonorsHubController.handle)
 
 
-donorRoutes.get("/criar", ensureAuthenticated, loadCreateDonorController.handle)
-donorRoutes.post("/criar", ensureAuthenticated, upload.none(), createDonorController.handle)
+donorRoutes.get("/criar", ensureAdmin, loadCreateDonorController.handle)
+donorRoutes.post("/criar", ensureAdmin, upload.none(), createDonorController.handle)
 
-donorRoutes.get("/importar", ensureAuthenticated, loadImportDonorsController.handle)
-donorRoutes.post("/importar", ensureAuthenticated, upload.single("file"), importDonorsController.handle)
+donorRoutes.get("/importar", ensureAdmin, loadImportDonorsController.handle)
+donorRoutes.post("/importar", ensureAdmin, upload.single("file"), importDonorsController.handle)
 
-donorRoutes.get("/listar", ensureAuthenticated, listDonorController.handle)
+donorRoutes.get("/listar", listDonorController.handle)
 
-donorRoutes.get("/:donor_id", ensureAuthenticated, getDonorAndDonationsController.handle)
+donorRoutes.get("/:donor_id", ensureAdmin, getDonorAndDonationsController.handle)
 
-donorRoutes.get("/:donor_id/editar", ensureAuthenticated, loadUpdateDonorController.handle)
-donorRoutes.put("/:donor_id/editar", ensureAuthenticated, upload.none(), updateDonorController.handle)
+donorRoutes.get("/:donor_id/editar", ensureAdmin, loadUpdateDonorController.handle)
+donorRoutes.put("/:donor_id/editar", ensureAdmin,upload.none(), updateDonorController.handle)
 
-donorRoutes.delete("/:donor_id/deletar", ensureAuthenticated, deleteDonorController.handle)
+donorRoutes.delete("/:donor_id/deletar", ensureAdmin, deleteDonorController.handle)
 
 export { donorRoutes }
 

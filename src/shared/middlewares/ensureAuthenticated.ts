@@ -12,7 +12,10 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
    
     if (!req.session || !req.session.user) {
 
-        req.session.error = "Sessão expirada, por favor entre de novo"
+        req.session.error = {
+            message: "Sessão expirada, por favor entre de novo.",
+            status: 401
+        }
         return res.redirect("/entrar")
 
 
@@ -31,7 +34,10 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
     console.log(absoluteSessionTimeOut)
     //para nao permitir que e sessao seja prolongada indefinidamente
     if(req.session.ttl && !dateProvider.compareIfBefore(dateProvider.dateNow(), absoluteSessionTimeOut)){
-        req.session.error = "Sessão expirada, por favor entre de novo"
+        req.session.error = {
+            message: "Sessão expirada, por favor entre de novo.",
+            status: 401
+        }
         return res.redirect("/entrar")
 
     }

@@ -10,12 +10,16 @@ import { AppError } from "../errors/AppError";
 export async function ensureAdmin(req: Request, res: Response, next: NextFunction) {
 
    
-   if(!req.session.user || !req.session.user.admin ){
+   if(!req.session.user.admin || !req.user.admin ){
 
-    let back = req.headers.referer
-    req.session.error = "Apenas administradores podem acessar esse conteudo"
-    
-    return res.redirect(back)
+        let back = req.headers.referer
+        
+        req.session.error = {
+            message: "Apenas administradores podem acessar esse conteudo",
+            status: 401
+        }
+
+        return res.redirect(back)
 
    }
 

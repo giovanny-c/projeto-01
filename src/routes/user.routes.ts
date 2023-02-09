@@ -18,7 +18,6 @@ const upload = multer()
 const userRoutes = Router()
 
 const createUserController = new CreateUserController()
-const authenticateUserController = new AuthenticateUserController()
 const sendForgotPasswordController = new SendForgotPasswordController()
 const loadUsersController = new LoadUsersController()
 const loadUserController = new LoadUserController()
@@ -26,25 +25,26 @@ const loadCreateUserController = new LoadCreateUserController()
 const loadUserUpdateController = new LoadUserUpdateController()
 const updateUserController = new UpdateUserController()
 
+userRoutes.use(ensureAuthenticated, ensureAdmin)
+
 //load all users
-userRoutes.get("/", ensureAuthenticated, loadUsersController.handle)
+userRoutes.get("/",  loadUsersController.handle)
 
 
 //load criar
-userRoutes.get("/criar", ensureAuthenticated, ensureAdmin, loadCreateUserController.handle)
-userRoutes.post("/criar", ensureAuthenticated, upload.none() ,createUserController.handle)
+userRoutes.get("/criar",loadCreateUserController.handle)
+userRoutes.post("/criar",  upload.none() ,createUserController.handle)
 
 //load forgot
-userRoutes.post("/forgot",  ensureAuthenticated ,sendForgotPasswordController.handle)
+userRoutes.post("/forgot", sendForgotPasswordController.handle)
 
-userRoutes.post("/sessao", authenticateUserController.handle)
 
 //load ver
-userRoutes.get("/:user_id", ensureAuthenticated, loadUserController.handle)
+userRoutes.get("/:user_id",  loadUserController.handle)
 
 //editar 
-userRoutes.get("/:user_id/editar", ensureAuthenticated, loadUserUpdateController.handle)
-userRoutes.put("/:user_id/editar", ensureAuthenticated, upload.none(), updateUserController.handle)
+userRoutes.get("/:user_id/editar",  loadUserUpdateController.handle)
+userRoutes.put("/:user_id/editar",  upload.none(), updateUserController.handle)
 
 
 export { userRoutes }

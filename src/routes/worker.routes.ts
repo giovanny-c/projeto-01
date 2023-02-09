@@ -9,6 +9,7 @@ import { LoadCreateWorkerController } from "../modules/workers/useCases/loadCrea
 import { LoadUpdateWorkerController } from "../modules/workers/useCases/loadUpdateWorker/LoadUpdateWorkerController"
 import { LoadUpdateWorkerUseCase } from "../modules/workers/useCases/loadUpdateWorker/LoadUpdateWorkerUseCase"
 import { UpdateWorkerController } from "../modules/workers/useCases/updateWorkers/UpdateWorkerController"
+import { ensureAdmin } from "../shared/middlewares/ensureAdmin"
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated"
 
 
@@ -25,16 +26,18 @@ const loadCreateWorkerController = new LoadCreateWorkerController()
 const loadUpdateWorkerController = new LoadUpdateWorkerController()
 const deleteWorkerController = new DeleteWorkerController()
 
-workerRoutes.get("/", ensureAuthenticated, listWorkersController.handle)
+workerRoutes.use(ensureAuthenticated, ensureAdmin)
 
-workerRoutes.get("/criar", ensureAuthenticated, loadCreateWorkerController.handle)
-workerRoutes.post("/criar", ensureAuthenticated, upload.none(), createWorkerController.handle)
+workerRoutes.get("/", listWorkersController.handle)
 
-workerRoutes.get("/:worker_id", ensureAuthenticated, getWorkerController.handle)
+workerRoutes.get("/criar", loadCreateWorkerController.handle)
+workerRoutes.post("/criar", upload.none(), createWorkerController.handle)
 
-workerRoutes.get("/:worker_id/atualizar", ensureAuthenticated, loadUpdateWorkerController.handle)
-workerRoutes.put("/:worker_id/atualizar", ensureAuthenticated, upload.none(), updateWorkerController.handle)
+workerRoutes.get("/:worker_id", getWorkerController.handle)
+
+workerRoutes.get("/:worker_id/atualizar", loadUpdateWorkerController.handle)
+workerRoutes.put("/:worker_id/atualizar", upload.none(), updateWorkerController.handle)
 //criar delete
-workerRoutes.delete("/:worker_id/deletar", ensureAuthenticated, deleteWorkerController.handle)
+workerRoutes.delete("/:worker_id/deletar", deleteWorkerController.handle)
 
 export { workerRoutes }
