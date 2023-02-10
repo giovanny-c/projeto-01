@@ -1,7 +1,7 @@
 @keyframes hidemessage {
 
     to {
-        right: -50px;
+        /* bottom: -50px; */
         opacity: 0;
         visibility: hidden;
     }
@@ -18,16 +18,16 @@
 
     padding: 15px;
 
-    width: 345px;
-    height: 135px;
+    width: 80%;
+    height: 55px;
 
     color: white;
 
-    top: 15px;
-    right: 15px;
+    bottom: 15px;
+    right: 10%;
     opacity: 1;
 
-    animation: hidemessage 400ms 5s ease-out forwards;
+    animation: hidemessage 400ms 6s ease-out forwards;
     /*  tempo da animação
     delay de ativaçao da animaçao 
     movimento,

@@ -57,14 +57,14 @@ const getBalanceController = new GetBalanceController()
 const loadImportDonationsController = new LoadImportDonationsController()
 
 
-donationRoutes.use(ensureAuthenticated)
+
 
 //falta get criar ong
 //cria a ong
 donationRoutes.post("/instituicao/criar", ensureAdmin, createNgoController.handle)
 
 //inicio//pagina inicial mostra todas as ongs
-donationRoutes.get("/", handleMessage, findAllNgosController.handle)
+donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
 
 //pagina da ong
 donationRoutes.get("/instituicao/:id", handleMessage, getNgoController.handle)

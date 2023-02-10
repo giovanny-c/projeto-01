@@ -49,9 +49,10 @@ app.set("view engine", "njk")
 
 //session redis
 app.use(session(redisSession))
+
 app.use(function(req, res, next) {
     if(!req.session){
-        throw new AppError("Redis down!", 500)
+       next (new AppError("Redis down!", 500))
     }
     next()
 })

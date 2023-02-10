@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated"
 import { donationRoutes } from "./donation.routes"
 import { donorRoutes } from "./donor.routes"
 import { loginRoutes } from "./login.routes"
@@ -9,6 +10,7 @@ import { workerRoutes } from "./worker.routes"
 
 const router = Router()
 
+router.use(["/usuarios", "/doadores", "/funcionarios", "/instituicao"], ensureAuthenticated)
 
 router.use(loginRoutes)
 router.use("/usuarios", userRoutes)

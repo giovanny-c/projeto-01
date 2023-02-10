@@ -27,7 +27,7 @@ const loadCreateWorkerController = new LoadCreateWorkerController()
 const loadUpdateWorkerController = new LoadUpdateWorkerController()
 const deleteWorkerController = new DeleteWorkerController()
 
-workerRoutes.use(ensureAuthenticated, ensureAdmin)
+workerRoutes.use(ensureAdmin)
 
 workerRoutes.get("/", handleMessage, listWorkersController.handle)
 

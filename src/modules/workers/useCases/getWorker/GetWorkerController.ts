@@ -6,7 +6,7 @@ class GetWorkerController {
 
     async handle(req: Request, res: Response): Promise<any> {
 
-        
+        console.log(req.headers)
         const { worker_id } = req.params
 
 

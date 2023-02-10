@@ -18,6 +18,6 @@ loginRoutes.get("/entrar", handleMessage, loadLoginPageController.handle)
 
 loginRoutes.post("/sessao", authenticateUserController.handle)
 
-loginRoutes.get("/sair", ensureAuthenticated, logOutController.handle) //fazer
+loginRoutes.get("/sair", ensureAuthenticated, handleMessage, logOutController.handle) //fazer
 
 export {loginRoutes}

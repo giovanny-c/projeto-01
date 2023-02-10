@@ -26,7 +26,8 @@ const loadCreateUserController = new LoadCreateUserController()
 const loadUserUpdateController = new LoadUserUpdateController()
 const updateUserController = new UpdateUserController()
 
-userRoutes.use(ensureAuthenticated, ensureAdmin)
+
+userRoutes.use(ensureAdmin)
 
 //load all users
 userRoutes.get("/",  handleMessage, loadUsersController.handle)

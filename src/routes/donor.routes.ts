@@ -33,7 +33,7 @@ const importDonorsController = new ImportDonorsController()
 const loadUpdateDonorController = new LoadUpdateDonorController()
 const deleteDonorController = new DeleteDonorController()
 
-donorRoutes.use(ensureAuthenticated)
+
 
 
 

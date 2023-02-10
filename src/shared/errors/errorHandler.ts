@@ -13,8 +13,10 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
             status: err.statusCode
         }
 
-        let back = req.headers.referer
-        
+        let back 
+
+        !req.headers.referer? back = "back" : back = req.headers.referer
+
         return res.redirect(back)
 
 
@@ -27,6 +29,11 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
         message: `Internal server error - ${err.message}`,
         status: 500
     }
-    let back = req.headers.referer
+
+    let back 
+
+    !req.headers.referer? back = "back" : back = req.headers.referer
+
+  
     return res.redirect(back)
 }

@@ -15,6 +15,9 @@ class CreateWorkerUseCase {
 
     async execute(name: string): Promise<void> {
 
+        if(!name){
+            throw new AppError("Preencha todos os campos")
+        }
 
         const worker = await this.workersRepository.findByName(name)
 
