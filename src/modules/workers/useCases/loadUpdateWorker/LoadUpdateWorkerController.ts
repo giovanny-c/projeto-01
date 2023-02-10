@@ -17,7 +17,7 @@ class LoadUpdateWorkerController {
         const worker = await loadUpdateWorkerUseCase.execute(worker_id)
 
 
-        return res.status(201).render("views/workers/create-worker", {worker})
+        return res.status(201).render("views/workers/create-worker", {worker, error: req.error})
     }
 
 

@@ -38,7 +38,7 @@ class ListDonationsController {
             worker_name: worker_name as string
         })
 
-        return res.status(200).render("views/donations/search-donations", {donations, ngo, search_terms})
+        return res.status(200).render("views/donations/search-donations", {donations, ngo, search_terms, error: req.error})
     }
 }
 

@@ -14,7 +14,7 @@ class GetDonationController {
 
         const {donation, ngo, file, file_name, formated_value, formated_date} = await getDonationUseCase.execute({ngo_id, donation_number: +(donation_number)})
 
-        return res.status(200).render("views/donations/donation", {formated_value, formated_date, donation, ngo, file, file_name})
+        return res.status(200).render("views/donations/donation", {formated_value, formated_date, donation, ngo, file, file_name, error: req.error})
     }
 }
 

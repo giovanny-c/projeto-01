@@ -15,7 +15,7 @@ class LoadCreateDonationController {
 
         const {ngo, ngo_donation_counter, workers} = await loadCreateDonation.execute({id})
 
-        return res.status(200).render("views/donations/create-donation", {ngo, ngo_donation_counter, workers})
+        return res.status(200).render("views/donations/create-donation", {ngo, ngo_donation_counter, workers, error: req.error})
 
     }
 

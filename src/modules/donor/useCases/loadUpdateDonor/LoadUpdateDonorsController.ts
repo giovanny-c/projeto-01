@@ -14,7 +14,7 @@ class LoadUpdateDonorController {
         const donor = await loadUpdateDonorUseCase.execute({id})
 
 
-        return res.render("views/donors/create-donor", {donor} )
+        return res.render("views/donors/create-donor", {donor, error: req.error} )
     }
 }
 export { LoadUpdateDonorController }

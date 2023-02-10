@@ -15,7 +15,7 @@ class GetWorkerController {
         const {worker} = await getWorker.execute({worker_id})
            
 
-        return res.status(200).render("views/workers/worker", {worker})
+        return res.status(200).render("views/workers/worker", {worker, error: req.error})
     }
 }
 

@@ -7,7 +7,7 @@ class LoadCreateWorkerController{
         
         
         
-        return res.render("views/workers/create-worker")
+        return res.render("views/workers/create-worker", {error: req.error})
         
 
 

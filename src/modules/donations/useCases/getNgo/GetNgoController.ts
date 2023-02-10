@@ -19,7 +19,7 @@ class GetNgoController {
         
        
 
-        return res.status(200).render("views/ngos/ngo", {ngo, ngo_donation_counter})
+        return res.status(200).render("views/ngos/ngo", {ngo, ngo_donation_counter, error: req.error})
     }
 
 }
