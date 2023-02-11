@@ -18,6 +18,7 @@ import { ImportDonationsController } from "../modules/donations/useCases/importD
 import { ListDonationsController } from "../modules/donations/useCases/listDonations/ListDonationsController";
 import { LoadBookletController } from "../modules/donations/useCases/loadBooklet/LoadBookletController";
 import { LoadCreateDonationController } from "../modules/donations/useCases/loadCreateDonationPage/LoadCreateDonationController";
+import { LoadCreateNgoController } from "../modules/donations/useCases/loadCreateNgo/LoadCreateNgoController";
 import { LoadDonationCounterPageController } from "../modules/donations/useCases/loadDonationCounterPage/LoadDonationCounterPageController";
 import { LoadGenerateBookletController } from "../modules/donations/useCases/loadGenerateBooklet/LoadGenerateBookletController";
 import { LoadImportDonationsController } from "../modules/donations/useCases/loadImportDonations/LoadImportDonationsController";
@@ -55,16 +56,17 @@ const loadGenerateBookletController = new LoadGenerateBookletController()
 const loadBookletController = new LoadBookletController()
 const getBalanceController = new GetBalanceController()
 const loadImportDonationsController = new LoadImportDonationsController()
+const loadCreateNgoController = new LoadCreateNgoController()
 
 
 
-
-//falta get criar ong
-//cria a ong
-donationRoutes.post("/instituicao/criar", ensureAdmin, createNgoController.handle)
 
 //inicio//pagina inicial mostra todas as ongs
 donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
+
+//fazer a view
+donationRoutes.get("/instituicao/criar", handleMessage, loadCreateNgoController.handle)
+donationRoutes.post("/instituicao/criar", ensureAdmin, createNgoController.handle)
 
 //pagina da ong
 donationRoutes.get("/instituicao/:id", handleMessage, getNgoController.handle)
