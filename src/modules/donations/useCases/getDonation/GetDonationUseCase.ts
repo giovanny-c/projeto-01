@@ -22,8 +22,8 @@ interface IResponse {
     formated_value: string
     formated_date: Date 
     donation: Donation,
-    file: string | Buffer
-    file_name: string
+    file?: string | Buffer
+    file_name?: string
     ngo: Ngo
 }
 
@@ -59,10 +59,21 @@ class GetDonationUseCase {
             if(!ngo) throw new AppError("Instituição nao encontrada", 404)
         }
 
+        let donation
 
-        const donation = await this.donationsRepository.findDonationByNumberAndNgoId({donation_number, ngo_id})
+        if(donation_number){
+            
+            donation = await this.donationsRepository.findDonationByNumberAndNgoId({donation_number, ngo_id})
 
-        if (!donation) {
+        }else{
+
+            const donations = await this.donationsRepository.findDonationsBy({ngo_id, orderBy: "DESC"})
+
+            donation = donations[0]
+        }
+
+
+        if (!donation && !donation.id) {
             throw new AppError("Doação nao encontrada", 404)
         }
 
@@ -80,9 +91,28 @@ class GetDonationUseCase {
 
         if(!file){
 
-           file = Buffer.from(await this.fileProvider.generateFile(donation, true))
+            
+            let template = await this.storageProvider.getFile(`./templates`, `${donation.ngo.name}_template.jpg`, false)
 
-           file = file.toString("base64")
+            if(!template){
+                return {
+                    formated_value: formatToBRL(donation.donation_value),
+                    formated_date: this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY"),
+                    donation,
+                    ngo,
+                
+                }
+            }
+
+            try {
+                file = Buffer.from(await this.fileProvider.generateFile(donation, true))
+
+                file = file.toString("base64")
+            } catch (error) {
+                throw new AppError("Nao foi possivel gerar o recibo dessa doação", 500)
+
+            }
+
         }
 
         

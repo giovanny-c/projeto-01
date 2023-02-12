@@ -28,7 +28,7 @@ class CreateNgoUseCase {
         const ngoExists = await this.ngoRepository.findByName(name)
 
         if (ngoExists) {
-            throw new AppError("essa instituição ja existe")
+            throw new AppError("essa instituição ja existe", 400)
 
         }
 

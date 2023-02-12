@@ -15,7 +15,7 @@ class NgoRepository implements INgoRepository{
     }
 
     
-    async create(name: string, full_name, alias: string): Promise<Ngo> {
+    async create(name: string, full_name: string, alias: string): Promise<Ngo> {
 
         const ngo = this.repository.create({
             name,

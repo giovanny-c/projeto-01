@@ -12,7 +12,6 @@ import { GenerateBookletController } from "../modules/donations/useCases/generat
 import { GenerateReceiptController } from "../modules/donations/useCases/generateReceipt/GenerateReceiptController";
 import { GetBalanceController } from "../modules/donations/useCases/getBalance/GetBalanceController";
 import { GetDonationController } from "../modules/donations/useCases/getDonation/GetDonationController";
-import { GetLastDonationController } from "../modules/donations/useCases/getLasDonation/GetLastDonationController";
 import { GetNgoController } from "../modules/donations/useCases/getNgo/GetNgoController";
 import { ImportDonationsController } from "../modules/donations/useCases/importDonations/ImportDonationsController";
 import { ListDonationsController } from "../modules/donations/useCases/listDonations/ListDonationsController";
@@ -43,7 +42,7 @@ const cancelDonationController = new CancelDonationController()
 const listDonationsController = new ListDonationsController()
 const importDonationsController = new ImportDonationsController()
 const getDonationController = new GetDonationController()
-const generateReceiptController = new GenerateReceiptController()
+
 const createNgoController = new CreateNgoController()
 const findAllNgosController = new FindAllNgosController() 
 const setDonationCounterController = new SetDonationCounterController()
@@ -51,7 +50,7 @@ const generateBookletController = new GenerateBookletController()
 const getNgoController = new GetNgoController()
 const loadDonationCounterPageController = new LoadDonationCounterPageController()
 const loadCreateDonationController = new LoadCreateDonationController()
-const getLastDonationController = new GetLastDonationController()
+
 const loadGenerateBookletController = new LoadGenerateBookletController()
 const loadBookletController = new LoadBookletController()
 const getBalanceController = new GetBalanceController()
@@ -65,8 +64,8 @@ const loadCreateNgoController = new LoadCreateNgoController()
 donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
 
 //fazer a view
-donationRoutes.get("/instituicao/criar", handleMessage, loadCreateNgoController.handle)
-donationRoutes.post("/instituicao/criar", ensureAdmin, createNgoController.handle)
+donationRoutes.get("/instituicao/criar", ensureAdmin, handleMessage, loadCreateNgoController.handle)
+donationRoutes.post("/instituicao/criar", ensureAdmin, upload.none(), createNgoController.handle)
 
 //pagina da ong
 donationRoutes.get("/instituicao/:id", handleMessage, getNgoController.handle)
@@ -94,7 +93,7 @@ donationRoutes.get("/instituicao/:ngo_id/doacao/importar", ensureAdmin, handleMe
 donationRoutes.post("/instituicao/:ngo_id/doacao/importar", ensureAdmin, upload.single("file"), importDonationsController.handle)
 
 //pegar doaçao
-donationRoutes.get("/instituicao/:ngo_id/doacao/ultima", ensureAdmin, handleMessage, getLastDonationController.handle)
+donationRoutes.get("/instituicao/:ngo_id/doacao/ultima", ensureAdmin, handleMessage, getDonationController.handle)
 donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number", ensureAdmin, handleMessage, getDonationController.handle)
 
 //cancelar doaçao

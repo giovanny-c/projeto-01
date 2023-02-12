@@ -126,7 +126,13 @@ class CreateDonationUseCase {
         //format para ISO
         donationWithRelations.payed_at = this.dateProvider.formatDate(donation.created_at, "YYYY/MM/DD")
 
-        const pdfBytes = await this.fileProvider.generateFile(donationWithRelations, true)
+        let pdfBytes
+        try {
+            pdfBytes = await this.fileProvider.generateFile(donationWithRelations, true)
+        
+        } catch (error) {
+            throw new AppError("Nao foi possivel gerar o recibo dessa doação", 500)
+        }
 
     
         const buffer = Buffer.from(pdfBytes)

@@ -1,0 +1,68 @@
+
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/ngos/create-ngo.css">
+    <title>Criar Instituição - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+
+        <div class="page-title">
+           
+                Criar Instituição
+        </div>
+
+        
+            
+       
+
+
+
+    <div class="form">
+            <form id="#form" method="POST" action="/instituicao/criar"  enctype="multipart/form-data">
+
+                    
+                    
+                <div class="item">
+                        <div>
+                            
+                        <input      
+                            type="text"  name="full_name"  value="" placeholder="Nome Completo da instituição"/>
+                        </div>
+                </div>
+                       
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text"  name="name"  value="" placeholder="Abreviação ou acrônimo da instituição"/>
+                        </div>
+                </div>
+
+                       
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text"  name="alias"  value="" placeholder="Como a instituição será chamada no sistema"/>
+                        </div>
+                </div>
+
+ 
+
+                <div class="button"><button type="submit">Criar</button> </div>
+                
+                
+
+            </form>
+        </div>
+
+
+        
+
+        
+    {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
+
+{% endblock %} 

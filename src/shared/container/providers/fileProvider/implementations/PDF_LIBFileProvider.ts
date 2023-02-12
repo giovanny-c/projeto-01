@@ -27,7 +27,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
       
         if (!donation.donation_number){
-            throw new AppError("generateReceiptcontrada", 404)
+            throw new AppError("Doação nao encontrada", 404)
         }
         
         const doc = await PDFDocument.create()
@@ -45,7 +45,8 @@ class PDF_LIBFileProvider implements IFileProvider {
         const font = await doc.embedFont(fontBuffer)
         
         //pega o template
-        const templatePath = `./templates/${donation.ngo.name}_template2.jpg` //template do recibo
+        const templatePath = `./templates/${donation.ngo.alias}_template.jpg` //template do recibo
+
 
         const uint8Array = fs.readFileSync(templatePath) // le o tamplate do recibo
 
