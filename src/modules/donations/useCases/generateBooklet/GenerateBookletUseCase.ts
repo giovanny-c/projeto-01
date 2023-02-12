@@ -65,15 +65,21 @@ class GenerateBookletUseCase {
 
         const {year, month} =  this.dateProvider.splitDate(this.dateProvider.dateNow())
         
-
-        const {file_name} = await this.fileProvider.createBooklet(donations)
-
-        return{
+        try {
+            const {file_name} = await this.fileProvider.createBooklet(donations)
+            
+            return{
             ngo,
             year,
             month,
             file_name
-        }   
+            }  
+
+        } catch (error) {
+            throw new AppError("Não foi possivel criar o talão de recibos", 500)
+        }
+
+         
     }
 }
 

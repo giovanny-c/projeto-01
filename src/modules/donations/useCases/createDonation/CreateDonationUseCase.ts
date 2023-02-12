@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
+import { IStorageProvider } from "../../../../shared/container/providers/storageProvider/IStorageProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IDonorsRepository } from "../../../donor/repositories/IDonorsRepository";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
@@ -27,8 +28,8 @@ interface IRequest {
 
 interface IResponse {
     donation: Donation,
-    file: string
-    file_name: string
+    file?: string
+    file_name?: string
     ngo: Ngo
 }
 
@@ -56,7 +57,9 @@ class CreateDonationUseCase {
         @inject("FileProvider")
         private fileProvider: IFileProvider,
         @inject("CacheProvider")
-        private cacheProvider: ICacheProvider
+        private cacheProvider: ICacheProvider,
+        @inject("StorageProvider")
+        private storageProvider: IStorageProvider
     ) { }
 
 
@@ -126,21 +129,33 @@ class CreateDonationUseCase {
         //format para ISO
         donationWithRelations.payed_at = this.dateProvider.formatDate(donation.created_at, "YYYY/MM/DD")
 
-        let pdfBytes
-        try {
-            pdfBytes = await this.fileProvider.generateFile(donationWithRelations, true)
-        
-        } catch (error) {
-            throw new AppError("Nao foi possivel gerar o recibo dessa doação", 500)
-        }
+        let file
 
-    
-        const buffer = Buffer.from(pdfBytes)
+        try {
+                
+            const uint8Array = await this.fileProvider.generateFile(donationWithRelations, true)
+            
+            if(!uint8Array){// se nao tiver template vai retornar sem file
+                return {
+                    donation: donationWithRelations,
+                    ngo
+                }
+            }
+
+            file = Buffer.from(uint8Array)
+
+            file = file.toString("base64")
+
+        } catch (error) {
+            
+            throw new AppError("Nao foi possivel gerar o recibo dessa doação", 500)
+
+        }
 
         return  {
             ngo,
             donation: donationWithRelations,
-            file: buffer.toString("base64"),
+            file,
             file_name: `recibo_${donationWithRelations.ngo.name}_${donation.donor_name}_${donation.donation_number}.pdf`
         }
         //mandar para uma rota para escolher o dono desse recibo, para mandar o email

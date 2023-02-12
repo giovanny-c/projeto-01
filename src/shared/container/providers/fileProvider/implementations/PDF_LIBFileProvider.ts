@@ -1,7 +1,7 @@
 import { PDFDocument, PrintScaling } from "pdf-lib"
 import fontkit from "@pdf-lib/fontkit"
 import fs from "fs"
-
+import * as fsPromises from "fs/promises"
 
 import { ICreateBooletResponse, IFileProvider } from "../IFileProvider";
 import { Donation } from "../../../../../modules/donations/entities/donation";
@@ -25,11 +25,28 @@ class PDF_LIBFileProvider implements IFileProvider {
 
     async generateFile(donation: Donation, saveFile: boolean): Promise<Uint8Array> {
 
-      
         if (!donation.donation_number){
             throw new AppError("Doação nao encontrada", 404)
         }
+
+        //pega o template
+        const templatePath = `./templates/${donation.ngo.alias}_template.jpg` //template do recibo
         
+        let uint8Array 
+        try {
+            
+            uint8Array = await fsPromises.readFile(templatePath)// le o tamplate do recibo
+            
+            if(!uint8Array){
+                return 
+            }
+
+        } catch (error) {
+            return
+        }
+        
+        
+
         const doc = await PDFDocument.create()
         
         //config de impressao
@@ -44,12 +61,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         
         const font = await doc.embedFont(fontBuffer)
         
-        //pega o template
-        const templatePath = `./templates/${donation.ngo.alias}_template.jpg` //template do recibo
-
-
-        const uint8Array = fs.readFileSync(templatePath) // le o tamplate do recibo
-
+        
         const templatePNG = await doc.embedJpg(uint8Array) //poe o template no pdf
 
         //vai injetar o metodo de criação de pdf dinamicamente

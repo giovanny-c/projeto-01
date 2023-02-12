@@ -21,7 +21,7 @@ class CreateDonationController {
 
 
 
-        const response = await createDonationUseCase.execute({ 
+        const {donation} = await createDonationUseCase.execute({ 
             ngo_id, 
             donor_name,
             user_id, 
@@ -31,7 +31,7 @@ class CreateDonationController {
             payed_at, 
         })
 
-        return res.status(201).redirect(`/instituicao/${response.donation.ngo.id}/doacao/${response.donation.donation_number}`)
+        return res.status(201).redirect(`/instituicao/${donation.ngo.id}/doacao/${donation.donation_number}`)
 
     }
 }

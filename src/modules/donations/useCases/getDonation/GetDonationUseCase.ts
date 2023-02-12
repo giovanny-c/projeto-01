@@ -65,6 +65,7 @@ class GetDonationUseCase {
             
             donation = await this.donationsRepository.findDonationByNumberAndNgoId({donation_number, ngo_id})
 
+
         }else{
 
             const donations = await this.donationsRepository.findDonationsBy({ngo_id, orderBy: "DESC"})
@@ -73,7 +74,7 @@ class GetDonationUseCase {
         }
 
 
-        if (!donation && !donation.id) {
+        if (!donation || !donation.id) {
             throw new AppError("Doação nao encontrada", 404)
         }
 
@@ -89,25 +90,26 @@ class GetDonationUseCase {
 
         let file = await this.storageProvider.getFile(dir, file_name, true)
 
-        if(!file){
-
-            
-            let template = await this.storageProvider.getFile(`./templates`, `${donation.ngo.name}_template.jpg`, false)
-
-            if(!template){
-                return {
-                    formated_value: formatToBRL(donation.donation_value),
-                    formated_date: this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY"),
-                    donation,
-                    ngo,
-                
-                }
-            }
+        if(!file){ // se nao tiver encontrado o arquivo
 
             try {
-                file = Buffer.from(await this.fileProvider.generateFile(donation, true))
+                
+                const uint8Array = await this.fileProvider.generateFile(donation, true)
+
+                if(!uint8Array){ // se nao tiver template vai retornar sem file
+                    return {
+                        formated_value: formatToBRL(donation.donation_value),
+                        formated_date: this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY"),
+                        donation,
+                        ngo,
+                    
+                    }
+                }
+
+                file = Buffer.from(uint8Array)
 
                 file = file.toString("base64")
+                
             } catch (error) {
                 throw new AppError("Nao foi possivel gerar o recibo dessa doação", 500)
 
