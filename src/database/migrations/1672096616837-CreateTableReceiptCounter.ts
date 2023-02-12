@@ -35,7 +35,9 @@ export class CreateTableReceiptCounter1672096616837 implements MigrationInterfac
                     name: "NGOsDonationCounter",
                     referencedTableName: "ngos",
                     referencedColumnNames: ["id"],
-                    columnNames: ["ngo_id"]
+                    columnNames: ["ngo_id"],
+                    onDelete: "SET NULL",
+                    onUpdate: "CASCADE" 
                 }
             ]
         }))

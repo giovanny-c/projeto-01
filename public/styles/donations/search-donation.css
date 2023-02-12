@@ -124,7 +124,8 @@ div.search-paramns button:active {
 
 .pagination a {
     margin-left: 2px;
-    color: var(--color-theme);
+    background-color: var(--color-theme);
+    color: var(--color-background);
     text-decoration: none;
     padding: 2px;
     border-radius: 4px;
@@ -132,8 +133,8 @@ div.search-paramns button:active {
 }
 
 .pagination a:hover {
-    background-color: var(--color-theme);
-    color: var(--color-background);
+    background-color: var(--color-hover);
+
 }
 
 .table {

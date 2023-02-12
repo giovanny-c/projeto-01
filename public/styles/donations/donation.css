@@ -25,15 +25,16 @@ iframe {
 .wrap-title .new-donation a {
     text-decoration: none;
     font-size: 22px;
-    color: var(--color-theme);
+    background-color: var(--color-theme);
+    color: var(--color-background);
     border: 1px solid var(--color-theme);
     padding: 3px;
     border-radius: 4px;
 }
 
 .wrap-title .new-donation a:hover {
-    background-color: var(--color-theme);
-    color: var(--color-background);
+    background-color: var(--color-hover);
+
 }
 
 
@@ -63,7 +64,8 @@ iframe {
 
 .change a {
     margin-left: 2px;
-    color: var(--color-theme);
+    color: var(--color-background);
+    background-color: var(--color-theme);
     text-decoration: none;
     padding: 2px;
     border-radius: 4px;
@@ -71,8 +73,8 @@ iframe {
 }
 
 .change a:hover {
-    background-color: var(--color-theme);
-    color: var(--color-background);
+    background-color: var(--color-hover);
+
 }
 
 .donation-info {

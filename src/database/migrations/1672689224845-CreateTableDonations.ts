@@ -82,7 +82,7 @@ export class CreateTableDonations1672689224845 implements MigrationInterface {
                         referencedColumnNames: ["id"],
                         columnNames: ["donor_id"],
                         onDelete: "SET NULL",
-                        onUpdate: "SET NULL" //Só vai ser null a foreign key?
+                        onUpdate: "SET NULL" //Trocar por CASCADE, só afeta se o id da tabela for alterado
 
                     },
                     {
@@ -91,7 +91,7 @@ export class CreateTableDonations1672689224845 implements MigrationInterface {
                         referencedColumnNames: ["id"],
                         columnNames: ["user_id"],
                         onDelete: "SET NULL",
-                        onUpdate: "SET NULL" //Só vai ser null a foreign key?
+                        onUpdate: "SET NULL" //Trocar por CASCADE, só afeta se o id da tabela for alterado
 
                     },
                     {
@@ -100,7 +100,7 @@ export class CreateTableDonations1672689224845 implements MigrationInterface {
                         referencedColumnNames: ["id"],
                         columnNames: ["worker_id"],
                         onDelete: "SET NULL",
-                        onUpdate: "SET NULL" //Só vai ser null a foreign key?
+                        onUpdate: "SET NULL" //Trocar por CASCADE, só afeta se o id da tabela for alterado
 
                     },
                     {
@@ -109,7 +109,7 @@ export class CreateTableDonations1672689224845 implements MigrationInterface {
                         referencedColumnNames: ["id"],
                         columnNames: ["ngo_id"],
                         onDelete: "SET NULL",
-                        onUpdate: "SET NULL" //Só vai ser null a foreign key?
+                        onUpdate: "SET NULL" //Trocar por CASCADE, só afeta se o id da tabela for alterado
 
                     }
                 ]
