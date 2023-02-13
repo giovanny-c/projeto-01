@@ -10,6 +10,7 @@ interface IUsersRepository {
     findByName(name: string): Promise<User>
     findByEmail(email: string): Promise<User>
     findByNameOrEmail(name: string, email: string): Promise<User[]>
+    delete(id: string)
 }
 
 export { IUsersRepository }

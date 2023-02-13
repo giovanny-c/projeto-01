@@ -3,6 +3,7 @@ import { Router } from "express"
 import multer from "multer"
 import { AuthenticateUserController } from "../modules/user/useCases/authenticateUser/AuthenticateUserController"
 import { CreateUserController } from "../modules/user/useCases/createUser/CreateUserController"
+import { DeleteUserController } from "../modules/user/useCases/deleteUser/DeleteUserController"
 import { LoadCreateUserController } from "../modules/user/useCases/loadCreateUser/LoadCreateUserController.ts"
 import { LoadUserController } from "../modules/user/useCases/loadUser/LoadUserController"
 import { LoadUsersController } from "../modules/user/useCases/loadUsers/LoadUsersController"
@@ -25,7 +26,7 @@ const loadUserController = new LoadUserController()
 const loadCreateUserController = new LoadCreateUserController()
 const loadUserUpdateController = new LoadUserUpdateController()
 const updateUserController = new UpdateUserController()
-
+const deleteUserController = new DeleteUserController()
 
 userRoutes.use(ensureAdmin)
 
@@ -48,5 +49,6 @@ userRoutes.get("/:user_id", handleMessage, loadUserController.handle)
 userRoutes.get("/:user_id/editar", handleMessage, loadUserUpdateController.handle)
 userRoutes.put("/:user_id/editar",  upload.none(), updateUserController.handle)
 
+userRoutes.delete("/:user_id/deletar", deleteUserController.handle)
 
 export { userRoutes }

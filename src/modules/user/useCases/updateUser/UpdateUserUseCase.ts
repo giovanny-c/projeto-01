@@ -27,6 +27,12 @@ class UpdateUserUseCase {
 
     async execute({id, name, password, is_admin, email, admin_id}: IRequest): Promise<User> {
 
+        if(admin_id === ""){
+            throw new AppError("Usuário invalido", 400)
+            
+        }
+
+        if(!id || id === undefined) throw new AppError("Usuario nao encontrado", 400)
 
         //se bate o nome
         if((!name || name === undefined) || !name.match(/([A-Za-z0-9ãõç]{3,})/g)){
@@ -38,8 +44,7 @@ class UpdateUserUseCase {
             throw new AppError("Forneça um email valido", 400)
         }
 
-    
-
+        
         //se tem usuarios com o mesmo email ou nome
         const foundUsers = await this.usersRepository.findByNameOrEmail(name, email)
         
@@ -53,9 +58,12 @@ class UpdateUserUseCase {
 
         //pega o user correto
 
-        if(!id || id === undefined) throw new AppError("Usuario nao encontrado", 400)
         
         const user = await this.usersRepository.findById(id)
+
+        if(!user){
+            throw new AppError("Usuario nao encontrado", 400)
+        }
 
         //se o user for outro admin
         if(user.admin && (user.id !== admin_id )){
