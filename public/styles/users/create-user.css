@@ -25,6 +25,25 @@
     width: 620px;
 }
 
+
+
+.item.admin {
+    display: grid;
+    grid-template-columns: 70px 30px;
+    gap: 10px;
+    align-items: center;
+}
+
+.label {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.item input[type="checkbox"] {
+    height: 36px;
+    width: 36px;
+}
+
 input[type="password"] {
 
     width: 420px;
@@ -39,6 +58,9 @@ input[type="password"] {
 } */
 
 
+.buttons {
+    width: 800px;
+}
 
 select.item {
     margin: 0px;

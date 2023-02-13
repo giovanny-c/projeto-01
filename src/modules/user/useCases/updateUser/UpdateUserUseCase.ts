@@ -27,6 +27,7 @@ class UpdateUserUseCase {
 
     async execute({id, name, password, is_admin, email, admin_id}: IRequest): Promise<User> {
 
+
         //se bate o nome
         if((!name || name === undefined) || !name.match(/([A-Za-z0-9ãõç]{3,})/g)){
             throw new AppError("Forneça um nome de usuário valido", 400)

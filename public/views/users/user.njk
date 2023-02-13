@@ -14,40 +14,48 @@
     <div class="wrap">
 
         <div class="worker"><p>Usuário: {{user.name}} </p></div>
-       
-        <div class="buttons">
+        <div class ="worker">
 
-          
-
-
-
-            <div class="form-update">
-
-                    <form name="form-update" class="form-update" action="/usuarios/{{user.id}}/editar" method="GET" enctype="multipart/form-data">
-                
-
-                    <button class="update"  type="submit">
-                        Editar
-                    </button>
-                    </form>
-            </div>
-
-            <div>
-                <form name="form-delete" class="form-delete" action="/usuarios/{{user.id}}/deletar?_method=DELETE" method="POST" enctype="multipart/form-data">
-                
-
-                    <button class="cancel"  type="submit">
-                        Deletar
-                    </button>
-            
-                </form>
-            </div>
+                <p>Email: {{user.email}}</p>
 
         </div>
-            
 
     </div>
-    
+       {% if admin_user.id != user.id and admin_user.admin and user.admin %}
+            
+            
+       {% else %}
+            <div class="buttons">
+
+                <div class="form-update">
+
+                        <form name="form-update" class="form-update" action="/usuarios/{{user.id}}/editar" method="GET" enctype="multipart/form-data">
+                    
+
+                        <button class="update"  type="submit">
+                            Editar
+                        </button>
+                        </form>
+                </div>
+
+                <div>
+                    <form name="form-delete" class="form-delete" action="/usuarios/{{user.id}}/deletar?_method=DELETE" method="POST" enctype="multipart/form-data">
+                    
+
+                        <button class="cancel"  type="submit">
+                            Deletar
+                        </button>
+                
+                    </form>
+                </div>
+
+            </div>
+                
+
+            
+       {% endif %}
+        
+        
     <script>
         const form = document.querySelector(".form-delete")
 

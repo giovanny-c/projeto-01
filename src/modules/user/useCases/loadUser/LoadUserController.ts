@@ -9,12 +9,13 @@ class LoadUserController {
     async handle(req: Request, res: Response): Promise<any> {
 
         const {user_id} = req.params
+        const {user: admin_user} = req
 
         const loadUsersUseCase = container.resolve(LoadUserUseCase)
 
         const user = await loadUsersUseCase.execute(user_id)
 
-        return res.status(200).render("views/users/user", {user, error: req.error})
+        return res.status(200).render("views/users/user", {user, error: req.error, admin_user})
     }
 
 }
