@@ -12,6 +12,7 @@ import { Donation } from "../../entities/donation";
 import { Ngo } from "../../entities/ngos";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
+import path from "path"
 
 interface IRequest{
     ngo_id: string
@@ -86,6 +87,7 @@ class GetDonationUseCase {
         const {dia, mes , ano} = getFormatedDateForReceipt(donation.created_at)
         
         let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+
         let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
         let file = await this.storageProvider.getFile(dir, file_name, true)

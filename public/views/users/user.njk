@@ -3,7 +3,7 @@
 
 {% block head %}
 
-    <link rel="stylesheet" href="/styles/workers/worker.css">
+    <link rel="stylesheet" href="/styles/users/user.css">
     <title>Usuário - {{user.name}} - Castanharo Telemarketing</title>
 
 {% endblock %}
@@ -13,19 +13,18 @@
 
     <div class="wrap">
 
-        <div class="worker"><p>Usuário: {{user.name}} </p></div>
-        <div class ="worker">
-
-                <p>Email: {{user.email}}</p>
+        <div class="worker">
+            <p>Usuário: {{user.name}} </p>
+            <p>Email: {{user.email}}</p>
 
         </div>
 
-    </div>
+    
        {% if admin_user.id != user.id and admin_user.admin and user.admin %}
             
             
        {% else %}
-            <div class="buttons">
+            
 
                 <div class="form-update">
 
@@ -49,12 +48,12 @@
                     </form>
                 </div> #}
 
-            </div>
-                
+            
+              
 
             
        {% endif %}
-        
+        </div>  
 
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 

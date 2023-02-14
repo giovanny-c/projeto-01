@@ -3,7 +3,7 @@ import { PDFDocument, PDFFont, PDFImage, PDFPage, rgb } from "pdf-lib"
 import fs from "fs"
 
 
-
+import path from "path"
 import { Donation } from "../../../../../modules/donations/entities/donation";
 
 import formatToBRL from "../../../../../../utils/formatToBRL";
@@ -225,6 +225,9 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
        //const dir = resolve(__dirname, "..", "tmp", "receipts", "")
         
        if(saveFile){
+
+        // let dir2 = path.join("C:","Users","Giovanny","Desktop","recibos", `${donation.ngo.name}`, `${ano}`, `${mes}`)
+
         let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
         let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
