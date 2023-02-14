@@ -10,12 +10,13 @@ class LoadUserUpdateController {
     async handle(req: Request, res: Response): Promise<any> {
 
         const {user_id: id} = req.params
+        const {id: admin_id} = req.user
         
         const loadUserUpdateUseCase = container.resolve(LoadUserUpdateUseCase)
 
         const user = await loadUserUpdateUseCase.execute({id})
 
-        return res.status(200).render("views/users/create-user", {user, error: req.error})
+        return res.status(200).render("views/users/create-user", {user, error: req.error, admin_id})
     }
 
 }

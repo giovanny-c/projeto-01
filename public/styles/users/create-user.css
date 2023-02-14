@@ -95,6 +95,13 @@ select.item {
     background-color: rgb(56, 56, 56);
 }
 
+.btn-delete {
+    background-color: rgb(223, 12, 12);
+    color: white;
+}
+
+
+
 button:active {
 
     background-color: var(--color-hover);

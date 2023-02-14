@@ -38,7 +38,7 @@
                         </form>
                 </div>
 
-                <div>
+                {# <div>
                     <form name="form-delete" class="form-delete" action="/usuarios/{{user.id}}/deletar?_method=DELETE" method="POST" enctype="multipart/form-data">
                     
 
@@ -47,7 +47,7 @@
                         </button>
                 
                     </form>
-                </div>
+                </div> #}
 
             </div>
                 
@@ -55,20 +55,7 @@
             
        {% endif %}
         
-        
-    <script>
-        const form = document.querySelector(".form-delete")
 
-            form.addEventListener("submit", function(event){
-
-                    const confirmation = confirm("Deletar Usuário?")
-
-                    if(!confirmation){
-                            event.preventDefault()
-                    }   
-
-            })
-    </script>
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 
 {% endblock %}  

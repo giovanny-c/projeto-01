@@ -49,6 +49,6 @@ userRoutes.get("/:user_id", handleMessage, loadUserController.handle)
 userRoutes.get("/:user_id/editar", handleMessage, loadUserUpdateController.handle)
 userRoutes.put("/:user_id/editar",  upload.none(), updateUserController.handle)
 
-userRoutes.delete("/:user_id/deletar", deleteUserController.handle)
+userRoutes.delete("/:user_id/deletar", upload.none(), deleteUserController.handle)
 
 export { userRoutes }

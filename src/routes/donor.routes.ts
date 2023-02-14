@@ -51,7 +51,7 @@ donorRoutes.get("/listar", handleMessage, listDonorController.handle)
 donorRoutes.get("/:donor_id", ensureAdmin, handleMessage, getDonorAndDonationsController.handle)
 
 donorRoutes.get("/:donor_id/editar", ensureAdmin, handleMessage, loadUpdateDonorController.handle)
-donorRoutes.put("/:donor_id/editar", ensureAdmin,upload.none(), updateDonorController.handle)
+donorRoutes.put("/:donor_id/editar", ensureAdmin, upload.none(), updateDonorController.handle)
 
 donorRoutes.delete("/:donor_id/deletar", ensureAdmin, deleteDonorController.handle)
 

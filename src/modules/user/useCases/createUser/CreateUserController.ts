@@ -14,7 +14,7 @@ class CreateUserController {
 
         const user = await createUserUseCase.execute({ name, password, confirm_password, email, is_admin })
 
-        return res.status(201).redirect(`/usuarios/${user.id}`)
+        return res.status(201).redirect(`/usuarios`)
     }
 
 }

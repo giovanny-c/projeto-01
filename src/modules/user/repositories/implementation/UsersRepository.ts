@@ -54,6 +54,14 @@ class UsersRepository implements IUsersRepository {
         return user
     }
 
+    async countAdmins(): Promise<number>{
+
+        const count = await this.repository.countBy({admin: true})
+
+        return count
+
+    }
+
     async findByNameOrEmail(name: string, email: string): Promise<User[]> {
         const users = await this.repository.findBy([{name}, {email}])
 

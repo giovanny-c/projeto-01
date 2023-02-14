@@ -18,7 +18,8 @@
                 {% if user %}
                     Editar Usuário 
                 {% else %}
-                    Criar Usuário        
+                    Criar Usuário   
+                         
                 {% endif %}
         </div>
 
@@ -28,9 +29,8 @@
 
     <div class="form">
         
-            <form id="#form" method="POST" action="/usuarios/{{user.id}}/editar?_method=PUT"  enctype="multipart/form-data">
+            <form id="#form" method="POST"  enctype="multipart/form-data">
 
-                    
                     
                 <div class="item">
                         <div>
@@ -39,13 +39,14 @@
                         </div>
                 </div>
 
-                <div class="item">
+                {% if user.id === admin_id %}
+                    <div class="item">
                         <div>
                         <input      
                             type="password" name="password"  value="" placeholder="Digite a senha"/>
                         </div>
-                </div>
-             
+                    </div> 
+                {% endif %} 
 
                 <div class="item">
                         <div>
@@ -67,14 +68,31 @@
                 </div>
 
         
-
-
-                <div class="button"><button type="submit">Atualizar</button> </div>
+                <div class="button"><button type="submit" class="btn-update" formaction="/usuarios/{{user.id}}/editar?_method=PUT">Atualizar</button> </div>
                 
+                <div class="button"> <button type="submit" class="btn-delete" formaction="/usuarios/{{user.id}}/deletar?_method=DELETE">Deletar</button> </div>
                 
 
             </form>
+
+
         </div>
+
+    <script>
+
+    
+        const delete_button = document.querySelector(".btn-delete")
+
+        delete_button.addEventListener("click", function(event){
+
+                const confirmation = confirm("Deletar Usuário? Essa operação não podera ser desfeita")
+
+                if(!confirmation){
+                        event.preventDefault()
+                }   
+
+        })
+    </script>
 
 {% elif not user %}
 
@@ -140,7 +158,7 @@
 
 
         
-
+    
      
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 

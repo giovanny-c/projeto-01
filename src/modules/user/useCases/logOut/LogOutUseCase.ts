@@ -1,32 +1,32 @@
-import { inject, injectable } from "tsyringe"
-import { AppError } from "../../../../shared/errors/AppError"
-import { IUsersRepository } from "../../repositories/IUsersRepository"
+// import { inject, injectable } from "tsyringe"
+// import { AppError } from "../../../../shared/errors/AppError"
+// import { IUsersRepository } from "../../repositories/IUsersRepository"
 
 
 
 
-@injectable()
-class LogOutUseCase {
+// @injectable()
+// class LogOutUseCase {
 
-    constructor(
-        @inject("UsersRepository")
-        private usersRepository: IUsersRepository,
+//     constructor(
+//         @inject("UsersRepository")
+//         private usersRepository: IUsersRepository,
         
-    ) {
+//     ) {
 
-    }
+//     }
 
-    async execute( user_id: string ): Promise<void> {
+//     async execute( user_id: string ): Promise<void> {
         
-            const user = await this.usersRepository.findById(user_id)
+//             const user = await this.usersRepository.findById(user_id)
 
-            if (!user) {
-                throw new AppError("User not found", 400)
-            }
+//             // if (!user) {
+//             //     throw new AppError("User not found", 400)
+//             // }
 
-    }
+//     }
 
 
-}
+// }
 
-export { LogOutUseCase }
+// export { LogOutUseCase }
