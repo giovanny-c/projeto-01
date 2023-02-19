@@ -7,13 +7,13 @@ class SendForgotPasswordController {
 
     async handle(req: Request, res: Response): Promise<Response> {
 
-        const { user_name, email } = req.body
+        // const { user_name, email } = req.body
 
         const sendForgotPasswordUseCase = container.resolve(SendForgotPasswordUseCase)
 
-        await sendForgotPasswordUseCase.execute(user_name, email)
+        await sendForgotPasswordUseCase.execute()
 
-        return res.status(200).send()
+        return res.status(200).send("ok")
     }
 }
 

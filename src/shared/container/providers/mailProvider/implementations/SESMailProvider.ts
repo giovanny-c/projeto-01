@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import { IMailProvider } from "../IMailProvider";
+import { IMailProvider, ISendEmailRequest } from "../IMailProvider";
 import * as fs from "fs"
 import * as handlebars from "handlebars"
 import { SES } from "aws-sdk"
@@ -26,7 +26,7 @@ class SESMailProvider implements IMailProvider {
         })
     }
 
-    async sendMail(to: string, from: string, subject: any, variables?: any, path?: string, body?: any, configuration?: any): Promise<void> {
+    async sendMail({to, from, subject, body, path, variables}: ISendEmailRequest): Promise<void> {
         
         let templateHTML
         
@@ -45,7 +45,7 @@ class SESMailProvider implements IMailProvider {
             subject,
             html: templateHTML || null,
             text: body.text,
-            attachments: [body.attachment] //pdf em base 64
+            attachments: body.attachments //pdf em base 64
         
         })
     }

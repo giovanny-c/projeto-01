@@ -4,7 +4,7 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { v4 as uuidV4 } from "uuid"
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
-import { resolve } from "path"
+import * as fsPromises from "fs/promises"
 
 @injectable()
 class SendForgotPasswordUseCase {
@@ -15,24 +15,25 @@ class SendForgotPasswordUseCase {
         private usersRepository: IUsersRepository,
         @inject("MailProvider")
         private mailProvider: IMailProvider,
-        @inject("DateProvider")
+        @inject("DayjsDateProvider")
         private dateProvider: IDateProvider
     ) { }
 
-    async execute(user_name: string, email: string): Promise<void> {
+    //user_name: string, email: string
+    async execute(): Promise<void> {
 
-        if (email != "giovanycast@hotmail.com") {
-            throw new AppError("Invalid email")
-        }
+        // if (!email) {
+        //     throw new AppError("Forneça um email")
+        // }
 
-        //pega o template de email
-        const templatePath = resolve(__dirname, "..", "..", "views", "emails", "forgotPassword.hbs")
+        // //pega o template de email
+        // const templatePath = resolve(__dirname, "..", "..", "views", "emails", "forgotPassword.hbs")
 
-        const user = await this.usersRepository.findByName(user_name)
+        // const user = await this.usersRepository.findByName(user_name)
 
-        if (!user) {
-            throw new AppError("This user does not exists")
-        }
+        // if (!user) {
+        //     throw new AppError("Credenciais incorretas ou Usuario nao encontrado")
+        // }
 
         const token = uuidV4()//token para validar o reset de senha 
 
@@ -46,18 +47,25 @@ class SendForgotPasswordUseCase {
         //     expires_date,
         // })
 
-        const variables = {
-            name: user.name,
-            link: `${process.env.FORGOT_MAIL_URL}${token}`
-            //vai mandar para a rota de reset de password
-        }
+        //const file = await fsPromises.readFile(`./templates/recibo.png`)
 
-        await this.mailProvider.sendMail(
-            email,
-            "Recuperação de senha",
-            variables,
-            templatePath
-        )
+        // const attachment = {
+        //     content: file.toString("base64"),
+        //     filename: "recibo_.png",
+        //     type: "image/png",
+        //     disposition: "attachment"
+
+        // }
+
+        await this.mailProvider.sendMail({
+            from: "",
+            to: "",
+            subject: "Recuperação de senha",
+            body: {
+                html: `Clique <a href="${process.env.FORGOT_MAIL_URL}${token}" target=_blank>AQUI</a> para recuperar seu email `
+                // attachments: [attachment]
+            }
+        })
     }
 }
 
