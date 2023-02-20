@@ -1,6 +1,6 @@
 import { container } from "tsyringe";
 import { IMailProvider } from "./IMailProvider";
-import { GmailMailProvider } from "./implementations/GmailMailProvider";
+import { MailProvider } from "./implementations/MailProvider";
 import { SendGridMailProvider } from "./implementations/SendGridMailProvider";
 import { SESMailProvider } from "./implementations/SESMailProvider";
 
@@ -9,7 +9,7 @@ const mailprovider = {
 
     ses: SESMailProvider,
     sendgrid: SendGridMailProvider,
-    gmail: GmailMailProvider
+    nodemailer: MailProvider
 
 }
 

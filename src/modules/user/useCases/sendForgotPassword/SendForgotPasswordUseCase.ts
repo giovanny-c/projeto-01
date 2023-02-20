@@ -47,20 +47,20 @@ class SendForgotPasswordUseCase {
         //     expires_date,
         // })
 
-        const file = await fsPromises.readFile(`./templates/recibo.png`)
 
-        const attachment = {
-            filename: "recibo_.png",
-            path: `./templates/recibo.png`
-        }
+        // const attachment = {
+        //     filename: "recibo_.png",
+        //     path: `./templates/recibo.png` //pega da raiz do app
+        // }
 
         await this.mailProvider.sendMail({
+            service: "",
             from: "",
             to: "",
             subject: "Recuperação de senha",
             body: {
                 html: `Clique <a href="${process.env.FORGOT_MAIL_URL}${token}" target=_blank>AQUI</a> para recuperar seu email `,
-                attachments: [attachment]
+                //attachments: [attachment]
             }
         })
     }

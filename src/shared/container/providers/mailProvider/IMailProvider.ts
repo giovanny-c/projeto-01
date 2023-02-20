@@ -9,7 +9,9 @@ type SendGridAttachment = {
 }
 
 interface ISendEmailRequest {
+    service?: string
     from: string
+    password?: string
     to: string | string[]
     subject: string
     variables?: any
