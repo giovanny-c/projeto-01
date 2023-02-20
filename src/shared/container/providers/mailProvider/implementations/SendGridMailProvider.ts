@@ -1,7 +1,7 @@
 import sendGridMail from "@sendgrid/mail"
 import { MailService } from "@sendgrid/mail/src/mail"
 import { AppError } from "../../../../errors/AppError"
-import { IMailProvider, ISendEmailRequest } from "../IMailProvider"
+import { IMailProvider, ISendEmailRequest, SendGridAttachment } from "../IMailProvider"
 
 
 class SendGridMailProvider implements IMailProvider {
@@ -23,7 +23,7 @@ class SendGridMailProvider implements IMailProvider {
                 subject,
                 text: body.text,
                 html: body.html || undefined,
-                attachments: body.attachments || undefined
+                attachments: body.attachments as SendGridAttachment[] || undefined 
             
             }).catch(error => {
                 console.error(error)

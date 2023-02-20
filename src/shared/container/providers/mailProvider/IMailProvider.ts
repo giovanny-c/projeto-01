@@ -1,22 +1,23 @@
+import { Attachment } from "nodemailer/lib/mailer"
 
 
-type attachment = {
+type SendGridAttachment = {
     content: string //base64
     filename: string
-    type: string // ex: "application/pdf"
-    disposition: string //"attachment"
+    type?: string // ex: "application/pdf"
+    disposition?: string //"attachment"
 }
 
 interface ISendEmailRequest {
-    to: string
     from: string
+    to: string | string[]
     subject: string
     variables?: any
     path?: string 
     body?: {
         text?: string
         html?: string
-        attachments?: attachment[]
+        attachments?: Attachment[] | SendGridAttachment[]
     }
     configuration?: any
 }
@@ -28,4 +29,4 @@ interface IMailProvider {
 
 }
 
-export { IMailProvider , ISendEmailRequest}
+export { IMailProvider , ISendEmailRequest, SendGridAttachment}
