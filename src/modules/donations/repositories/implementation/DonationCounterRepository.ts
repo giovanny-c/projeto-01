@@ -17,9 +17,10 @@ class DonationCounterRepository implements IDonationCounterRepository{
     
 
     
-    async create(ngo_id: string, donation_number: number): Promise<DonationCounter> {
+    async create(ngo_id: string, donation_number: number, id?: string): Promise<DonationCounter> {
         
         const donation_counter = this.repository.create({
+            id,
             ngo_id,
             donation_number
         })

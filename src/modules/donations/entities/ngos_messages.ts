@@ -3,7 +3,7 @@ import { Column, PrimaryColumn } from "typeorm"
 import {v4 as uuidV4} from "uuid"
 
 
-class Ngo_Message {
+class NgoMessage {
 
     @PrimaryColumn()
     id?: string
@@ -33,4 +33,4 @@ class Ngo_Message {
 
 }
 
-export {Ngo_Message}
+export {NgoMessage}

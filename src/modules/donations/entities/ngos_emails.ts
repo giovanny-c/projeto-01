@@ -2,7 +2,7 @@ import { Column, PrimaryColumn } from "typeorm"
 import {v4 as uuidV4} from "uuid"
 
 
-class Ngo_Email {
+class NgoEmail {
 
     @PrimaryColumn()
     id?: string
@@ -29,4 +29,4 @@ class Ngo_Email {
 
 }
 
-export {Ngo_Email}
+export {NgoEmail}

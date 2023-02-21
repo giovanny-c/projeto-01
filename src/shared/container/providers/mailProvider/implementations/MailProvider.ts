@@ -43,6 +43,8 @@ class MailProvider implements IMailProvider{
             console.log({info})
         })
         .catch(error => { 
+            // mandar pra uma rota que 
+            //vai pegar esse erro e salvar em algum lugar?
             console.error(error)
             
             //throw new AppError("Não foi possivel enviar o email", 500)
