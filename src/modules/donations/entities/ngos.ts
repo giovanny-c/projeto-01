@@ -19,10 +19,10 @@ class Ngo {
     @Column()
     full_name: string
 
-    @OneToMany(() => NgoEmail, ngo_emails => ngo_emails.email, {cascade: true})
+    @OneToMany(() => NgoEmail, ngo_emails => ngo_emails.ngo, {cascade: true})
     ngo_emails: NgoEmail[]
 
-    @OneToMany(() => NgoMessage, ngo_messages => ngo_messages.message, {cascade: true})
+    @OneToMany(() => NgoMessage, ngo_messages => ngo_messages.ngo, {cascade: true})
     ngo_messages: NgoMessage[]
     
     constructor() {

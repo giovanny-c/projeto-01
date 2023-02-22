@@ -30,7 +30,7 @@ class NgoRepository implements INgoRepository{
         return await this.repository.findOne({
             relations: {
                 ngo_emails: true,
-                ngo_messages: true,
+                ngo_messages: true
             },
             where:{id}
         })

@@ -21,6 +21,7 @@ import { LoadCreateNgoController } from "../modules/donations/useCases/loadCreat
 import { LoadDonationCounterPageController } from "../modules/donations/useCases/loadDonationCounterPage/LoadDonationCounterPageController";
 import { LoadGenerateBookletController } from "../modules/donations/useCases/loadGenerateBooklet/LoadGenerateBookletController";
 import { LoadImportDonationsController } from "../modules/donations/useCases/loadImportDonations/LoadImportDonationsController";
+import { LoadSetNgoEmailController } from "../modules/donations/useCases/loadSetNgoEmail/LoadSetNgoEmailController";
 
 import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
 import { SetEmailMessageController } from "../modules/donations/useCases/setEmaiMessage/SetEmailMessageController";
@@ -61,7 +62,7 @@ const loadCreateNgoController = new LoadCreateNgoController()
 
 const setNgoEmailController = new SetNgoEmailController()
 const setEmailMessageController = new SetEmailMessageController()
-
+const loadSetNgoEmailController = new LoadSetNgoEmailController()
 
 
 //inicio//pagina inicial mostra todas as ongs
@@ -106,11 +107,11 @@ donationRoutes.post("/instituicao/:ngo_id/doacao/:donation_number/cancelar-doaca
 //balanco
 donationRoutes.get("/instituicao/:ngo_id/balanco", ensureAdmin, handleMessage, getBalanceController.handle)
 
-//donationRoutes.get("/instituicao/:ngo_id/definir-email", ensureAdmin, handleMessage, loadSetNgoEmailController.handle)
-donationRoutes.post("/instituicao/:ngo_id/definir-email", ensureAdmin, setNgoEmailController.handle)
+donationRoutes.get("/instituicao/:ngo_id/definir-email", ensureAdmin, handleMessage, loadSetNgoEmailController.handle)
+donationRoutes.post("/instituicao/:ngo_id/definir-email", ensureAdmin, upload.none(), setNgoEmailController.handle)
 
 //donationRoutes.get("/instituicao/:ngo_id/criar-menssagem", ensureAdmin, handleMessage, loadSetEmailMessageController.handle)
-donationRoutes.post("/instituicao/:ngo_id/criar-menssagem", ensureAdmin, setEmailMessageController.handle)
+donationRoutes.post("/instituicao/:ngo_id/criar-menssagem", ensureAdmin, upload.none(), setEmailMessageController.handle)
 
 
 // donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationStatusController.handle)

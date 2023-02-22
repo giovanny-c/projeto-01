@@ -1,0 +1,75 @@
+
+
+
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/ngos/set-email.css">
+    <title>Definir Email - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+
+        <div class="page-title">
+
+                
+                    Definir Email da Instituição
+                
+        </div>
+
+        
+
+
+
+    <div class="form">
+            <form id="#form" method="POST" action="/instituicao/{{ngo.id}}/definir-email"  enctype="multipart/form-data">
+
+                    
+                    
+                <div class="item">
+                        <div>
+                        <input      
+                            type="email"  name="email"  value="{{email}}" placeholder="email da instituição"/>
+                        </div>
+                </div>
+
+                
+                <div class="item">
+                        <div>
+                        <input      
+                            type="password" name="password"  value="" placeholder="Digite a senha do email"/>
+                        </div>
+                </div>
+                
+                <div class="item">
+                        <div>
+                        <input      
+                            type="password" name="user_password"  value="" placeholder="Digite a sua senha de usuario "/>
+                        </div>
+                </div>
+
+
+ 
+
+                <div class="button"><button type="submit">Definir</button> </div>
+                
+                
+
+            </form>
+        </div>
+
+        
+
+
+
+
+        
+    
+     
+
+{% endblock %}  
+
+

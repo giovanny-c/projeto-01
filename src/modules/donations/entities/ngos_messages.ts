@@ -1,9 +1,9 @@
 
-import { Column, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm"
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm"
 import {v4 as uuidV4} from "uuid"
 import { Ngo } from "./ngos"
 
-
+@Entity("ngos_messages")
 class NgoMessage {
 
     @PrimaryColumn()

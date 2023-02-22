@@ -1,0 +1,109 @@
+.form {
+    max-width: 940px;
+    margin: 30px auto;
+}
+
+.item {
+    margin: 30px auto;
+
+
+}
+
+.item input {
+
+    font-size: 30px;
+    color: var(--color-letters);
+    background-color: var(--color-theme);
+    height: 32px;
+    width: 800px;
+    border-radius: 4px;
+    box-shadow: 2px 0px 5px gray;
+}
+
+.item input[type="email"] {
+    height: 36px;
+    width: 620px;
+}
+
+
+
+.item.admin {
+    display: grid;
+    grid-template-columns: 70px 30px;
+    gap: 10px;
+    align-items: center;
+}
+
+.label {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.item input[type="checkbox"] {
+    height: 36px;
+    width: 36px;
+}
+
+input[type="password"] {
+
+    width: 420px;
+}
+
+/* .item input {
+
+
+    text-align: left;
+    width: 300px;
+
+} */
+
+
+.buttons {
+    width: 800px;
+}
+
+select.item {
+    margin: 0px;
+    font-size: 30px;
+    color: var(--color-letters);
+    background-color: var(--color-theme);
+    height: 32px;
+    width: 400px;
+    border-radius: 4px;
+    box-shadow: 2px 0px 5px gray;
+}
+
+
+
+
+.button button {
+
+    margin-top: 20px;
+    width: 180px;
+    height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 4px;
+    border: 1px;
+    box-shadow: 2px 1px 3px rgb(56, 56, 56);
+}
+
+.button button:hover {
+
+    color: white;
+    background-color: rgb(56, 56, 56);
+}
+
+.btn-delete {
+    background-color: rgb(223, 12, 12);
+    color: white;
+}
+
+
+
+button:active {
+
+    background-color: var(--color-hover);
+    /* border: 1px solid black; */
+}
