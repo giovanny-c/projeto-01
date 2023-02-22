@@ -23,6 +23,7 @@ import { LoadGenerateBookletController } from "../modules/donations/useCases/loa
 import { LoadImportDonationsController } from "../modules/donations/useCases/loadImportDonations/LoadImportDonationsController";
 
 import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
+import { SetEmailMessageController } from "../modules/donations/useCases/setEmaiMessage/SetEmailMessageController";
 import { SetNgoEmailController } from "../modules/donations/useCases/setNgoEmail/SetNgoEmailController";
 
 import { UpdateDonationStatusController } from "../modules/donations/useCases/updateDonationStatus/UpdateDonationStatusController";
@@ -59,6 +60,7 @@ const loadImportDonationsController = new LoadImportDonationsController()
 const loadCreateNgoController = new LoadCreateNgoController()
 
 const setNgoEmailController = new SetNgoEmailController()
+const setEmailMessageController = new SetEmailMessageController()
 
 
 
@@ -104,8 +106,12 @@ donationRoutes.post("/instituicao/:ngo_id/doacao/:donation_number/cancelar-doaca
 //balanco
 donationRoutes.get("/instituicao/:ngo_id/balanco", ensureAdmin, handleMessage, getBalanceController.handle)
 
-//donationRoutes.get("/instituicao/:ngo_id/definir-email", ensureAdmin, loadSetNgoEmailController.handle)
+//donationRoutes.get("/instituicao/:ngo_id/definir-email", ensureAdmin, handleMessage, loadSetNgoEmailController.handle)
 donationRoutes.post("/instituicao/:ngo_id/definir-email", ensureAdmin, setNgoEmailController.handle)
+
+//donationRoutes.get("/instituicao/:ngo_id/criar-menssagem", ensureAdmin, handleMessage, loadSetEmailMessageController.handle)
+donationRoutes.post("/instituicao/:ngo_id/criar-menssagem", ensureAdmin, setEmailMessageController.handle)
+
 
 // donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationStatusController.handle)
 
