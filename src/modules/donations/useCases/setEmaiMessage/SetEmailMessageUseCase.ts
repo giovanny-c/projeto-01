@@ -10,8 +10,11 @@ interface IRequest {
     ngo_id: string
     subject: string
     message: string
-    start_date: Date
-    end_date: Date 
+    end_day: string 
+    end_month: string 
+    start_day: string 
+    start_month: string 
+    
 }
 
 
@@ -28,7 +31,7 @@ class SetEmailMessageUseCase {
 
     ) { }
 
-    async execute({ ngo_id, end_date, message, start_date, subject}: IRequest) {
+    async execute({ ngo_id, message, subject, end_day, end_month, start_day, start_month}: IRequest) {
 
         if(!ngo_id){
             throw new AppError("Instituição nao encontrada.", 400)
@@ -47,16 +50,23 @@ class SetEmailMessageUseCase {
         }
 
         //data dia/mes
+        const start_date = `${start_day}/${start_month}`
+        const end_date = `${end_day}/${end_month}`
+
+        //como transformar isso em data?
+
         //fazer essa validação quando for
         //fazer as views
 
-        await this.ngosMessagesRepository.create({
-            ngo_id,
-            subject,
-            message,
-            start_date,
-            end_date
-        })
+        console.log(start_date)
+
+        // await this.ngosMessagesRepository.create({
+        //     ngo_id,
+        //     subject,
+        //     message,
+        //     start_date,
+        //     end_date
+        // })
 
         return ngo
     }

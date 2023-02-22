@@ -5,7 +5,6 @@ import ICacheProvider from "../../../../shared/container/providers/cacheProvider
 import { AppError } from "../../../../shared/errors/AppError";
 
 import { Ngo } from "../../entities/ngos";
-import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { INgosEmailsRepository } from "../../repositories/INgosEmailRepository";
 
@@ -16,21 +15,18 @@ interface IRequest {
 
 interface IResponse {
     ngo: Ngo
-    email: string
+    
 }
 
 @injectable()
-class LoadSetNgoEmailUseCase {
+class LoadSetEmailMessageUseCase {
 
 
     constructor(
         @inject("NgoRepository")
         private ngoRepository: INgoRepository,
         @inject("CacheProvider")
-        private cacheProvider: ICacheProvider,
-        @inject("NgosEmailsRepository")
-        private ngosEmailsRepository: INgosEmailsRepository,
-
+        private cacheProvider: ICacheProvider
     ) { }
 
     async execute({ngo_id}: IRequest): Promise<IResponse> {
@@ -43,15 +39,9 @@ class LoadSetNgoEmailUseCase {
             if(!ngo) throw new AppError("Instituição nao encontrada", 404)
 
         }
-
-
-        const email = await this.ngosEmailsRepository.findAllfromNgo(ngo_id)
-        console.log(email)
-
     
         return  {
-            ngo,
-            email: email[0].email
+            ngo 
         }
         
     
@@ -59,4 +49,4 @@ class LoadSetNgoEmailUseCase {
 
 }
 
-export { LoadSetNgoEmailUseCase }
+export { LoadSetEmailMessageUseCase }

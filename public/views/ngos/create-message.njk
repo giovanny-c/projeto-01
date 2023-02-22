@@ -1,0 +1,88 @@
+
+
+
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/ngos/create-message.css">
+    <title>Criar Menssagem de Email - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+
+        <div class="page-title">
+
+                
+            Criar Menssagem de Email Programada
+                
+        </div>
+
+        
+
+
+
+    <div class="form">
+            <form id="#form" method="POST" action="/instituicao/{{ngo.id}}/criar-menssagem"  enctype="multipart/form-data">
+
+                    
+                    
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text"  name="subject"  value="" placeholder="Assunto do email"/>
+                        </div>
+                </div>
+
+                
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text" name="text"  value="" placeholder="Conteudo do email"/>
+                        </div>
+                </div>
+                
+                <div class="item"> 
+                        Data de inicio:
+                        <div class="date">
+                            <p>dia</p>
+                            <p>mes</p>
+                            <input type="text" name="start_day" id="day" onkeydown="Mask.apply(this, 'formatDay')"> 
+                            <input type="text" name="start_month" id="month" onkeydown="Mask.apply(this, 'formatMonth')">
+                        </div>
+                </div>
+                <div class="item">
+                        Date de termino:
+                        <div class="date">
+                            <p>dia</p>
+                            
+                            <p>mes</p>
+                            <input type="text" name="end_day" id="day" onkeydown="Mask.apply(this, 'formatDay')"> 
+                            
+                            <input type="text" name="end_month" id="month" onkeydown="Mask.apply(this, 'formatMonth')">
+                        </div>
+                </div>
+
+ 
+
+                <div class="button"><button type="submit">Definir</button> </div>
+                
+                
+
+            </form>
+        </div>
+
+
+        
+
+
+
+
+        
+    
+     
+
+{% endblock %}  
+

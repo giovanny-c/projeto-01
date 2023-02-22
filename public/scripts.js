@@ -79,6 +79,15 @@ const Mask = {
         return value.replace(/[^\w\d@._\-]/g, "")
     },
 
+    formatDay(value) {
+
+        return value.replace(/(\D)|(\d{3,})|([3-9][2-9])|([4-9][0-9])/g, "")
+    },
+    formatMonth(value) {
+
+        return value.replace(/(\D)|(\d{3,})|([1-9][3-9])|([2-9][0-9])/g, "")
+    },
+
     cpfCnpj(value) {
 
         value = value.replace(/\D/g, "")//só pega numeros
