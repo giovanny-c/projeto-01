@@ -1,6 +1,6 @@
 import * as crypto from "crypto"
 
-
+import "dotenv"
 
 function genPassword(password: string) {
 
@@ -13,6 +13,22 @@ function genPassword(password: string) {
     }
 }
 
+function encodePasswordForEmail(password: string){
+    
+    let bufferPass = Buffer.from(password)
+
+    return bufferPass.toString("base64")
+    
+}
+
+function decodePasswordForEmail(encodePassword: string){
+
+    let bufferPass = Buffer.from(encodePassword)
+
+    return bufferPass.toString("ascii")
+
+}
+
 
 function validatePassword(password: string, salt: string, hash: string): boolean {
 
@@ -23,4 +39,4 @@ function validatePassword(password: string, salt: string, hash: string): boolean
 
 
 
-export { genPassword, validatePassword }
+export { genPassword, validatePassword, encodePasswordForEmail, decodePasswordForEmail }

@@ -1,6 +1,8 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from "typeorm";
 
 import { v4 as uuidV4 } from "uuid"
+import { NgoEmail } from "./ngos_emails";
+import { NgoMessage } from "./ngos_messages";
 
 @Entity("ngos")
 class Ngo {
@@ -16,6 +18,12 @@ class Ngo {
 
     @Column()
     full_name: string
+
+    @OneToMany(() => NgoEmail, ngo_emails => ngo_emails.email, {cascade: true})
+    ngo_emails: NgoEmail[]
+
+    @OneToMany(() => NgoMessage, ngo_messages => ngo_messages.message, {cascade: true})
+    ngo_messages: NgoMessage[]
     
     constructor() {
         if (!this.id) {

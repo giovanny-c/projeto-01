@@ -18,6 +18,10 @@ import { IDonationCounterRepository } from "../../modules/donations/repositories
 import { DonationCounterRepository } from "../../modules/donations/repositories/implementation/DonationCounterRepository";
 import { INgoRepository } from "../../modules/donations/repositories/INgoRepository";
 import { NgoRepository } from "../../modules/donations/repositories/implementation/NgoRepository";
+import { INgosEmailsRepository } from "../../modules/donations/repositories/INgosEmailRepository";
+import { NgosEmailsRepository } from "../../modules/donations/repositories/implementation/NgosEmailsRepository";
+import { NgosMessagesRepository } from "../../modules/donations/repositories/implementation/NgosMessagesRepository";
+import { INgosMessagesRepository } from "../../modules/donations/repositories/INgosMessagesRepository";
 
 
 
@@ -56,4 +60,14 @@ container.registerSingleton<INgoRepository>(
 container.registerSingleton<IWorkersReposiroty>(
     "WorkersRepository",
     WorkersRepository
+)
+
+container.registerSingleton<INgosEmailsRepository>(
+    "NgosEmailsRepository",
+    NgosEmailsRepository
+)
+
+container.registerSingleton<INgosMessagesRepository>(
+    "NgosMessagesRepository",
+    NgosMessagesRepository
 )

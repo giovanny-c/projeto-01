@@ -27,7 +27,13 @@ class NgoRepository implements INgoRepository{
        return await this.repository.save(ngo)
     }
     async findById(id: string): Promise<Ngo> {
-        return await this.repository.findOneBy({id})
+        return await this.repository.findOne({
+            relations: {
+                ngo_emails: true,
+                ngo_messages: true,
+            },
+            where:{id}
+        })
     }
     async findByName(name: string): Promise<Ngo> {
         return await this.repository.findOneBy({name})

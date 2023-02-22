@@ -1,11 +1,16 @@
-import { Column, PrimaryColumn } from "typeorm"
+import { Column, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm"
 import {v4 as uuidV4} from "uuid"
+import { Ngo } from "./ngos"
 
 
 class NgoEmail {
 
     @PrimaryColumn()
     id?: string
+
+    @ManyToOne(() => Ngo)
+    @JoinColumn({ name: "ngo_id" })
+    ngo: Ngo
 
     @Column()
     ngo_id: string

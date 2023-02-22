@@ -30,6 +30,7 @@ class NgosMessagesRepository implements INgosMessagesRepository {
         await this.repository.save(ngo_email)
 
     }
+    
 
     async delete(id: string, ngo_id?: string){
 

@@ -24,8 +24,19 @@ class NgosEmailsRepository implements INgosEmailsRepository {
             service
         })
 
-        await this.repository.save(ngo_email)
+        return await this.repository.save(ngo_email)
 
+    }
+
+    async findAllfromNgo(ngo_id: string){
+
+        return await this.repository.findBy({ngo_id})
+
+    }
+
+    async findByEmail(email: string){
+
+        return await this.repository.findOneBy({email})
     }
 
     async delete(id: string, ngo_id?: string){
