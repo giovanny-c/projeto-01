@@ -27,7 +27,13 @@
     <div class="form">
             <form id="#form" method="POST" action="/instituicao/{{ngo.id}}/criar-menssagem"  enctype="multipart/form-data">
 
-                    
+                
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text"  name="name"  value="" placeholder="Nome da menssagem"/>
+                        </div>
+                </div>
                     
                 <div class="item">
                         <div>
@@ -37,31 +43,33 @@
                 </div>
 
                 
-                <div class="item">
+                {# <div class="item">
                         <div>
                         <input      
-                            type="text" name="text"  value="" placeholder="Conteudo do email"/>
+                            type="text" name="message"  value="" placeholder="Conteudo do email"/>
                         </div>
+                </div> #}
+
+                <div class="item">
+                    <textarea name="message" placeholder="Conteudo do email" ></textarea>
                 </div>
-                
+
+
                 <div class="item"> 
                         Data de inicio:
-                        <div class="date">
-                            <p>dia</p>
-                            <p>mes</p>
-                            <input type="text" name="start_day" id="day" onkeydown="Mask.apply(this, 'formatDay')"> 
-                            <input type="text" name="start_month" id="month" onkeydown="Mask.apply(this, 'formatMonth')">
+                        <div >
+                            <input type="date" name="start_date" 
+                            min="2023-01-01" max="2023-12-31"
+                            >
                         </div>
                 </div>
+
                 <div class="item">
                         Date de termino:
-                        <div class="date">
-                            <p>dia</p>
-                            
-                            <p>mes</p>
-                            <input type="text" name="end_day" id="day" onkeydown="Mask.apply(this, 'formatDay')"> 
-                            
-                            <input type="text" name="end_month" id="month" onkeydown="Mask.apply(this, 'formatMonth')">
+                        <div>
+                            <input type="date" name="end_date" 
+                            min="2023-01-01" max="2023-12-31"
+                            >
                         </div>
                 </div>
 

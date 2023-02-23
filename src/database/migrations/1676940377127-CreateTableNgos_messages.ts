@@ -18,6 +18,11 @@ export class CreateTableNgosMessages1676940377127 implements MigrationInterface 
                     isNullable: true
                 },
                 {
+                    name: "name",
+                    type: "varchar",
+                    isNullable: true
+                },
+                {
                     name: "message",
                     type: "varchar",
                     isNullable: false

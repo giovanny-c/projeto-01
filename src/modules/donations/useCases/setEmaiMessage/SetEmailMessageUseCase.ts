@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { getFormatedDateForMessages } from "../../../../../utils/splitDateForReceipt";
+import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 
 import { AppError } from "../../../../shared/errors/AppError";
 
@@ -10,11 +11,11 @@ import { INgosMessagesRepository } from "../../repositories/INgosMessagesReposit
 interface IRequest {
     ngo_id: string
     subject: string
+    name: string
     message: string
-    end_day: string 
-    end_month: string 
-    start_day: string 
-    start_month: string 
+    start_date: Date 
+    end_date: Date 
+    
     
 }
 
@@ -29,11 +30,13 @@ class SetEmailMessageUseCase {
         private ngoRepository: INgoRepository,
         @inject("NgosMessagesRepository")
         private ngosMessagesRepository: INgosMessagesRepository,
+        @inject("DayjsDateProvider")
+        private dateProvider: IDateProvider
         
 
     ) { }
 
-    async execute({ ngo_id, message, subject, end_day, end_month, start_day, start_month}: IRequest) {
+    async execute({ ngo_id, name, message, subject, end_date, start_date}: IRequest) {
 
         if(!ngo_id){
             throw new AppError("Instituição nao encontrada.", 400)
@@ -52,21 +55,22 @@ class SetEmailMessageUseCase {
         }
 
         //data dia/mes
-        const start_date = `${start_day}/${start_month}`
-        const end_date = `${end_day}/${end_month}`
+        const {day: sDay, month: sMonth} = this.dateProvider.splitDate(start_date)
+        const startDate = this.dateProvider.convertToDate(`2099-${sMonth}-${sDay}`)
 
+
+        const {day: eDay, month: eMonth} = this.dateProvider.splitDate(end_date)
+        const endDate = this.dateProvider.convertToDate(`2099-${eMonth}-${eDay}`)
         
-        //como transformar isso em data?
-
-        //fazer essa validação quando for
-        //fazer as views
+        //colocar o campo text grande para message
 
         await this.ngosMessagesRepository.create({
+            name,
             ngo_id,
             subject,
             message,
-            start_date,
-            end_date
+            start_date: startDate,
+            end_date: endDate
         })
 
         return ngo

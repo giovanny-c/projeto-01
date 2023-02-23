@@ -16,11 +16,12 @@ class NgosMessagesRepository implements INgosMessagesRepository {
         this.repository = dataSource.getRepository(NgoMessage)
     }
 
-    async create({id, ngo_id, message, subject, start_date, end_date}: ICreateNgoMessage){
+    async create({id, ngo_id, name, message, subject, start_date, end_date}: ICreateNgoMessage){
 
         const ngo_email = this.repository.create({
             id,
             ngo_id,
+            name,
             message,
             subject,
             start_date,
@@ -35,6 +36,13 @@ class NgosMessagesRepository implements INgosMessagesRepository {
     async delete(id: string, ngo_id?: string){
 
         await this.repository.delete(id)
+    }
+
+    async findMessageByDate(date_now: string){
+
+       throw new Error("!")
+       
+
     }
 
 }

@@ -81,12 +81,63 @@ const Mask = {
 
     formatDay(value) {
 
+
         return value.replace(/(\D)|(\d{3,})|([3-9][2-9])|([4-9][0-9])/g, "")
+
     },
+
     formatMonth(value) {
 
         return value.replace(/(\D)|(\d{3,})|([1-9][3-9])|([2-9][0-9])/g, "")
     },
+
+    formatAdd0(value) {
+
+        if (value === "0" || value === "" || value === "00") {
+
+            return "01"
+
+        }
+
+        if (value < 10) {
+
+            if (value.length > 1) {
+                return value
+            }
+
+            return value = `0${value}`
+        }
+
+        return value
+    },
+    // formatDay_Month(value) {
+
+    //     value = value.replace(/\D/, "")
+
+
+
+    //     if (value.length >= 4) {
+
+    //         console.log(value)
+    //         var day = value.slice(0, 2)
+    //         var month = value.slice(2, 4)
+
+
+
+    //         if (day > 31) {
+    //             day = 31
+    //         }
+
+    //         if (month > 12) {
+    //             month = 12
+    //         }
+
+    //         return `${day}/${month}`
+    //     }
+
+    //     return value
+
+    // },
 
     cpfCnpj(value) {
 

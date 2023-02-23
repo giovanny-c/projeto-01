@@ -9,7 +9,8 @@
 
 }
 
-.item input {
+.item input,
+textarea {
 
     font-size: 30px;
     color: var(--color-letters);
@@ -18,6 +19,12 @@
     width: 800px;
     border-radius: 4px;
     box-shadow: 2px 0px 5px gray;
+}
+
+textarea {
+    min-width: 800px;
+    max-width: 800px;
+    height: 240px;
 }
 
 .item input[type="email"] {
@@ -47,6 +54,23 @@
 input[type="password"] {
 
     width: 420px;
+}
+
+input[type="date"] {
+
+    width: 97px;
+
+
+}
+
+input::-webkit-calendar-picker-indicator {
+    width: 0px;
+    visibility: collapse;
+    opacity: 0
+}
+
+input::-webkit-datetime-edit-year-field {
+    color: var(--color-theme);
 }
 
 /* .item input {
@@ -110,6 +134,7 @@ select.item {
 .date input {
     width: 50px;
     box-shadow: 10px 7px 10px 10px solid black;
+    text-align: center;
 
 }
 

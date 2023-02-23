@@ -17,15 +17,18 @@ class NgoMessage {
     ngo_id: string
 
     @Column()
+    name: string
+
+    @Column()
     message: string
 
     @Column()
     subject: string
 
     @Column()
-    start_date: string
+    start_date: Date
     @Column()
-    end_date: string    
+    end_date: Date    
     constructor() {
         if (!this.id) {
             this.id = uuidV4()
