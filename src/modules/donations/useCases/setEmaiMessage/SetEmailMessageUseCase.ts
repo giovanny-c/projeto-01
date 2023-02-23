@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { getFormatedDateForMessages } from "../../../../../utils/splitDateForReceipt";
 
 import { AppError } from "../../../../shared/errors/AppError";
 
@@ -28,6 +29,7 @@ class SetEmailMessageUseCase {
         private ngoRepository: INgoRepository,
         @inject("NgosMessagesRepository")
         private ngosMessagesRepository: INgosMessagesRepository,
+        
 
     ) { }
 
@@ -53,20 +55,19 @@ class SetEmailMessageUseCase {
         const start_date = `${start_day}/${start_month}`
         const end_date = `${end_day}/${end_month}`
 
+        
         //como transformar isso em data?
 
         //fazer essa validação quando for
         //fazer as views
 
-        console.log(start_date)
-
-        // await this.ngosMessagesRepository.create({
-        //     ngo_id,
-        //     subject,
-        //     message,
-        //     start_date,
-        //     end_date
-        // })
+        await this.ngosMessagesRepository.create({
+            ngo_id,
+            subject,
+            message,
+            start_date,
+            end_date
+        })
 
         return ngo
     }

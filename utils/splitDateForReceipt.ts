@@ -11,4 +11,10 @@ function getFormatedDateForReceipt(date: Date){
     }
 }
 
-export {getFormatedDateForReceipt}
+function getFormatedDateForMessages(date: Date | string){
+    const [dia, mes] =  moment(date).locale("pt-br").format("DD MMMM").split(" ")
+
+    return `${dia}/${mes}` 
+}
+
+export {getFormatedDateForReceipt, getFormatedDateForMessages}
