@@ -7,8 +7,7 @@ interface ICreateNgoMessage {
     name: string
     message: string
     subject: string
-    start_date: Date
-    end_date: Date
+    
 
 }
 

@@ -1,6 +1,6 @@
 
 
-import { Repository } from "typeorm"
+import { In, Repository } from "typeorm"
 import { dataSource } from "../../../../database"
 import { ICreateNgoMessage } from "../../dtos/ICreateNgoMessageDTO"
 import { NgoMessage } from "../../entities/ngos_messages"
@@ -16,7 +16,7 @@ class NgosMessagesRepository implements INgosMessagesRepository {
         this.repository = dataSource.getRepository(NgoMessage)
     }
 
-    async create({id, ngo_id, name, message, subject, start_date, end_date}: ICreateNgoMessage){
+    async create({id, ngo_id, name, message, subject}: ICreateNgoMessage){
 
         const ngo_email = this.repository.create({
             id,
@@ -24,8 +24,8 @@ class NgosMessagesRepository implements INgosMessagesRepository {
             name,
             message,
             subject,
-            start_date,
-            end_date
+            // start_date,
+            // end_date
         })
 
         await this.repository.save(ngo_email)
@@ -38,12 +38,16 @@ class NgosMessagesRepository implements INgosMessagesRepository {
         await this.repository.delete(id)
     }
 
-    async findMessageByDate(date_now: string){
+    // async findMessageByDate(date_now: Date){
 
-       throw new Error("!")
+    //    await this.repository.createQueryBuilder("message")
+    //    .select("message.*")
+    //    .where("message.start_date <= :date_now ", {date_now})
+    //    .andWhere("message.end_date => :date_now ", {date_now})
+    //    .getMany()
        
 
-    }
+    // }
 
 }
 

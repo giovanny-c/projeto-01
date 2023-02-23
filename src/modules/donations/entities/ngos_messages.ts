@@ -24,11 +24,7 @@ class NgoMessage {
 
     @Column()
     subject: string
-
-    @Column()
-    start_date: Date
-    @Column()
-    end_date: Date    
+ 
     constructor() {
         if (!this.id) {
             this.id = uuidV4()

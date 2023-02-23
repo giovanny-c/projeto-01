@@ -32,16 +32,6 @@ export class CreateTableNgosMessages1676940377127 implements MigrationInterface 
                     type: "varchar",
                     isNullable: false
                 },
-                {
-                    name: "start_date",
-                    type: "timestamp",
-                    isNullable: true
-                },
-                {
-                    name: "end_date",
-                    type: "timestamp",
-                    isNullable: true
-                },
 
             ],
             foreignKeys: [
