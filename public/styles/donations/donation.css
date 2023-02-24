@@ -135,7 +135,7 @@ iframe {
     margin: 40px auto;
     width: 940px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
 
     justify-items: center;
 
@@ -143,7 +143,20 @@ iframe {
 
 }
 
+.send-email-form {
+    margin-top: 100px;
+}
 
+.item input {
+
+    font-size: 30px;
+    color: var(--color-letters);
+    background-color: var(--color-theme);
+    height: 32px;
+    width: 940px;
+    border-radius: 4px;
+    box-shadow: 2px 0px 5px gray;
+}
 
 button {
     width: auto;
@@ -154,6 +167,10 @@ button {
     border-radius: 4px;
     border: 1px;
     box-shadow: 2px 1px 3px rgb(56, 56, 56);
+}
+
+button.email-form-button {
+    background-color: rgb(192, 219, 250);
 }
 
 button.cancel {
