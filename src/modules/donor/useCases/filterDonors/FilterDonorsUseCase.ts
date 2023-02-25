@@ -25,7 +25,7 @@ class FilterDonorsUseCase {
         
         
         
-        let donors = (await this.donorsRepository.findBy(value, 12, 0)).map(donor => {
+        let donors = (await this.donorsRepository.findBy(`%${value}%`, 12, 0)).map(donor => {
         
 
             return {
@@ -36,9 +36,8 @@ class FilterDonorsUseCase {
 
         }) 
 
-        console.log(`isso ${JSON.stringify(donors)}`)
-        console.log(`ou isso ${JSON.parse(donors.toString())}`)
         
+
 
         return donors
 

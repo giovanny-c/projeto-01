@@ -43,9 +43,9 @@ class DonorsRepository implements IDonorsRepository {
 
          const donors = await this.repository.createQueryBuilder("donors")
         .select("donors")
-        .where("donors.name ILIKE :name ", {name: `%${value}%`})
-        .orWhere("donors.email ILIKE :email ", {email: `%${value}%`})
-        .orWhere("donors.phone ILIKE :phone ", {phone: `%${value}%`})
+        .where("donors.name ILIKE :name ", {name: value})
+        .orWhere("donors.email ILIKE :email ", {email: value})
+        .orWhere("donors.phone ILIKE :phone ", {phone: value})
         .limit(limit)
         .offset(offset)
         .orderBy("donors.name", "ASC", "NULLS LAST")

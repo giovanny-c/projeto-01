@@ -10,10 +10,7 @@ class FilterDonorsController {
     async handle(req: Request, res: Response){
 
         const {value} = req.query
-        const {user} = req
-
-        console.log(value)
-        console.log(user)
+        
 
         const filterDonors = container.resolve(FilterDonorsUseCase)
 

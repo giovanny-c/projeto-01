@@ -1,20 +1,23 @@
 
 
-function search(input) {
+function searchDonor(input) {
 
+    console.log(input.value)
     if (input.value.length > 1) {
 
         var value = input.value.toLowerCase()
 
         fetch(`/doadores/filtrar?value=${value}`, {
             method: "GET",
-            credentials: "same-origin",
-            mode: "same-origin"
-            // credentials: "same-origin"
+            mode: "cors"
         })
-            .then((results) => {
-                console.log(results)
+            .then((response) => {
+                response.json().then((results => {
+                    console.log(results)
+                    //passar para as tags
+                }))
             })
+
             .catch((error) => {
                 console.error("Erro ao pesquisar", error)
             })

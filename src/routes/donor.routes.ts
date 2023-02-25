@@ -49,7 +49,7 @@ donorRoutes.post("/importar", ensureAdmin, upload.single("file"), importDonorsCo
 
 donorRoutes.get("/listar", handleMessage, listDonorController.handle)
 
-donorRoutes.get("/filtrar", filterDonorsController.handle)
+donorRoutes.get("/filtrar", ensureAdmin, filterDonorsController.handle)
 
 donorRoutes.get("/:donor_id", ensureAdmin, handleMessage, getDonorAndDonationsController.handle)
 

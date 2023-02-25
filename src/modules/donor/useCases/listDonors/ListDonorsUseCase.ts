@@ -21,7 +21,7 @@ class ListDonorsUseCase {
         
         let offset = limit * (page - 1)
 
-        const donors = await this.donorsRepository.findBy(value, +(limit), offset)
+        const donors = await this.donorsRepository.findBy(`%${value}%`, +(limit), offset)
 
         
 
