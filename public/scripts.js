@@ -1,5 +1,29 @@
 
 
+function search(input) {
+
+    if (input.value.length > 1) {
+
+        var value = input.value.toLowerCase()
+
+        fetch(`/doadores/filtrar?value=${value}`, {
+            method: "GET",
+            credentials: "same-origin",
+            mode: "same-origin"
+            // credentials: "same-origin"
+        })
+            .then((results) => {
+                console.log(results)
+            })
+            .catch((error) => {
+                console.error("Erro ao pesquisar", error)
+            })
+
+    }
+
+}
+
+
 
 const Mask = {
 

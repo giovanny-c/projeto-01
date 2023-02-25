@@ -6,6 +6,7 @@ import uploadConfig from "../config/upload"
 
 import { CreateDonorController } from "../modules/donor/useCases/createDonor/CreateDonorController";
 import { DeleteDonorController } from "../modules/donor/useCases/deleteDonor/DeleteDonorController";
+import { FilterDonorsController } from "../modules/donor/useCases/filterDonors/FilterDonorsController";
 import { GetDonorAndDonationsController } from "../modules/donor/useCases/GetDonoraAndDonations/GetDonorAndDonationsController";
 import { ImportDonorsController } from "../modules/donor/useCases/importDonors/ImportDonorsController";
 import { ListDonorsController } from "../modules/donor/useCases/listDonors/ListDonorsController";
@@ -32,7 +33,7 @@ const loadImportDonorsController = new LoadImportDonorController()
 const importDonorsController = new ImportDonorsController()
 const loadUpdateDonorController = new LoadUpdateDonorController()
 const deleteDonorController = new DeleteDonorController()
-
+const filterDonorsController = new FilterDonorsController()
 
 
 
@@ -47,6 +48,8 @@ donorRoutes.get("/importar", ensureAdmin, handleMessage, loadImportDonorsControl
 donorRoutes.post("/importar", ensureAdmin, upload.single("file"), importDonorsController.handle)
 
 donorRoutes.get("/listar", handleMessage, listDonorController.handle)
+
+donorRoutes.get("/filtrar", filterDonorsController.handle)
 
 donorRoutes.get("/:donor_id", ensureAdmin, handleMessage, getDonorAndDonationsController.handle)
 

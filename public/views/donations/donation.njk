@@ -83,7 +83,11 @@
             <form name="form-email" class="form-email"  action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/enviar-email" method="POST" enctype="multipart/form-data">
 
                 <div class="item">
-                    <input type="email" name="email" value="" placeholder="digite o email">
+                    <input type="email" 
+                    name="email" 
+                    value="" 
+                    placeholder="digite o email"
+                    oninput="">
                 </div>
 
             </form>
