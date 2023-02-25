@@ -1,26 +1,53 @@
 
+function cleanList(input) {
+    //on lose focus destroi a lista
+}
+async function searchDonor(input) {
 
-function searchDonor(input) {
+    //destruir as divs a cada novo iput
 
-    console.log(input.value)
+    var sendEmailForm = document.querySelector(".send-email-form")
+
     if (input.value.length > 1) {
 
         var value = input.value.toLowerCase()
 
-        fetch(`/doadores/filtrar?value=${value}`, {
-            method: "GET",
-            mode: "cors"
-        })
-            .then((response) => {
-                response.json().then((results => {
-                    console.log(results)
-                    //passar para as tags
-                }))
+        try {
+            const response = await fetch(`/doadores/filtrar?value=${value}`, {
+                method: "GET",
+                mode: "cors"
             })
 
-            .catch((error) => {
-                console.error("Erro ao pesquisar", error)
+            if (!response.ok) {
+                console.log(`Error: ${response.status}`)
+            }
+
+            const donors = await response.json()
+
+            console.log(donors)
+
+            donors.forEach(donor => {
+                console.log(donor)
+
+                var list = document.createElement("div")
+                list.className = "list-item"
+
+                var content = document.createElement("div")
+                content.className = "content"
+
+
+                sendEmailForm.appendChild(list)
+                list.appendChild(content)
+
+                content.innerHTML = `${donor.name} <${donor.response}>`
+
             })
+
+
+
+        } catch (error) {
+            console.error("Erro ao pesquisar", error)
+        }
 
     }
 

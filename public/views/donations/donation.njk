@@ -81,16 +81,21 @@
 
         <div class="send-email-form">
             <form name="form-email" class="form-email"  action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/enviar-email" method="POST" enctype="multipart/form-data">
-
+            </form>
                 <div class="item">
-                    <input type="email" 
+                    <input type="text" 
                     name="email" 
+                    form="form-email"
                     value="" 
+                    autocomplete="off"
                     placeholder="digite o email"
                     oninput="searchDonor(this)">
                 </div>
+                
 
-            </form>
+
+
+            
         </div>
         
         
