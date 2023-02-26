@@ -89,8 +89,14 @@
                     value="" 
                     autocomplete="off"
                     placeholder="digite o email"
-                    oninput="searchDonor(this)">
+                    onfocus="showList()"
+                    oninput="searchDonor(this)"
+                    onblur="hideList()"
+                    >
                 </div>
+            <div class="donors-list">
+
+            </div>
                 
 
 

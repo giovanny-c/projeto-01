@@ -1,5 +1,6 @@
 import { json } from "express";
 import { inject, injectable } from "tsyringe";
+import { getExecutionTime } from "../../../../../utils/decorators/executionTime";
 import { Donor } from "../../entities/donor";
 import { IDonorsRepository } from "../../repositories/IDonorsRepository";
 
@@ -15,6 +16,7 @@ class FilterDonorsUseCase {
         private donorsRepository: IDonorsRepository
     ){}
 
+    @getExecutionTime()
     async execute(value: string): Promise<void | Partial<Donor>[]>{
 
         if(!value || value.length < 1){

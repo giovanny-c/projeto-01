@@ -1,12 +1,32 @@
 
-function cleanList(input) {
-    //on lose focus destroi a lista
+
+function hideList() {
+
+    var donorsList = document.querySelector(".donors-list")
+
+    //destruir as divs a cada novo iput
+    donorsList.style.opacity = 0
+    donorsList.visibility = "hidden"
+}
+function showList() {
+
+    var donorsList = document.querySelector(".donors-list")
+
+    //destruir as divs a cada novo iput
+    donorsList.style.opacity = 1
+    donorsList.visibility = "visible"
 }
 async function searchDonor(input) {
 
-    //destruir as divs a cada novo iput
+    var donorsList = document.querySelector(".donors-list")
 
-    var sendEmailForm = document.querySelector(".send-email-form")
+    //destruir as divs a cada novo iput
+    while (donorsList.firstChild) {
+        donorsList.removeChild(donorsList.firstChild)
+    }
+
+
+    // donorsList.removeChild(".list-item")
 
     if (input.value.length > 1) {
 
@@ -24,10 +44,10 @@ async function searchDonor(input) {
 
             const donors = await response.json()
 
-            console.log(donors)
+
 
             donors.forEach(donor => {
-                console.log(donor)
+
 
                 var list = document.createElement("div")
                 list.className = "list-item"
@@ -36,7 +56,7 @@ async function searchDonor(input) {
                 content.className = "content"
 
 
-                sendEmailForm.appendChild(list)
+                donorsList.appendChild(list)
                 list.appendChild(content)
 
                 content.innerHTML = `${donor.name} <${donor.response}>`
