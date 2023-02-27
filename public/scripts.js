@@ -62,7 +62,7 @@ async function searchDonor(input) {
                 content.setAttribute("id", `${donor.id}`)
 
                 // content.onclick = catchValue
-                content.addEventListener("click", (catchValueAndCleanList))
+                content.addEventListener("click", (catchDonorAndCleanList))
             })
 
 
@@ -75,7 +75,7 @@ async function searchDonor(input) {
 
 }
 
-function catchValueAndCleanList(tag) {
+function catchDonorAndCleanList(tag) {
 
     var emailInput = document.querySelector("#email")
     var donorInput = document.querySelector("#donor_id")
@@ -83,22 +83,60 @@ function catchValueAndCleanList(tag) {
 
 
     emailInput.value = ""
+    donorInput.value += `${tag.srcElement.id}, `
 
-    // troca os &tg; por "<" depois troca o ultimo "<" por ">"
-    var contact = tag.srcElement.innerHTML.replace(/&\w+;/g, "<").replace(/\<(?=[^<]*$)/g, ">")
+    while (donorsList.firstChild) {
+        donorsList.removeChild(donorsList.firstChild)
+    }
+
+    // troca os &tg; por "<" depois troca o ultimo "<" por ">" 
+    // replace(/&\w+;/g, "<").replace(/\<(?=[^<]*$)/g, ">")
+
+    //Cria a caixa de email
+    var receiverList = document.querySelector(".receivers")
+
+    var receiver = document.createElement("div")
+    receiver.className = "receiver"
+
+    var receiverContent = document.createElement("div")
+    receiverContent.className = "receiver-content"
+
+    var p1 = document.createElement("p")
+    var p2 = document.createElement("p")
+
+    //pega o nome e email  separados
+
+    p1.innerHTML = tag.srcElement.innerHTML.match(/.+(?=&)/g)[0]
+    p2.innerHTML = tag.srcElement.innerHTML.match(/(?!;).+(?=&)/)[0].replace(";", "")
+
+    var receiverDelete = document.createElement("div")
+    receiverDelete.className = "receiver-delete"
+
+    var pdel = document.createElement("p")
+    pdel.innerHTML = "X"
+
+
+
+    receiver.appendChild(receiverContent)
+    receiverContent.appendChild(p1)
+    receiverContent.appendChild(p2)
+
+    receiver.appendChild(receiverDelete)
+    receiverDelete.appendChild(pdel)
+
+    receiverList.appendChild(receiver)
+
 
     //poe no input o id
     //e se fizer um umas caixas 
     //e colocar os email nas caixas 
     //e os ids no input hiden
     //quando clicar no x da  caixa, tira o id do input hidden
-    donorInput.value = [tag.srcElement.id]
+
 
 
     //destruir as divs a cada novo iput
-    while (donorsList.firstChild) {
-        donorsList.removeChild(donorsList.firstChild)
-    }
+
 }
 
 

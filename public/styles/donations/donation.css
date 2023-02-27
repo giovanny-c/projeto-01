@@ -196,6 +196,76 @@ iframe {
     border-bottom-right-radius: 4px;
 }
 
+.receivers {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+
+}
+
+.receiver {
+    display: grid;
+    grid-template-columns: 1fr 24px;
+    height: 52px;
+    border-radius: 8px;
+    color: var(--color-letters);
+    background-color: var(--color-theme);
+    border: 1px solid var(--color-hover);
+    font-size: 14px;
+}
+
+.receiver-content {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--color-hover);
+    /* text-align: start;*/
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
+.receiver-content:hover {
+    background-color: var(--color-hover);
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
+.receiver-content:active {
+    background-color: var(--color-theme);
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
+.receiver p {
+    margin: 4px;
+    padding-left: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.receiver-delete {
+    position: relative;
+}
+
+.receiver-delete:hover {
+    background-color: rgb(104, 19, 19);
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+.receiver-delete:active {
+    background-color: rgb(126, 14, 14);
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+
+.receiver-delete p {
+    position: absolute;
+    top: 25%;
+    left: 15%;
+    padding: 0;
+}
+
 button {
     width: auto;
     margin: auto;
