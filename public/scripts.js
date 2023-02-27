@@ -1,3 +1,4 @@
+const { PI } = require("aws-sdk")
 
 
 function hideList() {
@@ -100,20 +101,23 @@ function catchDonorAndCleanList(tag) {
 
     var receiverContent = document.createElement("div")
     receiverContent.className = "receiver-content"
+    receiverContent.id = tag.srcElement.id
 
     var p1 = document.createElement("p")
     var p2 = document.createElement("p")
 
     //pega o nome e email  separados
 
-    p1.innerHTML = tag.srcElement.innerHTML.match(/.+(?=&)/g)[0]
-    p2.innerHTML = tag.srcElement.innerHTML.match(/(?!;).+(?=&)/)[0].replace(";", "")
+    p1.innerHTML = tag.srcElement.innerHTML.match(/.+(?=&\w+;.+)/)[0]
+    p2.innerHTML = tag.srcElement.innerHTML.match(/(?=;).+(?=&)/)[0].replace(";", "")
 
     var receiverDelete = document.createElement("div")
     receiverDelete.className = "receiver-delete"
+    receiverDelete.id = tag.srcElement.id
 
     var pdel = document.createElement("p")
     pdel.innerHTML = "X"
+
 
 
 
@@ -138,6 +142,7 @@ function catchDonorAndCleanList(tag) {
     //destruir as divs a cada novo iput
 
 }
+
 
 
 
