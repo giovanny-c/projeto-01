@@ -200,6 +200,8 @@ iframe {
     margin-top: 20px;
     display: flex;
     gap: 12px;
+    /* overflow:; */
+
 
 }
 
@@ -243,13 +245,16 @@ iframe {
 }
 
 .receiver-delete {
-    position: relative;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
 .receiver-delete:hover {
     background-color: rgb(104, 19, 19);
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
+
 }
 
 .receiver-delete:active {
@@ -259,12 +264,13 @@ iframe {
 }
 
 
-.receiver-delete p {
+/* .receiver-delete p {
+
     position: absolute;
     top: 25%;
     left: 15%;
     padding: 0;
-}
+} */
 
 button {
     width: auto;

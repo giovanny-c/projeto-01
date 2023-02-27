@@ -1,4 +1,4 @@
-const { PI } = require("aws-sdk")
+
 
 
 function hideList() {
@@ -63,7 +63,7 @@ async function searchDonor(input) {
                 content.setAttribute("id", `${donor.id}`)
 
                 // content.onclick = catchValue
-                content.addEventListener("click", (catchDonorAndCleanList))
+                content.addEventListener("click", catchDonorAndCleanList)
             })
 
 
@@ -75,16 +75,15 @@ async function searchDonor(input) {
     }
 
 }
-
 function catchDonorAndCleanList(tag) {
 
     var emailInput = document.querySelector("#email")
-    var donorInput = document.querySelector("#donor_id")
+    var donorInput = document.querySelector("input[name='donor_id[]']")
     var donorsList = document.querySelector(".donors-list")
 
 
     emailInput.value = ""
-    donorInput.value += `${tag.srcElement.id}, `
+    donorInput.value += tag.srcElement.id + ","
 
     while (donorsList.firstChild) {
         donorsList.removeChild(donorsList.firstChild)
@@ -114,19 +113,15 @@ function catchDonorAndCleanList(tag) {
     var receiverDelete = document.createElement("div")
     receiverDelete.className = "receiver-delete"
     receiverDelete.id = tag.srcElement.id
-
-    var pdel = document.createElement("p")
-    pdel.innerHTML = "X"
-
-
+    receiverDelete.addEventListener("click", removeDonor)
+    receiverDelete.innerHTML = "X"
 
 
     receiver.appendChild(receiverContent)
+    receiver.appendChild(receiverDelete)
     receiverContent.appendChild(p1)
     receiverContent.appendChild(p2)
 
-    receiver.appendChild(receiverDelete)
-    receiverDelete.appendChild(pdel)
 
     receiverList.appendChild(receiver)
 
@@ -142,7 +137,20 @@ function catchDonorAndCleanList(tag) {
     //destruir as divs a cada novo iput
 
 }
+function removeDonor(tag) {
+    console.log(tag.srcElement.id)
 
+    var inputDonorId = document.querySelector("#donor_id")
+
+    //usar esse match na hora de postar
+    const split = inputDonorId.value.match(/[\w\d|-]+(?=,)/g)
+    console.log(split)
+
+    inputDonorId.value = inputDonorId.value.replace(`${tag.srcElement.id},`, "")
+
+    console.log(inputDonorId.value)
+
+}
 
 
 
