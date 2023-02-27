@@ -3,11 +3,14 @@
 
 function hideList() {
 
-    var donorsList = document.querySelector(".donors-list")
+
+    var donorsList = document.querySelectorAll(".list-item")
 
     //destruir as divs a cada novo iput
     donorsList.style.opacity = 0
-    donorsList.visibility = "hidden"
+    donorsList.style.visibility = "hidden"
+
+
 }
 function showList() {
 
@@ -15,7 +18,7 @@ function showList() {
 
     //destruir as divs a cada novo iput
     donorsList.style.opacity = 1
-    donorsList.visibility = "visible"
+    donorsList.style.visibility = "visible"
 }
 async function searchDonor(input) {
 
@@ -50,7 +53,7 @@ async function searchDonor(input) {
             donors.forEach(donor => {
 
 
-                var list = document.createElement("div")
+                var list = document.createElement("li")
                 list.className = "list-item"
 
                 var content = document.createElement("div")
@@ -77,13 +80,17 @@ async function searchDonor(input) {
 }
 function catchDonorAndCleanList(tag) {
 
+    var donor = tag.srcElement
+
+
+
     var emailInput = document.querySelector("#email")
-    var donorInput = document.querySelector("input[name='donor_id[]']")
+    var donorInput = document.querySelector("input[name='donor_id']")
     var donorsList = document.querySelector(".donors-list")
 
-
+    donorInput.value += donor.id + ","
     emailInput.value = ""
-    donorInput.value += tag.srcElement.id + ","
+
 
     while (donorsList.firstChild) {
         donorsList.removeChild(donorsList.firstChild)
@@ -100,19 +107,20 @@ function catchDonorAndCleanList(tag) {
 
     var receiverContent = document.createElement("div")
     receiverContent.className = "receiver-content"
-    receiverContent.id = tag.srcElement.id
+    receiverContent.id = donor.id
+    receiverContent.addEventListener("click", sendToDonorPage)
 
     var p1 = document.createElement("p")
     var p2 = document.createElement("p")
 
     //pega o nome e email  separados
 
-    p1.innerHTML = tag.srcElement.innerHTML.match(/.+(?=&\w+;.+)/)[0]
-    p2.innerHTML = tag.srcElement.innerHTML.match(/(?=;).+(?=&)/)[0].replace(";", "")
+    p1.innerHTML = donor.innerHTML.match(/.+(?=&\w+;.+)/)[0]
+    p2.innerHTML = donor.innerHTML.match(/(?=;).+(?=&)/)[0].replace(";", "")
 
     var receiverDelete = document.createElement("div")
     receiverDelete.className = "receiver-delete"
-    receiverDelete.id = tag.srcElement.id
+    receiverDelete.id = donor.id
     receiverDelete.addEventListener("click", removeDonor)
     receiverDelete.innerHTML = "X"
 
@@ -138,20 +146,28 @@ function catchDonorAndCleanList(tag) {
 
 }
 function removeDonor(tag) {
-    console.log(tag.srcElement.id)
+
 
     var inputDonorId = document.querySelector("#donor_id")
 
     //usar esse match na hora de postar
     const split = inputDonorId.value.match(/[\w\d|-]+(?=,)/g)
-    console.log(split)
+
 
     inputDonorId.value = inputDonorId.value.replace(`${tag.srcElement.id},`, "")
 
-    console.log(inputDonorId.value)
+
+    //deleter a caixa e ver o problema das muitas caixas
+    var receivers = document.querySelector(".receivers")
+    receivers.removeChild(tag.srcElement.parentNode)
 
 }
+function sendToDonorPage(tag) {
 
+    var donor = tag.srcElement.id || tag.srcElement.parentElement.id
+    window.location.href = `/doadores/${donor}`
+
+}
 
 
 
