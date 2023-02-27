@@ -81,9 +81,10 @@
 
         <div class="send-email-form">
             <form name="form-email" class="form-email"  action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/enviar-email" method="POST" enctype="multipart/form-data">
-            </form>
+            
                 <div class="item">
-                    <input type="text" 
+                    <input type="text"
+                    id="email" 
                     name="email" 
                     form="form-email"
                     value="" 
@@ -94,7 +95,18 @@
                     onblur="hideList()"
                     >
                 </div>
+
+                <input type="hidden" id="donor_id" name="donor_id" value="">
+
+            </form>
+            
             <div class="donors-list">
+
+            </div>
+
+            <div class="receivers">
+
+                <p>NOME email@email</p>
 
             </div>
                 

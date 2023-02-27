@@ -55,12 +55,14 @@ async function searchDonor(input) {
                 var content = document.createElement("div")
                 content.className = "content"
 
-
                 donorsList.appendChild(list)
                 list.appendChild(content)
 
-                content.innerHTML = `${donor.name} <${donor.response}>`
+                content.innerHTML = `${donor.name} &lt${donor.email}&gt`
+                content.setAttribute("id", `${donor.id}`)
 
+                // content.onclick = catchValue
+                content.addEventListener("click", (catchValueAndCleanList))
             })
 
 
@@ -72,6 +74,34 @@ async function searchDonor(input) {
     }
 
 }
+
+function catchValueAndCleanList(tag) {
+
+    var emailInput = document.querySelector("#email")
+    var donorInput = document.querySelector("#donor_id")
+    var donorsList = document.querySelector(".donors-list")
+
+
+    emailInput.value = ""
+
+    // troca os &tg; por "<" depois troca o ultimo "<" por ">"
+    var contact = tag.srcElement.innerHTML.replace(/&\w+;/g, "<").replace(/\<(?=[^<]*$)/g, ">")
+
+    //poe no input o id
+    //e se fizer um umas caixas 
+    //e colocar os email nas caixas 
+    //e os ids no input hiden
+    //quando clicar no x da  caixa, tira o id do input hidden
+    donorInput.value = [tag.srcElement.id]
+
+
+    //destruir as divs a cada novo iput
+    while (donorsList.firstChild) {
+        donorsList.removeChild(donorsList.firstChild)
+    }
+}
+
+
 
 
 
