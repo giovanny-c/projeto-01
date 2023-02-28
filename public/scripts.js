@@ -4,11 +4,17 @@
 function hideList() {
 
 
-    var donorsList = document.querySelectorAll(".list-item")
+    // var donorsList = document.querySelectorAll(".list-item")
 
-    //destruir as divs a cada novo iput
-    donorsList.style.opacity = 0
-    donorsList.style.visibility = "hidden"
+    // //destruir as divs a cada novo iput
+    // // donorsList.style.opacity = 0
+    // donorsList.forEach(donorList => {
+
+    //     donorList.style.visibility = "hidden"
+
+    // })
+
+
 
 
 }
@@ -32,7 +38,7 @@ async function searchDonor(input) {
 
     // donorsList.removeChild(".list-item")
 
-    if (input.value.length > 1) {
+    if (input.value.length > 0) {
 
         var value = input.value.toLowerCase()
 
@@ -55,6 +61,7 @@ async function searchDonor(input) {
 
                 var list = document.createElement("li")
                 list.className = "list-item"
+                // list.tabIndex = 0
 
                 var content = document.createElement("div")
                 content.className = "content"

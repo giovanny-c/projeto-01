@@ -27,7 +27,7 @@ class FilterDonorsUseCase {
         
         
         
-        let donors = (await this.donorsRepository.findBy(`%${value}%`, 12, 0)).map(donor => {
+        let donors = (await this.donorsRepository.findBy(value, 12, 0)).map(donor => {
         
 
             return {
@@ -38,12 +38,33 @@ class FilterDonorsUseCase {
 
         }) 
 
+        // para ir na ordem do valor
+        const a = donors.sort((a, b) => {
+            
+            console.log(b.name.startsWith(value))
+            if(a.name.startsWith(value)){
+                return -1 
+            }
+            if(!a.name.startsWith(value) ){
+                return 1 
+            }
+            return 0
+            // if(a.name.startsWith(value)){
+            //     return 0
+            // }
+            // if(!a.name.startsWith(value)){
+            //     return 0
+            // }
+        })
+
         
-
-
+        
+        
         return donors
 
     }
+
+   
 
 
 
