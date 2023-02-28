@@ -78,7 +78,6 @@
         </div>
 
 
-
         <div class="send-email-form">
             <form name="form-email" class="form-email"  action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/enviar-email" method="POST" enctype="multipart/form-data">
             
@@ -95,6 +94,19 @@
                     
                     >
                 </div>
+                <div class="item">
+                    <select name="message_id" id="message_id"></select>
+                    {% for message in messages %}
+                        <option value="" selected disabled hidden>Escolha o a mensagem</option>
+                        <option value="{{message.id}}"
+                            
+                            >
+                            
+                            {{message.name}}
+                            
+                        </option>
+                    {% endfor %}
+                </div>
 
                 <input type="hidden" id="donation_id" name="donation_id" value="{{donation.id}}">
                 <input type="hidden" id="donors_ids" name="donors_ids" value="">
@@ -106,41 +118,7 @@
             </div>
 
             <div class="receivers">
-                {# <div class="receiver" id="adasdsss" >
-
-                    <div class="receiver-content" id="adasd1" onclick="console.log(this.id)">
-                        <p>
-                            NOME exegeradamente grande
-                        </p>
-                        <p>
-                            emailexageradamentegrande@email
-                        </p> 
-                    </div>
-
-                    <div class="receiver-delete" id="adasd2" onclick="console.log(this.id)">
-                       X
-                       <p>X</p>
-                    </div>
-                    
-
-                </div>
-                <div class="receiver">
-
-                    <div class="receiver-content">
-                        <p>
-                            NOME exegeradamente grande
-                        </p>
-                        <p>
-                            emailexageradamentegrande@email
-                        </p> 
-                    </div>
-
-                    <div class="receiver-delete">
-                        <p>X</p>
-                    </div>
-                    
-
-                </div> #}
+               
             </div>   
 
 

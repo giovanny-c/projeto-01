@@ -13,6 +13,8 @@ import { Ngo } from "../../entities/ngos";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import path from "path"
+import { INgosMessagesRepository } from "../../repositories/INgosMessagesRepository";
+import { NgosMessagesRepository } from "../../repositories/implementation/NgosMessagesRepository";
 
 interface IRequest{
     ngo_id: string
@@ -44,7 +46,9 @@ class GetDonationUseCase {
         @inject("DayjsDateProvider")
         private dateProvider: IDateProvider,    
         @inject("StorageProvider")
-        private storageProvider: IStorageProvider
+        private storageProvider: IStorageProvider,
+        @inject("NgosMessagesRepository")
+        private ngosMessagesRepository: INgosMessagesRepository,
     ) {
 
     }
@@ -119,6 +123,8 @@ class GetDonationUseCase {
 
         }
 
+
+        const ngo_messages = await this.ngosMessagesRepository.findByNgoId(ngo_id)
         
 
         return {
@@ -127,7 +133,8 @@ class GetDonationUseCase {
             donation,
             ngo,
             file,
-            file_name: `${ngo.name}_${donation.donation_number}_${donation.donor_name}`
+            file_name: `${ngo.name}_${donation.donation_number}_${donation.donor_name}`,
+            messages
         }
     }
 

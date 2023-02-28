@@ -35,6 +35,10 @@ class NgosMessagesRepository implements INgosMessagesRepository {
     async findById(id: string){
         return await this.repository.findOneBy({id}) 
     }
+
+    async findByNgoId(ngo_id: string){
+        return await this.repository.findBy({ngo_id}) 
+    }
     
 
     async delete(id: string, ngo_id?: string){

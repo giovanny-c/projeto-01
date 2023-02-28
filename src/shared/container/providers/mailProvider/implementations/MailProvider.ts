@@ -31,24 +31,29 @@ class MailProvider implements IMailProvider{
         })
         
         //tranformar em async?
-        mailer.sendMail({
-            from,
-            to,
-            subject,
-            text: body.text || null,
-            html: body.html || null,
-            attachments: body.attachments || null
-        })
-        .then(info => {
-            console.log({info})
-        })
-        .catch(error => { 
-            // mandar pra uma rota que 
-            //vai pegar esse erro e salvar em algum lugar?
+
+        try {
+            await mailer.sendMail({
+                from,
+                to,
+                subject,
+                text: body.text || null,
+                html: body.html || null,
+                attachments: body.attachments || null
+            })
+        } catch (error) {
             console.error(error)
+            throw new AppError("Não foi possivel mandar o email")
+        }
+        //    .then(info => {
+         //         console.log({info})
+        // .catch(error => { 
+        //     // mandar pra uma rota que 
+        //     //vai pegar esse erro e salvar em algum lugar?
+        //     console.error(error)
             
-            //throw new AppError("Não foi possivel enviar o email", 500)
-        })
+        //     //throw new AppError("Não foi possivel enviar o email", 500)
+        // })
     }
 
 }
