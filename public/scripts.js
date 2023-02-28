@@ -1,18 +1,21 @@
 
 
 
-function hideList() {
+function hideList(tag) {
+    console.log("a")
+    console.log(tag.srcElement.className)
+    if (tag.srcElement.className === "receiver-content" || tag.srcElement.id === "email") {
+        return
+    }
 
+    console.log("b")
+    var donorsList = document.querySelector(".donors-list")
 
-    // var donorsList = document.querySelectorAll(".list-item")
-
-    // //destruir as divs a cada novo iput
-    // // donorsList.style.opacity = 0
+    //destruir as divs a cada novo iput
+    // donorsList.style.opacity = 0
     // donorsList.forEach(donorList => {
 
-    //     donorList.style.visibility = "hidden"
-
-    // })
+    donorsList.style.visibility = "hidden"
 
 
 
@@ -27,6 +30,9 @@ function showList() {
     donorsList.style.visibility = "visible"
 }
 async function searchDonor(input) {
+
+
+    document.querySelector("body").addEventListener("click", hideList)
 
     var donorsList = document.querySelector(".donors-list")
 
@@ -86,6 +92,8 @@ async function searchDonor(input) {
 
 }
 function catchDonorAndCleanList(tag) {
+
+    document.querySelector("body").removeEventListener("click", hideList)
 
     var donor = tag.srcElement
 

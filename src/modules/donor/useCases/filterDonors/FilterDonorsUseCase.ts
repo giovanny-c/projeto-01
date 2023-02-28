@@ -39,22 +39,21 @@ class FilterDonorsUseCase {
         }) 
 
         // para ir na ordem do valor
-        const a = donors.sort((a, b) => {
+        donors.sort((a, b) => {
             
-            console.log(b.name.startsWith(value))
-            if(a.name.startsWith(value)){
+           
+            if(a.name.toLowerCase().startsWith(value) && !b.name.toLowerCase().startsWith(value)){
                 return -1 
             }
-            if(!a.name.startsWith(value) ){
+            if(!a.name.toLowerCase().startsWith(value) && b.name.toLowerCase().startsWith(value) ){
                 return 1 
             }
-            return 0
-            // if(a.name.startsWith(value)){
-            //     return 0
-            // }
-            // if(!a.name.startsWith(value)){
-            //     return 0
-            // }
+            if(a.name.toLowerCase().startsWith(value) && b.name.toLowerCase().startsWith(value)){
+                return 0
+            }
+            if(!a.name.toLowerCase().startsWith(value) && !b.name.toLowerCase().startsWith(value)){
+                return 0
+            }
         })
 
         
