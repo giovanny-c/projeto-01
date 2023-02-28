@@ -51,7 +51,7 @@
         <div class="buttons">
 
             <div>
-                <button class="email-form-button">
+                <button class="email-form-button" form="form-email">
                     Enviar Recibo
                 </button>
             </div>
@@ -96,7 +96,8 @@
                     >
                 </div>
 
-                <input type="hidden" id="donor_id" name="donor_id" value="">
+                <input type="hidden" id="donation_id" name="donation_id" value="{{donation.id}}">
+                <input type="hidden" id="donors_ids" name="donors_ids" value="">
 
             </form>
             

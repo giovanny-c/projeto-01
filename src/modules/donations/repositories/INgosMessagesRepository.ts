@@ -1,9 +1,11 @@
 import { ICreateNgoMessage } from "../dtos/ICreateNgoMessageDTO";
+import { NgoMessage } from "../entities/ngos_messages";
 
 interface INgosMessagesRepository {
 
-    create({id, ngo_id, message, subject, start_date, end_date}: ICreateNgoMessage): Promise<void>
+    create({id, ngo_id, message, subject}: ICreateNgoMessage): Promise<void>
     delete(id: string, ngo_id?: string): Promise<void>
+    findById(id: string): Promise<NgoMessage>
 
 }
 

@@ -1,3 +1,4 @@
+import { instanceToPlain } from "class-transformer";
 import { inject, injectable } from "tsyringe";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { Ngo } from "../../entities/ngos";
@@ -23,7 +24,9 @@ class FindAllNgosUseCase {
 
         ngos.forEach(async(ngo) => {
 
-            await this.cacheProvider.setRedis(`ngo-${ngo.id}`, JSON.stringify(ngo))
+            
+
+            await this.cacheProvider.setRedis(`ngo-${ngo.id}`, JSON.stringify(instanceToPlain(ngo)))
         });
 
         return ngos

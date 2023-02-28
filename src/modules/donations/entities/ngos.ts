@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from "typeorm";
 
 import { v4 as uuidV4 } from "uuid"
@@ -19,9 +20,11 @@ class Ngo {
     @Column()
     full_name: string
 
+    @Exclude()
     @OneToMany(() => NgoEmail, ngo_emails => ngo_emails.ngo, {cascade: true})
     ngo_emails: NgoEmail[]
-
+    
+    @Exclude()
     @OneToMany(() => NgoMessage, ngo_messages => ngo_messages.ngo, {cascade: true})
     ngo_messages: NgoMessage[]
     

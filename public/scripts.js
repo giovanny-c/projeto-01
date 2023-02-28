@@ -100,7 +100,7 @@ function catchDonorAndCleanList(tag) {
 
 
     var emailInput = document.querySelector("#email")
-    var donorInput = document.querySelector("input[name='donor_id']")
+    var donorInput = document.querySelector("input[name='donors_ids']")
     var donorsList = document.querySelector(".donors-list")
 
     donorInput.value += donor.id + ","
@@ -163,7 +163,7 @@ function catchDonorAndCleanList(tag) {
 function removeDonor(tag) {
 
 
-    var inputDonorId = document.querySelector("#donor_id")
+    var inputDonorId = document.querySelector("#donors_ids")
 
     //usar esse match na hora de postar
     const split = inputDonorId.value.match(/[\w\d|-]+(?=,)/g)
