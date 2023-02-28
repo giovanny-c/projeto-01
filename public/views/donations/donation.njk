@@ -51,6 +51,7 @@
         <div class="buttons">
 
             <div>
+                <input type="submit" form="form-email" value="send-email"/>
                 <button class="email-form-button" form="form-email">
                     Enviar Recibo
                 </button>
@@ -77,7 +78,8 @@
             </div>
         </div>
 
-
+        
+                
         <div class="send-email-form">
             <form name="form-email" class="form-email"  action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/enviar-email" method="POST" enctype="multipart/form-data">
             
@@ -94,18 +96,18 @@
                     
                     >
                 </div>
+
+                <ul class="donors-list"></ul>
+
                 <div class="item">
-                    <select name="message_id" id="message_id"></select>
+                    <select name="message_id" id="message_id">
                     {% for message in messages %}
-                        <option value="" selected disabled hidden>Escolha o a mensagem</option>
-                        <option value="{{message.id}}"
-                            
-                            >
-                            
-                            {{message.name}}
-                            
+                        <option value="" selected disabled hidden>Escolha a mensagem</option>
+                        <option value="{{message.id}}">
+                            {{message.name}}                           
                         </option>
                     {% endfor %}
+                    </select>
                 </div>
 
                 <input type="hidden" id="donation_id" name="donation_id" value="{{donation.id}}">
@@ -113,13 +115,9 @@
 
             </form>
             
-            <ul class="donors-list"></ul>
-
-            </div>
-
-            <div class="receivers">
                
-            </div>   
+
+            <div class="receivers"></div>   
 
 
 
@@ -128,13 +126,11 @@
         
         
 
-        <div >
-        
-            <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe>
+        <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe>
 
-        </div>
+        
     
-</div>
+    </div>
         <div class="change">
             <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float - 1}}"><< doação anterior</a> 
               

@@ -15,6 +15,7 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 import path from "path"
 import { INgosMessagesRepository } from "../../repositories/INgosMessagesRepository";
 import { NgosMessagesRepository } from "../../repositories/implementation/NgosMessagesRepository";
+import { NgoMessage } from "../../entities/ngos_messages";
 
 interface IRequest{
     ngo_id: string
@@ -28,6 +29,7 @@ interface IResponse {
     file?: string | Buffer
     file_name?: string
     ngo: Ngo
+    messages: NgoMessage[]
 }
 
 
@@ -87,6 +89,7 @@ class GetDonationUseCase {
             throw new AppError("Doacão nao encontrada, ou nao existe", 400)
         }
 
+        const ngo_messages = await this.ngosMessagesRepository.findByNgoId(ngo_id)
 
         const {dia, mes , ano} = getFormatedDateForReceipt(donation.created_at)
         
@@ -95,6 +98,7 @@ class GetDonationUseCase {
         let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
         let file = await this.storageProvider.getFile(dir, file_name, true)
+        
 
         if(!file){ // se nao tiver encontrado o arquivo
 
@@ -108,6 +112,7 @@ class GetDonationUseCase {
                         formated_date: this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY"),
                         donation,
                         ngo,
+                        messages: ngo_messages
                     
                     }
                 }
@@ -124,7 +129,8 @@ class GetDonationUseCase {
         }
 
 
-        const ngo_messages = await this.ngosMessagesRepository.findByNgoId(ngo_id)
+        
+        
         
 
         return {
@@ -134,7 +140,7 @@ class GetDonationUseCase {
             ngo,
             file,
             file_name: `${ngo.name}_${donation.donation_number}_${donation.donor_name}`,
-            messages
+            messages: ngo_messages
         }
     }
 

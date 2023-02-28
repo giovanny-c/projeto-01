@@ -2,6 +2,7 @@ iframe {
 
     width: 940px;
     height: 0px;
+    margin: 0px auto;
     visibility: hidden;
 }
 
@@ -47,7 +48,7 @@ iframe {
 
 .change {
 
-    margin-top: 180px;
+    margin-top: 80px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 40px;
@@ -161,6 +162,20 @@ iframe {
     box-shadow: 2px 0px 5px gray;
 }
 
+select {
+
+    margin: 40px 0px;
+    font-size: 30px;
+    color: var(--color-letters);
+    background-color: var(--color-theme);
+    height: 38px;
+    width: 400px;
+    border-radius: 4px;
+    box-shadow: 2px 0px 5px gray;
+}
+
+
+
 .donors-list {
     position: absolute;
     list-style-type: none;
@@ -201,10 +216,12 @@ iframe {
 
 .receivers {
     margin-top: 20px;
+    margin-bottom: 50px;
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-
+    /* padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-hover); */
 
 
 }
@@ -218,6 +235,7 @@ iframe {
     color: var(--color-letters);
     background-color: var(--color-theme);
     border: 1px solid var(--color-hover);
+
     font-size: 14px;
 }
 
