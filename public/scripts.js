@@ -186,7 +186,6 @@ function sendToDonorPage(tag) {
 
 
 
-
 const Mask = {
 
     apply(input, func) {

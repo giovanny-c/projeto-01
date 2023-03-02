@@ -25,7 +25,7 @@ interface IRequest {
     donation_id: string
     ngo_id: string
     message_id: string
-    
+    email: string
     
 }
 
@@ -57,9 +57,9 @@ class SendReceiptEmailUseCase {
 
     ) { }
 
-    async execute({ ngo_id, donation_id, donors_ids, message_id}: IRequest) {
+    async execute({ ngo_id, donation_id, donors_ids, message_id, email}: IRequest) {
 
-        if(!donors_ids ) throw new AppError("Insira pelo menos um email")
+        if(!donors_ids && (!email || email === undefined) ) throw new AppError("Insira pelo menos um email")
         if(!message_id) throw new AppError("Escolha a mensagem do email")
         if(!ngo_id ) throw new AppError("Instituição nao encontrada")
         if(!donation_id) throw new AppError("Doação nao encontrada")
@@ -93,6 +93,10 @@ class SendReceiptEmailUseCase {
 
             return donor.email
         }))
+
+        if(email){
+            donorsEmails.push(email)
+        }
 
         if(donorsEmails.length < 1) throw new AppError("Email nao encontrado ou nao existe")
         
@@ -129,8 +133,7 @@ class SendReceiptEmailUseCase {
             path: `${dir}/${file_name}` //pega da raiz do app
         }
         
-            
-        await this.mailProvider.sendMail({
+        console.log({
             service: ngo_emails[0].service,
             from: ngo_emails[0].email,
             password: decodePasswordForEmail(ngo_emails[0].password),
@@ -140,8 +143,20 @@ class SendReceiptEmailUseCase {
                 text: message.message,
                 attachments: [attachment]
             }
+        })   
+
+        // await this.mailProvider.sendMail({
+        //     service: ngo_emails[0].service,
+        //     from: ngo_emails[0].email,
+        //     password: decodePasswordForEmail(ngo_emails[0].password),
+        //     to: donorsEmails,
+        //     subject: message.subject,
+        //     body: {
+        //         text: message.message,
+        //         attachments: [attachment]
+        //     }
             
-        })
+        // })
 
 
 

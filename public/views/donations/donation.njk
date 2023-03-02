@@ -51,10 +51,12 @@
         <div class="buttons">
 
             <div>
-                <input type="submit" form="form-email" value="send-email"/>
-                <button class="email-form-button" form="form-email">
+                
+                <button type="submit" form="form-email"  class="button email-form-button">
                     Enviar Recibo
                 </button>
+                
+                
             </div>
             <div>
                 <button class="show"
@@ -81,7 +83,11 @@
         
                 
         <div class="send-email-form">
-            <form name="form-email" class="form-email"  action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/enviar-email" method="POST" enctype="multipart/form-data">
+            <form name="form-email" 
+            id="form-email"
+            {# class="form-email"   #}
+            action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/enviar-email" method="POST" 
+            enctype="multipart/form-data">
             
                 <div class="item">
                     <input type="text"
@@ -90,7 +96,7 @@
                     form="form-email"
                     value="" 
                     autocomplete="off"
-                    placeholder="digite o email"
+                    placeholder="Pesquise por nome ou email"
                     onfocus="showList()"
                     oninput="searchDonor(this)"
                     

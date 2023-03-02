@@ -296,6 +296,7 @@ select {
     padding: 0;
 } */
 
+.button,
 button {
     width: auto;
     margin: auto;
@@ -307,7 +308,7 @@ button {
     box-shadow: 2px 1px 3px rgb(56, 56, 56);
 }
 
-button.email-form-button {
+.email-form-button {
     background-color: rgb(192, 219, 250);
 }
 
