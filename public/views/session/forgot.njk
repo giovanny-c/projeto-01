@@ -1,4 +1,4 @@
-{% extends "layout-login.njk" %}
+{% extends "views/layout-login.njk" %}
 
 {% block head %}
     <title>Foodfy - Recuperar senha</title>
@@ -12,7 +12,7 @@
 
     <div class="section">             
 
-        <form id="forgot" method="POST" action="/forgot">
+        <form id="forgot" method="POST" action="/enviar-email-de-recuperacao" enctype="multipart/form">
 
 
                 <div class="item">

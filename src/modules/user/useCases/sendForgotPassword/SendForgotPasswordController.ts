@@ -5,15 +5,15 @@ import { SendForgotPasswordUseCase } from "./SendForgotPasswordUseCase";
 
 class SendForgotPasswordController {
 
-    async handle(req: Request, res: Response): Promise<Response> {
+    async handle(req: Request, res: Response){
 
-        // const { user_name, email } = req.body
+        const { email } = req.body
 
         const sendForgotPasswordUseCase = container.resolve(SendForgotPasswordUseCase)
 
-        await sendForgotPasswordUseCase.execute()
+        await sendForgotPasswordUseCase.execute(email)
 
-        return res.status(200).send("ok")
+        return res.status(200).redirect("/entrar")
     }
 }
 

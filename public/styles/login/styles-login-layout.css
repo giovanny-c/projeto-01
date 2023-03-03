@@ -13,6 +13,14 @@ html {
 }
 
 
+:root {
+
+
+    --color-theme: rgba(56, 56, 56, 1);
+    --color-hover: rgb(95, 95, 95);
+    --color-letters: white;
+    --color-background: ivory;
+}
 
 /*---------body---------------*/
 
@@ -25,8 +33,9 @@ body {
     /*footer em baixo*/
     display: flex;
     flex-direction: column;
-
+    font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
+    background-color: var(--color-background);
 }
 
 
