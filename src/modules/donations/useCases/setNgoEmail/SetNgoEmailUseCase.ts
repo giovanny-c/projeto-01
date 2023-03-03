@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { encodePasswordForEmail, validatePassword } from "../../../../../utils/passwordUtils";
+import { encrypt, validatePassword } from "../../../../../utils/passwordUtils";
 
 import { AppError } from "../../../../shared/errors/AppError";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
@@ -93,7 +93,7 @@ class SetNgoEmailUseCase {
         //ex: pega apenas o hotmail de email@hotmail.com
         let service = email.match(/(?!\w+@)\w+/)[0]
         
-        let encoded_password = encodePasswordForEmail(password)
+        let encoded_password = encrypt(password)
 
 
 

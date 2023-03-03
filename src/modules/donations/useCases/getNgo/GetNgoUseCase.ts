@@ -1,4 +1,6 @@
 import { inject, injectable } from "tsyringe";
+import { getExecutionTime } from "../../../../../utils/decorators/executionTime";
+import { encrypt } from "../../../../../utils/passwordUtils";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { DonationCounter } from "../../entities/donation_counter";
@@ -28,6 +30,7 @@ class GetNgoUseCase {
 
     }
 
+@getExecutionTime()
     async execute(id: string){
 
         
@@ -43,6 +46,9 @@ class GetNgoUseCase {
         if(!ngo) throw new AppError("Instituição nao encontrada", 404)
 
         const ngo_donation_counter = await this.donationCounterRepository.findByNgoId(ngo.id)
+
+
+        console.log(encrypt("gica3012"))
 
         return {ngo, ngo_donation_counter}
 

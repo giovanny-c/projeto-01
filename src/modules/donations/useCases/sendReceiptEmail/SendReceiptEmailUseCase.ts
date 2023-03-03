@@ -3,7 +3,7 @@
 
 
 import { inject, injectable } from "tsyringe";
-import { decodePasswordForEmail } from "../../../../../utils/passwordUtils";
+import { decrypt } from "../../../../../utils/passwordUtils";
 import { getFormatedDateForReceipt } from "../../../../../utils/splitDateForReceipt";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
@@ -136,7 +136,7 @@ class SendReceiptEmailUseCase {
         console.log({
             service: ngo_emails[0].service,
             from: ngo_emails[0].email,
-            password: decodePasswordForEmail(ngo_emails[0].password),
+            password: decrypt(ngo_emails[0].password),
             to: donorsEmails,
             subject: message.subject,
             body: {
@@ -148,7 +148,7 @@ class SendReceiptEmailUseCase {
         // await this.mailProvider.sendMail({
         //     service: ngo_emails[0].service,
         //     from: ngo_emails[0].email,
-        //     password: decodePasswordForEmail(ngo_emails[0].password),
+        //     password: decode(ngo_emails[0].password),
         //     to: donorsEmails,
         //     subject: message.subject,
         //     body: {
