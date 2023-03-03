@@ -30,7 +30,6 @@ class GetNgoUseCase {
 
     }
 
-@getExecutionTime()
     async execute(id: string){
 
         

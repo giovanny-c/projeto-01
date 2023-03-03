@@ -3,6 +3,7 @@
 
 
 import { inject, injectable } from "tsyringe";
+import { getExecutionTime } from "../../../../../utils/decorators/executionTime";
 import { decrypt } from "../../../../../utils/passwordUtils";
 import { getFormatedDateForReceipt } from "../../../../../utils/splitDateForReceipt";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
@@ -57,6 +58,7 @@ class SendReceiptEmailUseCase {
 
     ) { }
 
+    @getExecutionTime()
     async execute({ ngo_id, donation_id, donors_ids, message_id, email}: IRequest) {
 
         if(!donors_ids && (!email || email === undefined) ) throw new AppError("Insira pelo menos um email")
@@ -133,7 +135,9 @@ class SendReceiptEmailUseCase {
             path: `${dir}/${file_name}` //pega da raiz do app
         }
         
-        console.log({
+         
+
+        this.mailProvider.sendMail({
             service: ngo_emails[0].service,
             from: ngo_emails[0].email,
             password: decrypt(ngo_emails[0].password),
@@ -143,20 +147,8 @@ class SendReceiptEmailUseCase {
                 text: message.message,
                 attachments: [attachment]
             }
-        })   
-
-        // await this.mailProvider.sendMail({
-        //     service: ngo_emails[0].service,
-        //     from: ngo_emails[0].email,
-        //     password: decode(ngo_emails[0].password),
-        //     to: donorsEmails,
-        //     subject: message.subject,
-        //     body: {
-        //         text: message.message,
-        //         attachments: [attachment]
-        //     }
             
-        // })
+        })
 
 
 
