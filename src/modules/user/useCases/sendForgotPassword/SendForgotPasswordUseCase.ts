@@ -5,6 +5,7 @@ import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { v4 as uuidV4 } from "uuid"
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import * as fsPromises from "fs/promises"
+import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
 
 @injectable()
 class SendForgotPasswordUseCase {
@@ -18,7 +19,7 @@ class SendForgotPasswordUseCase {
         @inject("DayjsDateProvider")
         private dateProvider: IDateProvider,
         @inject("UsersTokensRepository")
-        private usersTokensRepository: IUsersRepository
+        private usersTokensRepository: IUsersTokensRepository
     ) { }
 
     //user_name: string, email: string

@@ -6,6 +6,7 @@ import { AuthenticateUserController } from "../modules/user/useCases/authenticat
 import { LoadForgotFormController } from "../modules/user/useCases/loadForgotForm/LoadForgotFormController"
 import { LoadLoginPageController } from "../modules/user/useCases/loadLoginPage/LoadLoginPageController"
 import { LogOutController } from "../modules/user/useCases/logOut/LogOutController"
+import { ResetPasswordController } from "../modules/user/useCases/resetPassword/ResetPasswordController"
 import { SendForgotPasswordController } from "../modules/user/useCases/sendForgotPassword/SendForgotPasswordController"
 
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated"
@@ -19,6 +20,7 @@ const logOutController = new LogOutController()
 const authenticateUserController = new AuthenticateUserController()
 const sendForgotPasswordController = new SendForgotPasswordController()
 const loadForgotFormController = new LoadForgotFormController()
+const resetPasswordController = new ResetPasswordController()
 
 loginRoutes.get("/entrar", handleMessage, loadLoginPageController.handle)
 
@@ -30,6 +32,8 @@ loginRoutes.get("/esqueci-a-senha", handleMessage, loadForgotFormController.hand
 
 loginRoutes.post("/enviar-email-de-recuperacao", upload.none(), sendForgotPasswordController.handle )
 
-//"recuperar-senha"
+// loginRoutes,get("/recuperar-senha", handleMessage, loadResetPasswordController.handle)
+loginRoutes.post("recuperar-senha", upload.none(), resetPasswordController.handle)
+//""
 
 export {loginRoutes}

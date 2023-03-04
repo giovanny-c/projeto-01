@@ -12,6 +12,7 @@ interface ISplitDateResponse{
 interface IDateProvider {
 
     dateNow(): Date
+    compareIfBefore(date1: Date, date2: Date): boolean
     convertToDate(date: string | Date): Date
     addOrSubtractTime(operation: string, timeUnit: string, amountOfTime: number, date?: string | Date,): Date
     IsToday(date: Date): boolean
