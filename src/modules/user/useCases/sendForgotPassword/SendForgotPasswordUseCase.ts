@@ -52,8 +52,9 @@ class SendForgotPasswordUseCase {
 
 
         await this.mailProvider.sendMail({
-            service: "", //tem q ter um email para essa reenvio
-            from: "",
+            service:  process.env.BUSINESS_EMAIL_SERVICE, //tem q ter um email para essa reenvio
+            from: process.env.BUSINESS_EMAIL,
+            password: process.env.BUSINESS_EMAIL_PASSWORD,
             to: user.email,
             subject: "Recuperação de senha",
             body: {

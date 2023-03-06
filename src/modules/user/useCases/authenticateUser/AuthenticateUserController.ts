@@ -11,7 +11,7 @@ class AuthenticateUserController {
 
         const authenticateUserUseCase = container.resolve(AuthenticateUserUseCase)
 
-        const response = await authenticateUserUseCase.execute({ name, password })
+        const response = await authenticateUserUseCase.execute({ nameOrEmail: name, password })
 
         req.session.user = response.user
         req.session.created_at = response.created_at

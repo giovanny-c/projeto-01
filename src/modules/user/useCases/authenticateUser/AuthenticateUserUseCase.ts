@@ -10,7 +10,7 @@ import ICacheProvider from "../../../../shared/container/providers/cacheProvider
 import { validatePassword } from "../../../../../utils/passwordUtils";
 
 interface IRequest {
-    name: string
+    nameOrEmail: string
     password: string
 }
 
@@ -37,9 +37,9 @@ class AuthenticateUserUseCase {
         private cacheProvider: ICacheProvider,
     ) { }
 
-    async execute({ name, password }: IRequest): Promise<IResponse> {
+    async execute({ nameOrEmail, password }: IRequest): Promise<IResponse> {
 
-        const user = await this.usersRepository.findByName(name); //mudar depois
+        const user = await this.usersRepository.findOneByEmailOrName(nameOrEmail); //mudar depois
 
 
         if (!user) {
