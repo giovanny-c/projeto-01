@@ -14,7 +14,7 @@ class ResetPasswordController {
 
         await resetPasswordUseCase.execute({email, password , password_confirmation, token: token as string})
 
-        // return res.status(200).render(/*"view de reset pass, success: Senha alterada com sucesso!"*/)
+        return res.status(200).render("views/session/reset-password", {success: "Senha alterada com sucesso!"})
     }
 }
 
