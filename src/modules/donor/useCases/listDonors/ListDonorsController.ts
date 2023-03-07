@@ -17,7 +17,7 @@ class ListDonorsController {
             +(page)
         )
 
-        return res.render("views/donors/search-donors", {donors, search_terms, error: req.error})
+        return res.render("views/donors/search-donors", {donors, search_terms, error: req.error, success: req.success})
     }
 
 

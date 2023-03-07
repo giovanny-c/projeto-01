@@ -15,7 +15,7 @@ class LoadUserController {
 
         const user = await loadUsersUseCase.execute(user_id)
 
-        return res.status(200).render("views/users/user", {user, error: req.error, admin_user})
+        return res.status(200).render("views/users/user", {user, admin_user, error: req.error, success: req.success})
     }
 
 }

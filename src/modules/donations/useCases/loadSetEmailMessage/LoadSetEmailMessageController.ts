@@ -16,7 +16,7 @@ class LoadSetEmailMessageController {
 
         const {ngo} = await loadSetEmailMessage.execute({ngo_id})
 
-        return res.status(200).render("views/ngos/create-message", {ngo, error: req.error})
+        return res.status(200).render("views/ngos/create-message", {ngo, error: req.error, success: req.success})
 
     }
 

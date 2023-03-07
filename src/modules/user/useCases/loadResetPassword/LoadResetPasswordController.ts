@@ -9,7 +9,7 @@ class LoadResetPasswordController {
 
         const {token} = req.query
 
-        return res.status(200).render("views/session/reset-password", {token: token as string, error: req.error})
+        return res.status(200).render("views/session/reset-password", {token: token as string, error: req.error, success: req.success})
     }
 
 }
