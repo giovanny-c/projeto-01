@@ -35,7 +35,7 @@ loginRoutes.get("/esqueci-a-senha", handleMessage, loadForgotFormController.hand
 loginRoutes.post("/enviar-email-de-recuperacao", upload.none(), sendForgotPasswordController.handle )
 
 loginRoutes.get("/recuperar-senha", handleMessage, loadResetPasswordController.handle)
-loginRoutes.post("recuperar-senha", upload.none(), resetPasswordController.handle)
+loginRoutes.post("/recuperar-senha", upload.none(), resetPasswordController.handle)
 //""
 
 export {loginRoutes}

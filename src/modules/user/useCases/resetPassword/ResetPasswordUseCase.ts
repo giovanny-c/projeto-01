@@ -32,7 +32,7 @@ class ResetPasswordUseCase {
     ) { }
 
     
-    async execute({token, email, password, password_confirmation}: IRequest): Promise<void> {
+    async execute({token, email, password, password_confirmation}: IRequest) {
 
         if (!email) {
             throw new AppError("Forneça um email")
@@ -47,17 +47,21 @@ class ResetPasswordUseCase {
             throw new AppError("A senha e confirmação não combinam")
         }
 
+        if (!password.match(/([A-Za-z0-9ãõç\-.*&$#@!?=+_]{4,})/g)) {
+
+            throw new AppError("Forneça um senha valida", 400)
+        }
+
         
         const user = await this.usersRepository.findByEmail(email)
        
         if (!user) {
             throw new AppError("Usuario nao encontrado")
         }
-
         const confirmToken = await this.usersTokensRepository.findByUserIdAndRefreshToken({user_id: user.id, refresh_token: token})
 
         if(!confirmToken || token !== confirmToken.refresh_token){
-            throw new AppError("Token invalido")
+            throw new AppError("Token invalido solicite um novo envio de email")
         }
         if(this.dateProvider.compareIfBefore(confirmToken.expires_date, this.dateProvider.dateNow())){
             throw new AppError("Token expirado solicite um novo envio de email")
@@ -71,6 +75,10 @@ class ResetPasswordUseCase {
             salt,
             
         })
+
+        this.usersTokensRepository.deleteById(confirmToken.id)
+
+        return {success: "Senha alterada com sucesso!"}
           
     }
 }

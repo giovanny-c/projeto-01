@@ -7,14 +7,16 @@ class ResetPasswordController {
 
     async handle(req: Request, res: Response){
 
-        const {token} = req.query
-        const { email, password, password_confirmation } = req.body
+        
+        
+        const { email, password, password_confirmation, token } = req.body
 
         const resetPasswordUseCase = container.resolve(ResetPasswordUseCase)
 
-        await resetPasswordUseCase.execute({email, password , password_confirmation, token: token as string})
-
-        return res.status(200).render("views/session/reset-password", {success: "Senha alterada com sucesso!"})
+        const {success} = await resetPasswordUseCase.execute({email, password , password_confirmation, token: token as string})
+        req.session.success = success
+        
+        return res.status(200).redirect("/entrar")
     }
 }
 

@@ -154,7 +154,8 @@ class SendReceiptEmailUseCase {
 
         return {
             ngo,
-            donation
+            donation,
+            success: "Email enviado!"
         }
 
         

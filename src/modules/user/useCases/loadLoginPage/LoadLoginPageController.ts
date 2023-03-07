@@ -11,7 +11,7 @@ class LoadLoginPageController {
         //criar um validator de erro de session
         
 
-        return res.render("views/session/login", {error: req.error})
+        return res.render("views/session/login", {error: req.error, success: req.success})
     }
 }
 

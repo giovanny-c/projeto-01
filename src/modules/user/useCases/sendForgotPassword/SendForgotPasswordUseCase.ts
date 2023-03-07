@@ -23,7 +23,7 @@ class SendForgotPasswordUseCase {
     ) { }
 
     //user_name: string, email: string
-    async execute(email: string): Promise<void> {
+    async execute(email: string) {
 
         if (!email) {
             throw new AppError("Forneça um email")
@@ -43,7 +43,15 @@ class SendForgotPasswordUseCase {
         //cria um horario 3hrs a frente, validade do token
         const expires_date = this.dateProvider.addOrSubtractTime("add", "hours", 3)
 
-        // criar tabela para armazenar os tokens
+        
+        const oldTokens = await this.usersTokensRepository.findByUserId(user.id)
+
+        oldTokens.map((oldToken)=> {//nao precisa ser sincrono
+
+            this.usersTokensRepository.deleteById(oldToken.id)
+        })
+        
+
         await this.usersTokensRepository.create({
             refresh_token: token,
             user_id: user.id,
@@ -51,17 +59,21 @@ class SendForgotPasswordUseCase {
         })
 
 
-        await this.mailProvider.sendMail({
-            service:  process.env.BUSINESS_EMAIL_SERVICE, //tem q ter um email para essa reenvio
+        this.mailProvider.sendMail({
+            service:  process.env.BUSINESS_EMAIL_SERVICE,
             from: process.env.BUSINESS_EMAIL,
             password: process.env.BUSINESS_EMAIL_PASSWORD,
             to: user.email,
             subject: "Recuperação de senha",
             body: {
-                html: `Clique <a href="${process.env.RESET_PASSWORD_URL}${token}" target=_blank>AQUI</a> para recuperar redefinir sua senha `,
+                html: `Clique <a href="${process.env.RESET_PASSWORD_URL}${token}" target=_blank>AQUI</a> para redefinir sua senha `,
                 //attachments: [attachment]
             }
         })
+
+        return {
+            success: "O link de recuperação de senha foi enviado para seu email"
+        }
     }
 }
 
