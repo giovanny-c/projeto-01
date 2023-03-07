@@ -23,6 +23,12 @@ class UpdateUserController {
             admin_id: admin? admin_id : "" // se admin for true passa o adminId
         })
 
+        if(user.admin === false){
+            req.session.destroy()
+
+            return res.redirect("/entrar")
+        }
+
         return res.status(201).redirect(`/usuarios/${user.id}`)
     }
 

@@ -23,14 +23,14 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
 
     }
 
-    //funciona o constructor com inject() ?????????????
+   
     const dateProvider = container.resolve(DayjsDateProvider)
     // 
     let [amount, time_unit] = String(process.env.ABSOLUTE_SESSION_TIME_OUT).split(" ")
     
     const absoluteSessionTimeOut = dateProvider.addOrSubtractTime("add", time_unit, Number(amount), req.session.created_at)
     
-    console.log(`1 vez - ${absoluteSessionTimeOut}`)
+    // console.log(`1 vez - ${absoluteSessionTimeOut}`)
     //para nao permitir que e sessao seja prolongada indefinidamente
     if(!dateProvider.compareIfBefore(dateProvider.dateNow(), absoluteSessionTimeOut)){
         req.session.error = {

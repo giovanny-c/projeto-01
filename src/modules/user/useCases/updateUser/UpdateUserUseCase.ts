@@ -70,6 +70,13 @@ class UpdateUserUseCase {
 
             throw new AppError("Voce nao pode editar o usuário de outro admin", 400)
         }
+
+        const admin_users = await this.usersRepository.countAdmins()
+
+        if(admin_users <= 1 && is_admin !== "true"){
+
+            throw new AppError("Não foi possível atualizar o Usuário. Deve haver pelo menos um admin", 400)
+        }
         
         //se estiver alterando o propio user e a senha nao for valida
         if(user.id === admin_id && !validatePassword(password, user.salt, user.password_hash)){
@@ -83,6 +90,8 @@ class UpdateUserUseCase {
         user.admin = is_admin === "true" ? true : false  //se admin nao for marcado = false
 
         return instanceToPlain(await this.usersRepository.create({...user})) as User
+    
+    
     }
 }
 
