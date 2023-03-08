@@ -394,6 +394,30 @@ const Mask = {
 
         return value
 
+    },
+
+    formatName(value) {
+
+        let valueArr = value.split(" ")
+
+        valueArr = valueArr.map((string, index) => { //pega a primeira letra e transforma em upper
+
+            //todas as palavras maiores que duas letras exeto dos. das.
+            if (string.match(/(?!das(?!\w+)|dos(?!\w+))\b\w{3,}/) || index === 0) {
+
+                return string.replace(/^\w/, string.charAt(0).toUpperCase())
+
+            }
+
+            return string
+
+        });
+
+        return valueArr.toString().replace(/\,/g, " ")
+
+
+
+
     }
 
 

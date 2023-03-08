@@ -181,8 +181,8 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         //FALTA
         //employee name e assinatura do responsavel
 
-        let referingTo = "Doação" 
-        page.drawText(referingTo, {
+        let refferingTo = "Doação" 
+        page.drawText(refferingTo, {
 
             y: 118,
             x: 195,
