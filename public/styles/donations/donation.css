@@ -122,16 +122,20 @@ iframe {
     width: 940px;
 }
 
+.update-info {
+    width: 940px;
+    display: flex;
+}
 
-.donation-info p.canceled {
+.update-info p.canceled {
     color: rgb(233, 14, 14);
-    width: 470px;
+    width: 50%;
     text-align: end;
 }
 
-.donation-info p.email-sent {
+.update-info p.email-sent {
     color: rgb(53, 221, 19);
-    width: 470px;
+    width: 50%;
     text-align: start;
 }
 

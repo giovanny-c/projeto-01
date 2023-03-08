@@ -39,18 +39,23 @@
                 Funcionária: {{donation.worker.name}}
             </p>
 
-            {% if donation.is_email_sent %}
-                <p class="email-sent">
-                EMAIL ENVIADO
-                </p> 
-            {% endif %}
+            <div class="update-info">
             
-            {% if donation.is_donation_canceled %}
-                <p class="canceled">
-                CANCELADO
+                <p class="email-sent">
+                    {% if donation.is_email_sent %}
+                        EMAIL ENVIADO
+                    {% endif %}
                 </p> 
-            {% endif %}
+            
+            
 
+                <p class="canceled">
+                    {% if donation.is_donation_canceled %}
+                        CANCELADO
+                    {% endif %}
+                </p> 
+            
+            </div>
            
         </div>
 

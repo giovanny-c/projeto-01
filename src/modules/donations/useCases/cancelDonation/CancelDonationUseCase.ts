@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
+import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { Donation } from "../../entities/donation";
 import { Ngo } from "../../entities/ngos";
@@ -22,6 +23,9 @@ class CancelDonationUseCase {
         private ngoRepository: INgoRepository,
         @inject("CacheProvider")
         private cacheProvider: ICacheProvider,
+        @inject("FileProvider")
+        private fileProvider: IFileProvider,
+        
     ) {
 
     }
@@ -52,8 +56,10 @@ class CancelDonationUseCase {
         //     throw new AppError("This donation cant be canceled, because is already payed")
         // }
 
-       await this.donationsRepository.markDonationAsCanceled(donationExists.id)
+        await this.donationsRepository.markDonationAsCanceled(donationExists.id)
 
+        
+        await this.fileProvider.generateFile({...donationExists, is_donation_canceled: true}, true)
 
 
         return {
