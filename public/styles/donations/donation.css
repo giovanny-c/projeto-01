@@ -119,14 +119,20 @@ iframe {
 }
 
 .donation-info p:nth-child(5) {
-    width: 470px;
+    width: 940px;
 }
 
 
-.donation-info p:nth-child(6) {
-    color: rgba(255, 0, 0, 1);
+.donation-info p.canceled {
+    color: rgb(233, 14, 14);
     width: 470px;
     text-align: end;
+}
+
+.donation-info p.email-sent {
+    color: rgb(53, 221, 19);
+    width: 470px;
+    text-align: start;
 }
 
 /* 
@@ -309,7 +315,7 @@ button {
 }
 
 .email-form-button {
-    background-color: rgb(192, 219, 250);
+    background-color: rgb(140, 197, 107);
 }
 
 button.cancel {

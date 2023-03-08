@@ -29,7 +29,7 @@ import { SetDonationCounterController } from "../modules/donations/useCases/setD
 import { SetEmailMessageController } from "../modules/donations/useCases/setEmaiMessage/SetEmailMessageController";
 import { SetNgoEmailController } from "../modules/donations/useCases/setNgoEmail/SetNgoEmailController";
 
-import { UpdateDonationStatusController } from "../modules/donations/useCases/updateDonationStatus/UpdateDonationStatusController";
+// import { UpdateDonationStatusController } from "../modules/donations/useCases/updateDonationStatus/UpdateDonationStatusController";
 import { ensureAdmin } from "../shared/middlewares/ensureAdmin";
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated";
 import { handleMessage } from "../shared/middlewares/handleMessage";
@@ -42,7 +42,7 @@ const donationRoutes = Router()
 
 
 const createDonationController = new CreateDonationController()
-const updateDonationStatusController = new UpdateDonationStatusController()
+// const updateDonationStatusController = new UpdateDonationStatusController()
 const cancelDonationController = new CancelDonationController()
 const listDonationsController = new ListDonationsController()
 const importDonationsController = new ImportDonationsController()

@@ -69,7 +69,14 @@ export class CreateTableDonations1672689224845 implements MigrationInterface {
                     {
                         name: "is_donation_canceled",
                         type: "boolean",
-                        isNullable: true
+                        isNullable: true,
+                        default: false
+                    },
+                    {
+                        name: "is_email_sent",
+                        type: "boolean",
+                        isNullable: true,
+                        default: false
                     },
 
 

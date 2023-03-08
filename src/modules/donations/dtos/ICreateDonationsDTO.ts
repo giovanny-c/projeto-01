@@ -14,6 +14,7 @@ interface ICreateDonationsDTO {
     is_payed?: boolean
     payed_at?: Date
     is_donation_canceled?: boolean
+    is_email_sent?: boolean
 
 
 }

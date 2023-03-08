@@ -34,6 +34,11 @@ class DonorsRepository implements IDonorsRepository {
 
         return donor
     }
+    async findByName(name: string): Promise<Donor>{
+        const donor = await this.repository.findOne({ where: { name } })
+
+        return donor
+    }
     async findById(id: string): Promise<Donor> {
         const donor = await this.repository.findOne({ where: { id } })
 

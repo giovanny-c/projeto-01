@@ -16,6 +16,8 @@ import path from "path"
 import { INgosMessagesRepository } from "../../repositories/INgosMessagesRepository";
 import { NgosMessagesRepository } from "../../repositories/implementation/NgosMessagesRepository";
 import { NgoMessage } from "../../entities/ngos_messages";
+import { IDonorsRepository } from "../../../donor/repositories/IDonorsRepository";
+import { Donor } from "../../../donor/entities/donor";
 
 interface IRequest{
     ngo_id: string
@@ -30,6 +32,7 @@ interface IResponse {
     file_name?: string
     ngo: Ngo
     messages: NgoMessage[]
+    donor?: Donor
 }
 
 
@@ -51,6 +54,8 @@ class GetDonationUseCase {
         private storageProvider: IStorageProvider,
         @inject("NgosMessagesRepository")
         private ngosMessagesRepository: INgosMessagesRepository,
+        @inject("DonorsRepository")
+        private donorsRepository: IDonorsRepository,
     ) {
 
     }
@@ -66,7 +71,7 @@ class GetDonationUseCase {
             if(!ngo) throw new AppError("Instituição nao encontrada", 404)
         }
 
-        let donation
+        let donation: Donation
 
         if(donation_number){
             
@@ -88,6 +93,16 @@ class GetDonationUseCase {
         if(donation.ngo_id !== ngo.id){
             throw new AppError("Doacão nao encontrada, ou nao existe", 400)
         }
+
+        let a: any[] = []
+
+        a.filter
+
+        //se existir um donor com o mesmo nome passa ele para o get donation
+        //para colocar no campo de email o donor.email
+        //SE for fazer a pesquisa em tempo real pros donors, na hora de criar a donation
+        const donorExists = await this.donorsRepository.findByName(donation.donor_name)
+        
 
         const ngo_messages = await this.ngosMessagesRepository.findByNgoId(ngo_id)
 
@@ -112,7 +127,8 @@ class GetDonationUseCase {
                         formated_date: this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY"),
                         donation,
                         ngo,
-                        messages: ngo_messages
+                        messages: ngo_messages,
+                        donor: donorExists || undefined
                     
                     }
                 }
@@ -140,7 +156,8 @@ class GetDonationUseCase {
             ngo,
             file,
             file_name: `${ngo.name}_${donation.donation_number}_${donation.donor_name}`,
-            messages: ngo_messages
+            messages: ngo_messages,
+            donor: donorExists || undefined
         }
     }
 

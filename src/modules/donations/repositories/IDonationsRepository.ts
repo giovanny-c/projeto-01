@@ -16,14 +16,10 @@ interface IDonationsRepository {
     findDonationsByWorker(worker_id: string, data: IFindOptions): Promise<Donation[]>
     findForGenerateBooklet({donation_number_interval, ngo_id}:IFindOptions): Promise<Donation[]>
     findDonationByNumberAndNgoId({donation_number, ngo_id}: IFindOptions): Promise<Donation>
-
-    countDonationsValues(data: IFindOptions): Promise<ICountDonationsValueResponse>
-   
-
-    //findByCreated_atOrPayed_at(data: Date, dateType: string(criado ou pago))
-    // findByIsPayedOrIsCanceled (isTrue: boolean, payOrCanceled: string)
-    MarkDonationAsPayed(donation: ICreateDonationsDTO, payed_at: Date): Promise<Donation>
-    MarkDonationAsCanceled(id: string): Promise<Donation>
+    countDonationsValues(data: IFindOptions): Promise<ICountDonationsValueResponse> 
+    // markDonationAsPayed(donation: ICreateDonationsDTO, payed_at: Date): Promise<Donation>
+    markDonationAsCanceled(id: string): Promise<Donation>
+    markEmailSentForDonation(id: string): Promise<Donation>
 }
 
 export { IDonationsRepository, ICountDonationsValueResponse }

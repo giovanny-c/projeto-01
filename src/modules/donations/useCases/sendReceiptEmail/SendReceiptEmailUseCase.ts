@@ -150,6 +150,8 @@ class SendReceiptEmailUseCase {
             
         })
 
+        await this.donationsRepository.markEmailSentForDonation(donation.id)
+
 
 
         return {

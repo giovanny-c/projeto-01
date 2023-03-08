@@ -240,37 +240,48 @@ class DonationsRepository implements IDonationsRepository {
         })
     }
 
-    async MarkDonationAsPayed({ id, donation_number, donor_id, user_id, donation_value  }: ICreateDonationsDTO, payed_at: Date): Promise<Donation> {
+    // async markDonationAsPayed({ id, donation_number, donor_id, user_id, donation_value  }: ICreateDonationsDTO, payed_at: Date): Promise<Donation> {
 
-        throw new Error("Method not implemented!")
+    //     throw new Error("Method not implemented!")
 
-        // const payedDonation = this.repository.create({
-        //     id,
-        //     donation_number,
-        //     donor_id,
-        //     user_id,
-        //     donation_value,
-        //     is_payed: true,
-        //     payed_at,
+    //     // const payedDonation = this.repository.create({
+    //     //     id,
+    //     //     donation_number,
+    //     //     donor_id,
+    //     //     user_id,
+    //     //     donation_value,
+    //     //     is_payed: true,
+    //     //     payed_at,
 
-        // })
+    //     // })
 
-        // const donation = await this.repository.save(payedDonation)
+    //     // const donation = await this.repository.save(payedDonation)
 
-        // return donation
+    //     // return donation
 
 
-    }
+    // }
 
-    async MarkDonationAsCanceled(id: string): Promise<Donation> {
+    async markDonationAsCanceled(id: string): Promise<Donation> {
         const canceledDonation = this.repository.create({
             id,
             is_donation_canceled: true
         })
 
-        const donation = await this.repository.save(canceledDonation)
+        return await this.repository.save(canceledDonation)
 
-        return donation
+        
+    }
+
+    async markEmailSentForDonation(id: string){
+        const updateMailSent = this.repository.create({
+            id,
+            is_email_sent: true
+        })
+
+        return await this.repository.save(updateMailSent)
+
+        
     }
 
 }

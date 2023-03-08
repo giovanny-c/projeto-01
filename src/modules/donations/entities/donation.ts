@@ -63,6 +63,9 @@ class Donation {
     @Column()
     is_donation_canceled: boolean
 
+    @Column()
+    is_email_sent: boolean
+
     constructor() {
         if (!this.id) {
             this.id = uuidV4()

@@ -52,7 +52,7 @@ class CancelDonationUseCase {
         //     throw new AppError("This donation cant be canceled, because is already payed")
         // }
 
-       await this.donationsRepository.MarkDonationAsCanceled(donationExists.id)
+       await this.donationsRepository.markDonationAsCanceled(donationExists.id)
 
 
 
