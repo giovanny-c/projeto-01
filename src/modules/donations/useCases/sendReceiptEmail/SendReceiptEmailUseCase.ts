@@ -106,7 +106,7 @@ class SendReceiptEmailUseCase {
         const donation = await this.donationsRepository.findOneById(donation_id)
         
         if(!donation) throw new AppError("Doação nao encontrada ou nao existe")
-
+        if(donation.is_donation_canceled) throw new AppError("Não é possivel enviar um recibo de uma doação que foi cancelada")
         
         const ngo_emails = await this.ngosEmailsRepository.findAllfromNgo(ngo.id)
         

@@ -38,7 +38,7 @@
             <p>
                 Funcionária: {{donation.worker.name}}
             </p>
-            
+
             {% if donation.is_email_sent %}
                 <p class="email-sent">
                 EMAIL ENVIADO
@@ -138,7 +138,11 @@
         </div>
         
         
-
+        <div class="download">
+            <a class="download-button" href="data:application/pdf;base64,{{file}}" download="{{file_name}}"
+                
+            >Baixar Talão</a> 
+        </div>
         <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe>
 
         

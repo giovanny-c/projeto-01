@@ -318,6 +318,13 @@ button {
     background-color: rgb(140, 197, 107);
 }
 
+.email-form-button:hover {
+
+    color: black;
+    background-color: rgb(97, 150, 67);
+}
+
+
 button.cancel {
     background-color: rgb(214, 33, 33);
     color: white;
@@ -343,4 +350,37 @@ button.cancel:hover {
 
 button.cancel:active {
     background-color: brown;
+}
+
+.download {
+
+    margin: 20px auto;
+    width: 940px;
+
+}
+
+.download a {
+    box-shadow: 1px 2px 6px gray;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 24px;
+    background-color: var(--color-theme);
+    color: var(--color-background);
+    padding: 6px;
+    border: 1px solid var(--color-theme);
+    border-radius: 6px;
+}
+
+.download a:hover {
+
+    background-color: var(--color-hover);
+    color: var(--color-background);
+
+}
+
+.download a:active {
+
+    background-color: var(--color-theme);
+    color: var(--color-background);
+
 }

@@ -47,7 +47,6 @@ class GetNgoUseCase {
         const ngo_donation_counter = await this.donationCounterRepository.findByNgoId(ngo.id)
 
 
-        console.log(encrypt("gica3012"))
 
         return {ngo, ngo_donation_counter}
 

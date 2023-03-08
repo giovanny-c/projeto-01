@@ -350,7 +350,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             
         doc.embedPages(pages_promises) 
         
-        //save()
+        
         const pdfBytes = await doc.save()
 
         //salva
@@ -360,7 +360,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
     
         
         await storageProvider.saveFileBooklet(dir, file_name, pdfBytes)
-       // storageProvider.saveFileStream(dir, file_name, pdfBytes)
+       
             
         return {
             file: pdfBytes,

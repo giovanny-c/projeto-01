@@ -46,7 +46,7 @@ class LoadSetNgoEmailUseCase {
 
 
         const email = await this.ngosEmailsRepository.findAllfromNgo(ngo_id)
-        console.log(email)
+        
 
     
         return  {

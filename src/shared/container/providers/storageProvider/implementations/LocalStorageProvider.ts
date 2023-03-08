@@ -45,7 +45,7 @@ class LocalStorageProvider implements IStorageProvider {
             throw error
         }
     }
-
+    // do tmp folder do multer
     async delete({ file, folder }: IFilePath): Promise<void> {
 
         try {
@@ -83,7 +83,7 @@ class LocalStorageProvider implements IStorageProvider {
 
     }
 
-    @getExecutionTime() //pode ser sincrono pois é poucos kbs
+    @getExecutionTime() //transformar em fsPromise?
     async saveFileReceipt(dir: string, file_name:string, file: Uint8Array ): Promise<void>{
 
         if (!fs.existsSync(dir)) {
@@ -113,8 +113,8 @@ class LocalStorageProvider implements IStorageProvider {
                 //  (err) => {if (err) throw err}
             
         }
-//writeFileSync?
-//fsPromise.writeFile lento porem consegue escrever
+
+        //fsPromise.writeFile lento porem consegue escrever
         try { 
             await fsPromises.writeFile(`${dir}/${file_name}`, file)
             /*,
@@ -138,7 +138,7 @@ class LocalStorageProvider implements IStorageProvider {
         let file
         
         try {   
-//readFile? muito rapido nao le o talao
+
             file = await fsPromises.readFile(file_path)
 
             
@@ -154,7 +154,6 @@ class LocalStorageProvider implements IStorageProvider {
             return
         }
     }
-    
     
     
     async getFilesFromDir(dir: string): Promise<string[] | void>{
@@ -191,9 +190,7 @@ class LocalStorageProvider implements IStorageProvider {
         
         return data
     }
-        
-        
-        
+          
     @getExecutionTime()
     saveFileStream(dir: string, file_name: string, file: Uint8Array | Buffer){
 

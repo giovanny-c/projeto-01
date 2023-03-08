@@ -94,9 +94,7 @@ class GetDonationUseCase {
             throw new AppError("Doacão nao encontrada, ou nao existe", 400)
         }
 
-        let a: any[] = []
-
-        a.filter
+        
 
         //se existir um donor com o mesmo nome passa ele para o get donation
         //para colocar no campo de email o donor.email
@@ -133,6 +131,7 @@ class GetDonationUseCase {
                     }
                 }
 
+                //se tiver vai pegar e transformar em base64
                 file = Buffer.from(uint8Array)
 
                 file = file.toString("base64")
@@ -144,18 +143,16 @@ class GetDonationUseCase {
 
         }
 
-
-        
-        
-        
-
+        const formatedDate = this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY")
+console.log(formatedDate)
+    
         return {
             formated_value: formatToBRL(donation.donation_value),
-            formated_date: this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY"),
+            formated_date: formatedDate,
             donation,
             ngo,
             file,
-            file_name: `${ngo.name}_${donation.donation_number}_${donation.donor_name}`,
+            file_name: `${donation.donor_name}_${formatedDate}_${donation.donation_number}_${ngo.name}`,
             messages: ngo_messages,
             donor: donorExists || undefined
         }
