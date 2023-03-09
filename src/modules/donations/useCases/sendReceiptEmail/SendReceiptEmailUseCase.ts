@@ -81,22 +81,28 @@ class SendReceiptEmailUseCase {
         
 
         //filtra os ids que vem todos juntos
-        const donorsEmails = await Promise.all(donors_ids.match(/[\w\d-]+(?=,)/g).map(async(donor_id) => {
+        let donorsEmails: string[] = [] 
 
-            if(donor_id === ""){
-                return
-            }
+        if(donors_ids){
 
-            const donor = await this.donorsRepository.findById(donor_id)
-            
-            if(!donor){
-                return
-            }
+            donorsEmails = await Promise.all(donors_ids.match(/[\w\d-]+(?=,)/g).map(async(donor_id) => {
 
-            return donor.email
-        }))
+                if(donor_id === ""){
+                    return
+                }
+
+                const donor = await this.donorsRepository.findById(donor_id)
+                
+                if(!donor){
+                    return
+                }
+
+                return donor.email
+            })) 
+        }
 
         if(email){
+
             donorsEmails.push(email)
         }
 

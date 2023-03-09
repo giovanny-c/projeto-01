@@ -12,11 +12,13 @@ class CreateDonationController {
         const { id: user_id } = req.user
         const {id: ngo_id} = req.params
 
+
+        //por esses replaces no front?
         //remove a mascara do front e transforma para float com "."
         donation_value = donation_value.replace(/(?!\,+)[\D]/g,"").replace(/\,/,".") as string
        
+        donor_name = donor_name.replace(/\s+$/,"")
         
-
         const createDonationUseCase = container.resolve(CreateDonationUseCase)
 
 

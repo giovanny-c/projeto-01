@@ -300,6 +300,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             
             const y = page.getHeight() - receipt.height * index //posição y
             
+            
             //coloca a img no pdf
             page.drawPage(receipt, {
     
@@ -319,13 +320,25 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             //     })
             // }
 
+            //linha horizontal ______
             page.drawLine({
                 start: {x:0 ,y: y + 0.5},
                 end: {x:page.getWidth(), y: y + 0.5 },
                 color: rgb(0.5, 0.5, 0.5),
                 lineCap: 1,
+                thickness: 0.1,
+                
+            })
+            //linha vertical |
+            page.drawLine({
+                start: {x:26 ,y: y},
+                end: {x:26, y: y + receipt.height },
+                color: rgb(0.5, 0.5, 0.5),
+                lineCap: 1,
                 thickness: 0.1
             })
+
+            
 
         
             //se chegar a 3 acabou a pagina 

@@ -231,6 +231,7 @@ const Mask = {
     },
 
     formatPhone(value) {
+
         // /(\(\d{2}\))*(\d{4,5}-\d{4})/g 
         // meu codigo
         // value = value.replace(/([^\d\(\)])/g, "")
@@ -358,6 +359,7 @@ const Mask = {
             //(11.222.333/4444-55)
 
 
+            //$1 referente a (\d{3}) - $2 a (\d)
         } else {
 
             //cpf 111.222.333-44
@@ -397,6 +399,7 @@ const Mask = {
     },
 
     formatName(value) {
+
 
         let valueArr = value.split(" ")
 

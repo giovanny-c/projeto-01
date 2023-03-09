@@ -70,11 +70,18 @@
                 
                 
             </div>
+
             <div>
                 <button class="show"
                 onclick="toggleIframe()">
                     Ver Recibo
                 </button>
+            </div>
+
+            <div >
+                <a class="button download-button" href="data:application/pdf;base64,{{file}}" download="{{file_name}}"
+                    
+                >Baixar Recibo</a> 
             </div>
 
 
@@ -143,11 +150,7 @@
         </div>
         
         
-        <div class="download">
-            <a class="download-button" href="data:application/pdf;base64,{{file}}" download="{{file_name}}"
-                
-            >Baixar Talão</a> 
-        </div>
+        
         <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe>
 
         

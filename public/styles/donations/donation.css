@@ -142,17 +142,7 @@ iframe {
 /* 
 .donation-info p:nth-child(5) {} */
 
-.buttons {
-    margin: 40px auto;
-    width: 940px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
 
-    justify-items: center;
-
-
-
-}
 
 .send-email-form {
     margin-top: 100px;
@@ -306,6 +296,29 @@ select {
     padding: 0;
 } */
 
+.buttons {
+    margin: 40px auto;
+    width: 940px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    justify-items: center;
+
+
+
+}
+
+.button.download-button {
+    padding: 2px;
+    color: black;
+    background-color: #F0F0F0;
+}
+
+.button.download-button:hover {
+    color: white;
+    background-color: var(--color-theme);
+}
+
 .button,
 button {
     width: auto;
@@ -322,7 +335,7 @@ button {
     background-color: rgb(140, 197, 107);
 }
 
-.email-form-button:hover {
+button.email-form-button:hover {
 
     color: black;
     background-color: rgb(97, 150, 67);
@@ -334,12 +347,14 @@ button.cancel {
     color: white;
 }
 
+.button:hover,
 button:hover {
 
     color: white;
     background-color: rgb(56, 56, 56);
 }
 
+.button:active,
 button:active {
 
     background-color: var(--color-hover);
@@ -356,7 +371,7 @@ button.cancel:active {
     background-color: brown;
 }
 
-.download {
+/* .download {
 
     margin: 20px auto;
     width: 940px;
@@ -387,4 +402,4 @@ button.cancel:active {
     background-color: var(--color-theme);
     color: var(--color-background);
 
-}
+} */
