@@ -137,6 +137,7 @@ class GetDonationUseCase {
                 file = file.toString("base64")
                 
             } catch (error) {
+                console.error(error)
                 throw new AppError("Nao foi possivel gerar o recibo dessa doação", 500)
 
             }

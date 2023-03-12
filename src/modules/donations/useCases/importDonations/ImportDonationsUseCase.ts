@@ -115,7 +115,6 @@ class ImportDonationsUseCase {
 
             }).join(" ")
 
-            console.log(donation.valor)
             if(typeof donation.valor !== "number"){
 
                 

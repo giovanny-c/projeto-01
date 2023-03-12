@@ -3,6 +3,7 @@ import { PDFDocument, PDFFont, PDFImage, PDFPage, rgb } from "pdf-lib"
 import fs from "fs"
 
 
+
 import path from "path"
 import { Donation } from "../../../../../modules/donations/entities/donation";
 
@@ -192,7 +193,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         })
 
 //workwe
-        page.drawText(donation.worker.name, {
+        page.drawText(donation.worker?.name || "", {
             y: 16,
             x: 95,
             size: 20,
@@ -363,8 +364,11 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             
         doc.embedPages(pages_promises) 
         
+
         
-        const pdfBytes = await doc.save()
+        const pdfBytes = await doc.save() //cria um array de bytes 
+
+      
 
         //salva
         let dir = `./tmp/booklet/${year}/${month}/${data[0].ngo.name}`

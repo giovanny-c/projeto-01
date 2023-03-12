@@ -22,12 +22,17 @@
             Talão: {{file_name}}
         </div>
         
-        <div class="download">
-            <a class="download-button" href="data:application/pdf;base64,{{file}}" download="{{file_name}}"
-                
-            >Baixar Talão</a> 
-        </div>
+            <div class="download">
+                <a class="download-button" href="data:application/pdf;base64,{{file}}" download="{{file_name}}"
+                    
+                >Baixar Talão</a> 
+            
 
+            <div class="back">
+
+                <a href="/instituicao/{{ngo.id}}/gerar-talao">Voltar</a>
+            </div>
+        </div>
     {# <object 
         type="application/pdf"
         data="data:application/pdf;base64,{{file}}"

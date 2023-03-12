@@ -74,7 +74,7 @@ class CreateDonationUseCase {
         const workerExists = await this.workersRepository.findById(worker_id)
 
         if (!userExists) {
-            throw new AppError("This user does not exists")
+            throw new AppError("Esse usuario nao existe")
 
         }
 
@@ -84,7 +84,7 @@ class CreateDonationUseCase {
         // }
 
         if (!workerExists) {
-            throw new AppError("This worker does not exists")
+            throw new AppError("Esse funcionario nao existe")
 
         } 
 
