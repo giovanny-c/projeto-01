@@ -5,6 +5,7 @@ interface ICreateUserDTO {
     salt?: string
     admin: boolean
     email: string
+    is_confirmed?: boolean
 }
 
 export { ICreateUserDTO }

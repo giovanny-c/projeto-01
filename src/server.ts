@@ -64,4 +64,6 @@ app.use(router)
 app.use(errorHandler)
 
 
-app.listen(3333, () => console.log("Server is running on port 3333"))
+app.listen(
+    process.env.PORT? Number(process.env.PORT) : 3333, 
+    () => console.log("Server is running on port 3333"))
