@@ -80,25 +80,50 @@ class ImportDonationsUseCase {
             // if (!data.email) throw new AppError(`Please fill the email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
             if (!donation.valor){
                 fs.unlink(file_path, (err)=> {
-                    if (err) throw err
+                    if (err) console.error(err)
                 })
                 throw new AppError(`Por favor preencha o campo valor, na linha ${index + 1}`, 400)
             } 
             if (!donation.funcionario) {
                 fs.unlink(file_path, (err)=> {
-                    if (err) throw err
+                    if (err) console.error(err)
                 })
                 throw new AppError(`Por favor preencha o campo funcionario, na linha ${index + 1}`, 400)
             }
             if (!donation.doador) {
                 fs.unlink(file_path, (err)=> {
-                    if (err) throw err
+                    if (err) console.error(err)
                 })
                 throw new AppError(`Por favor preencha o campo doador, na linha ${index + 1}`, 400)
             }
             // if (!this.dateProviderRepository.isValidDate(donation.created_at)) {
             //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(donation) + 1}`, 400)
             // }
+
+            donation.doador = donation.doador.split(/\s/)
+                .filter(string => string !== "")
+                .map((string, index) => { //pega a primeira letra e transforma em upper
+
+                //todas as palavras maiores que duas letras exeto dos. das.
+                if (string.match(/(?!das(?!\w+)|dos(?!\w+))\b\w{3,}/) || index === 0) {
+
+                    return string.replace(/^\w/, string.charAt(0).toUpperCase())
+
+                }
+
+                return string
+
+            }).join(" ")
+
+            console.log(donation.valor)
+            if(typeof donation.valor !== "number"){
+
+                
+                // throw new AppError(`O campo valor precisa ser um numero, na linha ${index + 1}`, 400)
+
+            }
+
+
         })
     }
 
@@ -145,7 +170,7 @@ class ImportDonationsUseCase {
                     donation_value: donation.valor,
                     donor_name: donation.doador,
                     user_id: user_id,
-                    worker_id: worker.id,
+                    worker_id: worker?.id || null,
                     created_at,
                     is_payed: true,
                     payed_at,
@@ -160,18 +185,12 @@ class ImportDonationsUseCase {
                 
 
             } catch (err) {
-                fs.unlink(file_path, (err)=> {
-                    if (err) throw err
-                })
-                throw new AppError(`It was not possible to create donations. Error: ${err} | on: ${donations.indexOf(donation) + 1}`)
+                console.error(err)
+                throw new AppError(`Nao foi possivel importar doação. Na linha: ${donations.indexOf(donation) + 1}`)
                 //return `It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`
             }
 
-            //poe a data da ultima doaçao no donor se for paga
-            // if (is_payed === true) {
-            //     await this.donorsRepository.create({ id: donor.id, last_donation: data.payed_at })
-            // }
-           
+            
         }
     }
 
@@ -185,25 +204,26 @@ class ImportDonationsUseCase {
 
         if(!ngoExistis){
             fs.unlink(file.path, (err)=> {
-                if (err) throw err
+                if (err) console.error(err)
             })
             throw new AppError("Essa instituiçao nao existe", 400)
         }
     
         try {
-            //vai fazer para cada donation
             await this.proccessDonations(this.loadDonations(file), user_id, ngo_id, file.path)
-
+            
         } catch (error) {
+
             fs.unlink(file.path, (err)=> {
-                if (err) throw err
+                if (err) console.error(err)
             })
-            throw error
+            
+            throw new AppError(error.message, error.status)
         }
-        
+
 
         fs.unlink(file.path, (err)=> {
-            if (err) throw err
+            if (err) console.error(err)
         })
 
         return {

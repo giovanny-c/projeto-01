@@ -17,7 +17,7 @@ class CreateDonationController {
         //remove a mascara do front e transforma para float com "."
         donation_value = donation_value.replace(/(?!\,+)[\D]/g,"").replace(/\,/,".") as string
        
-        donor_name = donor_name.replace(/\s+$/,"")
+        // donor_name = donor_name.replace(/\s+$/,"")
         
         const createDonationUseCase = container.resolve(CreateDonationUseCase)
 
