@@ -26,12 +26,8 @@ export class CreateTableUser1650573456216 implements MigrationInterface {
                             name: "salt",
                             type: "varchar",
                             isNullable: false
-                        },
-                        {
-                            name:"is_confirmed",
-                            type: "boolean",
-                            default: false
                         }
+                        
 
                     ]
                 }

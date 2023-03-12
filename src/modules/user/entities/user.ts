@@ -25,8 +25,6 @@ class User {
     @Column()
     email: string
 
-    @Column()
-    is_confirmed: boolean
 
 
     constructor() {

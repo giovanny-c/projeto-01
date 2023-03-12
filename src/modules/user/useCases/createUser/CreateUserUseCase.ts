@@ -5,6 +5,7 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { genPassword } from "../../../../../utils/passwordUtils";
 import { instanceToPlain } from "class-transformer"
 import { User } from "../../entities/user";
+import { IMailProvider } from "../../../../shared/container/providers/mailProvider/IMailProvider";
 
 interface IRequest {
     name: string
@@ -20,7 +21,10 @@ class CreateUserUseCase {
 
     constructor(
         @inject("UsersRepository")
-        private usersRepository: IUsersRepository) {
+        private usersRepository: IUsersRepository,
+        @inject("MailProvider")
+        private mailProvider: IMailProvider,
+        ) {
     }
 
     async execute({ name, password, confirm_password, is_admin, email}: IRequest): Promise<User> {
@@ -65,9 +69,9 @@ class CreateUserUseCase {
             hash, 
             salt, 
             email, 
-            admin: is_admin === "true" ? true : false  //se tiver marcado
+            admin: is_admin === "true" ? true : false,  //se tiver marcado
+            
         })
-
 
         return instanceToPlain(user) as User
     }

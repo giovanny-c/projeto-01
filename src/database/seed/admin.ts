@@ -17,8 +17,8 @@ async function create() {
         admin: true,
         email: process.env.ADM_SEED_EMAIL as string,
         password_hash: hash,
-        salt,
-        is_confirmed: true
+        salt
+        
     })
 
     repository.save(userMaster).then()

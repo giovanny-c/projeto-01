@@ -43,15 +43,17 @@ class AuthenticateUserUseCase {
 
 
         if (!user) {
-            throw new AppError("name or password incorrect")
+            throw new AppError("nome de usuário ou senha incorretos")
         }
 
         const passwordMatch = validatePassword(password, user.salt, user.password_hash)
 
         if (!passwordMatch) { //trocar para validate password
-            throw new AppError("name or password incorrect")
+            throw new AppError("nome de usuário ou senha incorretos")
 
         }
+
+        
 
         await this.cacheProvider.setRedis(`user-${user.id}`, JSON.stringify(instanceToPlain(user)))
 
