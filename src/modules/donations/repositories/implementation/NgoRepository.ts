@@ -1,5 +1,6 @@
 import { ILike, Repository } from "typeorm";
 import { dataSource } from "../../../../database";
+import ICreateNgo from "../../dtos/ICreateNgoDTO";
 import { Ngo } from "../../entities/ngos";
 import { INgoRepository } from "../INgoRepository";
 
@@ -15,7 +16,7 @@ class NgoRepository implements INgoRepository{
     }
 
     
-    async create(name: string, full_name: string, alias: string, id?: string): Promise<Ngo> {
+    async create({alias, full_name, name, id}: ICreateNgo): Promise<Ngo> {
 
         const ngo = this.repository.create({
             id,
@@ -40,6 +41,10 @@ class NgoRepository implements INgoRepository{
     }
     async findAll(): Promise<Ngo[]> {
         return  await this.repository.find()
+    }
+
+    async delete(id: string){
+        await this.repository.delete(id)
     }
 }
 

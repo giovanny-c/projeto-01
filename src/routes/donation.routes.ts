@@ -7,6 +7,7 @@ import uploadConfig from "../config/upload"
 import { CancelDonationController } from "../modules/donations/useCases/cancelDonation/CancelDonationController";
 import { CreateDonationController } from "../modules/donations/useCases/createDonation/CreateDonationController";
 import { CreateNgoController } from "../modules/donations/useCases/createNgo/CreateNgoController";
+import { DeleteNgoController } from "../modules/donations/useCases/deleteNgo/DeleteNgoController";
 import { FindAllNgosController } from "../modules/donations/useCases/findAllNgos/FindAllNgosController";
 import { GenerateBookletController } from "../modules/donations/useCases/generateBooklet/GenerateBookletController";
 import { GenerateReceiptController } from "../modules/donations/useCases/generateReceipt/GenerateReceiptController";
@@ -31,6 +32,7 @@ import { SendReceiptEmailController } from "../modules/donations/useCases/sendRe
 import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
 import { SetEmailMessageController } from "../modules/donations/useCases/setEmaiMessage/SetEmailMessageController";
 import { SetNgoEmailController } from "../modules/donations/useCases/setNgoEmail/SetNgoEmailController";
+import { UpdateNgoController } from "../modules/donations/useCases/updateNgo/UpdateNgoController";
 
 // import { UpdateDonationStatusController } from "../modules/donations/useCases/updateDonationStatus/UpdateDonationStatusController";
 import { ensureAdmin } from "../shared/middlewares/ensureAdmin";
@@ -74,6 +76,9 @@ const sendReceiptEmailController = new SendReceiptEmailController()
 const manageAllNgosController = new ManageAllNgosController()
 const manageNgoController = new ManageNgoController()
 const loadUpdateNgoController = new LoadUpdateNgoController()
+const updateNgoController = new UpdateNgoController()
+const deleteNgoController = new DeleteNgoController()
+
 
 //inicio//pagina inicial mostra todas as ongs
 donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
@@ -87,10 +92,13 @@ donationRoutes.post("/instituicao/criar", ensureAdmin, upload.none(), createNgoC
 donationRoutes.get("/instituicao/:id", handleMessage, getNgoController.handle)
 
 //gerenciar instituiçao
-donationRoutes.get("/gerenciar-instituicoes", ensureAuthenticated, ensureAdmin,  handleMessage, manageAllNgosController.handle)
-donationRoutes.get("/instituicao/:ngo_id/gerenciar", ensureAuthenticated, ensureAdmin,  handleMessage, manageNgoController.handle)
+donationRoutes.get("/gerenciar-instituicoes", ensureAuthenticated,  ensureAdmin,  handleMessage, manageAllNgosController.handle)
+donationRoutes.get("/instituicao/:ngo_id/gerenciar", ensureAdmin,  handleMessage, manageNgoController.handle)
 //atualizar ngo
-donationRoutes.get("/instituicao/:ngo_id/atualizar", ensureAuthenticated, ensureAdmin,  handleMessage, loadUpdateNgoController.handle)
+donationRoutes.get("/instituicao/:ngo_id/atualizar", ensureAdmin,  handleMessage, loadUpdateNgoController.handle)
+donationRoutes.put("/instituicao/:ngo_id/atualizar", ensureAdmin, upload.none(), updateNgoController.handle)
+//del ngo
+donationRoutes.delete("/instituicao/:ngo_id/deletar", ensureAdmin, upload.none(), deleteNgoController.handle)
 
 //gerar talao
 donationRoutes.get("/instituicao/:ngo_id/gerar-talao", ensureAdmin, handleMessage, loadGenerateBookletController.handle)

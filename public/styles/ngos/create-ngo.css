@@ -62,6 +62,9 @@ select.item {
     box-shadow: 2px 1px 3px rgb(56, 56, 56);
 }
 
+
+
+
 .button button:hover {
 
     color: white;
@@ -71,6 +74,23 @@ select.item {
 button:active {
 
     background-color: var(--color-hover);
+    /* border: 1px solid black; */
+}
+
+button.delete {
+    color: white;
+    background-color: rgb(179, 33, 33);
+}
+
+button.delete:hover {
+
+    color: white;
+    background-color: rgb(114, 22, 22);
+}
+
+.delete:active {
+
+    background-color: rgb(179, 33, 33);
     /* border: 1px solid black; */
 }
 

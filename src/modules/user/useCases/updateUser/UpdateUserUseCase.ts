@@ -32,7 +32,7 @@ class UpdateUserUseCase {
             
         }
 
-        if(!id || id === undefined) throw new AppError("Usuario nao encontrado", 400)
+        if(!id || id === undefined || id === "") throw new AppError("Usuario nao encontrado", 400)
 
         //se bate o nome
         if((!name || name === undefined) || !name.match(/([A-Za-z0-9ãõç]{3,})/g)){

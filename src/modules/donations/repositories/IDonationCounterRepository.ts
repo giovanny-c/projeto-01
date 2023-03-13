@@ -11,7 +11,7 @@ interface IDonationCounterRepository {
     findByNgoId(ngo_id: string): Promise<DonationCounter>
     findAll(): Promise<DonationCounter[]>
     update(ngo_id: string, new_donation_number: number, current_donation_number: number): Promise<Partial<DonationCounter>>
-
+    delete(ngo_id: string)
 }
 
 export { IDonationCounterRepository }
