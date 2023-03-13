@@ -8,7 +8,7 @@
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn --poll src/server.ts",
     "migration:run": "ts-node-dev ./node_modules/typeorm/cli migration:run -d \"./src/database/runMigration.ts\" ",
     "migration:revert": "ts-node-dev ./node_modules/typeorm/cli migration:revert -d \"./src/database/runMigration.ts\" ",
-    "seed:admin": "ts-node-dev src/shared/infra/typeorm/seed/admin.ts"
+    "seed:admin": "ts-node-dev src/database/seed/admin.ts"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",

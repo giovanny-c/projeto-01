@@ -17,7 +17,7 @@ class SetEmailMessageController {
 
         const ngo = await setEmailMessage.execute({ngo_id, name, message, subject})
         
-        return res.status(201).redirect(`/instituicao/${ngo.id}`)
+        return res.status(201).redirect(`/instituicao/${ngo.id}/gerenciar`)
 
     }
 

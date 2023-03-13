@@ -23,6 +23,9 @@ import { LoadGenerateBookletController } from "../modules/donations/useCases/loa
 import { LoadImportDonationsController } from "../modules/donations/useCases/loadImportDonations/LoadImportDonationsController";
 import { LoadSetEmailMessageController } from "../modules/donations/useCases/loadSetEmailMessage/LoadSetEmailMessageController";
 import { LoadSetNgoEmailController } from "../modules/donations/useCases/loadSetNgoEmail/LoadSetNgoEmailController";
+import { LoadUpdateNgoController } from "../modules/donations/useCases/loadUpdateNgo/LoadUpdateNgoController";
+import { ManageAllNgosController } from "../modules/donations/useCases/manageAllNgos/ManageAllNgosController";
+import { ManageNgoController } from "../modules/donations/useCases/manageNgo/ManageNgoController";
 import { SendReceiptEmailController } from "../modules/donations/useCases/sendReceiptEmail/SendReceiptEmailController";
 
 import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
@@ -68,9 +71,13 @@ const loadSetNgoEmailController = new LoadSetNgoEmailController()
 const loadSetEmailMessageController = new LoadSetEmailMessageController()
 
 const sendReceiptEmailController = new SendReceiptEmailController()
+const manageAllNgosController = new ManageAllNgosController()
+const manageNgoController = new ManageNgoController()
+const loadUpdateNgoController = new LoadUpdateNgoController()
 
 //inicio//pagina inicial mostra todas as ongs
 donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
+
 
 //fazer a view
 donationRoutes.get("/instituicao/criar", ensureAdmin, handleMessage, loadCreateNgoController.handle)
@@ -78,6 +85,12 @@ donationRoutes.post("/instituicao/criar", ensureAdmin, upload.none(), createNgoC
 
 //pagina da ong
 donationRoutes.get("/instituicao/:id", handleMessage, getNgoController.handle)
+
+//gerenciar instituiçao
+donationRoutes.get("/gerenciar-instituicoes", ensureAuthenticated, ensureAdmin,  handleMessage, manageAllNgosController.handle)
+donationRoutes.get("/instituicao/:ngo_id/gerenciar", ensureAuthenticated, ensureAdmin,  handleMessage, manageNgoController.handle)
+//atualizar ngo
+donationRoutes.get("/instituicao/:ngo_id/atualizar", ensureAuthenticated, ensureAdmin,  handleMessage, loadUpdateNgoController.handle)
 
 //gerar talao
 donationRoutes.get("/instituicao/:ngo_id/gerar-talao", ensureAdmin, handleMessage, loadGenerateBookletController.handle)

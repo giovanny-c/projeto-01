@@ -17,7 +17,7 @@ class SetNgoEmailController {
 
         const {ngo} = await setNgoEmail.execute({ngo_id, email, password, user_id, user_password})
         
-        return res.status(201).redirect(`/instituicao/${ngo.id}`)
+        return res.status(201).redirect(`/instituicao/${ngo.id}/gerenciar`)
 
     }
 

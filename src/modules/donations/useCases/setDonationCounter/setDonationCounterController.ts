@@ -16,7 +16,7 @@ class SetDonationCounterController {
 
         const response = await setDonatoionCounter.execute({id, new_donation_number: +(donation_number)})
 
-        return res.status(201).redirect(`/instituicao/${response.ngo.id}`)
+        return res.status(201).redirect(`/instituicao/${response.ngo.id}/gerenciar`)
 
     }
 

@@ -1,0 +1,61 @@
+{% extends "views/layout.njk" %}
+
+{% block head %}
+    
+    <title>Gerenciar {{ngo.name}} - Castanharo Telemarketing</title>
+
+    <link rel="stylesheet" href="/styles/ngos/ngo.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+{% endblock %}
+
+{% block content %}
+    
+   
+        <div class="page-title">
+        
+                Gerenciar {{ngo.name}}
+           
+        </div>
+
+        
+
+        
+        <div class="ngo_actions">
+
+            
+            <a href="/instituicao/{{ngo.id}}/contador">
+                <p>Definir Número do Contador</p>
+            </a>
+
+            <a href="/instituicao/{{ngo.id}}/definir-email">
+                <p>Definir Email</p>
+            </a>
+
+            <a href="/instituicao/{{ngo.id}}/criar-mensagem">
+                <p>Criar Mensagem de Email</p>
+            </a>
+
+            <a href="/instituicao/{{ngo.id}}/atualizar">
+                <p>Atualizar Instituição</p>
+            </a>
+
+            
+
+
+            {# colocar o definir email e criar msgs dentro desse #}
+            {# <a href="">
+                <p>Gerenciar Email e Menssagens</p>
+            </a> #}
+
+
+
+
+                    
+            
+        </div>
+
+{% endblock %}
+        
+
+        

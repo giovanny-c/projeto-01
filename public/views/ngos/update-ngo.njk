@@ -1,0 +1,94 @@
+
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/ngos/create-ngo.css">
+    <title>Atualizar Instituição - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+
+        <div class="page-title">
+           
+                Atualizar {{ngo.name}}
+        </div>
+
+        
+        
+       
+
+
+
+    <div class="form">
+        <div class="subtitle">
+            Atualizar
+        </div>
+            <form id="#form" method="POST" action="/instituicao/{{ngo.id}}/atualizar?_method=PUT"  enctype="multipart/form-data">
+
+                    
+                    
+                <div class="item">
+                        <div>
+                            
+                        <input      
+                            type="text"  name="full_name"  value="{{ngo.full_name}}" placeholder="Nome Completo da instituição"/>
+                        </div>
+                </div>
+                       
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text"  name="name"  value="{{ngo.name}}" placeholder="Abreviação ou acrônimo da instituição"/>
+                        </div>
+                </div>
+
+                       
+
+                <div class="button"><button type="submit">Atualizar</button> </div>
+                
+                
+
+            </form>
+
+        
+
+    </div>
+
+    <div class="form">
+        <div class="subtitle">
+            Deletar
+        </div>
+            <form id="#form" class="form-delete" method="POST" action="instituicao/{{ngo.id}}/deletar?_method=DELETE" enctype="multipart/form-data">
+
+                <div class="item">
+                    <input type="password" name="password" value="" placeholder="Digite a sua senha para deletar a instituição">
+                </div>
+                <div class="button"><button type="submit">Deletar</button> </div>
+            </form>
+    </div>
+
+    
+
+    <script>
+
+        const form = document.querySelector(".form-delete")
+
+            form.addEventListener("submit", function(event){
+
+                    const confirmation = confirm("Deletar Instituição? Essa operação nao poderá ser desfeita")
+
+                    if(!confirmation){
+                            event.preventDefault()
+                    }   
+
+            })
+    </script>
+        
+
+        
+    {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
+
+{% endblock %} 

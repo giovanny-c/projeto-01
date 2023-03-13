@@ -16,7 +16,7 @@ interface IRequest {
 
 interface IResponse {
     ngo: Ngo
-    email: string
+    email?: string
 }
 
 @injectable()
@@ -43,7 +43,8 @@ class LoadSetNgoEmailUseCase {
             if(!ngo) throw new AppError("Instituição nao encontrada", 404)
 
         }
-
+        
+        
 
         const email = await this.ngosEmailsRepository.findAllfromNgo(ngo_id)
         
@@ -51,7 +52,7 @@ class LoadSetNgoEmailUseCase {
     
         return  {
             ngo,
-            email: email[0].email
+            email: email[0]?.email || null
         }
         
     

@@ -7,11 +7,13 @@ class FindAllNgosController {
  
     async handle(req: Request, res: Response): Promise<any>{        
 
+        const {admin} = req.user
+
         const findAllNgos = container.resolve(FindAllNgosUseCase)
 
         const ngos =  await findAllNgos.execute()
 
-        return res.status(200).render("views/ngos/ngos", {ngos, error: req.error, success: req.success})
+        return res.status(200).render("views/ngos/ngos", {ngos, error: req.error, success: req.success, admin})
     }
 
 

@@ -29,7 +29,9 @@
 } */
 
 
-
+.form {
+    margin-bottom: 80px;
+}
 
 select.item {
     margin: 0px;
@@ -42,8 +44,10 @@ select.item {
     box-shadow: 2px 0px 5px gray;
 }
 
-
-
+.subtitle {
+    font-size: 24px;
+    font-weight: bold;
+}
 
 .button button {
 
