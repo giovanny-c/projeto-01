@@ -53,8 +53,8 @@ class DonationCounterRepository implements IDonationCounterRepository{
  
     }
 
-    async delete(ngo_id: string){
-        await this.repository.delete(ngo_id)
+    async delete(id: string){
+        return await this.repository.delete({id})
     }
 
 }

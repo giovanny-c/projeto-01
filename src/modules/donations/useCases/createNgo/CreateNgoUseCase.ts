@@ -21,7 +21,7 @@ class CreateNgoUseCase {
         private ngoRepository: INgoRepository,
     ) { }
 
-    async execute({ full_name, name, alias}: IRequest): Promise<Ngo> {
+    async execute({ full_name, name, alias}: IRequest) {
 
 
 
@@ -33,9 +33,9 @@ class CreateNgoUseCase {
         }
 
         
-        const ngo = await this.ngoRepository.create(name, full_name, alias)
+        await this.ngoRepository.create({full_name, name, alias})
 
-        return ngo  
+          
         
         
 

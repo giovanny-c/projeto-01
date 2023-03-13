@@ -71,6 +71,9 @@
                 
             </div>
 
+            {% if file %}
+                
+            
             <div>
                 <button class="show"
                 onclick="toggleIframe()">
@@ -83,7 +86,11 @@
                     
                 >Baixar Recibo</a> 
             </div>
-
+            {% else %}
+                <div></div>
+                <div></div>
+            {% endif %}
+                
 
             {# button para escolher doador para enviar email #}
 

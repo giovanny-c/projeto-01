@@ -14,7 +14,7 @@ class CreateNgoController {
 
         await createNgo.execute({name, full_name, alias})
 
-        return res.redirect("/")
+        return res.redirect(`/gerenciar-instituicoes`)
 
     }
 

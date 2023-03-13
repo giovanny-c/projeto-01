@@ -44,7 +44,7 @@ class NgoRepository implements INgoRepository{
     }
 
     async delete(id: string){
-        await this.repository.delete(id)
+        return await this.repository.delete(id)
     }
 }
 

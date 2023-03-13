@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { INgoRepository } from "../../repositories/INgoRepository";
-import uuid from "uuid"
+import * as uuid from "uuid"
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 import { validatePassword } from "../../../../../utils/passwordUtils";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
@@ -34,9 +34,9 @@ class DeleteNgoUseCase{
 
     async execute({ngo_id, user_id, password}:IRequest){
 
-        if(!ngo_id || !uuid.validate(ngo_id)) throw new AppError("Não foi possivel encontrar a instituição")
-        if(!user_id || !uuid.validate(user_id)) throw new AppError("Usuario nao encontrado")
-        if(!password) throw new AppError("Forneça uma senha para deletar a instituição")
+        if(!ngo_id || uuid.validate(ngo_id) === false) throw new AppError("Não foi possivel encontrar a instituição")
+        if(!user_id || uuid.validate(user_id) === false) throw new AppError("Usuario nao encontrado")
+        if(!password) throw new AppError("Forneça sua senha para deletar a instituição")
 
         const ngo = await this.ngoRepository.findById(ngo_id)
 
@@ -50,8 +50,10 @@ class DeleteNgoUseCase{
             throw new AppError("Senha incorreta", 400)
         }
 
-        await this.donationCounterRepository.delete(ngo_id)
-        await this.ngoRepository.delete(ngo_id)
+        const counter = await this.donationCounterRepository.findByNgoId(ngo.id)
+        if(counter) await this.donationCounterRepository.delete(counter.id)
+        
+        await this.ngoRepository.delete(ngo.id)
 
         await this.cacheProvider.delRedis(`ngo-${ngo.id}`)
         
