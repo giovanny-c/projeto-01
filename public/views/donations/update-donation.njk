@@ -31,7 +31,7 @@
         </div>
 
         <div class="form">
-            <form id="#form" action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/atualizar?_method=PUT" method="post" enctype="multipart/form-data">
+            <form id="#form" class="form" action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/atualizar?_method=PUT" method="post" enctype="multipart/form-data">
 
                     
                     
@@ -104,7 +104,7 @@
                         <div>
                             
                         <input      
-                            type="checkbox" name="is_canceled" value="true" placeholder="" 
+                            type="checkbox" name="is_donation_canceled" value="true" placeholder="" 
                             {% if donation.is_donation_canceled %}
                                 checked
                             {% endif %}/>
@@ -124,7 +124,7 @@
         <script src="/scripts-for-input.js"></script>
         <script>
 
-            const form = document.querySelector("#form")
+            const form = document.querySelector(".form")
 
             form.addEventListener("submit", function(event){
 

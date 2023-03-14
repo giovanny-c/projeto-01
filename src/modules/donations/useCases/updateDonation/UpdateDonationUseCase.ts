@@ -75,7 +75,7 @@ class UpdateDonationUseCase {
 
 
         const donation = await this.donationsRepository.findOneById(donation_id)
-console.log(donation_id)
+
         if(!donation) throw new AppError("Doação não encontrada!")
 
         await this.donationsRepository.update({
@@ -110,9 +110,12 @@ console.log(donation_id)
             }
             
         
-            //se nao tiver nada diferente
+            
             await this.fileProvider.generateFile(updatedDonation, true)
         }
+
+
+
 
         
         

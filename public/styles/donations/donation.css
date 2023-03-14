@@ -160,10 +160,25 @@ iframe {
 }
 
 .button.email-form-button {
-    width: 40%;
+    width: 30%;
+    height: 40px;
+    font-size: 28px;
+    margin-left: 19.4%;
+    border-radius: 6px;
     display: inline-block;
     align-items: end;
+    color: white;
+    background-color: var(--color-theme);
 }
+
+
+
+.button.email-form-button:hover {
+
+    color: white;
+    background-color: var(--color-hover)
+}
+
 
 .item input {
 
@@ -314,8 +329,8 @@ select {
 .buttons {
     margin: 40px auto;
     width: 940px;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 
 
     justify-items: center;
@@ -324,9 +339,7 @@ select {
 
 }
 
-.div-button {
-    width: 20%;
-}
+
 
 .button.download-button,
 .update-button {

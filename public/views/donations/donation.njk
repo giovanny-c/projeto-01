@@ -67,14 +67,14 @@
             {% if file %}
                 
             
-            <div class="div-button">
+            <div>
                 <button class="show"
                 onclick="toggleIframe()">
                     Ver Recibo
                 </button>
             </div>
 
-            <div class="div-button">
+            <div>
                 <a class="button download-button" href="data:application/pdf;base64,{{file}}" download="{{file_name}}"
                     
                 >Baixar Recibo</a> 
@@ -87,11 +87,11 @@
 
             {# button para escolher doador para enviar email #}
 
-            <div class="div-button">
+            <div>
                 <a class="button update-button" href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/atualizar">Atualizar Doação</a>
             </div>
 
-            <div class="div-button">
+            <div>
                 <form name="form-delete" class="form-delete" action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/cancelar-doacao" method="POST" enctype="multipart/form-data">
                 
 
