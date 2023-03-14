@@ -1,0 +1,41 @@
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/workers/workers.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+
+    <title>Mensagens de Email - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+    
+        <div class="wrap">
+            <div class="page-title">
+                
+                    Mensagens de email - {{ngo.name}}
+            </div>
+            
+        </div>
+       
+  
+        <div class="columns">
+            {% for message in messages %}
+            
+                
+                <p class="worker">
+                <a href="/instituicao/{{ngo.id}}/mensagens/{{message.id}}">
+                {{message.name}} </a>
+                </p>
+                 
+                 
+            {% endfor %}
+        </div>
+        
+                
+        
+
+{% endblock %}  
+

@@ -1,0 +1,47 @@
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/workers/workers.css">
+    <link rel="stylesheet" href="/styles/ngos/ngo-message.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+
+    <title>Mensagen de Email - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+    
+        <div class="wrap">
+            <div class="page-title">
+                
+                    {{message.name}}
+            </div>
+            
+        </div>
+       
+  
+        <div class="message">
+            
+            <p>Nome: {{message.name}}</p>
+
+            <p>Assunto: {{message.subject}}</p>
+
+            <p>Mensagem: {{message.message}}</p>
+
+
+            <form method="POST" action="/instituicao/{{ngo.id}}/mensagens/{{message.id}}?_method=DELETE">
+                <input type="hidden" name="message_id" value="{{message.id}}">
+
+                <button class="delete" type=submit>Deletar</button>
+            </form>
+
+        </div>
+        
+        
+                
+        
+
+{% endblock %}  
+

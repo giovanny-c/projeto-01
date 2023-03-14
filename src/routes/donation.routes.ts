@@ -8,6 +8,7 @@ import { CancelDonationController } from "../modules/donations/useCases/cancelDo
 import { CreateDonationController } from "../modules/donations/useCases/createDonation/CreateDonationController";
 import { CreateNgoController } from "../modules/donations/useCases/createNgo/CreateNgoController";
 import { DeleteNgoController } from "../modules/donations/useCases/deleteNgo/DeleteNgoController";
+import { DeleteNgoMessageController } from "../modules/donations/useCases/deleteNgoMessage/DeleteNgoMessageController";
 import { FindAllNgosController } from "../modules/donations/useCases/findAllNgos/FindAllNgosController";
 import { GenerateBookletController } from "../modules/donations/useCases/generateBooklet/GenerateBookletController";
 import { GenerateReceiptController } from "../modules/donations/useCases/generateReceipt/GenerateReceiptController";
@@ -22,6 +23,8 @@ import { LoadCreateNgoController } from "../modules/donations/useCases/loadCreat
 import { LoadDonationCounterPageController } from "../modules/donations/useCases/loadDonationCounterPage/LoadDonationCounterPageController";
 import { LoadGenerateBookletController } from "../modules/donations/useCases/loadGenerateBooklet/LoadGenerateBookletController";
 import { LoadImportDonationsController } from "../modules/donations/useCases/loadImportDonations/LoadImportDonationsController";
+import { LoadNgoMessageController } from "../modules/donations/useCases/loadNgoMessage/LoadNgoMessageController";
+import { LoadNgoMessagesController } from "../modules/donations/useCases/loadNgoMessages/LoadNgoMessagesController";
 import { LoadSetEmailMessageController } from "../modules/donations/useCases/loadSetEmailMessage/LoadSetEmailMessageController";
 import { LoadSetNgoEmailController } from "../modules/donations/useCases/loadSetNgoEmail/LoadSetNgoEmailController";
 import { LoadUpdateNgoController } from "../modules/donations/useCases/loadUpdateNgo/LoadUpdateNgoController";
@@ -78,7 +81,9 @@ const manageNgoController = new ManageNgoController()
 const loadUpdateNgoController = new LoadUpdateNgoController()
 const updateNgoController = new UpdateNgoController()
 const deleteNgoController = new DeleteNgoController()
-
+const loadNgoMessagesController = new LoadNgoMessagesController()
+const loadNgoMessageController = new LoadNgoMessageController()
+const deleteNgoMessageController = new DeleteNgoMessageController()
 
 //inicio//pagina inicial mostra todas as ongs
 donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
@@ -99,6 +104,11 @@ donationRoutes.get("/instituicao/:ngo_id/atualizar", ensureAdmin,  handleMessage
 donationRoutes.put("/instituicao/:ngo_id/atualizar", ensureAdmin, upload.none(), updateNgoController.handle)
 //del ngo
 donationRoutes.delete("/instituicao/:ngo_id/deletar", ensureAdmin, upload.none(), deleteNgoController.handle)
+//load msg
+donationRoutes.get("/instituicao/:ngo_id/mensagens", ensureAdmin,  handleMessage, loadNgoMessagesController.handle)
+donationRoutes.get("/instituicao/:ngo_id/mensagens/:message_id", ensureAdmin,  handleMessage, loadNgoMessageController.handle)
+donationRoutes.delete("/instituicao/:ngo_id/mensagens/:message_id", ensureAdmin, upload.none(), deleteNgoMessageController.handle)
+
 
 //gerar talao
 donationRoutes.get("/instituicao/:ngo_id/gerar-talao", ensureAdmin, handleMessage, loadGenerateBookletController.handle)
