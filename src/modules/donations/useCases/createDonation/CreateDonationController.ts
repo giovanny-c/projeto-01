@@ -10,7 +10,7 @@ class CreateDonationController {
 
         let { donation_value, donor_name, worker_id, is_payed, payed_at } = req.body
         const { id: user_id } = req.user
-        const {id: ngo_id} = req.params
+        const {ngo_id} = req.params
 
 
         //por esses replaces no front?

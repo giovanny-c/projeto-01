@@ -27,6 +27,7 @@ import { LoadNgoMessageController } from "../modules/donations/useCases/loadNgoM
 import { LoadNgoMessagesController } from "../modules/donations/useCases/loadNgoMessages/LoadNgoMessagesController";
 import { LoadSetEmailMessageController } from "../modules/donations/useCases/loadSetEmailMessage/LoadSetEmailMessageController";
 import { LoadSetNgoEmailController } from "../modules/donations/useCases/loadSetNgoEmail/LoadSetNgoEmailController";
+import { LoadUpdateDonationController } from "../modules/donations/useCases/loadUpdateDonation/LoadUpdateDonationController";
 import { LoadUpdateNgoController } from "../modules/donations/useCases/loadUpdateNgo/LoadUpdateNgoController";
 import { ManageAllNgosController } from "../modules/donations/useCases/manageAllNgos/ManageAllNgosController";
 import { ManageNgoController } from "../modules/donations/useCases/manageNgo/ManageNgoController";
@@ -85,6 +86,8 @@ const loadNgoMessagesController = new LoadNgoMessagesController()
 const loadNgoMessageController = new LoadNgoMessageController()
 const deleteNgoMessageController = new DeleteNgoMessageController()
 
+const loadUpdateDonationController = new LoadUpdateDonationController()
+
 //inicio//pagina inicial mostra todas as ongs
 donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
 
@@ -118,12 +121,12 @@ donationRoutes.post("/instituicao/:ngo_id/gerar-talao", ensureAdmin, upload.none
 donationRoutes.get("/instituicao/:ngo_id/talao/:year/:month/:file_name", ensureAdmin, handleMessage, loadBookletController.handle )
 
 //altera numero contador de doação
-donationRoutes.get("/instituicao/:id/contador/", ensureAdmin, handleMessage, loadDonationCounterPageController.handle)
-donationRoutes.post("/instituicao/:id/contador/definir", ensureAdmin, upload.none(), setDonationCounterController.handle)
+donationRoutes.get("/instituicao/:ngo_id/contador/", ensureAdmin, handleMessage, loadDonationCounterPageController.handle)
+donationRoutes.post("/instituicao/:ngo_id/contador/definir", ensureAdmin, upload.none(), setDonationCounterController.handle)
 
 //criar nova doação
-donationRoutes.get("/instituicao/:id/doacao/nova", handleMessage, loadCreateDonationController.handle )
-donationRoutes.post("/instituicao/:id/doacao/nova/criar", upload.none(), createDonationController.handle)//cria a donation
+donationRoutes.get("/instituicao/:ngo_id/doacao/nova", handleMessage, loadCreateDonationController.handle )
+donationRoutes.post("/instituicao/:ngo_id/doacao/nova/criar", upload.none(), createDonationController.handle)//cria a donation
 
 //listar
 donationRoutes.get("/instituicao/:ngo_id/doacao/listar", ensureAdmin, handleMessage, listDonationsController.handle)
@@ -136,6 +139,8 @@ donationRoutes.post("/instituicao/:ngo_id/doacao/importar", ensureAdmin, upload.
 donationRoutes.get("/instituicao/:ngo_id/doacao/ultima", ensureAdmin, handleMessage, getDonationController.handle)
 donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number", ensureAdmin, handleMessage, getDonationController.handle)
 
+//atualizar doação
+donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number/atualizar", ensureAdmin, handleMessage, loadUpdateDonationController.handle)//cria a donation
 //cancelar doaçao
 donationRoutes.post("/instituicao/:ngo_id/doacao/:donation_number/cancelar-doacao/", ensureAdmin, cancelDonationController.handle)
 

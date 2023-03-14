@@ -145,10 +145,25 @@ iframe {
 
 
 .send-email-form {
+
+    display: grid;
+    flex-wrap: wrap;
+
     margin-top: 100px;
     position: relative;
 }
 
+
+.item.email-form {
+    width: 50%;
+    display: inline-block;
+}
+
+.button.email-form-button {
+    width: 40%;
+    display: inline-block;
+    align-items: end;
+}
 
 .item input {
 
@@ -165,10 +180,10 @@ iframe {
 select {
 
     margin: 40px 0px;
-    font-size: 30px;
+    font-size: 28px;
     color: var(--color-letters);
     background-color: var(--color-theme);
-    height: 38px;
+    height: 40px;
     width: 400px;
     border-radius: 4px;
     box-shadow: 2px 0px 5px gray;
@@ -299,8 +314,9 @@ select {
 .buttons {
     margin: 40px auto;
     width: 940px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
+
 
     justify-items: center;
 
@@ -308,19 +324,26 @@ select {
 
 }
 
-.button.download-button {
+.div-button {
+    width: 20%;
+}
+
+.button.download-button,
+.update-button {
     padding: 2px;
     color: black;
     background-color: #F0F0F0;
 }
 
-.button.download-button:hover {
+.button.download-button:hover,
+.update-button:hover {
     color: white;
     background-color: var(--color-theme);
 }
 
 .button,
 button {
+    height: 22px;
     width: auto;
     margin: auto;
     font-size: 16px;

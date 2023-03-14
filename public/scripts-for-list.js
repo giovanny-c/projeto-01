@@ -31,6 +31,8 @@ function formatToBRLStatic(tag) {
 
 
 }
+
+
 function formatDateStaticLoop(tds) {
 
     for (let i = 0; i < tds.length; i++) {
@@ -85,10 +87,6 @@ var tdsValue = document.getElementsByClassName("donation_value")
 var totalValue = document.querySelector("p.total")
 var tdsDate = document.getElementsByClassName("created_at")
 var totalDates = document.querySelector("p.total-date")
-
-
-
-
 
 
 if (totalValue) {

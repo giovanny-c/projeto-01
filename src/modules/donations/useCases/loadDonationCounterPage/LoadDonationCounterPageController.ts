@@ -10,7 +10,7 @@ class LoadDonationCounterPageController {
 
     async handle(req: Request, res: Response): Promise<any> {
 
-        const { id } = req.params
+        const { ngo_id: id } = req.params
 
         
 

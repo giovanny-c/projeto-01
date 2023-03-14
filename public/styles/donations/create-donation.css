@@ -20,6 +20,24 @@
     box-shadow: 2px 0px 5px gray;
 }
 
+
+.item.admin {
+    display: grid;
+    grid-template-columns: 70px 30px;
+    gap: 10px;
+    align-items: center;
+}
+
+.label {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.item input[type="checkbox"] {
+    height: 36px;
+    width: 36px;
+}
+
 /* .item input {
 
 
@@ -40,7 +58,7 @@ select.item {
     font-size: 30px;
     color: var(--color-letters);
     background-color: var(--color-theme);
-    height: 32px;
+    height: 38px;
     width: 400px;
     border-radius: 4px;
     box-shadow: 2px 0px 5px gray;

@@ -1,0 +1,146 @@
+
+
+
+
+
+
+
+
+{% extends "views/layout.njk" %}
+
+
+{% block head %}
+
+    <link rel="stylesheet" href="/styles/donations/create-donation.css">
+    <title>Atualizar doacão - {{donation.donation_number}} - Castanharo Telemarketing</title>
+
+{% endblock %}
+
+{% block content %}
+
+        <div class="page-title">
+           
+                Atualizar Doação
+        </div>
+
+        <div class="sub-title">
+             Doação Nº: {{donation.donation_number}} 
+        </div>
+        <div class="actual_number">
+            
+        </div>
+
+        <div class="form">
+            <form id="#form" action="/instituicao/{{ngo.id}}/doacao/nova/criar" method="post" enctype="multipart/form-data">
+
+                    
+                    
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text" name="donor_name" value="{{donation.donor_name}}" placeholder="Nome do Doador"
+                            onblur="Mask.apply(this, 'formatName')"
+                            />
+                        </div>
+                </div>
+
+                <div class="item">
+                        <div>
+                        <input      
+                            type="text" name="donation_value" value="{{donation.donation_value}}" placeholder="00,00"
+                            
+                            onkeydown="Mask.apply(this, 'formatBRL')"
+                            />
+                        </div>
+                </div>
+
+                
+                <select class="item" name="worker_id">
+                
+                {% for worker in workers %}
+
+                        {% if not donation.worker_id %}
+                            
+                            <option value="" selected disabled hidden>Escolha o funcionário</option>
+                            
+                            <option value="{{worker.id}}"
+                                
+                                >
+                                
+                                {{worker.name}}
+                                
+                            </option>
+                            
+                       
+                        {% endif %}   
+                        
+                        <option value="{{worker.id}}" 
+                        {% if donation.worker_id == worker.id %}
+                            selected    
+                        {% endif %}
+                        >
+                                
+                            {{worker.name}}
+                            
+                        </option>
+                        
+
+                {% endfor %}
+
+                </select>
+
+
+
+
+                <div class="item">
+                        <div>
+                        <input      
+                            type="hidden" name="is_payed" value="true" placeholder="Nome do Doador"/>
+                        </div>
+                </div>
+
+                <div class="item">
+                    <div class=label><p>Cancelado:</p> </div>
+                        <div>
+                            
+                        <input      
+                            type="checkbox" name="is_canceled" value="true" placeholder="" 
+                            {% if donation.is_donation_canceled %}
+                                checked
+                            {% endif %}/>
+                        </div>
+
+                       
+                </div>
+
+
+                <div class="button"><button type="submit">Atualizar</button> </div>
+                
+                
+
+            </form>
+        </div>
+
+        <script src="/scripts-for-input.js"></script>
+        <script>
+
+            const form = document.querySelector("#form")
+
+            form.addEventListener("submit", function(event){
+
+                    const confirmation = confirm("deseja atualizar a doação tualizar a doação?")
+
+                if(!confirmation){
+                        event.preventDefault()
+                }   
+
+            })
+        </script>
+
+
+        
+    {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
+
+{% endblock %}  
+
+
