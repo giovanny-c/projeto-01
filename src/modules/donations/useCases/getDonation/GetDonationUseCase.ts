@@ -101,8 +101,10 @@ class GetDonationUseCase {
         //SE for fazer a pesquisa em tempo real pros donors, na hora de criar a donation
         const donorExists = await this.donorsRepository.findByName(donation.donor_name)
         
-
+        //pegas as msgs de email
         const ngo_messages = await this.ngosMessagesRepository.findByNgoId(ngo_id)
+
+
 
         const {dia, mes , ano} = getFormatedDateForReceipt(donation.created_at)
         

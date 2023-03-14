@@ -1,5 +1,6 @@
 import { ICreateDonationsDTO } from "../dtos/ICreateDonationsDTO"
 import { IFindOptions } from "../dtos/IFindOptionsDTO"
+import IUpdateDonation from "../dtos/IUpdateDonationDTO"
 import { Donation } from "../entities/donation"
 
 interface ICountDonationsValueResponse{
@@ -10,6 +11,7 @@ interface ICountDonationsValueResponse{
 interface IDonationsRepository {
 
     create(data: ICreateDonationsDTO): Promise<Donation>
+    update({id, donation_value, donor_name, worker_id, is_donation_canceled}: IUpdateDonation): Promise<void>
     findOneById(id: string): Promise<Donation>
     findDonationsByDonorId(id: string): Promise<Donation[]>
     findDonationsBy(data: IFindOptions): Promise<Donation[]>

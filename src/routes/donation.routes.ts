@@ -36,6 +36,7 @@ import { SendReceiptEmailController } from "../modules/donations/useCases/sendRe
 import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
 import { SetEmailMessageController } from "../modules/donations/useCases/setEmaiMessage/SetEmailMessageController";
 import { SetNgoEmailController } from "../modules/donations/useCases/setNgoEmail/SetNgoEmailController";
+import { UpdateDonationController } from "../modules/donations/useCases/updateDonation/UpdateDonationController";
 import { UpdateNgoController } from "../modules/donations/useCases/updateNgo/UpdateNgoController";
 
 // import { UpdateDonationStatusController } from "../modules/donations/useCases/updateDonationStatus/UpdateDonationStatusController";
@@ -87,6 +88,7 @@ const loadNgoMessageController = new LoadNgoMessageController()
 const deleteNgoMessageController = new DeleteNgoMessageController()
 
 const loadUpdateDonationController = new LoadUpdateDonationController()
+const updateDonationController = new UpdateDonationController()
 
 //inicio//pagina inicial mostra todas as ongs
 donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
@@ -140,7 +142,9 @@ donationRoutes.get("/instituicao/:ngo_id/doacao/ultima", ensureAdmin, handleMess
 donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number", ensureAdmin, handleMessage, getDonationController.handle)
 
 //atualizar doação
-donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number/atualizar", ensureAdmin, handleMessage, loadUpdateDonationController.handle)//cria a donation
+donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number/atualizar", ensureAdmin, handleMessage, loadUpdateDonationController.handle)
+donationRoutes.put("/instituicao/:ngo_id/doacao/:donation_number/atualizar", ensureAdmin, upload.none(), updateDonationController.handle)
+
 //cancelar doaçao
 donationRoutes.post("/instituicao/:ngo_id/doacao/:donation_number/cancelar-doacao/", ensureAdmin, cancelDonationController.handle)
 

@@ -8,6 +8,7 @@ import { decrypt } from "../../../../../utils/passwordUtils";
 import { getFormatedDateForReceipt } from "../../../../../utils/splitDateForReceipt";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
+import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
 import { IMailProvider } from "../../../../shared/container/providers/mailProvider/IMailProvider";
 import { IStorageProvider } from "../../../../shared/container/providers/storageProvider/IStorageProvider";
 
@@ -52,7 +53,9 @@ class SendReceiptEmailUseCase {
         @inject("DonorsRepository")
         private donorsRepository: IDonorsRepository,
         @inject("StorageProvider")
-        private storageProvider: IStorageProvider
+        private storageProvider: IStorageProvider,
+        @inject("FileProvider")
+        private fileProvider: IFileProvider,
         
         
 
@@ -133,7 +136,12 @@ class SendReceiptEmailUseCase {
        
         const receipt = await this.storageProvider.getFile(dir, file_name, false)
 
-        if(!receipt) throw new AppError("Recibo nao encontrado ou nao existe")
+        //se a file nao existir cria ela na hora
+        if(!receipt){
+
+            await this.fileProvider.generateFile(donation, true)
+            
+        }
 
 
         const attachment = {

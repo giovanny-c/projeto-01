@@ -171,6 +171,29 @@ class LocalStorageProvider implements IStorageProvider {
             return
         }
     }
+
+    deleteFile(dir: string, file_name: string){
+
+        const file_path = resolve(dir, file_name)
+
+            try { //se nao existir o arquivo retorn a func
+                fs.stat(file_path,
+                    (err) => {
+                        if(err) {console.error(err) 
+                            return
+                        }
+                })
+            } catch {
+                return
+            }
+
+            fs.unlink(file_path,  (err) => {
+                if(err) {console.error(err) 
+                    return
+                }
+            })
+
+    }
     
 
     getFileStream(dir: string, file_name: string): string{

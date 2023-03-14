@@ -31,7 +31,7 @@
         </div>
 
         <div class="form">
-            <form id="#form" action="/instituicao/{{ngo.id}}/doacao/nova/criar" method="post" enctype="multipart/form-data">
+            <form id="#form" action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/atualizar?_method=PUT" method="post" enctype="multipart/form-data">
 
                     
                     
@@ -95,7 +95,7 @@
                 <div class="item">
                         <div>
                         <input      
-                            type="hidden" name="is_payed" value="true" placeholder="Nome do Doador"/>
+                            type="hidden" name="donation_id" value="{{donation.id}}"/>
                         </div>
                 </div>
 

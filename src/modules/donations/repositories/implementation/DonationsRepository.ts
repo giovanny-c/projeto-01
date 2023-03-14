@@ -4,6 +4,7 @@ import { dataSource } from "../../../../database";
 import { Donor } from "../../../donor/entities/donor";
 import { ICreateDonationsDTO } from "../../dtos/ICreateDonationsDTO";
 import { IFindOptions } from "../../dtos/IFindOptionsDTO";
+import IUpdateDonation from "../../dtos/IUpdateDonationDTO";
 import { Donation } from "../../entities/donation";
 import { ICountDonationsValueResponse, IDonationsRepository } from "../IDonationsRepository";
 
@@ -18,8 +19,6 @@ class DonationsRepository implements IDonationsRepository {
         this.repository = dataSource.getRepository(Donation)
     }
 
-
-    
 
     async create({id, user_id, donor_id, donor_name, ngo_id ,donation_value, is_payed, payed_at, donation_number, created_at, is_donation_canceled, worker_id }: ICreateDonationsDTO): Promise<Donation> {
 
@@ -42,6 +41,18 @@ class DonationsRepository implements IDonationsRepository {
         return await this.repository.save(donation)
 
 
+    }
+
+    async update({id, donation_value, donor_name, worker_id, is_donation_canceled}: IUpdateDonation){
+
+        await this.repository.update({id},{
+            donation_value,
+            donor_name,
+            worker_id,
+            is_donation_canceled,
+        })
+
+        
     }
 
     async countDonationsValues({startDate, endDate, ngo_id, worker_id, limit, offset, orderBy }: IFindOptions): Promise<ICountDonationsValueResponse> {
@@ -161,7 +172,7 @@ class DonationsRepository implements IDonationsRepository {
         
     }
 
-    async findOneById(value: string): Promise<Donation> {
+    async findOneById(id: string): Promise<Donation> {
 
         const donation = await this.repository.findOne({
             relations: {
@@ -171,7 +182,7 @@ class DonationsRepository implements IDonationsRepository {
             },
 
             where: {
-                id: value
+                id
             }
         })
 
@@ -240,27 +251,6 @@ class DonationsRepository implements IDonationsRepository {
         })
     }
 
-    // async markDonationAsPayed({ id, donation_number, donor_id, user_id, donation_value  }: ICreateDonationsDTO, payed_at: Date): Promise<Donation> {
-
-    //     throw new Error("Method not implemented!")
-
-    //     // const payedDonation = this.repository.create({
-    //     //     id,
-    //     //     donation_number,
-    //     //     donor_id,
-    //     //     user_id,
-    //     //     donation_value,
-    //     //     is_payed: true,
-    //     //     payed_at,
-
-    //     // })
-
-    //     // const donation = await this.repository.save(payedDonation)
-
-    //     // return donation
-
-
-    // }
 
     async markDonationAsCanceled(id: string): Promise<Donation> {
         const canceledDonation = this.repository.create({
@@ -288,31 +278,3 @@ class DonationsRepository implements IDonationsRepository {
 
 export { DonationsRepository }
 
-/**relations: {
-    user: true,
-    donor: true
-},
-where: [ //colchete no where = OR 
-
-    //chaves na coluna ou relaçao = OR
-    {
-        user: [
-            { name: ILike(`%${value}%`) },
-        ]
-    },
-    {
-        donor: [ //OR 
-            { name: ILike(`%${value}%`) },
-            { email: ILike(`%${value}%`) }
-        ]
-    },
-    //OR
-    { donation_number: ILike(`%${value}%`) },
-    { donation_value: ILike(`%${value}%`) },
-    //converter date para string
-    //limit e offset
-    //is payed or canceled
-
-
-]
-}) */
