@@ -9,15 +9,17 @@
 
 }
 
-.item input {
-
+select.item {
+    margin: 0px;
     font-size: 30px;
     color: var(--color-letters);
-    background-color: var(--color-call-to-action);
-    height: 32px;
-    width: 600px;
+    background-color: var(--color-input);
+    height: 38px;
+    width: 400px;
     border-radius: 4px;
-    box-shadow: 2px 0px 5px gray;
+    border: 1px solid var(--color-input);
+    box-shadow: 2px 2px 4px 1px var(--color-letters);
+
 }
 
 .item input[type="email"] {
@@ -39,15 +41,18 @@
 
 
 
-select.item {
-    margin: 0px;
+
+.item input {
+
     font-size: 30px;
     color: var(--color-letters);
-    background-color: var(--color-call-to-action);
-    height: 32px;
-    width: 400px;
+    background-color: var(--color-input);
+    height: 38px;
+    width: 940px;
     border-radius: 4px;
-    box-shadow: 2px 0px 5px gray;
+    border: 1px solid var(--color-input);
+
+    box-shadow: 2px 2px 4px 1px var(--color-letters);
 }
 
 
@@ -63,8 +68,23 @@ select.item {
     text-transform: uppercase;
     border-radius: 4px;
     border: 1px;
-    box-shadow: 2px 1px 3px rgb(56, 56, 56);
+    background-color: var(--color-call-to-action);
+    color: var(--color-letters-clear);
+    box-shadow: 1px 1px 1px 1px var(--color-letters)
 }
+
+.button button:hover {
+
+    color: white;
+    background-color: var(--color-hover);
+}
+
+button:active {
+
+    background-color: var(--color-call-to-action);
+    /* border: 1px solid black; */
+}
+
 
 .button button:hover {
 

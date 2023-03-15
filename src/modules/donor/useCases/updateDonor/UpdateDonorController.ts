@@ -13,9 +13,9 @@ class UpdateDonorController {
 
         const updateDonorUseCase = container.resolve(UpdateDonorUseCase)
 
-        const result = await updateDonorUseCase.execute({ id, name, email, phone })
+        const donor = await updateDonorUseCase.execute({ id, name, email, phone })
 
-        return res.redirect("/doadores/listar")
+        return res.redirect(`/doadores/${donor.id}`)
     }
 
 

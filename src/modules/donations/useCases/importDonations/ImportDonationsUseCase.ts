@@ -198,6 +198,8 @@ class ImportDonationsUseCase {
 
     async execute({file, user_id ,ngo_id}: IRequest): Promise<IResponse> {
 
+        if(!file) throw new AppError("Nenhum arquivo enviado")
+
         
         const ngoExistis = await this.ngoRepository.findById(ngo_id)
 

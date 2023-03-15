@@ -31,7 +31,7 @@
      text-decoration: none;
      font-size: 22px;
      background-color: var(--color-call-to-action);
-     color: var(--color-letters);
+     color: var(--color-letters-clear);
      box-shadow: 1px 1px 1px 1px var(--color-letters);
      border-radius: 4px;
      padding: 3px;
@@ -71,7 +71,7 @@
      margin-left: 2px;
      color: var(--color-background);
      background-color: var(--color-call-to-action);
-     color: var(--color-letters);
+     color: var(--color-letters-clear);
      box-shadow: 1px 1px 1px 1px var(--color-letters);
      text-decoration: none;
      padding: 2px;
@@ -178,7 +178,7 @@
      align-items: end;
      color: white;
      background-color: var(--color-call-to-action);
-     color: var(--color-letters);
+     color: var(--color-letters-clear);
      box-shadow: 1px 1px 1px 1px var(--color-letters);
  }
 
@@ -208,6 +208,7 @@
      font-size: 28px;
      color: var(--color-letters);
      background-color: var(--color-input);
+     border: 1px solid var(--color-input);
      box-shadow: 2px 2px 4px 1px var(--color-letters);
      height: 40px;
      width: 400px;
@@ -247,6 +248,7 @@
 
  .list-item .content:hover {
      background-color: var(--color-hover);
+     color: var(--color-letters-clear);
      border-bottom-left-radius: 4px;
      border-bottom-right-radius: 4px;
  }
@@ -378,14 +380,14 @@
  .button.update-button {
      padding: 2px;
      background-color: var(--color-call-to-action);
-     color: var(--color-letters);
+     color: var(--color-letters-clear);
      box-shadow: 1px 1px 1px 1px var(--color-letters);
  }
 
  .button.download-button:hover,
  .button.update-button:hover {
      background-color: var(--color-hover);
-     color: var(--color-letters);
+     color: var(--color-letters-clear);
 
  }
 
@@ -400,7 +402,7 @@
      border-radius: 4px;
      border: 1px;
      background-color: var(--color-call-to-action);
-     color: var(--color-letters);
+     color: var(--color-letters-clear);
      box-shadow: 1px 1px 1px 1px var(--color-letters);
  }
 
@@ -421,18 +423,18 @@
  }
 
  button.cancel {
-     background-color: rgb(214, 33, 33);
+     background-color: rgb(126, 14, 14);
      color: white;
  }
 
  button.cancel:hover {
 
-     background-color: rgb(134, 7, 7);
+     background-color: rgb(104, 19, 19);
      color: white;
  }
 
  button.cancel:active {
-     background-color: brown;
+     background-color: rgb(126, 14, 14);
  }
 
  /* .download {

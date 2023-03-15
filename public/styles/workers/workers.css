@@ -12,20 +12,22 @@
 
 .new-worker {
     align-self: center;
-    border: 1px solid black;
-    border-radius: 5px;
-    background-color: var(--color-call-to-action);
-    padding: 4px;
-
 }
 
-.new-worker:hover {
+.new-worker a:hover {
     background-color: var(--color-hover);
 }
 
 .new-worker a {
-    color: var(--color-background);
 
+
+    border-radius: 5px;
+    background-color: var(--color-call-to-action);
+    color: var(--color-letters-clear);
+
+    padding: 4px;
+    color: var(--color-letters-clear);
+    box-shadow: 1px 1px 1px 1px var(--color-letters);
 }
 
 
@@ -38,7 +40,7 @@ div.columns {
 
 p.worker {
     margin: 10px 0px;
-    color: var(--color-call-to-action);
+    color: var(--color-letters-clear);
     width: 70%;
     font-size: 24px;
 }
@@ -46,7 +48,7 @@ p.worker {
 p a {
     width: 30%;
     text-align: center;
-    color: var(--color-call-to-action)
+    color: var(--color-letters-clear);
 }
 
 p a:hover {

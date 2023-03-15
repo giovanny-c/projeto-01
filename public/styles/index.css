@@ -13,8 +13,10 @@ html {
 :root {
 
 
-    --color-call-to-action: rgb(48, 183, 207);
-    --color-hover: rgb(42, 154, 173);
+    /* --color-call-to-action: rgb(48, 183, 207); */
+    --color-call-to-action: rgb(45, 69, 92);
+    --color-hover: rgb(42, 58, 73);
+    /* --color-hover: rgb(42, 154, 173); */
     --color-input: rgb(148, 196, 211);
     --color-letters-clear: white;
     --color-letters: rgb(11, 42, 59);
