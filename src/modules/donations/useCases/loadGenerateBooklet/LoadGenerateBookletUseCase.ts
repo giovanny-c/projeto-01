@@ -66,11 +66,11 @@ class LoadGenerateBookletUseCase{
         
 
         let thisMonthDir = `./tmp/booklet/${year}/${month}/${ngo.name}/`  
-        const thisMonthBooklets = await this.storageProvider.getFilesFromDir(thisMonthDir) as string[]
+        const thisMonthBooklets = await this.storageProvider.getFileNamesFromDir(thisMonthDir) as string[]
         
         let lastMonthDir = `./tmp/booklet/${last_year}/${last_month}/${ngo.name}/` 
         console.log(lastMonthDir)
-        const lastMonthBooklets = await this.storageProvider.getFilesFromDir(lastMonthDir) as string[]
+        const lastMonthBooklets = await this.storageProvider.getFileNamesFromDir(lastMonthDir) as string[]
 
 
        

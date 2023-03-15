@@ -232,7 +232,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
         let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
-        await storageProvider.saveFileReceipt(dir, file_name, pdfBytes)
+        storageProvider.saveAsync(dir, file_name, pdfBytes)
     }
     
 
@@ -376,7 +376,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         let file_name = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
     
         
-        await storageProvider.saveFileBooklet(dir, file_name, pdfBytes)
+        await storageProvider.saveSync(dir, file_name, pdfBytes)
        
             
         return {

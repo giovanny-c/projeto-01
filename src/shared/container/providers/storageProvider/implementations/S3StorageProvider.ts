@@ -22,7 +22,7 @@
 //         })
 //     }
 
-//     async save({ file, folder }: IFilePath): Promise<string> {
+//     async saveFromTmpFolder({ file, folder }: IFilePath): Promise<string> {
 
 //         try {
 
@@ -57,7 +57,7 @@
 //             throw error
 //         }
 //     }
-//     async delete({ file, folder }: IFilePath): Promise<void> {
+//     async deleteFromTmpFolder({ file, folder }: IFilePath): Promise<void> {
 
 //         await this.client.deleteObject({
 //             Bucket: `${process.env.AWS_BUCKET}/${folder}`,

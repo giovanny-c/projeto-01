@@ -13,21 +13,23 @@ import { getExecutionTime } from "../../../../../../utils/decorators/executionTi
 class LocalStorageProvider implements IStorageProvider {
     
     //pega do tmp folde (multer)
-    async save({ file, folder }: IFilePath): Promise<string> {
+    async saveFromTmpFolder({ file, folder }: IFilePath): Promise<string> {
         try {
 
 
             //let [, file_type] = file.split(/\.(?!.*\.)/, 2) // separa no ultimo ponto para pegar o tipo do arquivo
 
-            let dir = `${upload.tmpFolder}/${folder}`
+            let dir = resolve(upload.tmpFolder, folder)
             //ver se funciona 
             //let dir = resolve(`${upload.tmpFolder}/${folder}`)
 
             if (!fs.existsSync(dir)) {
                 fs.mkdir(dir, { recursive: true },
                     (err) => {
-                        if (err) throw err
-                    }    
+                        if (err) {
+                            console.error(err)
+                            throw new AppError("Não foi possivel salvar arquivo.")
+                    }}    
                 )
             }
 
@@ -35,24 +37,30 @@ class LocalStorageProvider implements IStorageProvider {
                 resolve(upload.tmpFolder, file),
                 resolve(dir, file),
                 (err) => {
-                    if (err) throw err
+                    if (err) {
+                        console.error(err)
+                        throw new AppError("Não foi possivel salvar arquivo.")
+                    }
                 }
             )
 
             return file
 
         } catch (error) {
-            throw error
+            
+            console.error(error)
+            throw new AppError("Não foi possivel salvar arquivo.")
+        
         }
     }
     // do tmp folder do multer
-    async delete({ file, folder }: IFilePath): Promise<void> {
+    async deleteFromTmpFolder({ file, folder }: IFilePath): Promise<void> {
 
         try {
 
             //let [, file_type] = file.split(/\.(?!.*\.)/, 2) // separa no ultimo ponto para pegar o tipo do arquivo ( o nome do arquivo salvo no bd)
 
-            let dir = `${upload.tmpFolder}/${folder}`
+            let dir = resolve(upload.tmpFolder, folder)
 
             const file_name = resolve(dir, file)
 
@@ -84,21 +92,32 @@ class LocalStorageProvider implements IStorageProvider {
     }
 
     @getExecutionTime() //transformar em fsPromise?
-    async saveFileReceipt(dir: string, file_name:string, file: Uint8Array ): Promise<void>{
+    saveAsync(dir: string, file_name:string, file: Uint8Array ): void{
+
+        
 
         if (!fs.existsSync(dir)) {
-            fs.mkdir(dir, { recursive: true },(err) =>  {if (err)throw err})
+            fs.mkdir(dir, { recursive: true },(err) => {if (err) {
+                
+                console.error(err)
+                throw new AppError("Não foi possivel salvar arquivo.")
+
+            }})
   
         }
 
-        try { 
-           fs.writeFile(`${dir}/${file_name}`, file,
-                    (err) => {
-                        if (err) throw err
-            })
-        } catch (error) {
-            throw error
-        }   
+        const file_path = resolve(dir, file_name)
+
+        fs.writeFile(file_path, file,
+                (err) => {
+                    if (err) {
+                        console.error(err)
+                        throw new AppError("Não foi possivel salvar arquivo.")
+
+                }
+
+        })
+        
             
 
 
@@ -106,23 +125,28 @@ class LocalStorageProvider implements IStorageProvider {
     }
 
     @getExecutionTime() //await asyncrono tem que escrever tudo para que o getFile consiga pegar sem erros
-    async saveFileBooklet(dir: string, file_name:string, file: Uint8Array ): Promise<void>{
+    async saveSync(dir: string, file_name:string, file: Uint8Array ): Promise<void>{
 
-        if (!fs.existsSync(dir)) {
-            await fsPromises.mkdir(dir, { recursive: true })
-                //  (err) => {if (err) throw err}
-            
-        }
 
-        //fsPromise.writeFile lento porem consegue escrever
         try { 
-            await fsPromises.writeFile(`${dir}/${file_name}`, file)
+
+            if (!fs.existsSync(dir)) {
+                await fsPromises.mkdir(dir, { recursive: true })
+                    //  (err) => {if (err) throw err}
+                
+            }
+
+            const file_path = resolve(dir, file_name)
+        //fsPromise.writeFile lento porem consegue escrever
+            await fsPromises.writeFile(file_path, file)
             /*,
                     (err) => {
                         if (err) throw err
                 }*/  
         } catch (error) {
-            throw error
+            console.error(error)
+            throw new AppError("Não foi possivel salvar arquivo.")
+
         }   
             
 
@@ -133,30 +157,25 @@ class LocalStorageProvider implements IStorageProvider {
     @getExecutionTime()
     async getFile(dir: string, file_name: string, returnInBase64: boolean): Promise<Buffer | string | void>{
 
-        let file_path = `${dir}/${file_name}`
-
-        let file
         
+ 
         try {   
+            const file_path = resolve(dir, file_name)
+            const file = await fsPromises.readFile(file_path, {
+                encoding: returnInBase64 ? "base64" : null 
+            })
 
-            file = await fsPromises.readFile(file_path)
 
-            
-            if(returnInBase64){
-
-                return file.toString("base64")
-            }
-            
             return file
             
         } catch (error) {
-            
-            return
+            console.error(error)
+            throw new AppError("Não foi possivel ler o arquivo, ou ele nao existe.")
         }
     }
     
     
-    async getFilesFromDir(dir: string): Promise<string[] | void>{
+    async getFileNamesFromDir(dir: string): Promise<string[] | void>{
         
         let content
         
@@ -179,7 +198,8 @@ class LocalStorageProvider implements IStorageProvider {
             try { //se nao existir o arquivo retorn a func
                 fs.stat(file_path,
                     (err) => {
-                        if(err) {console.error(err) 
+                        if(err) {
+                            console.error(err)
                             return
                         }
                 })
@@ -187,8 +207,10 @@ class LocalStorageProvider implements IStorageProvider {
                 return
             }
 
+            //
             fs.unlink(file_path,  (err) => {
-                if(err) {console.error(err) 
+                if(err) {
+                    console.error(err) 
                     return
                 }
             })
@@ -200,7 +222,9 @@ class LocalStorageProvider implements IStorageProvider {
         
         let data: string
 
-        const readStream = fs.createReadStream(`${dir}/${file_name}`, "base64")
+        const file_path = resolve(dir, file_name)
+
+        const readStream = fs.createReadStream(file_path, "base64")
         
         readStream.on("error", (error) => {
             if (error) {
@@ -217,11 +241,15 @@ class LocalStorageProvider implements IStorageProvider {
     @getExecutionTime()
     saveFileStream(dir: string, file_name: string, file: Uint8Array | Buffer){
 
-        const stream = fs.createWriteStream(`${dir}/${file_name}`)
+        const file_path = resolve(dir, file_name)
+
+        const stream = fs.createWriteStream(file_path)
 
         stream.write(file, (err) => {
-            if (err) throw err
-        })
+            if (err) {
+                console.error(err)
+                throw new AppError("Não foi possível salvar o arquivo")
+        }})
         stream.end()
         
     }

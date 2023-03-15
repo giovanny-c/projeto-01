@@ -5,7 +5,7 @@ import { resolve } from "path";
 
 class StorageProviderInMemory implements IStorageProvider {
 
-    async save({ file, folder }: IFilePath): Promise<string> {
+    async saveFromTmpFolder({ file, folder }: IFilePath): Promise<string> {
 
         let dir = resolve(`${upload.tmpFolder}/${folder}`)
         let file_path = resolve(dir + `/${file}`)
@@ -19,7 +19,7 @@ class StorageProviderInMemory implements IStorageProvider {
         return file_path
 
     }
-    async delete({ file, folder }: IFilePath): Promise<void> {
+    async deleteFromTmpFolder({ file, folder }: IFilePath): Promise<void> {
         let file_path = resolve(`${upload.tmpFolder}/${folder}/${file}`)
 
         fs.unlinkSync(file_path)
