@@ -10,17 +10,26 @@
 
 html {
     overflow: hidden;
+    color: var(--color-letters-clear);
 }
 
 
 :root {
 
 
-    --color-call-to-action: rgba(56, 56, 56, 1);
-    --color-hover: rgb(95, 95, 95);
-    --color-letters: white;
-    --color-background: ivory;
+    /* --color-call-to-action: rgb(48, 183, 207); */
+    --color-call-to-action: rgb(45, 69, 92);
+    --color-hover: rgb(42, 58, 73);
+    /* --color-hover: rgb(42, 154, 173); */
+    --color-input: rgb(148, 196, 211);
+    --color-letters-clear: white;
+    --color-letters: rgb(11, 42, 59);
+    --color-background: rgb(69, 91, 110);
+    --color-background-header: rgb(7, 25, 43);
 }
+
+
+
 
 /*---------body---------------*/
 

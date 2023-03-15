@@ -26,7 +26,7 @@
     font-size: 16px;
     line-height: 19px;
     font-weight: bold;
-    color: #111111;
+
 
 }
 
@@ -42,16 +42,21 @@ input {
     font-size: 30px;
     padding-left: 15px;
     color: var(--color-letters);
-    background-color: var(--color-call-to-action);
+    background-color: var(--color-input);
     height: 38px;
     width: 940px;
     border-radius: 4px;
-    border: 1px solid var(--color-hover);
-    box-shadow: 2px 0px 5px gray;
+    border: 1px solid var(--color-input);
+    box-shadow: 2px 2px 4px 2px var(--color-letters)
 }
 
 input::placeholder {
     font-size: 24px;
+
+}
+
+.label {
+    color: var(--color-letters-clear);
 }
 
 /*input-error*/
@@ -66,7 +71,7 @@ input::placeholder {
 }
 
 .input-error {
-    border: 1px solid red;
+    border: 1px solid rgb(207, 47, 19);
 
     animation: originalstate 400ms 5s ease-in-out forwards;
 }
@@ -82,7 +87,7 @@ input::placeholder {
     margin-top: 10px;
     font-size: 16px;
     text-decoration: none;
-    color: var(--color-hover);
+    color: var(--color-letters-clear);
 }
 
 /*botao*/
@@ -99,6 +104,7 @@ button {
     font-size: 16px;
     border-radius: 4px;
     background-color: var(--color-call-to-action);
+    box-shadow: 1px 1px 1px 1px var(--color-letters);
     color: white;
     outline: none;
 }
