@@ -25,15 +25,16 @@ iframe {
 .wrap-title .new-donation a {
     text-decoration: none;
     font-size: 22px;
-    color: var(--color-call-to-action);
-    border: 1px solid var(--color-call-to-action);
-    padding: 3px;
+    background-color: var(--color-call-to-action);
+    color: var(--color-letters-clear);
+    box-shadow: 1px 1px 1px 1px var(--color-letters);
     border-radius: 4px;
+    padding: 3px;
 }
 
 .wrap-title .new-donation a:hover {
-    background-color: var(--color-call-to-action);
-    color: var(--color-background);
+    background-color: var(--color-hover);
+    color: var(--color-letters-clear);
 }
 
 
@@ -51,7 +52,7 @@ iframe {
     margin-right: auto;
     margin-bottom: 40px;
     display: grid;
-    grid-template-columns: 17% 3px 17%;
+    grid-template-columns: 1fr;
     width: 940px;
 
     justify-content: center;
@@ -78,9 +79,9 @@ iframe {
 .donation-info {
 
     margin: 40px auto;
-    display: flex;
-    flex-wrap: wrap;
-    padding-bottom: 15px;
+    display: grid;
+    grid-template-columns: 1fr;
+
 
     /* border-bottom: 0.5px outset var(--color-call-to-action); */
 
@@ -94,7 +95,9 @@ iframe {
 }
 
 .donation-info p {
-    width: 313px;
+    display: flex;
+    text-align: start;
+    align-items: start;
 }
 
 
@@ -144,23 +147,26 @@ iframe {
 button {
     width: auto;
     margin: auto;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     text-transform: uppercase;
     border-radius: 4px;
-    border: 1px;
-    box-shadow: 2px 1px 3px rgb(56, 56, 56);
+    border: 1px solid var(--color-call-to-action);
+    background-color: var(--color-call-to-action);
+    color: var(--color-letters-clear);
+    box-shadow: 1px 1px 1px 1px var(--color-letters)
 }
 
 button.cancel {
-    background-color: rgb(214, 33, 33);
+    background-color: rgb(134, 20, 20);
     color: white;
 }
 
 button:hover {
 
     color: white;
-    background-color: rgb(56, 56, 56);
+    background-color: var(--color-hover);
+    border: 1px solid var(--color-hover);
 }
 
 button:active {
@@ -171,10 +177,10 @@ button:active {
 
 button.cancel:hover {
 
-    background-color: rgb(134, 7, 7);
+    background-color: rgb(126, 11, 11);
     color: white;
 }
 
 button.cancel:active {
-    background-color: brown;
+    background-color: rgb(126, 11, 11);
 }

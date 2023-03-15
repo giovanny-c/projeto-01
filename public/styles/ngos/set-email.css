@@ -12,12 +12,14 @@
 .item input {
 
     font-size: 30px;
-    color: var(--color-letters);
-    background-color: var(--color-call-to-action);
+
     height: 32px;
     width: 800px;
     border-radius: 4px;
-    box-shadow: 2px 0px 5px gray;
+    border: 1px solid var(--color-input);
+    background-color: var(--color-input);
+    color: var(--color-letters);
+    box-shadow: 1px 1px 1px 1px var(--color-letters);
 }
 
 .item input[type="email"] {
@@ -85,14 +87,17 @@ select.item {
     font-weight: bold;
     text-transform: uppercase;
     border-radius: 4px;
-    border: 1px;
-    box-shadow: 2px 1px 3px rgb(56, 56, 56);
+    border: 1px solid var(--color-call-to-action);
+    background-color: var(--color-call-to-action);
+    color: var(--color-letters-clear);
+    box-shadow: 1px 1px 1px 1px var(--color-letters);
 }
 
 .button button:hover {
 
     color: white;
-    background-color: rgb(56, 56, 56);
+    border: 1px solid var(--color-hover);
+    background-color: var(--color-hover);
 }
 
 .btn-delete {
