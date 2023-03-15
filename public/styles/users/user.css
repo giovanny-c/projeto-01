@@ -51,7 +51,7 @@ button.cancel {
 
 
 button.update {
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     color: white;
 }
 

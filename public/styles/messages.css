@@ -23,7 +23,7 @@
 
     color: white;
 
-    bottom: 15px;
+    top: 9%;
     right: 10%;
     opacity: 1;
 
@@ -37,7 +37,7 @@
 .messages.error {
 
 
-    background-color: tomato;
+    background-color: rgb(207, 47, 19);
 }
 
 .messages.success {
@@ -58,16 +58,16 @@
 }
 
 .input-error {
-    border: 1px solid red;
+    border: 1px solid rgb(207, 47, 19);
 
     animation: originalstate 400ms 5s ease-in-out forwards;
 }
 
 .item.user .input-error {
-    border: 1px solid red;
+    border: 1px solid rgb(207, 47, 19);
 }
 
 
 .item .input-error {
-    border: 1px solid red;
+    border: 1px solid rgb(207, 47, 19);
 }

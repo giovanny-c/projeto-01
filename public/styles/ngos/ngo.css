@@ -13,7 +13,7 @@
 
     width: 266px;
     height: 80px;
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     color: grey;
     border-radius: 4px;
     box-shadow: 2px 1px 4px;

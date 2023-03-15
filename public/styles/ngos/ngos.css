@@ -14,7 +14,7 @@
     align-self: center;
     border: 1px solid black;
     border-radius: 5px;
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     padding: 4px;
 
 }
@@ -45,7 +45,7 @@
 
     margin: 0 20px;
     padding: 12px;
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     border-radius: 4px;
     border-bottom: 1px rgb(29, 29, 29);
     text-decoration: none;

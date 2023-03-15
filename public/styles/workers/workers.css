@@ -14,7 +14,7 @@
     align-self: center;
     border: 1px solid black;
     border-radius: 5px;
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     padding: 4px;
 
 }
@@ -38,7 +38,7 @@ div.columns {
 
 p.worker {
     margin: 10px 0px;
-    color: var(--color-theme);
+    color: var(--color-call-to-action);
     width: 70%;
     font-size: 24px;
 }
@@ -46,7 +46,7 @@ p.worker {
 p a {
     width: 30%;
     text-align: center;
-    color: var(--color-theme)
+    color: var(--color-call-to-action)
 }
 
 p a:hover {

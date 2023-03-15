@@ -26,7 +26,7 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
     console.error(err)
 
     req.session.error = {
-        message: `Internal server error - ${err.message}`,
+        message: `Não foi possível processar a soliçitação`,
         status: 500
     }
 

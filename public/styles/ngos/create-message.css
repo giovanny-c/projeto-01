@@ -14,7 +14,7 @@ textarea {
 
     font-size: 30px;
     color: var(--color-letters);
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     height: 32px;
     width: 800px;
     border-radius: 4px;
@@ -70,7 +70,7 @@ input::-webkit-calendar-picker-indicator {
 }
 
 input::-webkit-datetime-edit-year-field {
-    color: var(--color-theme);
+    color: var(--color-call-to-action);
 }
 
 /* .item input {
@@ -90,7 +90,7 @@ select.item {
     margin: 0px;
     font-size: 30px;
     color: var(--color-letters);
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     height: 32px;
     width: 400px;
     border-radius: 4px;

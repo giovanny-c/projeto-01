@@ -13,7 +13,7 @@
 
     font-size: 30px;
     color: var(--color-letters);
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     height: 38px;
     width: 940px;
     border-radius: 4px;
@@ -57,7 +57,7 @@ select.item {
     margin: 0px;
     font-size: 30px;
     color: var(--color-letters);
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     height: 38px;
     width: 400px;
     border-radius: 4px;

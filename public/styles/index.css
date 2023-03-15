@@ -4,18 +4,22 @@
 }
 
 html {
-    background-color: ivory;
+    background-color: var(--color-background);
     min-width: 940px;
+    color: var(--color-letters-clear);
 
 }
 
 :root {
 
 
-    --color-theme: rgba(56, 56, 56, 1);
-    --color-hover: rgb(95, 95, 95);
-    --color-letters: white;
-    --color-background: ivory;
+    --color-call-to-action: rgb(48, 183, 207);
+    --color-hover: rgb(42, 154, 173);
+    --color-input: rgb(148, 196, 211);
+    --color-letters-clear: white;
+    --color-letters: rgb(11, 42, 59);
+    --color-background: rgb(69, 91, 110);
+    --color-background-header: rgb(7, 25, 43);
 }
 
 
@@ -52,7 +56,7 @@ a {
 }
 
 #title {
-    color: var(--color-theme);
+    color: var(--color-call-to-action);
 
 }
 
@@ -64,7 +68,7 @@ a {
 }
 
 .sub-title {
-    color: var(--color-theme);
+    color: var(--color-call-to-action);
     margin: 0 auto;
     width: 800px;
     font-size: 22px;

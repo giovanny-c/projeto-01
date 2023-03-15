@@ -83,7 +83,7 @@ button:active {
     width: min-content;
     margin: 4px;
     text-decoration: none;
-    color: var(--color-theme);
+    color: var(--color-call-to-action);
 }
 
 .thisMonthBooklets a:hover,

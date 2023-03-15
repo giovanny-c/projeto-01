@@ -16,7 +16,7 @@ html {
 :root {
 
 
-    --color-theme: rgba(56, 56, 56, 1);
+    --color-call-to-action: rgba(56, 56, 56, 1);
     --color-hover: rgb(95, 95, 95);
     --color-letters: white;
     --color-background: ivory;

@@ -25,7 +25,7 @@ form {
     border-radius: 5px;
     border: 1px solid gray;
     box-shadow: 1px 1px 4px gray;
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     color: var(--color-background);
     cursor: pointer;
 
@@ -48,7 +48,7 @@ button {
     border-radius: 5px;
     border: 1px solid gray;
     box-shadow: 1px 1px 4px gray;
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     color: var(--color-background);
     cursor: pointer;
 

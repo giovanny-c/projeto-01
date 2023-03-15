@@ -42,7 +42,7 @@ input {
     font-size: 30px;
     padding-left: 15px;
     color: var(--color-letters);
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     height: 38px;
     width: 940px;
     border-radius: 4px;
@@ -98,7 +98,7 @@ button {
     height: 36px;
     font-size: 16px;
     border-radius: 4px;
-    background-color: var(--color-theme);
+    background-color: var(--color-call-to-action);
     color: white;
     outline: none;
 }

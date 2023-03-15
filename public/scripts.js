@@ -436,16 +436,24 @@ const Mask = {
 
 function toggleIframe() {
     var iframe = document.querySelector("iframe")
+    var iframeDiv = document.querySelector(".iframe")
 
     if (iframe.style.visibility === "visible") {
 
         iframe.style.visibility = "hidden"
         iframe.style.height = 0
+        iframeDiv.style.height = 0
+
 
     } else {
 
         iframe.style.visibility = "visible"
         iframe.style.height = "500px"
+        iframe.style.width = "940px"
+
+        iframeDiv.style.height = "500px"
+
+
     }
 
 };

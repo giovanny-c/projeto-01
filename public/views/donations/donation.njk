@@ -38,7 +38,7 @@
             <p>
                 Funcionária: {{donation.worker.name}}
             </p>
-
+        
             <div class="update-info">
             
                 <p class="email-sent">
@@ -58,51 +58,35 @@
             </div>
            
         </div>
-
-       
+   
         <div class="buttons">
-
-            
-
-            {% if file %}
-                
-            
-            <div>
-                <button class="show"
-                onclick="toggleIframe()">
-                    Ver Recibo
-                </button>
+            <div class="div-button">
+                <a class="button update-button" href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/atualizar">
+                Atualizar Doação</a>
             </div>
 
-            <div>
-                <a class="button download-button" href="data:application/pdf;base64,{{file}}" download="{{file_name}}"
+            <div  class="div-button">
+                {% if not donation.is_donation_canceled %}                                   
+                    <form name="form-delete" class="form-delete" action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/cancelar-doacao" method="POST" enctype="multipart/form-data">
                     
-                >Baixar Recibo</a> 
-            </div>
-            {% else %}
-                <div class="div-button"></div>
-                <div class="div-button"></div>
-            {% endif %}
+
+                    <button class="cancel"  type="submit">
+                        Cancelar Doação
+                    </button>
                 
-
-            {# button para escolher doador para enviar email #}
-
-            <div>
-                <a class="button update-button" href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/atualizar">Atualizar Doação</a>
+                    </form>
+                {% endif %}
             </div>
 
-            <div>
-                <form name="form-delete" class="form-delete" action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/cancelar-doacao" method="POST" enctype="multipart/form-data">
-                
-
-                <button class="cancel"  type="submit">
-                    Cancelar Doação
-                </button>
-            
-                </form>
-            </div>
         </div>
+        
 
+        <div class="change">
+            <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float - 1}}"><< doação anterior</a> 
+              
+                {#caracter invisivel  #}
+            <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float + 1}}">proxima doação >></a>
+        </div>
         
                 
         <div class="send-email-form">
@@ -165,19 +149,44 @@
             
         </div>
         
+        <div class="buttons">        
+
+            {% if file %}
+                
+            
+            <div class="div-button2">
+                <button class="show"
+                onclick="toggleIframe()">
+                    Ver Recibo
+                </button>
+            </div>
+
+            <div class="div-button2">
+                <a class="button download-button" href="data:application/pdf;base64,{{file}}" download="{{file_name}}"
+                    
+                >Baixar Recibo</a> 
+            </div >
+            {% else %}
+                <div class="div-button"></div>
+                <div class="div-button"></div>
+            {% endif %}
+                
+
+            {# button para escolher doador para enviar email #}
+
+            </div>
+
+        </div>
         
-        
+
+        <div class ="iframe">
         <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe>
+        </div>
 
         
+    </div>   
     
-    </div>
-        <div class="change">
-            <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float - 1}}"><< doação anterior</a> 
-              
-                {#caracter invisivel  #}
-            <a href="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number|float + 1}}">proxima doação >></a>
-        </div>
+        
     
     
     <script>
