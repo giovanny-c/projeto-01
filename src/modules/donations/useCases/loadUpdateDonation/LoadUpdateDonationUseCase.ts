@@ -48,7 +48,7 @@ class LoadUpdateDonationUseCase {
             throw new AppError("Doação nao encontrada", 404)
         }    
 
-        let ngo: Ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
+        let ngo: Ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
 
         if(!ngo.id){
             

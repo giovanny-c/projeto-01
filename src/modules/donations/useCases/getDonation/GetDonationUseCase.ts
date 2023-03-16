@@ -62,7 +62,7 @@ class GetDonationUseCase {
 
     async execute({donation_number, ngo_id}: IRequest): Promise<IResponse> {
 
-        let ngo: Ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
+        let ngo: Ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
 
         if(!ngo.id){
             

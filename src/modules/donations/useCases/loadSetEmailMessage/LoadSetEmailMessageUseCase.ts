@@ -31,7 +31,7 @@ class LoadSetEmailMessageUseCase {
 
     async execute({ngo_id}: IRequest): Promise<IResponse> {
         
-        let ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
+        let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
 
         if(!ngo.id){
             ngo =  await this.ngoRepository.findById(ngo_id)

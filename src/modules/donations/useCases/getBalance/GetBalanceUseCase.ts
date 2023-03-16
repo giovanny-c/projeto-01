@@ -58,7 +58,7 @@ class GetBalanceUseCase {
 
     async execute({ngo_id, startDate, endDate, worker_id, limit, orderBy, page}: IRequest):Promise<IResponse>{
 
-        let ngo: Ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
+        let ngo: Ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
 
         if(!ngo.id){
             

@@ -55,7 +55,7 @@ class AuthenticateUserUseCase {
 
         
 
-        await this.cacheProvider.setRedis(`user-${user.id}`, JSON.stringify(instanceToPlain(user)))
+        await this.cacheProvider.set(`user-${user.id}`, JSON.stringify(instanceToPlain(user)))
 
         const created_at = this.dateProvider.dateNow()
 

@@ -57,7 +57,7 @@ class ListDonationsUseCase {
     async execute({ orderBy, limit, page, startDate, endDate, ngo_id, worker_name, donor_name, donation_number }: IRequest): Promise<IResponse> {
 
 
-        let ngo: Ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${ngo_id}`))
+        let ngo: Ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
 
         if(!ngo.id){
             

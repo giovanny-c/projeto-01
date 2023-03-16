@@ -45,7 +45,7 @@ class UpdateNgoUseCase{
             full_name, 
         })
 
-        await this.cacheProvider.setRedis(`ngo-${ngo.id}`, JSON.stringify(instanceToPlain(updatedNgo)))
+        await this.cacheProvider.set(`ngo-${ngo.id}`, JSON.stringify(instanceToPlain(updatedNgo)))
 
 
         return {ngo: updatedNgo}

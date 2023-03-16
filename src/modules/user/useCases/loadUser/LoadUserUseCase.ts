@@ -27,7 +27,7 @@ class LoadUserUseCase {
 
         let user 
 
-        user = JSON.parse(await this.cacheProvider.getRedis(`user-${user_id}`))
+        user = JSON.parse(await this.cacheProvider.get(`user-${user_id}`))
 
         user = await this.usersRepository.findById(user_id)
         

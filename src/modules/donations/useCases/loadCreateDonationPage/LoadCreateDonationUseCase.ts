@@ -40,7 +40,7 @@ class LoadCreateDonationUseCase {
 
     async execute({id}: IRequest): Promise<IResponse> {
         
-        let ngo = JSON.parse(await this.cacheProvider.getRedis(`ngo-${id}`))
+        let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${id}`))
 
         if(!ngo.id){
             ngo =  await this.ngoRepository.findById(id)

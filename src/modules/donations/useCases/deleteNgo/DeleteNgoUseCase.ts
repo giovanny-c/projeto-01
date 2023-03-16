@@ -55,7 +55,7 @@ class DeleteNgoUseCase{
         
         await this.ngoRepository.delete(ngo.id)
 
-        await this.cacheProvider.delRedis(`ngo-${ngo.id}`)
+        await this.cacheProvider.delete(`ngo-${ngo.id}`)
         
         
     }

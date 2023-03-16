@@ -26,7 +26,7 @@ class FindAllNgosUseCase {
 
             
 
-            await this.cacheProvider.setRedis(`ngo-${ngo.id}`, JSON.stringify(instanceToPlain(ngo)))
+            await this.cacheProvider.set(`ngo-${ngo.id}`, JSON.stringify(instanceToPlain(ngo)))
         });
 
         return ngos
