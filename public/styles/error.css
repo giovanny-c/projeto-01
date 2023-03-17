@@ -1,0 +1,15 @@
+h1 {
+    font-size: 80px;
+    width: 940px;
+    margin: 120px auto 50px auto;
+    color: var(--color-letters-clear);
+    text-align: center;
+}
+
+h2 {
+    font-size: 50px;
+    width: 940px;
+    margin: 60px auto 100px auto;
+    color: var(--color-letters-clear);
+    text-align: center;
+}

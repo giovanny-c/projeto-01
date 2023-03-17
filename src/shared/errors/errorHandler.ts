@@ -3,7 +3,12 @@ import { AppError } from "./AppError"
 
 
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-   
+    
+    if (err instanceof AppError && err.statusCode === 429){
+        console.error("Too many Requests")
+        return res.status(429).render("views/error", {error: err})
+    }
+
     if (err instanceof AppError) {
 
         
@@ -21,6 +26,8 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
 
 
     }
+
+    
     
 
     console.error(err)
