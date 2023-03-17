@@ -147,7 +147,7 @@ class GetDonationUseCase {
         }
 
         const formatedDate = this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY")
-console.log(formatedDate)
+
     
         return {
             formated_value: formatToBRL(donation.donation_value),

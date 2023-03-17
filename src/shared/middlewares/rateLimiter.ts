@@ -23,7 +23,5 @@ export default async function rateLimiter(req: Request, res: Response, next: Nex
         return next()
     }catch(err){
         throw new AppError("Too many requests", 429)
-    }finally{
-       
     }
 }

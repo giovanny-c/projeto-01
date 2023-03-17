@@ -155,7 +155,7 @@ class LocalStorageProvider implements IStorageProvider {
     }
 
     @getExecutionTime()
-    async getFile(dir: string, file_name: string, returnInBase64: boolean): Promise<Buffer | string | void>{
+    async getFile(dir: string, file_name: string, returnInBase64?: boolean): Promise<Buffer | string | void>{
 
         
  
@@ -170,7 +170,7 @@ class LocalStorageProvider implements IStorageProvider {
             
         } catch (error) {
             console.error(error)
-            throw new AppError("Não foi possivel ler o arquivo, ou ele nao existe.")
+            // throw new AppError("Não foi possivel ler o arquivo, ou ele nao existe.")
         }
     }
     

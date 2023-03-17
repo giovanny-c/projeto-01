@@ -1,31 +1,31 @@
-import upload from "@config/upload";
-import { IFilePath, IStorageProvider } from "../IStorageProvider";
-import * as fs from "fs"
-import { resolve } from "path";
 
-class StorageProviderInMemory implements IStorageProvider {
+// import { IFilePath, IStorageProvider } from "../IStorageProvider";
+// import * as fs from "fs"
+// import { resolve } from "path";
 
-    async saveFromTmpFolder({ file, folder }: IFilePath): Promise<string> {
+// class StorageProviderInMemory implements IStorageProvider {
 
-        let dir = resolve(`${upload.tmpFolder}/${folder}`)
-        let file_path = resolve(dir + `/${file}`)
+//     async saveFromTmpFolder({ file, folder }: IFilePath): Promise<string> {
 
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true })
-        }
+//         let dir = resolve(`${upload.tmpFolder}/${folder}`)
+//         let file_path = resolve(dir + `/${file}`)
 
-        fs.writeFileSync(file_path, "teste")
+//         if (!fs.existsSync(dir)) {
+//             fs.mkdirSync(dir, { recursive: true })
+//         }
 
-        return file_path
+//         fs.writeFileSync(file_path, "teste")
 
-    }
-    async deleteFromTmpFolder({ file, folder }: IFilePath): Promise<void> {
-        let file_path = resolve(`${upload.tmpFolder}/${folder}/${file}`)
+//         return file_path
 
-        fs.unlinkSync(file_path)
+//     }
+//     async deleteFromTmpFolder({ file, folder }: IFilePath): Promise<void> {
+//         let file_path = resolve(`${upload.tmpFolder}/${folder}/${file}`)
 
-    }
+//         fs.unlinkSync(file_path)
 
-}
+//     }
 
-export { StorageProviderInMemory }
+// }
+
+// export { StorageProviderInMemory }

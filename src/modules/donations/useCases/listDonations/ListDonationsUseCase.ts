@@ -82,7 +82,7 @@ class ListDonationsUseCase {
         
         //se nao tiver data final cria uma do momento atal, se tiver poe 86399 segundo a ela
         !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
-       console.log(endDate)
+       
 
         const donations =  await this.donationsRepository.findDonationsBy({
             ngo_id,
