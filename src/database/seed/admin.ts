@@ -1,27 +1,29 @@
 
 import { v4 as uuidV4 } from "uuid"
-import { dataSource } from ".."
+import { dataSource } from "../runMigration"
 import "dotenv"
 
 import { genPassword } from "../../../utils/passwordUtils"
 import { User } from "../../modules/user/entities/user"
 
 async function create() {
-    const repository = dataSource.getRepository(User)
+    
+    
+        
+    await dataSource.initialize()
 
     const {hash, salt} = genPassword(process.env.ADM_SEED_PASSWORD as string)
+    const id =  uuidV4()
+    const name = process.env.ADM_SEED_NAME 
+    const email = process.env.ADM_SEED_EMAIL
     
-    const userMaster = repository.create({
-        id: uuidV4(),
-        name: process.env.ADM_SEED_NAME as string,
-        admin: true,
-        email: process.env.ADM_SEED_EMAIL as string,
-        password_hash: hash,
-        salt
-        
-    })
-
-    repository.save(userMaster).then()
+    await dataSource.query(
+        `INSERT INTO users(id, name, email, password_hash, salt, admin)
+        VALUES ('${id}', '${name}', '${email}', '${hash}', '${salt}', true)
+        `
+    )
+    
+    dataSource.destroy()
     
 
     
