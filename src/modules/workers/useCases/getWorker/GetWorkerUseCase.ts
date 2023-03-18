@@ -35,7 +35,7 @@ class GetWorkerUseCase {
         const worker = await this.workersRepository.findById(worker_id)
 
         if (!worker) {
-            throw new AppError("Worker not found")
+            throw new AppError("Funcionário nao encontrado")
         }
 
         

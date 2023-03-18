@@ -22,7 +22,7 @@ class CreateWorkerUseCase {
         const worker = await this.workersRepository.findByName(name)
 
         if (worker) {
-            throw new AppError("There is already a worker with this name")
+            throw new AppError("Ja existe um funcionario com esse nome")
         }
 
         await this.workersRepository.create(name)
