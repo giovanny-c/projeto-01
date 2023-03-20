@@ -78,6 +78,8 @@ input::placeholder {
 
 
 
+
+
 .section div:last-of-type {
     display: flex;
     justify-content: space-between;
@@ -88,6 +90,12 @@ input::placeholder {
     font-size: 16px;
     text-decoration: none;
     color: var(--color-letters-clear);
+}
+
+.section div:last-of-type a:hover {
+    color: var(--color-menu-hover);
+    transition: ease-in 100ms all;
+
 }
 
 /*botao*/
