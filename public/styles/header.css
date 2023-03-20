@@ -52,8 +52,9 @@ header .menu {
 .menu2 a:hover,
 .logout:hover {
 
-    text-decoration: underline;
-    color: rgba(255, 255, 255, 1);
+
+    color: var(--color-menu-hover);
+    transition: ease-in 100ms all;
 }
 
 .logout {

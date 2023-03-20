@@ -99,6 +99,8 @@ button:active {
 .thisMonthBooklets a:hover,
 .lastMonthBooklets a:hover {
 
-    text-decoration: underline;
+    color: var(--color-menu-hover);
+
+    transition: ease-in 100ms all;
 
 }

@@ -206,7 +206,8 @@ div.search-paramns button:active {
 }
 
 .table td a:hover {
-    text-decoration: underline;
+    color: var(--color-menu-hover);
+    transition: ease-in 100ms all;
 }
 
 
