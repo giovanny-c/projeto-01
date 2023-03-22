@@ -2,7 +2,7 @@ import { PDFDocument, PrintScaling } from "pdf-lib"
 import fontkit from "@pdf-lib/fontkit"
 import fs from "fs"
 import * as fsPromises from "fs/promises"
-
+import {resolve} from "path"
 import { ICreateBooletResponse, IFileProvider } from "../IFileProvider";
 import { Donation } from "../../../../../modules/donations/entities/donation";
 
@@ -31,13 +31,16 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //pega o template
         const templatePath = `./templates/${donation.ngo.alias}_template.jpg` //template do recibo
-        
-        let uint8Array 
+        const signPath = resolve(".", "templates", "signs", "ricardo_sign2.png" )
+
+        let uint8Array
+        let uint8ArraySign 
         try {
             
             uint8Array = await fsPromises.readFile(templatePath)// le o tamplate do recibo
-            
-            if(!uint8Array){
+            uint8ArraySign = await fsPromises.readFile(signPath)
+
+            if(!uint8Array || !uint8ArraySign){
                 return 
             }
 
@@ -62,7 +65,8 @@ class PDF_LIBFileProvider implements IFileProvider {
         const font = await doc.embedFont(fontBuffer)
         
         
-        const templatePNG = await doc.embedJpg(uint8Array) //poe o template no pdf
+        const template = await doc.embedJpg(uint8Array) //poe o template no pdf
+        const templateSign = await doc.embedPng(uint8ArraySign)
 
         //vai injetar o metodo de criação de pdf dinamicamente
 
@@ -70,7 +74,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         const receiptProvider = container.resolve(provider)  
     
-        const pdfBytes = await receiptProvider.generateReceipt(doc, donation, saveFile, templatePNG, font)
+        const pdfBytes = await receiptProvider.generateReceipt(doc, donation, saveFile, template, templateSign, font)
         
         return  pdfBytes
 

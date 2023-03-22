@@ -26,7 +26,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
     
     
     
-    async generateReceipt(doc: PDFDocument, donation: Donation, saveFile: boolean, templatePng: PDFImage, font?: PDFFont): Promise<Uint8Array>{
+    async generateReceipt(doc: PDFDocument, donation: Donation, saveFile: boolean, template: PDFImage, templateSign: PDFImage, font?: PDFFont): Promise<Uint8Array>{
         
         const storageProvider = container.resolve(LocalStorageProvider)
 
@@ -35,12 +35,21 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         // page.setRotation(degrees(90))
         page.setSize( 800, 365 )
 
-        page.drawImage(templatePng, { //"desenha" a imagem
+        page.drawImage(template, { //"desenha" a imagem
             y: 0,
             x: 40,
             width: 800, //*0.75?
             height: 365,//*0.75?
             // rotate: degrees(90)
+        })
+        
+        page.drawImage(templateSign, {
+            y: 28,
+            x: 488,
+            width: 75,
+            height: 51
+
+
         })
 
         //numero da doaçao

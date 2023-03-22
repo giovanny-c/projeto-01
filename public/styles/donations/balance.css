@@ -267,6 +267,22 @@ select {
 
 }
 
+.clean {
+    margin-left: 10px;
+}
+
+.clean a {
+    border-radius: 3px;
+    padding: 2px 3px 2px 3px;
+    background-color: var(--color-call-to-action);
+    color: var(--color-letters-clear);
+}
+
+.clean a:hover {
+    background-color: var(--color-hover);
+    transition: ease-in 100ms all;
+}
+
 
 /* 
 //////// 
