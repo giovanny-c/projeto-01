@@ -45,9 +45,9 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         
         page.drawImage(templateSign, {
             y: 28,
-            x: 488,
+            x: 470,
             width: 75,
-            height: 51
+            height: 49
 
 
         })

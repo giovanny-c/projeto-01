@@ -31,7 +31,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
         //pega o template
         const templatePath = `./templates/${donation.ngo.alias}_template.jpg` //template do recibo
-        const signPath = resolve(".", "templates", "signs", "ricardo_sign2.png" )
+        const signPath = resolve(".", "templates", "signs", "ricardo_sign3.png" )
 
         let uint8Array
         let uint8ArraySign 
