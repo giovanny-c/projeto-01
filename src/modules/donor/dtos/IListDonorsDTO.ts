@@ -5,6 +5,7 @@ interface IListDonorsDTO {
     email?: string
     phone?: string
     created_at?: Date
+    user_id?: string
 
 
 

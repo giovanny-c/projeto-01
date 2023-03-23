@@ -57,7 +57,7 @@ class DonationsRepository implements IDonationsRepository {
 
     async countDonationsValues({startDate, endDate, ngo_id, worker_id, limit, offset, orderBy }: IFindOptions): Promise<ICountDonationsValueResponse> {
 
-        const sum = await this.repository.createQueryBuilder("donations")
+        const sum = this.repository.createQueryBuilder("donations")
         .select("SUM(donations.donation_value)", "total")
         .where("donations.is_donation_canceled IS NOT true")
         .andWhere("donations.ngo_id = :ngo_id", {ngo_id})

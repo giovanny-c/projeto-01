@@ -158,6 +158,7 @@ button {
 }
 
 button.cancel {
+    border: 1px solid rgb(134, 20, 20);
     background-color: rgb(134, 20, 20);
     color: white;
 }
@@ -176,8 +177,8 @@ button:active {
 }
 
 button.cancel:hover {
-
-    background-color: rgb(126, 11, 11);
+    border: 1px solid rgb(110, 11, 11);
+    background-color: rgb(110, 11, 11);
     color: white;
 }
 

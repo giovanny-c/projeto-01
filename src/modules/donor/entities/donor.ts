@@ -1,6 +1,8 @@
 
-import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
+
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { v4 as uuidV4 } from "uuid"
+import { User } from "../../user/entities/user";
 
 @Entity("donors")
 class Donor {
@@ -26,7 +28,12 @@ class Donor {
     @Column()
     last_donation: Date
 
+    @Column()
+    user_id: string
 
+    @ManyToOne(() => User)
+    @JoinColumn({ name: "user_id" })
+    user: User
 
     constructor() {
         if (!this.id) {

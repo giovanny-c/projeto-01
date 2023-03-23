@@ -70,7 +70,7 @@ class ImportDonorsUseCase{
 
     }
 
-    async execute(file: Express.Multer.File){
+    async execute(file: Express.Multer.File , user_id: string){
 
         if(!file) throw new AppError("Nenhum arquivo enviado")
         
@@ -84,7 +84,7 @@ class ImportDonorsUseCase{
 
             if(!donorExists){
                 await this.donorsRepository.create({
-                    name, email, phone
+                    name, email, phone, user_id
                 })
             }
 

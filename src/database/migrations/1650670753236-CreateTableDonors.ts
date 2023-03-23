@@ -41,6 +41,8 @@ export class CreateTableDonors1650670753236 implements MigrationInterface {
                             type: "timestamp",
                             isNullable: true
                         }
+                        
+                        
                     ]
 
                 }

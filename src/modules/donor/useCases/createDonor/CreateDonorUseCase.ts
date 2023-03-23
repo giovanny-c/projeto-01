@@ -12,7 +12,7 @@ class CreateDonorUseCase {
         @inject("DonorsRepository")
         private donorsRepository: IDonorsRepository) { }
 
-    async execute({ name, email, phone }: ICreateDonorDTO): Promise<Donor> {
+    async execute({ name, email, phone, user_id}: ICreateDonorDTO) {
 
         
 
@@ -31,9 +31,11 @@ class CreateDonorUseCase {
 
         }
 
-        const donor = await this.donorsRepository.create({ name, email, phone })
+        const donor = await this.donorsRepository.create({ name, email, phone, user_id })
 
-        return donor
+        return {
+            donor
+        }
 
     }
 

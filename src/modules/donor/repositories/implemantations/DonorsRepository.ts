@@ -16,13 +16,14 @@ class DonorsRepository implements IDonorsRepository {
         this.repository = dataSource.getRepository(Donor)
     }
 
-    async create({ id, name, email, phone, last_donation }: ICreateDonorDTO): Promise<Donor> {
+    async create({ id, name, email, phone, last_donation, user_id }: ICreateDonorDTO): Promise<Donor> {
         const donor = this.repository.create({
             id,
             name,
             email,
             phone,
-            last_donation
+            last_donation,
+            user_id
         })
 
         return await this.repository.save(donor)
@@ -44,20 +45,25 @@ class DonorsRepository implements IDonorsRepository {
 
         return donor
     }
-    async findBy(value: string, limit = 30, offset: number): Promise<Donor[]> {
+    async findBy(value: string, limit = 30, offset: number, user_id?: string): Promise<Donor[]> {
 
-         const donors = await this.repository.createQueryBuilder("donors")
+        let donors = this.repository.createQueryBuilder("donors")
         .select("donors")
+        .leftJoinAndSelect("donors.user","users")
         .where("donors.name ILIKE :name ", {name: `%${value}%`})
         .orWhere("donors.email ILIKE :email ", {email: `%${value}%`})
         .orWhere("donors.phone ILIKE :phone ", {phone: `%${value}%`})
-        .limit(limit)
+        
+        if(user_id){
+            donors.andWhere("donors.user_id = :user_id", {user_id})
+        }
+        
+        donors.limit(limit)
         .offset(offset)
         .orderBy(`donors.name`, "ASC", "NULLS LAST")
-        .getMany()
-
         
-        return donors
+
+        return await donors.getMany()
         // const donors = await this.repository.find({
 
         //     where: [
