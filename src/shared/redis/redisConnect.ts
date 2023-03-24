@@ -8,4 +8,6 @@ redisClient.on("connect", (err) => {
     console.log("Connected to redis!")
 })
 
+
+
 redisClient.connect()

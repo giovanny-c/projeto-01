@@ -9,16 +9,18 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=projeto01_database
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=
     volumes:
       - pgdata:/data/postgresql
 
   redis:
-    image: redis:alpine
+    image: bitnami/redis:latest
     ports:
       - 6379:6379
+    environment:
+      - REDIS_PASSWORD=
 
   app:
     build: .

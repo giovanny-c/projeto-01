@@ -58,7 +58,7 @@ app.use(session(redisSession))
 
 app.use(function(req, res, next) {
     if(!req.session){
-       next (new AppError("Redis down!", 500))
+       throw new AppError("Redis down!", 500)
     }
     next()
 })

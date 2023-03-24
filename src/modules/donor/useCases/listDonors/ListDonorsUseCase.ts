@@ -36,7 +36,7 @@ class ListDonorsUseCase {
 
         if(!is_admin){
 
-            filteredDonors = donors.map((donor)=>{
+            filteredDonors = donors.filter((donor)=>{
                 
                 if(donor.user?.id === user_id || donor.user?.admin || !donor.user){
                     return donor
