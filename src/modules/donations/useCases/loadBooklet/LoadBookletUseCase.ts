@@ -6,6 +6,9 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { Ngo } from "../../entities/ngos";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
+import {resolve} from "path"
+
+
 
 interface IRequest{
     ngo_id: string
@@ -49,17 +52,19 @@ class LoadBookletUseCase {
 
             if(!ngo) throw new AppError("Instituição nao encontrada", 404)
 
-        }   
+        }       
 
 
-        let dir = `./tmp/booklet/${year}/${month}/${ngo.name}/`
 
+        let dir = resolve("tmp", "booklet", `${year}`, `${month}`, `${ngo.name}`)    
+        
+        
 
+        let file = await this.storageProvider.getFileStream(dir, file_name) as string
         
-        
-        
-        let file = await this.storageProvider.getFile(dir, file_name, true) as string
-        
+        if(!file){
+            throw new AppError("Não foi possível encontrar esse arquivo", 500)
+        }
         
 
         return {

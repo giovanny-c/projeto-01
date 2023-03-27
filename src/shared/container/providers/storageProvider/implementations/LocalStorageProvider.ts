@@ -161,6 +161,8 @@ class LocalStorageProvider implements IStorageProvider {
  
         try {   
             const file_path = resolve(dir, file_name)
+
+            console.log(file_path)
             const file = await fsPromises.readFile(file_path, {
                 encoding: returnInBase64 ? "base64" : null 
             })
@@ -218,23 +220,37 @@ class LocalStorageProvider implements IStorageProvider {
     }
     
 
-    getFileStream(dir: string, file_name: string): string{
+    async getFileStream(dir: string, file_name: string): Promise<string>{
         
-        let data: string
+        let data = ""
 
         const file_path = resolve(dir, file_name)
 
-        const readStream = fs.createReadStream(file_path, "base64")
-        
-        readStream.on("error", (error) => {
-            if (error) {
-            console.error(error)
-            throw new AppError("Nao foi possivel ler o arquivo", 500)}
-        })
+        try {
+            
+            await new Promise((resolve) => {
+                
+                fs.createReadStream(file_path, "base64")
+                .on("error", (error) => {
+                    if (error) {
+                        console.error(error)
+                    }
+                })
+                .on("data", (chunk) => {
+                    data += chunk
+                    
+                   
+                })
+                .on("end", resolve)
+            
+                
+            })
 
-        readStream.on("data", (chunk) => data += chunk)
-        readStream.on("end", () => console.log("stream ended"))
-        
+        } catch (error) {
+            throw new AppError("Não foi possível ler o arquivo")
+        }
+
+
         return data
     }
           
