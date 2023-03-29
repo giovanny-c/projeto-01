@@ -8,7 +8,7 @@ import { IDonationCounterRepository } from "../../repositories/IDonationCounterR
 import { INgoRepository } from "../../repositories/INgoRepository";
 import {resolve} from "path"
 
-
+import * as fs from "fs"
 
 interface IRequest{
     ngo_id: string
@@ -20,7 +20,8 @@ interface IRequest{
 interface IResponse{
 
     ngo: Ngo
-    file: string | Buffer
+    // file string | Buffer
+    file: fs.ReadStream
     file_name: string
     
 }
@@ -66,10 +67,12 @@ class LoadBookletUseCase {
             throw new AppError("Não foi possível encontrar esse arquivo", 500)
         }
         
+        
 
         return {
             ngo,
-            file,
+            // file,
+            file: fs.createReadStream(resolve(dir, file_name), "base64"),
             file_name
         }
         
