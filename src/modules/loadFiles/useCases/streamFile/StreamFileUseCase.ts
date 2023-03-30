@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import * as fs from "fs"
 import { AppError } from "../../../../shared/errors/AppError";
+import {resolve} from "path"
 
 @injectable()
 class StreamFileUseCase {
@@ -17,7 +18,17 @@ class StreamFileUseCase {
 
         }
 
-        return fs.createReadStream(file_path, "base64")
+
+        
+        const readable = fs.createReadStream(resolve(file_path))
+        
+        // readable.on("data", (chunck) => {
+        //     console.log(chunck.slice(0,1))
+        // })
+        
+        return readable
+
+
 
 
     }

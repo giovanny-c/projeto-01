@@ -4,7 +4,7 @@ import fs from "fs"
 
 
 
-import path from "path"
+import {resolve} from "path"
 import { Donation } from "../../../../../modules/donations/entities/donation";
 
 import formatToBRL from "../../../../../../utils/formatToBRL";
@@ -241,6 +241,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
         let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
+
         storageProvider.saveAsync(dir, file_name, pdfBytes)
     }
     
@@ -271,17 +272,19 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
     // fazer error handling para arquivos que nao existirem
 
-            let receitpPdf: Uint8Array | ArrayBuffer
+            let receitpPdf: Buffer | Uint8Array
 
             try {
-                receitpPdf = fs.readFileSync(`${dir}/${file_name}`)
+                receitpPdf = await fs.promises.readFile(resolve(dir, file_name))
             
             } catch (error) {
                 
-                if(error){
+                if(error || !receitpPdf){
 
                     const fileProvider = container.resolve(PDF_LIBFileProvider)
                     
+                    //se nao salvase o arquivo iria mais rapido?
+                    //provavel q sim
                     receitpPdf = await fileProvider.generateFile(donation, true)
                     
                     

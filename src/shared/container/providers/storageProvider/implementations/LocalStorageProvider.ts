@@ -112,7 +112,7 @@ class LocalStorageProvider implements IStorageProvider {
                 (err) => {
                     if (err) {
                         console.error(err)
-                        throw new AppError("Não foi possivel salvar arquivo.")
+                        throw new AppError("Não foi possivel salvar arquivo!")
 
                 }
 
@@ -171,6 +171,7 @@ class LocalStorageProvider implements IStorageProvider {
             return file
             
         } catch (error) {
+            console.log("erro de leitura: ")
             console.error(error)
             // throw new AppError("Não foi possivel ler o arquivo, ou ele nao existe.")
         }

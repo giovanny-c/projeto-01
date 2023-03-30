@@ -10,13 +10,13 @@ class StreamFileController {
         const {path} = req.query
 
         const file_name = path.toString().match(/([^<>:"\/\\|?*]+\.\w+)/g) 
-console.log(file_name)
+
         const streamFile = container.resolve(StreamFileUseCase)
 
         const file = streamFile.execute(path as string)
 
-        res.type("pdf")
-        res.set("Content-Disposition", `attachment; filename=${file_name}`)
+        // res.type("pdf")
+        // res.set("Content-Disposition", `attachment; filename=${file_name}`)
 
         file.pipe(res)
     }

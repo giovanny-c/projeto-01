@@ -5,7 +5,6 @@ import { IStorageProvider } from "../../../../shared/container/providers/storage
 import { AppError } from "../../../../shared/errors/AppError";
 import { Ngo } from "../../entities/ngos";
 import { INgoRepository } from "../../repositories/INgoRepository";
-import {resolve} from "path"
 
 import * as fsPromises from "fs/promises"
 
@@ -53,7 +52,7 @@ class LoadBookletUseCase {
 
         }       
 
-        const file_path = resolve("tmp", "booklet",year, month, ngo.name, file_name)    
+        const file_path = `tmp/booklet/${year}/${month}/${ngo.name}/${file_name}`   
         
         try { 
             await fsPromises.access(file_path)
