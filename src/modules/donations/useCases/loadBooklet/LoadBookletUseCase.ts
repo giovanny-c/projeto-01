@@ -4,11 +4,10 @@ import ICacheProvider from "../../../../shared/container/providers/cacheProvider
 import { IStorageProvider } from "../../../../shared/container/providers/storageProvider/IStorageProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { Ngo } from "../../entities/ngos";
-import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import {resolve} from "path"
 
-import * as fs from "fs"
+import * as fsPromises from "fs/promises"
 
 interface IRequest{
     ngo_id: string
@@ -20,9 +19,8 @@ interface IRequest{
 interface IResponse{
 
     ngo: Ngo
-    // file string | Buffer
-    file: fs.ReadStream
     file_name: string
+    file_path: string
     
 }
 
@@ -55,25 +53,19 @@ class LoadBookletUseCase {
 
         }       
 
-
-
-        let dir = resolve("tmp", "booklet", `${year}`, `${month}`, `${ngo.name}`)    
+        const file_path = resolve("tmp", "booklet",year, month, ngo.name, file_name)    
         
-        
-
-        let file = await this.storageProvider.getFileStream(dir, file_name) as string
-        
-        if(!file){
-            throw new AppError("Não foi possível encontrar esse arquivo", 500)
+        try { 
+            await fsPromises.access(file_path)
+        } catch (error) {
+            throw new AppError("Não foi possivel encontrar o arquivo, ou ele não existe", 500)
         }
-        
         
 
         return {
             ngo,
-            // file,
-            file: fs.createReadStream(resolve(dir, file_name), "base64"),
-            file_name
+            file_name,
+            file_path
         }
         
     }  

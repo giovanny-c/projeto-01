@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ReadStream } from "fs";
+
 import { container } from "tsyringe";
 import { LoadBookletUseCase } from "./LoadBookletUseCase";
 
@@ -14,16 +15,14 @@ class LoadBookletController{
 
         const loadBookletUseCase = container.resolve(LoadBookletUseCase)
 
-        const {file, file_name,  ngo} = await loadBookletUseCase.execute({ngo_id, year, month, file_name: fileName})
-    
-    
-        // return res.status(200).render("views/donations/booklet", {file: file, file_name, ngo, error: req.error, success: req.success})
-    
+        const {file_path,  file_name,  ngo} = await loadBookletUseCase.execute({ngo_id, year, month, file_name: fileName})
+
+        return res.status(200).render("views/donations/booklet", {file_path, file_name, ngo, error: req.error, success: req.success})
        
-        
-        return res.render("views/donations/booklet", {
-            file: file.pipe(res),
-            file_name, ngo, error: req.error, success: req.success})
+
+        // return res.render("views/donations/booklet", {
+        //     file: file.pipe(res),
+        //     file_name, ngo, error: req.error, success: req.success})
 
         // .on("finish", () => {
             
