@@ -380,7 +380,6 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         
         const pdfBytes = await doc.save() //cria um array de bytes 
 
-      
 
         //salva
         let dir = `./tmp/booklet/${year}/${month}/${data[0].ngo.name}`
@@ -388,8 +387,9 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         let file_name = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
     
         
-        await storageProvider.saveSync(dir, file_name, pdfBytes)
-       
+        // await storageProvider.saveSync(dir, file_name, pdfBytes)
+        
+        storageProvider.saveFileStream(dir, file_name, pdfBytes)
             
         return {
             file: pdfBytes,

@@ -1,8 +1,8 @@
 
 import * as fs from "fs"
 import * as fsPromises from "fs/promises"
-import * as path from "path"
-import * as mime from "mime"
+import * as util from "util"
+import * as stream from "stream"
 import { resolve } from "path";
 import upload from "../../../../../config/upload";
 import { AppError } from "../../../../errors/AppError";
@@ -267,10 +267,15 @@ class LocalStorageProvider implements IStorageProvider {
                 console.error(err)
                 throw new AppError("Não foi possível salvar o arquivo")
         }})
+        stream.on("finish", ()=> {
+            console.log("terminastes")
+        })
         stream.end()
         
     }
-        
+
+
+     
         // async getLastCreatedFile(dir){
             
     //     const result = fs.readdirSync(dir)
