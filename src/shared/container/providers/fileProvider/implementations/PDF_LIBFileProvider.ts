@@ -54,7 +54,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         
         //config de impressao
         doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault)
-        doc.setTitle(`${donation.donation_number}_${donation.donor_name}`)
+        doc.setTitle(`${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}`)
         
 
         //pega a fonte

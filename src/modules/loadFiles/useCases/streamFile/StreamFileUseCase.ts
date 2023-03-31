@@ -7,10 +7,10 @@ import {resolve} from "path"
 class StreamFileUseCase {
 
 
-    execute(file_path: string){
+    async execute(file_path: string){
         try {
             
-            fs.promises.access(file_path)
+            await fs.promises.access(file_path)
         } catch (error) {
             console.error(error)
 

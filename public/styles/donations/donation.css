@@ -352,6 +352,20 @@
 
  }
 
+ .file-buttons {
+     margin: 60px auto;
+     width: 940px;
+
+ }
+
+ .div-button-iframe {
+     display: flex;
+     width: 940px;
+     margin: 0 auto;
+     justify-self: center;
+ }
+
+
  div.div-button:nth-of-type(1) {
      display: flex;
      justify-self: start;

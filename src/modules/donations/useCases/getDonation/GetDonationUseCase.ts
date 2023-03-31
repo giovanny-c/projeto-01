@@ -30,6 +30,7 @@ interface IResponse {
     donation: Donation,
     file?: string | Buffer
     file_name?: string
+    file_path?: string
     ngo: Ngo
     messages: NgoMessage[]
     donor?: Donor
@@ -112,8 +113,12 @@ class GetDonationUseCase {
 
         let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
+        let file_path = dir + "/" + file_name
+        
         let file = await this.storageProvider.getFile(dir, file_name, true)
         
+
+
 
         if(!file){ // se nao tiver encontrado o arquivo
 
@@ -128,8 +133,8 @@ class GetDonationUseCase {
                         donation,
                         ngo,
                         messages: ngo_messages,
-                        donor: donorExists || undefined
-                    
+                        donor: donorExists || undefined,
+                        file_path
                     }
                 }
 
@@ -157,7 +162,8 @@ class GetDonationUseCase {
             file,
             file_name: `${donation.donor_name}_${formatedDate}_${donation.donation_number}_${ngo.name}`,
             messages: ngo_messages,
-            donor: donorExists || undefined
+            donor: donorExists || undefined,
+            file_path
         }
     }
 

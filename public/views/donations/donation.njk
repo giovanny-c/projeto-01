@@ -149,23 +149,25 @@
             
         </div>
         
-        <div class="buttons">        
+        <div class="file-buttons">        
 
             {% if file %}
                 
             
-            <div class="div-button2">
+            <div class="div-button-iframe">
                 <button class="show"
                 onclick="toggleIframe()">
                     Ver Recibo
                 </button>
             </div>
 
-            <div class="div-button2">
-                <a class="button download-button" href="data:application/pdf;base64,{{file}}" download="{{file_name}}"
+            {# <div class="div-button2">
+                {# <a class="button download-button" href="/file?path={{file_path}}" download="{{file_name}}" #}
+
+                {# <a class="button download-button" href="data:application/pdf;base64,{{file}}" download="{{file_name}}" #}
                     
-                >Baixar Recibo</a> 
-            </div >
+                {# >Baixar Recibo</a>  #}
+            {# </div > #}
             {% else %}
                 <div class="div-button"></div>
                 <div class="div-button"></div>
@@ -174,13 +176,18 @@
 
             {# button para escolher doador para enviar email #}
 
-            </div>
+            {# </div> #} 
 
         </div>
         
 
         <div class ="iframe">
-        <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe>
+                <iframe class="iframe"  
+                src="/file?path={{file_path}}&file_name={{donation.donor_name}}_{{donation.donation_number}}_{{ngo.name}}" 
+                title="{{donation.donation_number}}"></iframe>
+
+        {# <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe> #}
+
         </div>
 
         
