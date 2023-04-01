@@ -385,11 +385,15 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         let dir = `./tmp/booklet/${year}/${month}/${data[0].ngo.name}`
         
         let file_name = `${data[0].donation_number}__${data[data.length-1].donation_number}.pdf`
-    
+        
+        //tipo isso
+        // if(compression){
+        //     file_name += ".gz"
+        // }
         
         // await storageProvider.saveSync(dir, file_name, pdfBytes)
         
-        storageProvider.saveFileStream(dir, file_name, pdfBytes)
+        storageProvider.saveAndCompressFile(dir, file_name, pdfBytes)
             
         return {
             file: pdfBytes,

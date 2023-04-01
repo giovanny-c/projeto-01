@@ -8,7 +8,8 @@ import upload from "../../../../../config/upload";
 import { AppError } from "../../../../errors/AppError";
 import { IFilePath, IStorageProvider } from "../IStorageProvider";
 import { getExecutionTime } from "../../../../../../utils/decorators/executionTime";
-
+import {once} from "events"
+import * as zlib from "zlib"
 
 class LocalStorageProvider implements IStorageProvider {
     
@@ -267,12 +268,30 @@ class LocalStorageProvider implements IStorageProvider {
                 console.error(err)
                 throw new AppError("Não foi possível salvar o arquivo")
         }})
-        stream.on("finish", ()=> {
-            console.log("terminastes")
-        })
-        stream.end()
+        
+        
         
     }
+
+    saveAndCompressFile(dir: string, file_name: string, readable: Uint8Array | Buffer | string){
+
+        const file_path = resolve(dir, file_name + ".gz")
+
+        zlib.createGzip().end(Buffer.from(readable))
+        .pipe(fs.createWriteStream(file_path))
+        .on("error", (err)=> {
+            console.error(err)
+                
+            throw new AppError("Não foi possível salvar o arquivo")
+        })
+
+
+       
+        
+        
+    }
+
+    
 
 
      

@@ -15,7 +15,7 @@ class StreamFileController {
         const streamFile = container.resolve(StreamFileUseCase)
 
         const file = await streamFile.execute(path as string)
-
+console.log(file_name)
         //res.type("pdf")
         //inline = mostra no browser
         //attachment= download auto
