@@ -133,10 +133,6 @@ class GetDonationUseCase {
         }
         
         
-        
-       
-            
-
         const formatedDate = this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY")
 
         
