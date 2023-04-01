@@ -2,6 +2,7 @@ import {Request, Response} from "express"
 import {container} from "tsyringe"
 import { StreamFileUseCase } from "./StreamFileUseCase"
 import {extname} from "path"
+import { error } from "pdf-lib"
 
 class StreamFileController {
 
@@ -15,13 +16,25 @@ class StreamFileController {
         const streamFile = container.resolve(StreamFileUseCase)
 
         const file = await streamFile.execute(path as string)
-console.log(file_name)
+
         //res.type("pdf")
         //inline = mostra no browser
         //attachment= download auto
-        res.set("Content-Disposition", `inline; filename=${file_name}${extension}`)
+    
+        if(file){
+            
+            res.set("Content-Disposition", `inline; filename=${file_name}${extension}`)
+            file.pipe(res)
 
-        file.pipe(res)
+        }else{
+            
+            let style = "color: white; text-align: center; font: caption; font-size: 40px"
+            
+            return res.status(404).send(`<p style="${style}">404</p><p style="${style}">Não foi possível ler o arquivo ou ele não existe.</p>`)
+
+        }
+
+
         // .on("finish", () => {
         //     console.log("finish")
         // })

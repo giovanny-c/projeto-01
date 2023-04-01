@@ -8,6 +8,10 @@
  iframe {
      height: 0px;
      visibility: hidden;
+
+     /* font-size: 40px;
+     color: var(--color-letters-clear); */
+     border: none;
  }
 
 
@@ -483,3 +487,10 @@
     color: var(--color-background);
 
 } */
+
+ .not-found {
+     color: white;
+     text-align: center;
+     font: caption;
+     font-size: 40px
+ }

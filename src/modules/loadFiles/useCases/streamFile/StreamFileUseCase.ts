@@ -7,26 +7,30 @@ import {resolve} from "path"
 class StreamFileUseCase {
 
 
-    async execute(file_path: string){
+    async execute(file_path: string): Promise<fs.ReadStream | void>{
+        
+        
         try {
             
             await fs.promises.access(file_path)
+    
+            
+            const readable = fs.createReadStream(resolve(file_path))
+            
+            // readable.on("data", (chunck) => {
+            //     console.log(chunck.slice(0,1))
+            // })
+            
+            return readable
+               
+
         } catch (error) {
+            
             console.error(error)
 
-            throw new AppError("Não foi possivel ler o arquivo", 500)
 
         }
 
-
-        
-        const readable = fs.createReadStream(resolve(file_path))
-        
-        // readable.on("data", (chunck) => {
-        //     console.log(chunck.slice(0,1))
-        // })
-        
-        return readable
 
 
 

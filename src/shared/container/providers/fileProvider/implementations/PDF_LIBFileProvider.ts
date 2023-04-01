@@ -60,7 +60,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         //pega a fonte
         doc.registerFontkit(fontkit)
         
-        const fontBuffer = fs.readFileSync("./fonts/Roustel.ttf")
+        const fontBuffer = await fsPromises.readFile("./fonts/Roustel.ttf")
         
         const font = await doc.embedFont(fontBuffer)
         

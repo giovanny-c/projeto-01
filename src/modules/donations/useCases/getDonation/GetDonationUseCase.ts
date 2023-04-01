@@ -18,6 +18,7 @@ import { NgosMessagesRepository } from "../../repositories/implementation/NgosMe
 import { NgoMessage } from "../../entities/ngos_messages";
 import { IDonorsRepository } from "../../../donor/repositories/IDonorsRepository";
 import { Donor } from "../../../donor/entities/donor";
+import * as fs from "fs" 
 
 interface IRequest{
     ngo_id: string
@@ -28,7 +29,7 @@ interface IResponse {
     formated_value: string
     formated_date: Date 
     donation: Donation,
-    file?: string | Buffer
+    file: boolean
     file_name?: string
     file_path?: string
     ngo: Ngo
@@ -113,43 +114,28 @@ class GetDonationUseCase {
 
         let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
-        let file_path = dir + "/" + file_name
+        let file_path = path.resolve(dir, file_name)
+
+        // let file = await this.storageProvider.getFile(dir, file_name, true)
         
-        let file = await this.storageProvider.getFile(dir, file_name, true)
-        
+        let file = true
+        //  ve se tem o arquivo
+        try {
+            //le o arquivo e lança o erro se não existir
+            await fs.promises.access(file_path)
+            
+        } catch (error) {
 
-
-
-        if(!file){ // se nao tiver encontrado o arquivo
-
-            try {
-                
-                const uint8Array = await this.fileProvider.generateFile(donation, true)
-
-                if(!uint8Array){ // se nao tiver template vai retornar sem file
-                    return {
-                        formated_value: formatToBRL(donation.donation_value),
-                        formated_date: this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY"),
-                        donation,
-                        ngo,
-                        messages: ngo_messages,
-                        donor: donorExists || undefined,
-                        file_path
-                    }
-                }
-
-                //se tiver vai pegar e transformar em base64
-                file = Buffer.from(uint8Array)
-
-                file = file.toString("base64")
-                
-            } catch (error) {
-                console.error(error)
-                throw new AppError("Nao foi possivel gerar o recibo dessa doação", 500)
-
-            }
-
+            //vai tentar gerar o arquivo, se nao conseguir file = false
+            !await this.fileProvider.generateFile(donation, true)? file = false : file = true
+            
+            
         }
+        
+        
+        
+       
+            
 
         const formatedDate = this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY")
 

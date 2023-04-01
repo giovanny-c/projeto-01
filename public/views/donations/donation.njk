@@ -161,6 +161,13 @@
                 </button>
             </div>
 
+            {% else%}
+                <p class="not-found">404</p>
+                <p class="not-found">Não foi possível ler o arquivo ou ele não existe.</p>
+            {% endif %}
+                
+
+
             {# <div class="div-button2">
                 {# <a class="button download-button" href="/file?path={{file_path}}" download="{{file_name}}" #}
 
@@ -168,10 +175,10 @@
                     
                 {# >Baixar Recibo</a>  #}
             {# </div > #}
-            {% else %}
+            {# {% else %}
                 <div class="div-button"></div>
                 <div class="div-button"></div>
-            {% endif %}
+            {% endif %} #}
                 
 
             {# button para escolher doador para enviar email #}
@@ -180,16 +187,19 @@
 
         </div>
         
+    {% if file %}
+    
 
         <div class ="iframe">
                 <iframe class="iframe"  
                 src="/file?path={{file_path}}&file_name={{donation.donor_name}}_{{donation.donation_number}}_{{ngo.name}}" 
-                title="{{donation.donation_number}}"></iframe>
+                title="{{donation.donation_number}}"
+                ></iframe>
 
         {# <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe> #}
 
         </div>
-
+    {% endif %}
         
     </div>   
     
