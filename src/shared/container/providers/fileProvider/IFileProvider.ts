@@ -5,6 +5,7 @@ interface ICreateBooletResponse{
 
     file: Uint8Array | string
     file_name: string
+    file_buffer: string
 }
 
 

@@ -51,9 +51,9 @@ class GenerateFileUseCase {
             })
 
             
-            const {file, file_name} = await this.fileProvider.createBooklet(donations)
+            const {file, file_name, file_buffer} = await this.fileProvider.createBooklet(donations)
             
-            const readable = stream.Readable.from(file)
+            const readable = stream.Readable.from(file_buffer)
 
             return {
                 readable,

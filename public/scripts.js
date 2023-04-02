@@ -60,8 +60,6 @@ async function searchDonor(input) {
 
             const donors = await response.json()
 
-
-
             donors.forEach(donor => {
 
 
@@ -82,8 +80,6 @@ async function searchDonor(input) {
                 content.addEventListener("click", catchDonorAndCleanList)
             })
 
-
-
         } catch (error) {
             console.error("Erro ao pesquisar", error)
         }
@@ -91,6 +87,9 @@ async function searchDonor(input) {
     }
 
 }
+
+
+
 function catchDonorAndCleanList(tag) {
 
     document.querySelector("body").removeEventListener("click", hideList)
