@@ -1,11 +1,13 @@
-async function fetchGenerateFile(file, params) {
-
+async function fetchGenerateFile(file, params, tag) {
 
     try {
         const response = await fetch(`/file/generate/${file}`, {
             method: "POST",
-            mode: "same-origin",
-            body: params
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: "cors",
+            body: JSON.stringify(params)
         })
 
         if (!response.ok) {
@@ -13,28 +15,37 @@ async function fetchGenerateFile(file, params) {
         }
 
 
-        return await response.arrayBuffer()
+        const blob = await response.blob()
+        const fileUrl = URL.createObjectURL(blob)
 
-        //new Uint8Array(file)
+
+
+        tag.setAttribute("href", fileUrl)
 
     } catch (err) {
-        console.error("Erro ao pesquisar", err)
+        console.error("Erro ao gerar", err)
     }
+
+
+
 }
 
 //pegar do template dps
 
 
+const aTag = document.querySelector(".download-file")
+// const interval = document.querySelector("input[name='donation_number_interval']").value
+const ngo_id = document.querySelector("input[name='ngo_id']").value
+
+
 fetchGenerateFile(
     "booklet",
-    JSON.stringify(donation_number_interval = [1000, 1010])
-).then((file) => {
+    {
+        donation_number_interval: [1000, 1050],
+        ngo_id: ngo_id
+    },
+    aTag
 
-    console.log(file)
-    const aTag = document.querySelector(".download-file")
-    aTag.setAttribute("href", `data:application/pdf;base64,${file}`)
+)
 
-}).catch((err) => {
-    console.error(err)
-})
 

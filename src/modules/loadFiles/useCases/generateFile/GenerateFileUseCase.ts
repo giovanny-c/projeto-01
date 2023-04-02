@@ -21,54 +21,42 @@ class GenerateFileUseCase {
 
 
     constructor(
-        @inject("FileProvider")
-        private fileProvider: IFileProvider,
+        
         @inject("DonationsRepository")
         private donationsRepository: IDonationsRepository,
-        @inject("DayjsDateProvider")
-        private dateProvider: IDateProvider,
-        @inject("NgoRepository")
-        private ngoRepository: INgoRepository,
-        @inject("CacheProvider")
-        private cacheProvider: ICacheProvider,
+        @inject("FileProvider")
+        private fileProvider: IFileProvider,
     ){
 
     }
 
     async execute(file: string, params: any){
 
-       if(file === "booklet"){
+       
+            if(file === "booklet"){
 
-        try {
-            
-            if(params.donation_number_interval[0] - params.donation_number_interval[1] < 0){
-                return
-            }
-
+                // if(params.donation_number_interval[0] - params.donation_number_interval[1] < 0){
+                    //     return
+            // }
             const donations = await this.donationsRepository.findForGenerateBooklet({
                 donation_number_interval: params.donation_number_interval,
                 ngo_id: params.ngo_id
             })
-
             
-            const {file, file_name, file_buffer} = await this.fileProvider.createBooklet(donations)
             
-            const readable = stream.Readable.from(file_buffer)
-
-            return {
-                readable,
-                file_name
-            }
-
-
-        } catch (error) {
-
-            console.error(error)
-            return
-        }
+            const {file: pdfBytes, file_name} = await this.fileProvider.createBooklet(donations)
+            
+            
+            const readable = stream.Readable.from(Buffer.from(pdfBytes))
+            
+            return readable
+            // file_name: "file_name!
+            }   
 
 
-       }
+       
+
+       
     }
 
     

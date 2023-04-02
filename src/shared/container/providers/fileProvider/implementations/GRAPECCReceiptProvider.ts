@@ -380,7 +380,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         
         const pdfBytes = await doc.save() //cria um array de bytes 
 
-        const pdfBuffer = await doc.saveAsBase64()
+        // const pdfBuffer = await doc.saveAsBase64()
         
 
         //salva
@@ -395,13 +395,13 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         
         // await storageProvider.saveSync(dir, file_name, pdfBytes)
         
-        storageProvider.saveAndCompressFile(dir, file_name, pdfBytes)
+        //storageProvider.saveAndCompressFile(dir, file_name, pdfBytes)
         
         
-
+ 
 
         return {
-            file_buffer: pdfBuffer,
+            // file_buffer: pdfBuffer,
             file: pdfBytes,
             file_name
         }
