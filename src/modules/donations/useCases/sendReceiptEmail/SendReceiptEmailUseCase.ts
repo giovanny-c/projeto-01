@@ -134,6 +134,9 @@ class SendReceiptEmailUseCase {
         let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
         
        
+
+        //VAI MUDAR
+        //usar o fs.stat ou access en vez desse?
         const receipt = await this.storageProvider.getFile(dir, file_name, false)
 
         //se a file nao existir cria ela na hora
@@ -143,6 +146,7 @@ class SendReceiptEmailUseCase {
             
         }
 
+        //sera que da pra passar o file direto para o attachment
 
         const attachment = {
             filename: `${donation.donor_name}.pdf`,

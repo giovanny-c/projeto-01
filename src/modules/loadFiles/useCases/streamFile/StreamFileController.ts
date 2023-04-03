@@ -2,7 +2,7 @@ import {Request, Response} from "express"
 import {container} from "tsyringe"
 import { StreamFileUseCase } from "./StreamFileUseCase"
 import {extname} from "path"
-import { error } from "pdf-lib"
+
 
 class StreamFileController {
 

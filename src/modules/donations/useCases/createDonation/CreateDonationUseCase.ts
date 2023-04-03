@@ -27,10 +27,7 @@ interface IRequest {
 
 
 interface IResponse {
-    donation: Donation,
-    file?: string
-    file_name?: string
-    ngo: Ngo
+    donation: Donation
 }
 
 
@@ -129,34 +126,33 @@ class CreateDonationUseCase {
         //format para ISO
         donationWithRelations.payed_at = this.dateProvider.formatDate(donation.created_at, "YYYY/MM/DD")
 
-        let file
+        // let file
 
-        try {
+        // try {
                 
-            const uint8Array = await this.fileProvider.generateFile(donationWithRelations, true)
+        //     const uint8Array = await this.fileProvider.generateFile(donationWithRelations, true)
             
-            if(!uint8Array){// se nao tiver template vai retornar sem file
-                return {
-                    donation: donationWithRelations,
-                    ngo
-                }
-            }
+        //     if(!uint8Array){// se nao tiver template vai retornar sem file
+        //         return {
+        //             donation: donationWithRelations,
+        //             ngo
+        //         }
+        //     }
 
-            file = Buffer.from(uint8Array)
+        //     file = Buffer.from(uint8Array)
 
-            file = file.toString("base64")
+        //     file = file.toString("base64")
 
-        } catch (error) {
+        // } catch (error) {
             
-            throw new AppError("Nao foi possivel gerar o recibo dessa doação", 500)
+        //     throw new AppError("Nao foi possivel gerar o recibo dessa doação", 500)
 
-        }
+        // }
 
         return  {
-            ngo,
+            
             donation: donationWithRelations,
-            file,
-            file_name: `recibo_${donationWithRelations.ngo.name}_${donation.donor_name}_${donation.donation_number}.pdf`
+            
         }
         //mandar para uma rota para escolher o dono desse recibo, para mandar o email
         // mandar email do recibo no futuro

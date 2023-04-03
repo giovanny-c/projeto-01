@@ -91,37 +91,33 @@ class UpdateDonationUseCase {
 
 
         //se for salvar os recibos permanente
-        if(donation.donor_name !== updatedDonation.donor_name 
-            || donation.worker_id !== updatedDonation.worker_id 
-            || donation.donation_value !== updatedDonation.donation_value 
-            || donation.is_donation_canceled !== updatedDonation.is_donation_canceled ){
+        // if(donation.donor_name !== updatedDonation.donor_name 
+        //     || donation.worker_id !== updatedDonation.worker_id 
+        //     || donation.donation_value !== updatedDonation.donation_value 
+        //     || donation.is_donation_canceled !== updatedDonation.is_donation_canceled ){
 
-            const {dia, mes , ano} = getFormatedDateForReceipt(donation.created_at)
+        //     const {dia, mes , ano} = getFormatedDateForReceipt(donation.created_at)
         
-            let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+        //     let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
 
-            let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
+        //     let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
             
-            try {
-               //para deletar o antigo recibo
-                this.storageProvider.deleteFile(dir, file_name) 
-            } catch (error) {
-                throw new AppError(error)
-            }
+        //     try {
+        //        //para deletar o antigo recibo
+        //         this.storageProvider.deleteFile(dir, file_name) 
+        //     } catch (error) {
+        //         throw new AppError(error)
+        //     }
             
         
             
-            await this.fileProvider.generateFile(updatedDonation, true)
-        }
+        //     await this.fileProvider.generateFile(updatedDonation, true)
+        // }
 
 
 
 
-        
-        
-        
-           
-
+    
         return  {
             ngo,
             donation: updatedDonation,

@@ -9,26 +9,22 @@ class GenerateFileController {
 
     async handle(req: Request, res: Response){
         
-        const {file: file_type} = req.params
+        const {file} = req.params
         
         const params = req.body
 
         const generateFile = container.resolve(GenerateFileUseCase)
 
-        const response = await generateFile.execute(file_type, params)
+        const response = await generateFile.execute({file, params})
 
         
-        //res.type("pdf")
-        //inline = mostra no browser
-        //attachment= download auto
-
-        
-    
         if(response){
             
+
+               
+            res.set("Content-Disposition", `inline; filename=${response.file_name}`)
             
-            // res.set("Content-Disposition", `inline; filename=${file_name}`)
-            response.pipe(res)
+            response.readable.pipe(res)
 
         }else{
             

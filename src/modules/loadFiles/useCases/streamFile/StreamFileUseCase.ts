@@ -11,6 +11,10 @@ class StreamFileUseCase {
         
         
         try {
+
+            if(!file_path.match("tmp")){
+                throw new Error("O caminho do arquivo esta incorreto")
+            }
             
             await fs.promises.access(file_path)
     

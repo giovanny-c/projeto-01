@@ -8,13 +8,18 @@ import { AppError } from "../../../../shared/errors/AppError";
 import * as stream from "stream"
 
 
-// interface IRequest {
+interface IRequest {
 
-//     file: string
-    
+    file: string
+    params: any
 
+}
 
-// }
+interface IResponse {
+
+    readable: stream.Readable
+    file_name: string
+}
 
 @injectable()
 class GenerateFileUseCase {
@@ -30,44 +35,23 @@ class GenerateFileUseCase {
 
     }
 
-    async execute(file: string, params: any): Promise<stream.Readable | void>{
+    async execute({file, params}: IRequest): Promise<IResponse | void>{
 
             
-    
         if(file === "booklet"){
+
+           const [initial, final] = params.interval.slice(0,2)
+
+           const {ngo_id} = params 
             
-            try {
-                
-           
-                const [initial, final] = params.interval.slice(0,2)
-
-                
-                
-                if(+(final) - +(initial)  < 0){
-                    return
-                }
-
-                const donations = await this.donationsRepository.findForGenerateBooklet({
-                    donation_number_interval: [+(initial), +(final)],
-                    ngo_id: params.ngo_id
-                })
-                
-                
-                const {file: pdfBytes} = await this.fileProvider.createBooklet(donations)
-                
-                
-                const readable = stream.Readable.from(Buffer.from(pdfBytes))
-                
-                return readable
-                
-                // file_name: "file_name!
-           
-            } catch (error) {
-                console.error(error)
-                return     
-            }
+           return await this.generateBooklet([+(initial), +(final)], ngo_id )
         
         }   
+
+
+        if(file === "receipt"){
+
+        }
 
 
        
@@ -75,6 +59,43 @@ class GenerateFileUseCase {
        
     }
 
+
+    private async generateReceipt(donation_id: string, ngo_id: string){
+
+        const donation = await this.donationsRepository.findOneById(donation_id)
+
+    }
+
+    private async generateBooklet( interval: number[], ngo_id: string ){
+        try {
+                
+            if(interval[0] - interval[1]  < 0){
+                return
+            }
+
+            const donations = await this.donationsRepository.findForGenerateBooklet({
+                donation_number_interval: interval,
+                ngo_id: ngo_id
+            })
+            
+            
+            const {file: pdfBytes} = await this.fileProvider.createBooklet(donations)
+            
+            
+            const readable = stream.Readable.from(Buffer.from(pdfBytes))
+            
+            return {
+                readable,
+                file_name: `${interval[0]}__${interval[1]}.pdf`
+            }
+            
+            // file_name: "file_name!
+       
+        } catch (error) {
+            console.error(error)
+            return     
+        }
+    }
     
 
 

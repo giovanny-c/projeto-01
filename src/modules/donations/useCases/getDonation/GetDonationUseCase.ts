@@ -29,9 +29,9 @@ interface IResponse {
     formated_value: string
     formated_date: Date 
     donation: Donation,
-    file: boolean
+    // file?: boolean
+    // file_path?: string
     file_name?: string
-    file_path?: string
     ngo: Ngo
     messages: NgoMessage[]
     donor?: Donor
@@ -108,29 +108,29 @@ class GetDonationUseCase {
 
 
 
-        const {dia, mes , ano} = getFormatedDateForReceipt(donation.created_at)
+        // const {dia, mes , ano} = getFormatedDateForReceipt(donation.created_at)
         
-        let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
-
-        let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
-
-        let file_path = path.resolve(dir, file_name)
+        // let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+        
+        // let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
+        
+        // let file_path = path.resolve(dir, file_name)
 
         // let file = await this.storageProvider.getFile(dir, file_name, true)
         
-        let file = true
-        //  ve se tem o arquivo
-        try {
-            //le o arquivo e lança o erro se não existir
-            await fs.promises.access(file_path)
+        // let file = true
+        // //  ve se tem o arquivo
+        // try {
+        //     //le o arquivo e lança o erro se não existir
+        //     await fs.promises.access(file_path)
             
-        } catch (error) {
+        // } catch (error) {
 
-            //vai tentar gerar o arquivo, se nao conseguir file = false
-            !await this.fileProvider.generateFile(donation, true)? file = false : file = true
+        //     //vai tentar gerar o arquivo, se nao conseguir file = false
+        //     !await this.fileProvider.generateFile(donation, true)? file = false : file = true
             
             
-        }
+        // }
         
         
         const formatedDate = this.dateProvider.formatDate(donation.created_at, "DD/MM/YYYY")
@@ -141,11 +141,11 @@ class GetDonationUseCase {
             formated_date: formatedDate,
             donation,
             ngo,
-            file,
-            file_name: `${donation.donor_name}_${formatedDate}_${donation.donation_number}_${ngo.name}`,
             messages: ngo_messages,
             donor: donorExists || undefined,
-            file_path
+            file_name: `${donation.donor_name}_${formatedDate}_${donation.donation_number}_${ngo.name}.pdf`,
+            // file_path
+            // file,
         }
     }
 
