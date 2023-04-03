@@ -25,9 +25,11 @@
         </div>
 
 
-        <form class="form" id="#form" action="/instituicao/{{ngo.id}}/gerar-talao" method="post" enctype="multipart/form-data">
+        <form class="form" id="#form">
 
-                
+            <input type="hidden" name="ngo_id" value="{{ngo.id}}">
+
+            
             <div class="label"> <p>Inicio</p> </div> <div class="label"> <p>Fim</p> </div><div> </div>
             <div class="item">
 
@@ -50,11 +52,37 @@
 
             </div>
             
-            <div class="button"><button type="submit">Gerar</button> </div>
+            <div class="button">
+                <button type="button" 
+                onclick="fetchGenerateFile(
+                'booklet',
+                {
+                interval: [
+                    document.querySelector(`input[name='first_number']`).value,
+                    document.querySelector(`input[name='last_number']`).value
+                ],
+                ngo_id: document.querySelector(`input[name='ngo_id']`).value
+                },
+                document.querySelector('.download-file')
+                )"
+                >Gerar</button> 
+            </div>
                
             
 
         </form>
+
+
+        
+    
+        <a class="download-file"
+        href=""
+        style="visibility: hidden;"
+        download="{{file_name}}">download
+        </a>
+
+        <script src="/scriptForGenerateFile.js"></script>
+
 
         <div class="thisMonthBooklets">
 

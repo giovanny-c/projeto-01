@@ -21,24 +21,26 @@ class GenerateFileController {
         //res.type("pdf")
         //inline = mostra no browser
         //attachment= download auto
+
+        
     
-        // if(readable){
+        if(response){
             
-        // res.set("Content-Disposition", `inline; filename=${file_name}`)
-        response.pipe(res)
-
-        // }else{
             
-        //     let style = "color: white; text-align: center; font: caption; font-size: 40px"
+            // res.set("Content-Disposition", `inline; filename=${file_name}`)
+            response.pipe(res)
+
+        }else{
             
-        //     return res.status(404).send(`<p style="${style}">404</p><p style="${style}">Não foi possível ler o arquivo ou ele não existe.</p>`)
 
-        // }
+            let style = "color: white; text-align: center; font: caption; font-size: 40px"
+            
+            return res.status(404).send(`<p style="${style}">404</p><p style="${style}">Não foi possível ler o arquivo ou ele não existe.</p>`)
+
+        }
 
 
-        // .on("finish", () => {
-        //     console.log("finish")
-        // })
+    
     }
 
 }
