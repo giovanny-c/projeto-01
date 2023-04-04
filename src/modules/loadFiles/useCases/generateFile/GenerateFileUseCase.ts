@@ -62,9 +62,11 @@ class GenerateFileUseCase {
 
         if(file === "receipt"){
 
-            try {
+            try {   
                 
-                return await this.generateReceipt(params.donation_id)
+                const {donation_id} = params
+                
+                return await this.generateReceipt(donation_id)
             
             } catch (error) {
                 console.error(error)

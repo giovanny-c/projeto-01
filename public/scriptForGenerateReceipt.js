@@ -3,7 +3,7 @@ async function fetchGenerateReceipt(file, params, tag) {
 
     try {
         const response = await fetch(`/file/generate/${file}`, {
-            method: "POST",
+            method: "GET",
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -17,14 +17,9 @@ async function fetchGenerateReceipt(file, params, tag) {
         }
 
 
+        const arrayBuffer = await response.arrayBuffer()
 
-        const blob = await response.blob()
-
-        const fileUrl = URL.createObjectURL(blob)
-
-        // tag.setAttribute(", "application/octet-stream")
-        tag.setAttribute("src", fileUrl)
-        // tag.style.visibility = "visible"
+        return arrayBuffer
 
         //Nao ta vindo com o nome no download
 
@@ -37,7 +32,7 @@ async function fetchGenerateReceipt(file, params, tag) {
 }
 
 
-var iFrameTag = document.querySelector("iframe")
+
 const donation_id = document.querySelector("input[name='donation_id']").value
 
 
@@ -46,7 +41,21 @@ this.fetchGenerateReceipt(
     {
         donation_id: donation_id
     },
-    iFrameTag
-)
+
+).then((response) => {
+    // const blob = await response.blob()
+
+    // const fileUrl = URL.createObjectURL(blob)
+
+    // // tag.setAttribute(", "application/octet-stream")
+    // tag.setAttribute("src", fileUrl)
+    // tag.style.visibility = "visible"
+    const file = response.toString("base64")
+    console.log(file)
+    var iFrameTag = document.querySelector("embed")
+    iFrameTag.src = `data:application/pdf;base64,${file}`
+}).catch((err) => {
+    console.error(err)
+})
 
 

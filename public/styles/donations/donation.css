@@ -5,7 +5,8 @@
      margin: 10px auto 30px auto;
  }
 
- iframe {
+ iframe,
+ embed {
      height: 0px;
      visibility: hidden;
 

@@ -7,7 +7,7 @@ async function fetchGenerateBooklet(file, params, tag) {
 
     try {
         const response = await fetch(`/file/generate/${file}`, {
-            method: "POST",
+            method: "GET",
             headers: {
                 'Content-Type': 'application/json'
             },

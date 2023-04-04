@@ -434,7 +434,7 @@ const Mask = {
 
 
 function toggleIframe() {
-    var iframe = document.querySelector("iframe")
+    var iframe = document.querySelector("embed")
     var iframeDiv = document.querySelector(".iframe")
 
     if (iframe.style.visibility === "visible") {

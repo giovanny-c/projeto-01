@@ -1,4 +1,5 @@
-iframe {
+iframe,
+embed {
 
     width: 940px;
     height: 0px;

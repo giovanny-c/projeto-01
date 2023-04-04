@@ -11,8 +11,16 @@ class GenerateFileController {
         
         const {file} = req.params
         
-        const params = req.body
+        let params = req.body
+        
+       
+       if(Object.keys(params).length === 0){
 
+        params = req.query
+
+       }
+
+      
         const generateFile = container.resolve(GenerateFileUseCase)
 
         const response = await generateFile.execute({file, params})
@@ -20,7 +28,7 @@ class GenerateFileController {
         
         if(response){
             
-            // res.set("Content-Disposition", `attachment; filename=${response.file_name}`)
+            res.set("Content-Disposition", `inline; filename=${response.file_name}`)
             res.set('Content-Type', "application/pdf")
             response.readable.pipe(res)
 
