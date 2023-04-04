@@ -151,7 +151,7 @@
         
         <div class="file-buttons">        
 
-            {% if file %}
+            
                 
             
             <div class="div-button-iframe">
@@ -160,7 +160,7 @@
                     Ver Recibo
                 </button>
             </div>
-
+            {% if file %}
             {% else%}
                 <p class="not-found">404</p>
                 <p class="not-found">Não foi possível ler o arquivo ou ele não existe.</p>
@@ -188,26 +188,27 @@
         </div>
         
     {% if file %}
-    
+    {% endif %}
 
         <div class ="iframe">
                 <iframe class="iframe"  
-                src="data:application/pdf;base64,{{file}}"
+                src
                 title="{{donation.donation_number}}"
                 download="{{file_name}}.pdf"
+                
                 ></iframe>
 
         {# src="/file?path={{file_path}}&file_name={{donation.donor_name}}_{{donation.donation_number}}_{{ngo.name}}"  #}
         {# <iframe class="iframe" name="{{file_name}}" src="data:application/pdf;base64,{{file}}" title="{{donation.donation_number}}"></iframe> #}
 
         </div>
-    {% endif %}
+    
         
     </div>   
     
         
+    <script src="/scriptForGenerateReceipt.js"></script>
     
-    <script src="/scriptForGenerateFile.js"></script>
     <script>
 
         

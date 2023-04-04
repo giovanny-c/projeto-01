@@ -1,5 +1,9 @@
-async function fetchGenerateFile(file, params, tag) {
+async function fetchGenerateBooklet(file, params, tag) {
 
+    if (tag.style.visibility === "visible") {
+        tag.removeAttribute("href")
+        tag.style.backgroundColor = "grey"
+    }
 
     try {
         const response = await fetch(`/file/generate/${file}`, {
@@ -12,7 +16,8 @@ async function fetchGenerateFile(file, params, tag) {
         })
 
         if (!response.ok) {
-            console.log(`Error: ${response.status}: ${response.statusText}`)
+            const error = await response.text()
+            console.log(`Error: ${response.status} - ${error}`)
         }
 
 
@@ -24,9 +29,9 @@ async function fetchGenerateFile(file, params, tag) {
         const file_name = ini + "__" + fin + ".pdf"
 
 
-
         tag.setAttribute("href", fileUrl)
         tag.setAttribute("download", file_name)
+        tag.style.backgroundColor = "rgb(45, 69, 92)"
         tag.style.visibility = "visible"
 
     } catch (err) {

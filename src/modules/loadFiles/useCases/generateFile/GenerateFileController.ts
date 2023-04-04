@@ -20,16 +20,18 @@ class GenerateFileController {
         
         if(response){
             
-            // res.set("Content-Disposition", `inline; filename=${response.file_name}`)
-            
+            // res.set("Content-Disposition", `attachment; filename=${response.file_name}`)
+            res.set('Content-Type', "application/pdf")
             response.readable.pipe(res)
 
         }else{
             
             
-            let style = "color: white; text-align: center; font: caption; font-size: 40px"
+            // let style = "color: white; text-align: center; font: caption; font-size: 40px"
             
-            return res.status(404).send(`<p style="${style}">404</p><p style="${style}">Não foi possível ler o arquivo ou ele não existe.</p>`)
+            // return res.status(404).send(`<p style="${style}">404</p><p style="${style}">Não foi possível ler o arquivo ou ele não existe.</p>`)
+
+            return res.status(404).send("Não foi possivel gerar o arquivo")
 
         }
 
