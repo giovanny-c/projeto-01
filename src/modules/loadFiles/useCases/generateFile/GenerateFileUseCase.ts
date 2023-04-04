@@ -37,64 +37,102 @@ class GenerateFileUseCase {
 
     async execute({file, params}: IRequest): Promise<IResponse | void>{
 
+        
             
         if(file === "booklet"){
 
-           const [initial, final] = params.interval.slice(0,2)
 
-           const {ngo_id} = params 
+
+            try {
+                const [initial, final] = params.interval.slice(0,2)
+
+            const {ngo_id} = params 
             
-           return await this.generateBooklet([+(initial), +(final)], ngo_id )
+            
+            return await this.generateBooklet([+(initial), +(final)], ngo_id )
+            
+            } catch (error) {
+                console.error(error)
+                return 
+            }
+           
         
         }   
 
 
         if(file === "receipt"){
 
+            try {
+                
+                return await this.generateReceipt(params.donation_id)
+            
+            } catch (error) {
+                console.error(error)
+                return 
+            }
+
+
         }
 
 
-       
+        console.error("Corpo da requisição invalido")
+        return
 
        
     }
 
 
-    private async generateReceipt(donation_id: string, ngo_id: string){
+    private async generateReceipt(donation_id: string){
+        
 
+        if(!donation_id.match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/)){
+            console.error("Id invalido")
+
+            return
+        }
+        
         const donation = await this.donationsRepository.findOneById(donation_id)
+        
+        const pdfBytes = await this.fileProvider.generateFile(donation, false)
+        
+        const readable = stream.Readable.from(Buffer.from(pdfBytes as Uint8Array))
+        
+        return {
+            readable,
+            file_name: `${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}.pdf`  
+        }
 
+        
     }
 
     private async generateBooklet( interval: number[], ngo_id: string ){
-        try {
-                
-            if(interval[0] - interval[1]  < 0){
-                return
-            }
-
-            const donations = await this.donationsRepository.findForGenerateBooklet({
-                donation_number_interval: interval,
-                ngo_id: ngo_id
-            })
+        
+        
             
-            
-            const {file: pdfBytes} = await this.fileProvider.createBooklet(donations)
-            
-            
-            const readable = stream.Readable.from(Buffer.from(pdfBytes))
-            
-            return {
-                readable,
-                file_name: `${interval[0]}__${interval[1]}.pdf`
-            }
-            
-            // file_name: "file_name!
-       
-        } catch (error) {
-            console.error(error)
-            return     
+        if(interval[1] - interval[0]  < 0){
+            console.error("O numero inicial deve ser menor que o numero final")
+            return
         }
+
+        const donations = await this.donationsRepository.findForGenerateBooklet({
+            donation_number_interval: interval,
+            ngo_id: ngo_id
+        })
+        
+        
+        const {file: pdfBytes} = await this.fileProvider.createBooklet(donations, false)
+        
+        
+        const readable = stream.Readable.from(Buffer.from(pdfBytes))
+        
+        return {
+            readable,
+            file_name: `${interval[0]}__${interval[1]}.pdf`
+        }
+        
+            
+       
+        
     }
     
 

@@ -81,7 +81,7 @@ class PDF_LIBFileProvider implements IFileProvider {
        
     }
 
-    async createBooklet(data: Donation[]): Promise<ICreateBooletResponse> {
+    async createBooklet(data: Donation[], saveFile: boolean): Promise<ICreateBooletResponse> {
 
         if(!data[0].donation_number){
             
@@ -98,7 +98,7 @@ class PDF_LIBFileProvider implements IFileProvider {
         const receiptProvider = container.resolve(provider)  
 
         
-        return await receiptProvider.createBooklet(doc, data)
+        return await receiptProvider.createBooklet(doc, data, saveFile)
 
         
     }

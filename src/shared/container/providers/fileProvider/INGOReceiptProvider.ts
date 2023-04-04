@@ -6,7 +6,7 @@ import { ICreateBooletResponse } from "./IFileProvider";
 interface INGOReceiptProvider {
 
     generateReceipt(doc: PDFDocument, donation: Donation, saveFile: boolean, template: PDFImage, templateSign: PDFImage,  font?: PDFFont): Promise<Uint8Array>
-    createBooklet(doc: PDFDocument, data: Donation[]): Promise<ICreateBooletResponse>
+    createBooklet(doc: PDFDocument, data: Donation[], saveFile: boolean): Promise<ICreateBooletResponse>
 }
 
 export {INGOReceiptProvider}

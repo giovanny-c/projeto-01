@@ -66,7 +66,7 @@ class GenerateBookletUseCase {
         const {year, month} =  this.dateProvider.splitDate(this.dateProvider.dateNow())
         
         try {
-            const {file_name} = await this.fileProvider.createBooklet(donations)
+            const {file_name} = await this.fileProvider.createBooklet(donations , true)
             
             return{
             ngo,

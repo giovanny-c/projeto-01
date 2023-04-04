@@ -250,7 +250,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
     }
 
     @getExecutionTime()
-    async createBooklet(doc: PDFDocument, data: Donation[]): Promise<ICreateBooletResponse>{
+    async createBooklet(doc: PDFDocument, data: Donation[], saveFile: boolean): Promise<ICreateBooletResponse>{
 
         const storageProvider = container.resolve(LocalStorageProvider)
         const dateProvider = container.resolve(DayjsDateProvider)
@@ -393,9 +393,12 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         //     file_name += ".gz"
         // }
         
-        // await storageProvider.saveSync(dir, file_name, pdfBytes)
-        
-        //storageProvider.saveAndCompressFile(dir, file_name, pdfBytes)
+        if(saveFile){
+
+            await storageProvider.saveSync(dir, file_name, pdfBytes)
+            
+            //storageProvider.saveAndCompressFile(dir, file_name, pdfBytes)
+        }
         
         
  

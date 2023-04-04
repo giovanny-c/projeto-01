@@ -12,7 +12,7 @@ async function fetchGenerateFile(file, params, tag) {
         })
 
         if (!response.ok) {
-            console.log(`Error: ${response.status}`)
+            console.log(`Error: ${response.status}: ${response.statusText}`)
         }
 
 
@@ -22,6 +22,8 @@ async function fetchGenerateFile(file, params, tag) {
         const [ini, fin] = params.interval.slice(0, 2)
 
         const file_name = ini + "__" + fin + ".pdf"
+
+
 
         tag.setAttribute("href", fileUrl)
         tag.setAttribute("download", file_name)
