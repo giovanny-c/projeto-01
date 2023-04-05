@@ -83,7 +83,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
     async createBooklet(data: Donation[], saveFile: boolean): Promise<ICreateBooletResponse> {
 
-        if(!data[0].donation_number){
+        if(!data.length || !data[0].donation_number){
             
             throw new AppError("Doação nao encontrada", 404)
             

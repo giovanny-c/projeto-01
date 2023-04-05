@@ -6,9 +6,11 @@
  }
 
  iframe,
- embed {
+ embed,
+ object {
      height: 0px;
      visibility: hidden;
+
 
      /* font-size: 40px;
      color: var(--color-letters-clear); */

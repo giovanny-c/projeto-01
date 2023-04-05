@@ -35,11 +35,11 @@ class GenerateFileController {
         }else{
             
             
-            // let style = "color: white; text-align: center; font: caption; font-size: 40px"
+            let style = "color: white; text-align: center; font: caption; font-size: 40px"
             
-            // return res.status(404).send(`<p style="${style}">404</p><p style="${style}">Não foi possível ler o arquivo ou ele não existe.</p>`)
+            let html =  `<p style="${style}">404</p><p style="${style}">Não foi possível gerar o arquivo.</p>`
 
-            return res.status(404).send("Não foi possivel gerar o arquivo")
+            return res.status(404).send(html)
 
         }
 

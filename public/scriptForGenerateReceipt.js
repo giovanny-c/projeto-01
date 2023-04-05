@@ -52,7 +52,7 @@ this.fetchGenerateReceipt(
     // tag.style.visibility = "visible"
     const file = response.toString("base64")
     console.log(file)
-    var iFrameTag = document.querySelector("embed")
+    var iFrameTag = document.querySelector("iframe")
     iFrameTag.src = `data:application/pdf;base64,${file}`
 }).catch((err) => {
     console.error(err)

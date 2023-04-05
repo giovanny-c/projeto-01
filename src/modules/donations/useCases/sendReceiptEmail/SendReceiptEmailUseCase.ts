@@ -127,30 +127,34 @@ class SendReceiptEmailUseCase {
         if(!message) throw new AppError("Mensagem nao encontrado ou nao existe")
 
 
-        const {dia, mes , ano} = getFormatedDateForReceipt(donation.created_at)
+        // const {dia, mes , ano} = getFormatedDateForReceipt(donation.created_at)
         
-        let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+        // let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
 
-        let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
+        // let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
         
        
 
-        //VAI MUDAR
-        //usar o fs.stat ou access en vez desse?
-        const receipt = await this.storageProvider.getFile(dir, file_name, false)
+        // //VAI MUDAR
+        // //usar o fs.stat ou access en vez desse?
+        // const receipt = await this.storageProvider.getFile(dir, file_name, false)
 
-        //se a file nao existir cria ela na hora
-        if(!receipt){
-
-            await this.fileProvider.generateFile(donation, true)
+        // //se a file nao existir cria ela na hora
+        // if(!receipt){
             
+        // }
+
+        let file = await this.fileProvider.generateFile(donation, false)
+
+        if(!file){
+            throw new AppError("Erro ao gerar o arquivo", 500)
         }
 
         //sera que da pra passar o file direto para o attachment
 
         const attachment = {
             filename: `${donation.donor_name}.pdf`,
-            path: `${dir}/${file_name}` //pega da raiz do app
+            content: Buffer.from(file) //pega da raiz do app
         }
         
          

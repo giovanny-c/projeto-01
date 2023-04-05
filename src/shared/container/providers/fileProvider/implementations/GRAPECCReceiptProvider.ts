@@ -265,33 +265,33 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         const files_promises = await Promise.all( data.map( async(donation) => {
             //para pegar o arquivo
             
-            let {dia, mes, ano} = getFormatedDateForReceipt(donation.created_at)
+            // let {dia, mes, ano} = getFormatedDateForReceipt(donation.created_at)
             
-            let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
-            let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
+            // let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+            // let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
 
     // fazer error handling para arquivos que nao existirem
 
             let receitpPdf: Buffer | Uint8Array
 
-            try {
-                receitpPdf = await fs.promises.readFile(resolve(dir, file_name))
+            // try {
+            //     receitpPdf = await fs.promises.readFile(resolve(dir, file_name))
             
-            } catch (error) {
+            // } catch (error) {
                 
-                if(error || !receitpPdf){
+            //     if(error || !receitpPdf){
 
-                    const fileProvider = container.resolve(PDF_LIBFileProvider)
-                    
-                    //se nao salvase o arquivo iria mais rapido?
-                    //provavel q sim
-                    receitpPdf = await fileProvider.generateFile(donation, true)
-                    
+            const fileProvider = container.resolve(PDF_LIBFileProvider)
+            
+            //se nao salvase o arquivo iria mais rapido?
+            //provavel q sim
+            receitpPdf = await fileProvider.generateFile(donation, false)
+            
                     
                  
-                }
+            //     }
                 
-            }
+            // }
         
             return receitpPdf
         }))

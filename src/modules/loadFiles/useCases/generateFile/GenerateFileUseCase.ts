@@ -38,7 +38,6 @@ class GenerateFileUseCase {
     async execute({file, params}: IRequest): Promise<IResponse | void>{
 
         
-            
         if(file === "booklet"){
 
 
@@ -46,7 +45,7 @@ class GenerateFileUseCase {
             try {
                 const [initial, final] = params.interval.slice(0,2)
 
-            const {ngo_id} = params 
+                const {ngo_id} = params 
             
             
             return await this.generateBooklet([+(initial), +(final)], ngo_id )
@@ -109,9 +108,13 @@ class GenerateFileUseCase {
 
     private async generateBooklet( interval: number[], ngo_id: string ){
         
-        
+        if(!ngo_id.match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/)){
+            console.error("Id invalido")
+
+            return
+        }
             
-        if(interval[1] - interval[0]  < 0){
+        if(interval[1] - interval[0]  < 0 || (typeof interval[0] !== "number" || typeof interval[1] !== "number" )){
             console.error("O numero inicial deve ser menor que o numero final")
             return
         }
