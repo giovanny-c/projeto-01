@@ -19,6 +19,12 @@ interface IResponse {
 
     readable: stream.Readable
     file_name: string
+    content_type: string
+}
+
+interface IError{
+    message: string
+    status?: number
 }
 
 @injectable()
@@ -35,7 +41,7 @@ class GenerateFileUseCase {
 
     }
 
-    async execute({file, params}: IRequest): Promise<IResponse | void>{
+    async execute({file, params}: IRequest): Promise<IResponse | IError> {
 
         
         if(file === "booklet"){
@@ -51,8 +57,11 @@ class GenerateFileUseCase {
             return await this.generateBooklet([+(initial), +(final)], ngo_id )
             
             } catch (error) {
-                console.error(error)
-                return 
+                
+                return {
+                    message: error.message || error,
+                    status: error.status || 500
+                }
             }
            
         
@@ -68,16 +77,23 @@ class GenerateFileUseCase {
                 return await this.generateReceipt(donation_id)
             
             } catch (error) {
-                console.error(error)
-                return 
+                
+                return {
+                    message: error.message || error,
+                    status: error.status || 500
+                }
             }
 
 
         }
 
 
-        console.error("Corpo da requisição invalido")
-        return
+        
+        return {
+            message:  "Corpo da requisição invalido.",
+            status: 400
+        }
+           
 
        
     }
@@ -87,20 +103,34 @@ class GenerateFileUseCase {
         
 
         if(!donation_id.match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/)){
-            console.error("Id invalido")
+            
 
-            return
+            return {
+                message: "Tipo do id invalido.",
+                status: 400
+            } 
         }
         
         const donation = await this.donationsRepository.findOneById(donation_id)
         
         const pdfBytes = await this.fileProvider.generateFile(donation, false)
         
-        const readable = stream.Readable.from(Buffer.from(pdfBytes as Uint8Array))
+        if(!pdfBytes || !pdfBytes.length){
+            
+            return {
+                message: "Não Foi possivel gerar esse arquivo. Ele nao possui template!",
+                status: 500
+            } 
+            
+        }
+
+
+        const readable = stream.Readable.from(Buffer.from(pdfBytes))
         
         return {
             readable,
-            file_name: `${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}.pdf`  
+            file_name: `${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}.pdf`,
+            content_type: "application/pdf"
         }
 
         
@@ -109,19 +139,26 @@ class GenerateFileUseCase {
     private async generateBooklet( interval: number[], ngo_id: string ){
         
         if(!ngo_id.match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/)){
-            console.error("Id invalido")
+            
 
-            return
+            return {
+                message: "Tipo do id invalido.",
+                status: 400
+            } 
         }
             
         if(interval[1] - interval[0]  < 0 || (typeof interval[0] !== "number" || typeof interval[1] !== "number" )){
-            console.error("O numero inicial deve ser menor que o numero final")
-            return
+            return {
+                message: "O numero inicial deve ser menor que o numero final.",
+                status: 400
+            } 
+             
         }
 
         const donations = await this.donationsRepository.findForGenerateBooklet({
             donation_number_interval: interval,
             ngo_id: ngo_id
+            
         })
         
         
@@ -132,7 +169,8 @@ class GenerateFileUseCase {
         
         return {
             readable,
-            file_name: `${interval[0]}__${interval[1]}.pdf`
+            file_name: `${interval[0]}__${interval[1]}.pdf`,
+            content_type: "application/pdf"
         }
         
             
@@ -146,4 +184,4 @@ class GenerateFileUseCase {
     
 }
 
-export {GenerateFileUseCase}
+export {GenerateFileUseCase, IResponse, IError}

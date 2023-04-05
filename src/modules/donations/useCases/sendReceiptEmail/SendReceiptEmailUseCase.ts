@@ -67,9 +67,8 @@ class SendReceiptEmailUseCase {
         if(!donors_ids && (!email || email === undefined) ) throw new AppError("Insira pelo menos um email")
         if(!message_id) throw new AppError("Escolha a mensagem do email")
         if(!ngo_id ) throw new AppError("Instituição nao encontrada")
-        if(!donation_id) throw new AppError("Doação nao encontrada")
-
-                
+        if(!donation_id) throw new AppError("Doação nao encontrada")                
+        
         
         let ngo: Ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
 
@@ -154,7 +153,7 @@ class SendReceiptEmailUseCase {
 
         const attachment = {
             filename: `${donation.donor_name}.pdf`,
-            content: Buffer.from(file) //pega da raiz do app
+            content: Buffer.from(file) 
         }
         
          
