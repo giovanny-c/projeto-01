@@ -6,6 +6,8 @@ import { INgoRepository } from "../../../donations/repositories/INgoRepository";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import * as stream from "stream"
+import IResponse from "../dtos/IResponseDTO";
+
 
 
 interface IRequest {
@@ -15,17 +17,8 @@ interface IRequest {
 
 }
 
-interface IResponse {
 
-    readable: stream.Readable
-    file_name: string
-    content_type: string
-}
 
-interface IError{
-    message: string
-    status?: number
-}
 
 @injectable()
 class GenerateFileUseCase {
@@ -41,7 +34,7 @@ class GenerateFileUseCase {
 
     }
 
-    async execute({file, params}: IRequest): Promise<IResponse | IError> {
+    async execute({file, params}: IRequest): Promise<IResponse> {
 
         
         if(file === "booklet"){
@@ -54,13 +47,17 @@ class GenerateFileUseCase {
                 const {ngo_id} = params 
             
             
-            return await this.generateBooklet([+(initial), +(final)], ngo_id )
+                return await this.generateBooklet([+(initial), +(final)], ngo_id )
             
             } catch (error) {
                 
                 return {
-                    message: error.message || error,
-                    status: error.status || 500
+
+                    error:{
+                        message: error.message || error,
+                        status: error.status || 500
+                    }
+                    
                 }
             }
            
@@ -79,8 +76,10 @@ class GenerateFileUseCase {
             } catch (error) {
                 
                 return {
-                    message: error.message || error,
-                    status: error.status || 500
+                    error:{
+                        message: error.message || error,
+                        status: error.status || 500
+                    }
                 }
             }
 
@@ -90,8 +89,11 @@ class GenerateFileUseCase {
 
         
         return {
-            message:  "Corpo da requisição invalido.",
-            status: 400
+
+            error: {
+                message:  "Corpo da requisição invalido.",
+                status: 400
+            }
         }
            
 
@@ -106,8 +108,10 @@ class GenerateFileUseCase {
             
 
             return {
-                message: "Tipo do id invalido.",
-                status: 400
+                error:{
+                    message: "Tipo do id invalido.",
+                    status: 400
+                } 
             } 
         }
         
@@ -118,8 +122,10 @@ class GenerateFileUseCase {
         if(!pdfBytes || !pdfBytes.length){
             
             return {
-                message: "Não Foi possivel gerar esse arquivo. Ele nao possui template!",
-                status: 500
+                error: {
+                    message: "Não Foi possivel gerar esse arquivo. Ele não possui um template!",
+                    status: 500
+                }
             } 
             
         }
@@ -128,9 +134,11 @@ class GenerateFileUseCase {
         const readable = stream.Readable.from(Buffer.from(pdfBytes))
         
         return {
-            readable,
-            file_name: `${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}.pdf`,
-            content_type: "application/pdf"
+            response: {
+                readable,
+                file_name: `${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}.pdf`,
+                content_type: "application/pdf"
+            }
         }
 
         
@@ -142,15 +150,20 @@ class GenerateFileUseCase {
             
 
             return {
-                message: "Tipo do id invalido.",
-                status: 400
+
+                error: {
+                    message: "Tipo do id invalido.",
+                    status: 400
+                }
             } 
         }
             
         if(interval[1] - interval[0]  < 0 || (typeof interval[0] !== "number" || typeof interval[1] !== "number" )){
             return {
-                message: "O numero inicial deve ser menor que o numero final.",
-                status: 400
+                error: {
+                    message: "O numero inicial deve ser menor que o numero final.",
+                    status: 400
+                }
             } 
              
         }
@@ -160,17 +173,34 @@ class GenerateFileUseCase {
             ngo_id: ngo_id
             
         })
+
+        
+
+        if(!donations.length){
+            
+            
+            return {
+                error: {
+                    message: "Nenhuma Doação encontrada.",
+                    status: 400
+                }
+            } 
+            
+        }
         
         
         const {file: pdfBytes} = await this.fileProvider.createBooklet(donations, false)
         
-        
+
+
         const readable = stream.Readable.from(Buffer.from(pdfBytes))
         
         return {
-            readable,
-            file_name: `${interval[0]}__${interval[1]}.pdf`,
-            content_type: "application/pdf"
+            response: {
+                readable,
+                file_name: `${interval[0]}__${interval[1]}.pdf`,
+                content_type: "application/pdf"
+            }
         }
         
             
@@ -184,4 +214,4 @@ class GenerateFileUseCase {
     
 }
 
-export {GenerateFileUseCase, IResponse, IError}
+export {GenerateFileUseCase}

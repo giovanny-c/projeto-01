@@ -16,9 +16,10 @@ const generateReceiptMethods = {
 
     GRAPECC: GRAPECCReceiptProvider,
     
-    GOTA: "",
+    GOTA: "GOTAReceiptProvider Nao implementado",
         
 }
+
 @singleton()
 class PDF_LIBFileProvider implements IFileProvider {
 
@@ -83,7 +84,7 @@ class PDF_LIBFileProvider implements IFileProvider {
 
     async createBooklet(data: Donation[], saveFile: boolean): Promise<ICreateBooletResponse> {
 
-        if(!data.length || !data[0].donation_number){
+        if(!data.length){
             
             throw new AppError("Doação nao encontrada", 404)
             
@@ -95,8 +96,16 @@ class PDF_LIBFileProvider implements IFileProvider {
         
         const provider: InjectionToken = generateReceiptMethods[data[0].ngo.alias]   
 
-        const receiptProvider = container.resolve(provider)  
-
+        let receiptProvider
+        
+        try {
+            
+            receiptProvider = container.resolve(provider)     
+            
+        } catch (error) {
+            throw new AppError("Metodo ainda não implementado!")   
+        }
+        
         
         return await receiptProvider.createBooklet(doc, data, saveFile)
 
