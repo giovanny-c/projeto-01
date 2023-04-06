@@ -15,9 +15,9 @@ class LoadGenerateBookletController {
 
         const loadGenerateBooklet = container.resolve(LoadGenerateBookletUseCase)
 
-        const {ngo, donation_counter, lastMonthBooklets, lastMonth_Year, thisMonthBooklets, thisMonth_Year} = await loadGenerateBooklet.execute({ngo_id})
+        const {ngo, donation_counter} = await loadGenerateBooklet.execute({ngo_id})
             
-        return res.status(200).render("views/donations/generate-booklet", {ngo, donation_counter, lastMonthBooklets, lastMonth_Year, thisMonthBooklets, thisMonth_Year, error: req.error, success: req.success})
+        return res.status(200).render("views/donations/generate-booklet", {ngo, donation_counter, error: req.error, success: req.success})
 
     }
 

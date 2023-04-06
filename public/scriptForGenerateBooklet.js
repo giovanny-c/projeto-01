@@ -2,10 +2,10 @@ async function fetchGenerateBooklet(file, params, tag) {
 
 
 
-    tag.style.visibility = "visible"
+
+    tag.className = "download-wait"
     tag.innerHTML = "Gerando arquivo"
     tag.removeAttribute("href")
-    tag.style.backgroundColor = "rgba(0, 0, 0, 0)"
 
 
 
@@ -14,9 +14,8 @@ async function fetchGenerateBooklet(file, params, tag) {
         const [ini, fin] = params.interval.slice(0, 2)
 
         if (fin - ini < 0) {
+            tag.className = "download-error"
             tag.innerHTML = "O numero Inicial deve ser menor que o numero final."
-            tag.style.backgroundColor = "rgba(0, 0, 0, 0)"
-            tag.style.visibility = "visible"
             tag.removeAttribute("href")
             return
         }
@@ -35,9 +34,8 @@ async function fetchGenerateBooklet(file, params, tag) {
             const error = await response.text()
 
 
+            tag.className = "download-error"
             tag.removeAttribute("href")
-            tag.style.backgroundColor = "rgba(0, 0, 0, 0)"
-            tag.style.visibility = "visible"
             tag.innerHTML = error || "Erro ao gerar arquivo"
 
         }
@@ -49,10 +47,10 @@ async function fetchGenerateBooklet(file, params, tag) {
 
             const file_name = ini + "__" + fin + ".pdf"
 
+            tag.className = "download-file"
+            tag.innerHTML = "Baixar"
             tag.setAttribute("href", fileUrl)
             tag.setAttribute("download", file_name)
-            tag.style.backgroundColor = "rgb(45, 69, 92)"
-            tag.style.visibility = "visible"
 
             return
 
@@ -62,13 +60,26 @@ async function fetchGenerateBooklet(file, params, tag) {
     } catch (err) {
         //o mesmo que response.ok
         console.error(err)
-        tag.innerHTML = err || "Erro ao gerar o arquivo."
-        tag.style.visibility = "visible"
+        tag.className = "download-error"
         tag.removeAttribute("href")
+        tag.innerHTML = err || "Erro ao gerar o arquivo."
     }
 
 
 
+}
+
+function warnBigFiles(event, initial, final) {
+
+    if (final - initial > 100) {
+
+        const confirmation = confirm("Deseja gerar esse arquivo? A operação pode demorar alguns segundos")
+
+        if (!confirmation) {
+            event.preventDefault()
+        }
+
+    }
 }
 
 //pegar do template dps

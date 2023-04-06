@@ -20,10 +20,10 @@ interface IResponse{
 
     ngo: Ngo
     donation_counter: DonationCounter
-    thisMonthBooklets: string[]
-    lastMonthBooklets: string[]
-    thisMonth_Year: string
-    lastMonth_Year: string
+    // thisMonthBooklets: string[]
+    // lastMonthBooklets: string[]
+    // thisMonth_Year: string
+    // lastMonth_Year: string
 }
 
 @injectable()
@@ -57,20 +57,20 @@ class LoadGenerateBookletUseCase{
 
         
         
-        let {month, year} = this.dateProvider.splitDate(this.dateProvider.dateNow())
+        // let {month, year} = this.dateProvider.splitDate(this.dateProvider.dateNow())
         
-        let last_date = this.dateProvider.addOrSubtractTime("sub", "month", 1, this.dateProvider.dateNow())
+        // let last_date = this.dateProvider.addOrSubtractTime("sub", "month", 1, this.dateProvider.dateNow())
         
-        let {month: last_month, year: last_year} = this.dateProvider.splitDate(last_date)
+        // let {month: last_month, year: last_year} = this.dateProvider.splitDate(last_date)
 
         
 
-        let thisMonthDir = `./tmp/booklet/${year}/${month}/${ngo.name}/`  
-        const thisMonthBooklets = await this.storageProvider.getFileNamesFromDir(thisMonthDir) as string[]
+        // let thisMonthDir = `./tmp/booklet/${year}/${month}/${ngo.name}/`  
+        // const thisMonthBooklets = await this.storageProvider.getFileNamesFromDir(thisMonthDir) as string[]
         
-        let lastMonthDir = `./tmp/booklet/${last_year}/${last_month}/${ngo.name}/` 
-        console.log(lastMonthDir)
-        const lastMonthBooklets = await this.storageProvider.getFileNamesFromDir(lastMonthDir) as string[]
+        // let lastMonthDir = `./tmp/booklet/${last_year}/${last_month}/${ngo.name}/` 
+        // console.log(lastMonthDir)
+        // const lastMonthBooklets = await this.storageProvider.getFileNamesFromDir(lastMonthDir) as string[]
 
 
        
@@ -80,10 +80,10 @@ class LoadGenerateBookletUseCase{
         return {
             ngo,
             donation_counter,
-            thisMonthBooklets,
-            lastMonthBooklets,
-            thisMonth_Year: `${year}/${month}`,
-            lastMonth_Year: `${last_year}/${last_month}`,
+            // thisMonthBooklets,
+            // lastMonthBooklets,
+            // thisMonth_Year: `${year}/${month}`,
+            // lastMonth_Year: `${last_year}/${last_month}`,
             
         }
         

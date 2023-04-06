@@ -36,7 +36,12 @@
                     <div>
                         
                     <input      
-                        type="number" name="first_number" value="" placeholder="0"/>
+                        type="number" name="first_number" value="" placeholder="0"
+                        onblur="warnBigFiles(
+                            event,
+                            document.querySelector(`input[name='first_number']`).value,
+                            document.querySelector(`input[name='last_number']`).value
+                        )"/>
                     </div>
 
             </div> 
@@ -47,13 +52,18 @@
                     <div>
                        
                     <input      
-                        type="number" name="last_number" value="{{donation_counter.donation_number|float - 1}}" placeholder="0"/>
+                        type="number" name="last_number" value="" placeholder="0"
+                        onblur="warnBigFiles(
+                            event,
+                            document.querySelector(`input[name='first_number']`).value,
+                            document.querySelector(`input[name='last_number']`).value
+                        )"/>
                     </div>
 
             </div>
             
             <div class="button">
-                <button type="button" 
+                <button type="button"
                 onclick="fetchGenerateBooklet(
                 'booklet',
                 {
@@ -63,7 +73,7 @@
                 ],
                 ngo_id: document.querySelector(`input[name='ngo_id']`).value
                 },
-                document.querySelector('.download-file')
+                document.querySelector('#download-btn')
                 )"
                 >Gerar</button> 
             </div>
@@ -74,15 +84,16 @@
 
 
         
-    
-        <a class="download-file"
-        href=""
-        style="visibility: hidden;"
-        download="{{file_name}}">Baixar
-        </a>
+        <div class="download-file-div">
+            <a class="inactive"
+            id="download-btn"
+            download="{{file_name}}">Baixar
+            </a>
+        </div>
+        
 
         <script src="/scriptForGenerateBooklet.js"></script>
-
+{# 
 
         <div class="thisMonthBooklets">
 
@@ -104,8 +115,9 @@
                     
                 {% endfor %}
 
-        </div>
+        </div> #}
 
+       
         {# <form class="form" action="/instituicao/{{ngo.id}}/gerar-talao" method="get" enctype="multipart/form-data"></form> #}
 
 
