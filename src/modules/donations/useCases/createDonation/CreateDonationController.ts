@@ -1,6 +1,7 @@
 import { container } from "tsyringe";
 import { Request, Response } from "express";
 import { CreateDonationUseCase } from "./CreateDonationUseCase";
+import validateFields from "./validateFields";
 
 
 class CreateDonationController {
@@ -17,6 +18,8 @@ class CreateDonationController {
         //remove a mascara do front e transforma para float com "."
         donation_value = donation_value.replace(/(?!\,+)[\D]/g,"").replace(/\,/,".") as string
        
+        validateFields({donation_value: +(donation_value), donor_name, worker_id, ngo_id, user_id})
+
         // donor_name = donor_name.replace(/\s+$/,"")
         
         const createDonationUseCase = container.resolve(CreateDonationUseCase)

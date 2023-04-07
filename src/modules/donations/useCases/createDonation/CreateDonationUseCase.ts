@@ -13,17 +13,9 @@ import { Ngo } from "../../entities/ngos";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
+import IRequest from "./IRequestDTO";
 
-interface IRequest {
-    ngo_id:string 
-    donor_name: string
-    user_id:string 
-    worker_id:string 
-    donation_value: number
-    is_payed: string
-    payed_at?: Date
-    
-}
+
 
 
 interface IResponse {
@@ -64,12 +56,9 @@ class CreateDonationUseCase {
     async execute({ ngo_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<IResponse> {
 
 
-        if(!donor_name) throw new AppError("Forneça um nome para esse doação")
-        if(!worker_id) throw new AppError("Forneça o nome de um funcionário para esse doação")
-        if(!donation_value) throw new AppError("Forneça um valor para esse doação")
-
-
-
+        // if(!donor_name) throw new AppError("Forneça um nome para esse doação")
+        // if(!worker_id) throw new AppError("Forneça o nome de um funcionário para esse doação")
+        // if(!donation_value) throw new AppError("Forneça um valor para esse doação")
 
         const userExists = await this.usersRepository.findById(user_id)
        //const donorExists = await this.donorsRepository.findById(donor_id)
