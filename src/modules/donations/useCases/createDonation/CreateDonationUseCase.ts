@@ -56,9 +56,9 @@ class CreateDonationUseCase {
     async execute({ ngo_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<IResponse> {
 
 
-        // if(!donor_name) throw new AppError("Forneça um nome para esse doação")
-        // if(!worker_id) throw new AppError("Forneça o nome de um funcionário para esse doação")
-        // if(!donation_value) throw new AppError("Forneça um valor para esse doação")
+        if(!donor_name || donor_name === "") throw new AppError("Forneça o nome do doador")
+        if(!donation_value || donation_value <= 0) throw new AppError("Forneça o valor para esse doação")
+        if(!worker_id) throw new AppError("Escolha um funcionário para esse doação")
 
         const userExists = await this.usersRepository.findById(user_id)
        //const donorExists = await this.donorsRepository.findById(donor_id)

@@ -18,8 +18,15 @@ class CreateDonationController {
         //remove a mascara do front e transforma para float com "."
         donation_value = donation_value.replace(/(?!\,+)[\D]/g,"").replace(/\,/,".") as string
        
-        validateFields({donation_value: +(donation_value), donor_name, worker_id, ngo_id, user_id})
 
+        
+        // const {error, value} = validateFields({donation_value: +(donation_value), donor_name, worker_id, ngo_id, user_id})
+
+        // if(error){
+        //     return res.status(400).render("views/donations/create-donation", {
+        //         error, 
+        //     })
+        // }
         // donor_name = donor_name.replace(/\s+$/,"")
         
         const createDonationUseCase = container.resolve(CreateDonationUseCase)

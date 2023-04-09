@@ -26,7 +26,11 @@
         </div>
 
         <div class="form">
-            <form id="#form" action="/instituicao/{{ngo.id}}/doacao/nova/criar" method="post" enctype="multipart/form-data">
+            <form id="#form" 
+            action="/instituicao/{{ngo.id}}/doacao/nova/criar"
+            method="post" 
+            enctype="multipart/form-data"
+            >
 
                     
                     
@@ -72,7 +76,7 @@
                 </div>
 
 
-                <div class="button"><button type="submit">Criar</button> </div>
+                <div class="button"><button type="submit" onclick="validateCreateDontaion(document.querySelector('form'))">Criar</button> </div>
                 
                 
 
@@ -80,6 +84,9 @@
         </div>
 
 
+        
+
+    <script src="/scriptForValidateFields.js"></script>
         
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 

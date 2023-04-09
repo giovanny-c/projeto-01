@@ -1,4 +1,3 @@
-import { InputError } from "../../../../shared/errors/InputError";
 import IRequest from "./IRequestDTO";
 import Joi from "joi"
 
@@ -15,7 +14,7 @@ export default function validateFields(data: Partial<IRequest>){
             "string.empty": "Forneça um nome valido para essa doação.",
             "any.required": "Forneça um valor para o campo nome"
         }),
-        donation_value: Joi.number().precision(2).required().messages({
+        donation_value: Joi.number().greater(0).precision(2).required().messages({
             "number.base": "Forneça um nome valido para essa doação.",
             "number.empty": "Forneça um valor para o campo valor",
             "any.required": "Forneça um valor para o campo valor"
@@ -48,8 +47,13 @@ export default function validateFields(data: Partial<IRequest>){
         user_id
     })
 
-    if(error){
-        throw new InputError(error.details[0].message, value)
+    // if(error){
+        // throw new InputError(error.details[0].message, value)  
+    return {
+        error: error?.details[0].message,
+        value
     }
+    
+    // }
 
 }
