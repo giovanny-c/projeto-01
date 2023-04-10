@@ -17,6 +17,7 @@ export default function validateFields(data: Partial<IRequest>){
         donation_value: Joi.number().greater(0).precision(2).required().messages({
             "number.base": "Forneça um nome valido para essa doação.",
             "number.empty": "Forneça um valor para o campo valor",
+            "number.greater": "Forneça um valor maior que zero para essa doação.",
             "any.required": "Forneça um valor para o campo valor"
         }),
         worker_id: Joi.string().uuid().required().messages({

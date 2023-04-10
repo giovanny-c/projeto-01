@@ -94,33 +94,42 @@
             id="form-email"
             {# class="form-email"   #}
             action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/enviar-email" method="POST" 
-            enctype="multipart/form-data">
+            enctype="multipart/form-data"
+            onsubmit="verifyEmptyInput(this, event)"
+            >
             
                 <div class="item">
-                    <input type="text"
-                    id="email" 
-                    name="email" 
-                    form="form-email"
-                    value="" 
-                    autocomplete="off"
-                    placeholder="Pesquise por nome ou email"
-                    onfocus="showList()"
-                    oninput="searchDonor(this)"
-                    
-                    >
+                    <div>
+                        <input type="text"
+                        class="email-field"
+                        id="email" 
+                        name="email" 
+                        form="form-email"
+                        value="" 
+                        autocomplete="off"
+                        placeholder="Pesquise por nome ou email"
+                        onfocus="showList()"
+                        onkeypress="removeFormError(this)"
+                        onkeyup="searchDonor(this)"
+                        
+                        >
+                    </div>
                 </div>
 
                 <ul class="donors-list"></ul>
 
                 <div class="item email-form">
-                    <select name="message_id" id="message_id">
-                    {% for message in messages %}
-                        <option value="" selected disabled hidden>Escolha a mensagem</option>
-                        <option value="{{message.id}}">
-                            {{message.name}}                           
-                        </option>
-                    {% endfor %}
-                    </select>
+                    <div>
+                        <select name="message_id" id="message_id"
+                         onchange="removeFormError(this)">
+                        {% for message in messages %}
+                            <option value="" selected disabled hidden>Escolha a mensagem</option>
+                            <option value="{{message.id}}">
+                                {{message.name}}                           
+                            </option>
+                        {% endfor %}
+                        </select>
+                    </div>
                 </div>
 
                 
@@ -134,7 +143,7 @@
                 
 
                 <input type="hidden" id="donation_id" name="donation_id" value="{{donation.id}}">
-                <input type="hidden" id="donors_ids" name="donors_ids" value="">
+                <input class="email-field"type="hidden" id="donors_ids" name="donors_ids" value="">
 
 
 
@@ -207,7 +216,10 @@
         
     </div>   
     
-        
+
+
+    <script src="/scriptForValidateFields.js"></script>
+    
     {# <script src="/scriptForGenerateReceipt.js"></script> #}
     
     <script>
@@ -227,6 +239,7 @@
 
             })
     </script>
+
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}
 
 {% endblock %}  

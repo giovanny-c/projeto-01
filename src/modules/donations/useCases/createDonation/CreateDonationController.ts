@@ -2,6 +2,7 @@ import { container } from "tsyringe";
 import { Request, Response } from "express";
 import { CreateDonationUseCase } from "./CreateDonationUseCase";
 import validateFields from "./validateFields";
+import { AppError } from "../../../../shared/errors/AppError";
 
 
 class CreateDonationController {
@@ -18,19 +19,18 @@ class CreateDonationController {
         //remove a mascara do front e transforma para float com "."
         donation_value = donation_value.replace(/(?!\,+)[\D]/g,"").replace(/\,/,".") as string
        
-
         
-        // const {error, value} = validateFields({donation_value: +(donation_value), donor_name, worker_id, ngo_id, user_id})
+        const {error, value} = validateFields({donation_value: +(donation_value), donor_name, worker_id, ngo_id, user_id})
 
-        // if(error){
+        if(error){
 
-        // throw new AppError(error)
-        
+        throw new AppError(error)
+
         //     return res.status(400).render("views/donations/create-donation", {
         //         error, 
         //     })
-        // }
-        // donor_name = donor_name.replace(/\s+$/,"")
+        }
+       
         
         const createDonationUseCase = container.resolve(CreateDonationUseCase)
 

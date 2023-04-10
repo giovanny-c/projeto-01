@@ -39,7 +39,7 @@
                         <div>
                         <input      
                             type="text" name="donor_name" value="" placeholder="Nome do Doador"
-                            onfocus="removeFormError(this)"
+                            onkeypress="removeFormError(this)"
                             onblur="Mask.apply(this, 'formatName')"
                             />
                         </div>
@@ -49,7 +49,7 @@
                         <div>
                         <input      
                             type="text" name="donation_value" value="" placeholder="00,00"
-                            onfocus="removeFormError(this)"
+                            onkeypress="removeFormError(this)"
                             onkeydown="Mask.apply(this, 'formatBRL')"
                             />
                         </div>
@@ -58,7 +58,7 @@
                 <div class="item">
                     <div>
                     <select class="item" name="worker_id"
-                    onfocus="removeFormError(this)"
+                    onchange="removeFormError(this)"
                     >
                     
                     {% for worker in workers %}
