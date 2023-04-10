@@ -1,10 +1,11 @@
 .form {
     max-width: 940px;
-    margin: 30px auto;
+    margin: 50px auto;
 }
 
 .item {
     margin: 30px auto;
+    height: 64px;
 
 
 }
@@ -15,6 +16,8 @@
 
 
 .item input {
+
+
 
     font-size: 30px;
     color: var(--color-letters);

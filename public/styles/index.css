@@ -77,3 +77,10 @@ a {
     font-size: 22px;
 
 }
+
+.form-error {
+
+    font-size: 12px;
+    text-align: start;
+    color: rgb(216, 91, 91);
+}

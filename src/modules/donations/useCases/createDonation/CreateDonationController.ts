@@ -23,6 +23,9 @@ class CreateDonationController {
         // const {error, value} = validateFields({donation_value: +(donation_value), donor_name, worker_id, ngo_id, user_id})
 
         // if(error){
+
+        // throw new AppError(error)
+        
         //     return res.status(400).render("views/donations/create-donation", {
         //         error, 
         //     })

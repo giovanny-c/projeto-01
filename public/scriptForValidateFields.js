@@ -1,43 +1,58 @@
 
 
-function validateCreateDontaion(form) {
+function verifyEmptyInput(form, event) {
 
-    const { donor_name, donation_value, worker_id } = form.elements
+    // const { donor_name, donation_value, worker_id } = form.elements
 
-    console.log(form.elements)
-
-    form.addEventListener("submit", (event) => {
+    // console.log(form.elements)
 
 
-        if (!donation_value.value
-            || typeof +(donation_value.value.replace(/(?!\,+)[\D]/g, "").replace(/\,/, ".")) !== "number"
-        ) {
+
+    for (element of form.elements) {
+
+
+        removeFormError(element)
+
+
+        if (!element.value && element.tagName !== "BUTTON") {
+
+
+
+            element.style.border = "1px solid red"
+
+            let itemTag = element.parentNode.parentNode
+            itemTag.classList.add("form-error")
+
+            let tagP = document.createElement("p")
+            tagP.innerHTML = "* insira um valor"
+            if (element.tagName === "SELECT") {
+                tagP.innerHTML = "* escolha um valor"
+            }
+
+            itemTag.appendChild(tagP)
+
 
             event.preventDefault()
         }
 
-        if (!donor_name.value
-            || donor_name.value === ""
-        ) {
-
-            event.preventDefault()
-        }
+    }
 
 
-        if (!worker_id.value
-            || worker_id.value === ""
-        ) {
+}
 
-            event.preventDefault()
-        }
+function removeFormError(input) {
+
+    let itemTag = input.parentNode.parentNode
+
+    if (itemTag.classList.contains("form-error")) {
+
+        itemTag.classList.remove("form-error")
+
+        input.style.border = "none"
 
 
-
-
-
-    })
-
-
+        itemTag.removeChild(itemTag.lastChild)
+    }
 
 
 

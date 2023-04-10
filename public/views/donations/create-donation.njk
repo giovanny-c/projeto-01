@@ -30,6 +30,7 @@
             action="/instituicao/{{ngo.id}}/doacao/nova/criar"
             method="post" 
             enctype="multipart/form-data"
+            onsubmit="verifyEmptyInput(this, event)"
             >
 
                     
@@ -38,6 +39,7 @@
                         <div>
                         <input      
                             type="text" name="donor_name" value="" placeholder="Nome do Doador"
+                            onfocus="removeFormError(this)"
                             onblur="Mask.apply(this, 'formatName')"
                             />
                         </div>
@@ -47,36 +49,43 @@
                         <div>
                         <input      
                             type="text" name="donation_value" value="" placeholder="00,00"
+                            onfocus="removeFormError(this)"
                             onkeydown="Mask.apply(this, 'formatBRL')"
                             />
                         </div>
                 </div>
 
-                
-                <select class="item" name="worker_id">
-                
-                {% for worker in workers %}
-                        <option value="" selected disabled hidden>Escolha o funcionário</option>
-                        <option value="{{worker.id}}"
-                            
-                            >
-                            
-                            {{worker.name}}
-                            
-                        </option>
-                {% endfor %}
-
-                </select>
-
                 <div class="item">
-                        <div>
-                        <input      
-                            type="hidden" name="is_payed" value="true" placeholder="Nome do Doador"/>
-                        </div>
+                    <div>
+                    <select class="item" name="worker_id"
+                    onfocus="removeFormError(this)"
+                    >
+                    
+                    {% for worker in workers %}
+                            <option value="" selected disabled hidden>Escolha o funcionário</option>
+                            <option value="{{worker.id}}"
+                                
+                                >
+                                
+                                {{worker.name}}
+                                
+                            </option>
+                    {% endfor %}
+
+                    </select>
+                    </div>
                 </div>
 
+                
+                
+                
+                <input      
+                    type="hidden" name="is_payed" value="true" placeholder="Nome do Doador"/>
+                
+                {# <div class="item"></div> #}
 
-                <div class="button"><button type="submit" onclick="validateCreateDontaion(document.querySelector('form'))">Criar</button> </div>
+
+                <div class="button"><button type="submit" >Criar</button> </div>
                 
                 
 
