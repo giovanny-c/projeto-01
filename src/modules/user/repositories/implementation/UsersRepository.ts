@@ -16,7 +16,7 @@ class UsersRepository implements IUsersRepository {
     }
 
 
-    async create({ id, name, password_hash, salt, admin, email }: ICreateUserDTO): Promise<User> {
+    async create({ id, name, password_hash, salt, admin, email, worker_id }: ICreateUserDTO): Promise<User> {
 
         const user = this.repository.create({
             id,
@@ -25,20 +25,29 @@ class UsersRepository implements IUsersRepository {
             password_hash,
             admin,
             email,
-            
+            worker_id
         })
 
         return await this.repository.save(user)
     }
 
     async find(): Promise<User[]> {
-        const users = await this.repository.find()
+        const users = await this.repository.find({
+            relations: {
+                worker: true
+            }
+        })
 
         return users
     }
 
     async findById(id: string): Promise<User> {
-        const user = await this.repository.findOne({ where: { id } })
+        const user = await this.repository.findOne({
+            relations: {
+                worker: true
+            },
+            where: { id } 
+        })
 
         return user
     }

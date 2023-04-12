@@ -5,6 +5,7 @@ interface ICreateUserDTO {
     salt?: string
     admin: boolean
     email: string
+    worker_id?: string 
 }
 
 export { ICreateUserDTO }

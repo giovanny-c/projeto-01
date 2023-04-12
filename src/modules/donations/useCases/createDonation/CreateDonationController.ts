@@ -11,7 +11,7 @@ class CreateDonationController {
 
 
         let { donation_value, donor_name, worker_id, is_payed, payed_at } = req.body
-        const { id: user_id } = req.user
+        const { id: user_id, admin } = req.user
         const {ngo_id} = req.params
 
 
@@ -47,6 +47,10 @@ class CreateDonationController {
             payed_at, 
         })
 
+        if(!admin){
+            req.session.success="Doação criada com sucesso"
+            return res.status(201).redirect(`/instituicao/${donation.ngo.id}/`)
+        }
         return res.status(201).redirect(`/instituicao/${donation.ngo.id}/doacao/${donation.donation_number}`)
 
     }

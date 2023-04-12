@@ -33,6 +33,8 @@ class UpdateDonorUseCase {
         phone = phone.replace(/(\+\d\d )/g, "").replace(/[\(\)]/g,"") //tira os () e o +55 se tiver
 
         const donor = await this.donorsRepository.create({ id: donorExists.id, name, email, phone })
+        //nao atualiza o user id, sempre sera atribuida a um user até que ele(user) seja deletado, 
+        //ai o cadastro passara a ser visivel a todos os outros funcionarios
 
 
         return donor

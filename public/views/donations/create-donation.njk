@@ -27,7 +27,7 @@
 
         <div class="form">
             <form id="#form" 
-            action="/instituicao/{{ngo.id}}/doacao/nova/criar"
+            action="/instituicao/{{ngo.id}}/doacao/nova"
             method="post" 
             enctype="multipart/form-data"
             onsubmit="verifyEmptyInput(this, event)"
@@ -61,15 +61,15 @@
                     onchange="removeFormError(this)"
                     >
                     
-                    {% for worker in workers %}
-                            <option value="" selected disabled hidden>Escolha o funcionário</option>
-                            <option value="{{worker.id}}"
-                                
-                                >
-                                
-                                {{worker.name}}
-                                
-                            </option>
+                        <option value="" selected disabled hidden>Escolha o funcionário</option>
+                    {% for worker in workers %}        
+                        <option value="{{worker.id}}"
+                            
+                            >
+                            
+                            {{worker.name}}
+                            
+                        </option>
                     {% endfor %}
 
                     </select>

@@ -128,7 +128,7 @@ donationRoutes.post("/instituicao/:ngo_id/contador/definir", ensureAdmin, upload
 
 //criar nova doação
 donationRoutes.get("/instituicao/:ngo_id/doacao/nova", handleMessage, loadCreateDonationController.handle )
-donationRoutes.post("/instituicao/:ngo_id/doacao/nova/criar", upload.none(), createDonationController.handle)//cria a donation
+donationRoutes.post("/instituicao/:ngo_id/doacao/nova", upload.none(), createDonationController.handle)//cria a donation
 
 //listar
 donationRoutes.get("/instituicao/:ngo_id/doacao/listar", ensureAdmin, handleMessage, listDonationsController.handle)

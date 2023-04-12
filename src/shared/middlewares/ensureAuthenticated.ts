@@ -28,6 +28,7 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
     // 
     let [amount, time_unit] = String(process.env.ABSOLUTE_SESSION_TIME_OUT).split(" ")
     
+    //data maxima que a sessao pode existir = data de criação + tempo absoluto
     const absoluteSessionTimeOut = dateProvider.addOrSubtractTime("add", time_unit, Number(amount), req.session.created_at)
     
     // console.log(`1 vez - ${absoluteSessionTimeOut}`)

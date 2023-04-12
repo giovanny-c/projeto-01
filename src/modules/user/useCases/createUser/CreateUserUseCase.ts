@@ -13,6 +13,7 @@ interface IRequest {
     confirm_password: string
     email: string
     is_admin: string
+    worker_id?: string
 }
 
 @injectable()
@@ -27,7 +28,7 @@ class CreateUserUseCase {
         ) {
     }
 
-    async execute({ name, password, confirm_password, is_admin, email}: IRequest): Promise<User> {
+    async execute({ name, password, confirm_password, is_admin, email, worker_id}: IRequest): Promise<User> {
 
         
         
@@ -70,7 +71,7 @@ class CreateUserUseCase {
             salt, 
             email, 
             admin: is_admin === "true" ? true : false,  //se tiver marcado
-            
+            worker_id: worker_id || null
         })
 
         return instanceToPlain(user) as User

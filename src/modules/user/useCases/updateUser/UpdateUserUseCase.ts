@@ -14,6 +14,7 @@ interface IRequest {
     is_admin: string
 
     admin_id: string
+    worker_id?: string
 }
 
 @injectable()
@@ -25,7 +26,7 @@ class UpdateUserUseCase {
         private usersRepository: IUsersRepository) {
     }
 
-    async execute({id, name, password, is_admin, email, admin_id}: IRequest): Promise<User> {
+    async execute({id, name, password, is_admin, email, admin_id, worker_id}: IRequest): Promise<User> {
 
         if(admin_id === ""){
             throw new AppError("Usuário invalido", 400)
@@ -88,6 +89,7 @@ class UpdateUserUseCase {
         user.name = name
         user.email = email
         user.admin = is_admin === "true" ? true : false  //se admin nao for marcado = false
+        user.worker_id = worker_id || null
 
         return instanceToPlain(await this.usersRepository.create({...user})) as User
     

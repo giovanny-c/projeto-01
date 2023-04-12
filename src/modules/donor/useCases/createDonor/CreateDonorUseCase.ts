@@ -4,13 +4,17 @@ import { ICreateDonorDTO } from "../../dtos/ICreateDonorDTO";
 import { Donor } from "../../entities/donor";
 
 import { IDonorsRepository } from "../../repositories/IDonorsRepository";
+import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 
 @injectable()
 class CreateDonorUseCase {
 
     constructor(
         @inject("DonorsRepository")
-        private donorsRepository: IDonorsRepository) { }
+        private donorsRepository: IDonorsRepository,
+        @inject("UsersRepository")
+        private usersRepository: IUsersRepository
+        ) { }
 
     async execute({ name, email, phone, user_id}: ICreateDonorDTO) {
 
@@ -31,7 +35,19 @@ class CreateDonorUseCase {
 
         }
 
-        const donor = await this.donorsRepository.create({ name, email, phone, user_id })
+        const checkUser = await this.usersRepository.findById(user_id)
+
+        if(!checkUser){
+            throw new AppError("Usuário nao encontrado")
+        }
+        
+
+        const donor = await this.donorsRepository.create({ 
+            name, 
+            email, 
+            phone, 
+            user_id: checkUser.worker_id ? checkUser.id : null //se for um user sem worker_id
+        })
 
         return {
             donor

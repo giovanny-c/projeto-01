@@ -9,10 +9,12 @@ import { DonationCounter } from "../../entities/donation_counter";
 import { Ngo } from "../../entities/ngos";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
+import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 
 
 interface IRequest {
    id: string
+   user_id: string
 }
 
 interface IResponse {
@@ -33,12 +35,14 @@ class LoadCreateDonationUseCase {
         private donationCounterRepository: IDonationCounterRepository,
         @inject("CacheProvider")
         private cacheProvider: ICacheProvider,
+        @inject("UsersRepository")
+        private usersRepository: IUsersRepository,
         @inject("WorkersRepository")
         private workersRepository: IWorkersReposiroty
 
     ) { }
 
-    async execute({id}: IRequest): Promise<IResponse> {
+    async execute({id, user_id}: IRequest): Promise<IResponse> {
         
         let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${id}`))
 
@@ -51,12 +55,21 @@ class LoadCreateDonationUseCase {
         
         const counter = await this.donationCounterRepository.findByNgoId(ngo.id)
 
+        const user = await this.usersRepository.findById(user_id)
+
+        if(!user){
+            throw new AppError("Usuário não encontrado")
+        }
+        
+        
+
+
         const workers = await this.workersRepository.find()
 
         return  {
             ngo,
             ngo_donation_counter: counter,
-            workers
+            workers: !user.worker_id ? workers : [user.worker]
         }
         
     

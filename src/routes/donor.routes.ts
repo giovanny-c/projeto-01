@@ -41,8 +41,8 @@ const filterDonorsController = new FilterDonorsController()
 donorRoutes.get("/", handleMessage, loadDonorsHubController.handle)
 
 
-donorRoutes.get("/criar", ensureAdmin, handleMessage, loadCreateDonorController.handle)
-donorRoutes.post("/criar", ensureAdmin, upload.none(), createDonorController.handle)
+donorRoutes.get("/criar", handleMessage, loadCreateDonorController.handle)
+donorRoutes.post("/criar", upload.none(), createDonorController.handle)
 
 donorRoutes.get("/importar", ensureAdmin, handleMessage, loadImportDonorsController.handle)
 donorRoutes.post("/importar", ensureAdmin, upload.single("file"), importDonorsController.handle)

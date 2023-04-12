@@ -10,7 +10,7 @@ class UpdateUserController {
 
         const {id: admin_id, admin} = req.user
         const {user_id: id} = req.params
-        const { user_name: name, password, email, is_admin } = req.body
+        const { user_name: name, password, email, is_admin, worker_id } = req.body
 
         const updateUserUseCase = container.resolve(UpdateUserUseCase)
 
@@ -20,10 +20,11 @@ class UpdateUserController {
             password, 
             email, 
             is_admin, 
-            admin_id: admin? admin_id : "" // se admin for true passa o adminId
+            admin_id: admin? admin_id : "", // se admin for true passa o adminId
+            worker_id
         })
 
-        if(user.admin === false){
+        if(user.admin === false && user.id === admin_id){
             req.session.destroy()
 
             return res.redirect("/entrar")
