@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+import { container } from "tsyringe";
+import { LoadCreateUserUseCase } from "./LoadCreateUserUseCase";
 
 
 class LoadCreateUserController {
@@ -6,8 +8,11 @@ class LoadCreateUserController {
 
     async handle(req: Request, res: Response): Promise<any> {
 
+        const loadCreateUser = container.resolve(LoadCreateUserUseCase)
+
+        const workers = await loadCreateUser.execute()
         
-        return res.status(200).render("views/users/create-user", {error: req.error, success: req.success})
+        return res.status(200).render("views/users/create-user", {workers, error: req.error, success: req.success})
     }
 
 }

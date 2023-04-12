@@ -14,9 +14,9 @@ class LoadUserUpdateController {
         
         const loadUserUpdateUseCase = container.resolve(LoadUserUpdateUseCase)
 
-        const user = await loadUserUpdateUseCase.execute({id})
+        const {user, workers} = await loadUserUpdateUseCase.execute({id})
 
-        return res.status(200).render("views/users/create-user", {user, admin_id, error: req.error, success: req.success})
+        return res.status(200).render("views/users/create-user", {user, workers, admin_id, error: req.error, success: req.success})
     }
 
 }

@@ -17,14 +17,15 @@ class CreateDonationController {
 
         //por esses replaces no front?
         //remove a mascara do front e transforma para float com "."
-        donation_value = donation_value.replace(/(?!\,+)[\D]/g,"").replace(/\,/,".") as string
+        //e transforma em numero
+        donation_value = +(donation_value.replace(/(?!\,+)[\D]/g,"").replace(/\,/,".") as string ) 
        
         
-        const {error, value} = validateFields({donation_value: +(donation_value), donor_name, worker_id, ngo_id, user_id})
+        const {error, value} = validateFields({donation_value, donor_name, worker_id, ngo_id, user_id})
 
         if(error){
 
-        throw new AppError(error)
+            throw new AppError(error)
 
         //     return res.status(400).render("views/donations/create-donation", {
         //         error, 
@@ -41,7 +42,7 @@ class CreateDonationController {
             donor_name,
             user_id, 
             worker_id,
-            donation_value: +(donation_value), 
+            donation_value, 
             is_payed, 
             payed_at, 
         })

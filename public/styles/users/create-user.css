@@ -27,6 +27,30 @@
     width: 620px;
 }
 
+.select-p {
+
+    margin: 40px 0px 0px 0px;
+}
+
+select {
+
+    margin: 0px;
+    font-size: 28px;
+    color: var(--color-letters);
+    background-color: var(--color-input);
+    border: 1px solid var(--color-input);
+    box-shadow: 2px 2px 4px 1px var(--color-letters);
+    height: 40px;
+    width: 400px;
+    border-radius: 4px;
+
+}
+
+select.item {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 
 
 .item.admin {
@@ -65,14 +89,6 @@ input[type="password"] {
     width: 800px;
 }
 
-select.item {
-    margin: 0px;
-    font-size: 30px;
-    height: 32px;
-    width: 400px;
-    border-radius: 4px;
-    box-shadow: 2px 0px 5px gray;
-}
 
 
 

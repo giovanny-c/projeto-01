@@ -56,6 +56,26 @@
                 </div>
 
                 <div class="item">
+                    <div class=label><p class="select-p">Atribuir usúario a um funcionário (opcional)</p> </div>
+                    <div>
+                    <select class="item" name="worker_id">
+                    
+                    {% for worker in workers %}
+                            <option value="" selected disabled hidden>Escolha o funcionário</option>
+                            <option value="{{worker.id}}"
+                                
+                                >
+                                
+                                {{worker.name}}
+                                
+                            </option>
+                    {% endfor %}
+
+                    </select>
+                    </div>
+                </div>
+
+                <div class="item">
                     <div class=label><p>Admin:</p> </div>
                         <div>
                             
@@ -129,6 +149,26 @@
                             type="email" name="email"  value="" placeholder="Digite o email"
                             onkeydown="Mask.apply(this, 'formatEmail')"/>
                         </div>
+                </div>
+
+                 <div class="item">
+                    <div class=label><p class="select-p">Atribuir usúario a um funcionário (opcional)</p> </div>
+                    <div>
+                    <select class="item" name="worker_id">
+                    
+                    {% for worker in workers %}
+                            <option value="" selected disabled hidden>Escolha o funcionário</option>
+                            <option value="{{worker.id}}"
+                                
+                                >
+                                
+                                {{worker.name}}
+                                
+                            </option>
+                    {% endfor %}
+
+                    </select>
+                    </div>
                 </div>
 
                 <div class="item admin">
