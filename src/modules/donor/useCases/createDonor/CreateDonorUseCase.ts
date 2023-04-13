@@ -41,6 +41,7 @@ class CreateDonorUseCase {
             throw new AppError("Usuário nao encontrado")
         }
         
+        phone = phone.replace(/[\(\)]/g,"")
 
         const donor = await this.donorsRepository.create({ 
             name, 

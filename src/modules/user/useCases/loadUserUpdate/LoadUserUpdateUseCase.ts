@@ -7,6 +7,7 @@ import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { User } from "../../entities/user";
 import { instanceToPlain } from "class-transformer";
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
+import { Worker } from "../../../workers/entities/worker";
 
 interface IRequest {
     id: string
@@ -28,11 +29,14 @@ class LoadUserUpdateUseCase {
 
         const user = await this.usersRepository.findById(id)
         
-        const workers = await this.workersRepository.find()
+        const workers = instanceToPlain(await this.workersRepository.findWithRelations()) as Worker[]
+
+        const filteredWorkers = workers.filter(worker => !worker.user)
+
         
         return {
             user: instanceToPlain(user) as User,
-            workers
+            workers: filteredWorkers
         }
         
     }

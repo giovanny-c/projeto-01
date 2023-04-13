@@ -17,7 +17,7 @@ class Worker {
     @CreateDateColumn()
     created_at: Date
 
-    @OneToOne(() => User)
+    @OneToOne(() => User, (user) => user.worker)
     user: User
 
     constructor() {

@@ -66,7 +66,13 @@ class CreateUserUseCase {
         let worker
         if(worker_id){
 
-            worker = await this.workersRepository.findById(worker_id)
+            worker = instanceToPlain(await this.workersRepository.findByIdWithRelations(worker_id))
+
+            if(worker.user){
+
+                throw new AppError("Esse funcionário ja esta atribuido a um usuário.")
+            }
+
         }
 
         //fazer um match password com o joi

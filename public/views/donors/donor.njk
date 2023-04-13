@@ -23,7 +23,7 @@
 
         <div class="donation-info">
             <p>
-                Nome: <a> {{donor.name}} </a>
+                Nome: {{donor.name}}
             </p>
             <p>
                 Email: {{donor.email}}
@@ -35,6 +35,13 @@
             <p class="date">
                 Criado em: {{donor.created_at}} 
             </p>
+
+        {% if worker %}
+            <p>
+                Por: {{worker.name}}
+            </p>
+        {% endif %}
+            
            
             
         </div>

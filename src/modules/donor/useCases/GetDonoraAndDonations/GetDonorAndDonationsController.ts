@@ -11,10 +11,10 @@ class GetDonorAndDonationsController {
 
         const getDonorAndDonationsUseCase = container.resolve(GetDonorAndDonationsUseCase)
 
-        const {donor} = await getDonorAndDonationsUseCase.execute(id)
+        const {donor, worker} = await getDonorAndDonationsUseCase.execute(id)
 
 
-        return res.render("views/donors/donor", {donor, error: req.error, success: req.success} )
+        return res.render("views/donors/donor", {donor, worker, error: req.error, success: req.success} )
     }
 }
 export { GetDonorAndDonationsController }

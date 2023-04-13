@@ -29,7 +29,7 @@ class User {
     @Column()
     worker_id: string
 
-    @OneToOne( () => Worker, {cascade: true})
+    @OneToOne( () => Worker, (worker) => worker.user, {cascade: true})
     @JoinColumn({name: "worker_id"})
     worker: Worker
 

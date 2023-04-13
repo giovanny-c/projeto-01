@@ -6,6 +6,7 @@ import { genPassword, validatePassword } from "../../../../../utils/passwordUtil
 import { instanceToPlain } from "class-transformer"
 import { User } from "../../entities/user";
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
+import { Worker } from "../../../workers/entities/worker";
 
 interface IRequest {
     id: string
@@ -90,10 +91,17 @@ class UpdateUserUseCase {
         }
 
 
-        let worker
+        let worker: Worker
         if(worker_id){
 
-            worker = await this.workersRepository.findById(worker_id)
+            worker = instanceToPlain(await this.workersRepository.findByIdWithRelations(worker_id)) as Worker
+
+            if(worker.user && user.id !== worker.user.id){
+
+                throw new AppError("Esse funcionário ja esta atribuido a um usuário.")
+            }
+
+            
         }
 
 

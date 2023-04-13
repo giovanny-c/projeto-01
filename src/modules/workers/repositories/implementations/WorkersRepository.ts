@@ -18,6 +18,15 @@ class WorkersRepository implements IWorkersReposiroty {
         return workers
     }
 
+    async findWithRelations(): Promise<Worker[]> {
+        const workers = await this.repository.find({
+            relations: {
+                user: true
+            }
+        })
+        return workers
+    }
+
     async create(name: string, id?: string): Promise<Worker> {
         const worker = this.repository.create({
             id,
@@ -30,10 +39,25 @@ class WorkersRepository implements IWorkersReposiroty {
     }
     async findById(id: string): Promise<Worker> {
 
-        const worker = await this.repository.findOne({where: {id}})
+        const worker = await this.repository.findOne({  
+            where: {id}
+        })
 
         return worker
     }
+
+    async findByIdWithRelations(id: string): Promise<Worker> {
+
+        const worker = await this.repository.findOne({
+            relations: {
+                user: true
+            },
+            where: {id}
+        })
+
+        return worker
+    }
+
     async findByName(name: string): Promise<Worker> {
         const worker = await this.repository.findOne({where: {name}})
 

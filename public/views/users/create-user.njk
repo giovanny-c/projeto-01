@@ -159,10 +159,10 @@
                     <div class=label><p class="select-p">Atribuir usúario a um funcionário (opcional)</p> </div>
                     <div>
                     <select class="item" name="worker_id">
+                            <option value="">Nenhum</option>
+                            <option value="" selected disabled hidden>Escolha o funcionário</option>
                     
                     {% for worker in workers %}
-                            <option value="" selected disabled hidden>Escolha o funcionário</option>
-                            <option value="">Nenhum</option>
                             <option value="{{worker.id}}"
                                 {% if user.worker_id == worker.id %}
                                 selected
