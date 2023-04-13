@@ -62,7 +62,7 @@
                         
                         <option value="" 
                             selected disabled hidden>Escolha o funcionário</option>
-                    
+                        <option value="">Nenhum</option>
                     {% for worker in workers %}       
                             <option value="{{worker.id}}"
                                 {% if user.worker_id == worker.id %}
@@ -162,6 +162,7 @@
                     
                     {% for worker in workers %}
                             <option value="" selected disabled hidden>Escolha o funcionário</option>
+                            <option value="">Nenhum</option>
                             <option value="{{worker.id}}"
                                 {% if user.worker_id == worker.id %}
                                 selected

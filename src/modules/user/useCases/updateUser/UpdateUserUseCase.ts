@@ -5,6 +5,7 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { genPassword, validatePassword } from "../../../../../utils/passwordUtils";
 import { instanceToPlain } from "class-transformer"
 import { User } from "../../entities/user";
+import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 
 interface IRequest {
     id: string
@@ -23,7 +24,10 @@ class UpdateUserUseCase {
 
     constructor(
         @inject("UsersRepository")
-        private usersRepository: IUsersRepository) {
+        private usersRepository: IUsersRepository,
+        @inject("WorkersRepository")
+        private workersRepository: IWorkersReposiroty
+        ) {
     }
 
     async execute({id, name, password, is_admin, email, admin_id, worker_id}: IRequest): Promise<User> {
@@ -86,10 +90,18 @@ class UpdateUserUseCase {
         }
 
 
+        let worker
+        if(worker_id){
+
+            worker = await this.workersRepository.findById(worker_id)
+        }
+
+
         user.name = name
         user.email = email
         user.admin = is_admin === "true" ? true : false  //se admin nao for marcado = false
         user.worker_id = worker_id || null
+        user.worker = worker || null
 
         return instanceToPlain(await this.usersRepository.create({...user})) as User
     

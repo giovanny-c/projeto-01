@@ -6,6 +6,7 @@ import { genPassword } from "../../../../../utils/passwordUtils";
 import { instanceToPlain } from "class-transformer"
 import { User } from "../../entities/user";
 import { IMailProvider } from "../../../../shared/container/providers/mailProvider/IMailProvider";
+import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 
 interface IRequest {
     name: string
@@ -25,6 +26,8 @@ class CreateUserUseCase {
         private usersRepository: IUsersRepository,
         @inject("MailProvider")
         private mailProvider: IMailProvider,
+        @inject("WorkersRepository")
+        private workersRepository: IWorkersReposiroty
         ) {
     }
 
@@ -60,6 +63,12 @@ class CreateUserUseCase {
         }
 
 
+        let worker
+        if(worker_id){
+
+            worker = await this.workersRepository.findById(worker_id)
+        }
+
         //fazer um match password com o joi
 
         const {salt, hash} = genPassword(password)
@@ -71,7 +80,8 @@ class CreateUserUseCase {
             salt, 
             email, 
             admin: is_admin === "true" ? true : false,  //se tiver marcado
-            worker_id: worker_id || null
+            worker_id: worker_id || null,
+            worker: worker || null
         })
 
         return instanceToPlain(user) as User

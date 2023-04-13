@@ -27,9 +27,9 @@ class User {
     email: string
 
     @Column()
-    worker_id?: string
+    worker_id: string
 
-    @OneToOne( () => Worker )
+    @OneToOne( () => Worker, {cascade: true})
     @JoinColumn({name: "worker_id"})
     worker: Worker
 

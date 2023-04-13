@@ -1,3 +1,5 @@
+import { Worker } from "../../workers/entities/worker"
+
 interface ICreateUserDTO {
     id?: string
     name: string
@@ -6,6 +8,7 @@ interface ICreateUserDTO {
     admin: boolean
     email: string
     worker_id?: string 
+    worker: Worker
 }
 
 export { ICreateUserDTO }
