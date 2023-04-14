@@ -31,7 +31,16 @@ class LoadUserUpdateUseCase {
         
         const workers = instanceToPlain(await this.workersRepository.findWithRelations()) as Worker[]
 
-        const filteredWorkers = workers.filter(worker => !worker.user)
+        const filteredWorkers = workers.filter(worker => {
+            
+            if(worker.user && worker.user.id === user.id ){
+                return worker
+            }
+            
+            if(!worker.user){
+                return worker
+            }
+        })
 
         
         return {

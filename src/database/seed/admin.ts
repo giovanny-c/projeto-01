@@ -18,8 +18,8 @@ async function create() {
     const email = process.env.ADM_SEED_EMAIL
     
     await dataSource.query(
-        `INSERT INTO users(id, name, email, password_hash, salt, admin)
-        VALUES ('${id}', '${name}', '${email}', '${hash}', '${salt}', true)
+        `INSERT INTO users(id, name, email, password_hash, salt, admin, master)
+        VALUES ('${id}', '${name}', '${email}', '${hash}', '${salt}', true, true)
         `
     )
     

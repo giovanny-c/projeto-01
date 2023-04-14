@@ -33,6 +33,8 @@ class UpdateUserUseCase {
 
     async execute({id, name, password, is_admin, email, admin_id, worker_id}: IRequest): Promise<User> {
 
+        // is_admin =  valor admin do form
+
         if(admin_id === ""){
             throw new AppError("Usuário invalido", 400)
             
@@ -66,20 +68,25 @@ class UpdateUserUseCase {
 
         
         const user = await this.usersRepository.findById(id)
+        const admin_user = instanceToPlain(await this.usersRepository.findById(admin_id)) as User
 
         if(!user){
             throw new AppError("Usuario nao encontrado", 400)
         }
 
         //se o user for outro admin
-        if(user.admin && (user.id !== admin_id )){
+        if(user.admin && (user.id !== admin_user.id) && !admin_user.master){
 
             throw new AppError("Voce nao pode editar o usuário de outro admin", 400)
         }
 
-        const admin_users = await this.usersRepository.countAdmins()
+        const count_admin_users = await this.usersRepository.countAdmins()
 
-        if(admin_users <= 1 && is_admin !== "true"){
+        if(admin_user.master && (count_admin_users <= 1 && is_admin !== "true")){
+            
+            if(admin_user.master){
+                throw new AppError("O administrador master não pode remover seu status de admin.")
+            }
 
             throw new AppError("Não foi possível atualizar o Usuário. Deve haver pelo menos um admin", 400)
         }

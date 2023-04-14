@@ -10,6 +10,10 @@ import ICacheProvider from "../../../../shared/container/providers/cacheProvider
 import { AppError } from "../../../../shared/errors/AppError";
 import { instanceToPlain, plainToInstance } from "class-transformer";
 
+interface IRequest{
+    user_id: string,
+    admin_user_id: string | void
+}
 @injectable()
 class LoadUserUseCase {
 
@@ -23,7 +27,13 @@ class LoadUserUseCase {
         private usersRepository: IUsersRepository) {
     }
 
-    async execute(user_id): Promise<User> {
+    async execute({user_id, admin_user_id}: IRequest) {
+
+        if(!admin_user_id){
+            throw new AppError("Apenas Admins tem acesso a essa area")
+        }
+
+        const admin_user = instanceToPlain(await this.usersRepository.findById(admin_user_id)) as User
 
         let user 
 
@@ -40,8 +50,10 @@ class LoadUserUseCase {
         
 
         
-        return instanceToPlain(user) as User
-        
+        return{ 
+            user: instanceToPlain(user) as User,
+            admin_user
+        }
     }
 }
 

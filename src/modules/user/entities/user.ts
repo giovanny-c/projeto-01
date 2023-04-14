@@ -33,6 +33,9 @@ class User {
     @JoinColumn({name: "worker_id"})
     worker: Worker
 
+    @Column()
+    master: boolean
+
     constructor() {
         if (!this.id) {
             this.id = uuidV4()

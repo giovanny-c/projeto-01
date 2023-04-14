@@ -24,6 +24,8 @@ class UpdateUserController {
             worker_id
         })
 
+        //se tirar o admin do proprio user
+        //destroi a sessao e redireciona
         if(user.admin === false && user.id === admin_id){
             req.session.destroy()
 

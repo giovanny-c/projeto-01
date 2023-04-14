@@ -26,7 +26,7 @@
         </div>
 
     
-       {% if admin_user.id != user.id and admin_user.admin and user.admin %}
+       {% if admin_user.id != user.id and admin_user.admin and user.admin and not admin_user.master %}
             
             
        {% else %}
