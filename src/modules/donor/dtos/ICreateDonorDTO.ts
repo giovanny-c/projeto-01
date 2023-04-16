@@ -6,6 +6,7 @@ interface ICreateDonorDTO {
     phone?: string
     last_donation?: Date
     user_id?: string
+    worker_id?: string
 
 
 }

@@ -8,14 +8,14 @@ class CreateDonorController {
 
     async handle(req: Request, res: Response): Promise<any> {
 
-        const { name, email, phone } = req.body
+        const { name, email, phone, worker_id } = req.body
         const {id: user_id, admin} = req.user
 
          //tira os ()
 
         const createDonorUseCase = container.resolve(CreateDonorUseCase)
 
-        const {donor}  = await createDonorUseCase.execute({ name, email, phone, user_id })
+        const {donor}  = await createDonorUseCase.execute({ name, email, phone, user_id, worker_id })
 
         if(!admin){
             req.session.success="Doador Criado com sucesso"

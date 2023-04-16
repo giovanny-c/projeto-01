@@ -16,6 +16,14 @@
         <div class="worker">
             <p>Usuário: {{user.name}} </p>
             <p>Email: {{user.email}}</p>
+            <p>{% if user.admin %}
+                Admin
+                {% if user.master %}
+                Master 
+                {% endif %}
+
+            {% endif %}</p>
+            
             
             {% if user.worker_id %}
 

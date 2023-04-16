@@ -84,6 +84,20 @@
                         </div>
                 </div>
 
+                {% if workers %}
+                  <select class="item" name="worker_id">
+                        
+                        <option value="" 
+                            selected disabled hidden>Escolha o funcionário</option>
+                        <option value="">Nenhum</option>
+                    {% for worker in workers %}       
+                            <option value="{{worker.id}}">
+                                {{worker.name}}
+                            </option>
+                    {% endfor %}
+
+                    </select>
+                {% endif %}
 
 
 

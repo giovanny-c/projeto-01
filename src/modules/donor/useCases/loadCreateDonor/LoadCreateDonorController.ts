@@ -1,12 +1,20 @@
 import { Request, Response } from "express";
+import { LoadCreateDonorUseCase } from "./LoadCreateDonorUseCase";
+import { container } from "tsyringe";
 
 
 class LoadCreateDonorController {
 
     async handle(req: Request, res: Response): Promise<any> {
 
+        const {admin, id } = req.user
 
-        return res.render("views/donors/create-donor", {error: req.error, success: req.success})
+        const loadCreateDonor = container.resolve(LoadCreateDonorUseCase)
+
+        //passa o id se for admin
+        const workers = await loadCreateDonor.execute(admin? id : null)
+
+        return res.render("views/donors/create-donor", {workers, error: req.error, success: req.success})
     }
 
 

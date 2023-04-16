@@ -3,6 +3,8 @@ import { off } from "pdfkit";
 import { inject, injectable } from "tsyringe";
 import { Donor } from "../../entities/donor";
 import { IDonorsRepository } from "../../repositories/IDonorsRepository";
+import { instanceToPlain } from "class-transformer";
+import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 
 interface IRequest{
     value?: string
@@ -17,7 +19,9 @@ class ListDonorsUseCase {
 
     constructor(
         @inject("DonorsRepository")
-        private donorsRepository: IDonorsRepository
+        private donorsRepository: IDonorsRepository,
+        @inject("UsersRepository")
+        private usersRepository: IUsersRepository,
     ) {
 
     }
@@ -30,15 +34,16 @@ class ListDonorsUseCase {
         
         let offset = limit * (page - 1)
 
-        const donors = await this.donorsRepository.findBy(value, +(limit), offset, user_id)
+        const user = instanceToPlain(await this.usersRepository.findById(user_id))
+        const donors = instanceToPlain(await this.donorsRepository.findBy(value, +(limit), offset, user_id)) as Donor[]
 
         let filteredDonors = donors
-
+        
         if(!is_admin){
 
             filteredDonors = donors.filter((donor)=>{
-                
-                if(donor.user?.id === user_id || donor.user?.admin || !donor.user){
+                //se foi criado pelo user, se foi criado por um admin(mas foi atribuido ao worker desse user), se nao possuir user(só old)
+                if(donor.user?.id === user.id || (donor.user?.admin && (donor.worker.id === user.worker_id || donor.worker.id === null)) || !donor.user){
                     return donor
                 }
                 

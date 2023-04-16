@@ -5,6 +5,9 @@ import { Donor } from "../../entities/donor";
 
 import { IDonorsRepository } from "../../repositories/IDonorsRepository";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
+import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
+import { Worker } from "../../../workers/entities/worker";
+import { instanceToPlain } from "class-transformer";
 
 @injectable()
 class CreateDonorUseCase {
@@ -13,10 +16,12 @@ class CreateDonorUseCase {
         @inject("DonorsRepository")
         private donorsRepository: IDonorsRepository,
         @inject("UsersRepository")
-        private usersRepository: IUsersRepository
+        private usersRepository: IUsersRepository,
+        @inject("WorkersRepository")
+        private workersRepository: IWorkersReposiroty
         ) { }
 
-    async execute({ name, email, phone, user_id}: ICreateDonorDTO) {
+    async execute({ name, email, phone, user_id, worker_id}: ICreateDonorDTO) {
 
         
 
@@ -35,24 +40,69 @@ class CreateDonorUseCase {
 
         }
 
+        //arruma o numero
+        phone = phone.replace(/[\(\)]/g,"")
+
+
+        //ve se o user existe
         const checkUser = await this.usersRepository.findById(user_id)
 
         if(!checkUser){
             throw new AppError("Usuário nao encontrado")
         }
-        
-        phone = phone.replace(/[\(\)]/g,"")
 
-        const donor = await this.donorsRepository.create({ 
-            name, 
-            email, 
-            phone, 
-            user_id: checkUser.worker_id ? checkUser.id : null //se for um user sem worker_id
-        })
 
-        return {
-            donor
+
+        let worker
+        //so para admin
+        //se um worker for escolhido
+        if(worker_id && worker_id !== ""){
+
+            worker = instanceToPlain(await this.workersRepository.findByIdWithRelations(worker_id)) as Worker
+           
+            if(!worker) throw new AppError("Funcionário não encontrado")
+            
+            
+            const donor = await this.donorsRepository.create({ 
+                name, 
+                email, 
+                phone, 
+                user_id: worker.user? worker.user.id : checkUser.id,
+                worker_id: worker.id //poe o id do usuario atrelado ou worker
+            })
+
+            return {
+                donor
+            }
+        } 
+
+        //só para users que nao sao admin
+        // ou um admin que nao escolheu um worker
+        //se o worker nao for escolhido
+        if(!worker || worker === ""){
+
+
+            const donor = await this.donorsRepository.create({ 
+                name, 
+                email, 
+                phone, 
+                user_id: checkUser.id,
+                worker_id: checkUser.worker_id || null
+                //se for um user sem worker_id o valor e nulo
+                //se for um user com worker poe o id dele
+            })
+
+            return {
+                donor
+            }
         }
+
+        
+        
+
+      
+
+        
 
     }
 

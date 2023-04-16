@@ -16,14 +16,15 @@ class DonorsRepository implements IDonorsRepository {
         this.repository = dataSource.getRepository(Donor)
     }
 
-    async create({ id, name, email, phone, last_donation, user_id }: ICreateDonorDTO): Promise<Donor> {
+    async create({ id, name, email, phone, last_donation, user_id, worker_id }: ICreateDonorDTO): Promise<Donor> {
         const donor = this.repository.create({
             id,
             name,
             email,
             phone,
             last_donation,
-            user_id
+            user_id,
+            worker_id
         })
 
         return await this.repository.save(donor)
@@ -50,6 +51,7 @@ class DonorsRepository implements IDonorsRepository {
         let donors = this.repository.createQueryBuilder("donors")
         .select("donors")
         .leftJoinAndSelect("donors.user","users")
+        .leftJoinAndSelect("donors.worker","workers")
         .where("donors.name ILIKE :name ", {name: `%${value}%`})
         .orWhere("donors.email ILIKE :email ", {email: `%${value}%`})
         .orWhere("donors.phone ILIKE :phone ", {phone: `%${value}%`})

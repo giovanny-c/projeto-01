@@ -56,7 +56,7 @@ class FilterDonorsUseCase {
             }
         })
 
-        
+        console.log(donors)
         
         
         return donors
