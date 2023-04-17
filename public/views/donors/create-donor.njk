@@ -91,7 +91,11 @@
                             selected disabled hidden>Escolha o funcionário</option>
                         <option value="">Nenhum</option>
                     {% for worker in workers %}       
-                            <option value="{{worker.id}}">
+                            <option value="{{worker.id}}"
+                            {% if donor.worker_id == worker.id %}
+                                selected
+                            {% endif %}
+                            >
                                 {{worker.name}}
                             </option>
                     {% endfor %}

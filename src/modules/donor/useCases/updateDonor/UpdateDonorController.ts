@@ -9,11 +9,13 @@ class UpdateDonorController {
 
         const { donor_id: id } = req.params
 
-        const { name, email, phone } = req.body
+        const { name, email, phone, worker_id } = req.body
+
+        const {id: user_id} = req.user
 
         const updateDonorUseCase = container.resolve(UpdateDonorUseCase)
 
-        const donor = await updateDonorUseCase.execute({ id, name, email, phone })
+        const {donor} = await updateDonorUseCase.execute({ id, name, email, phone, worker_id, user_id })
 
         return res.redirect(`/doadores/${donor.id}`)
     }

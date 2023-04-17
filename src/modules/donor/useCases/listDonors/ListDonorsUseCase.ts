@@ -42,7 +42,7 @@ class ListDonorsUseCase {
         if(!is_admin){
 
             filteredDonors = donors.filter((donor)=>{
-                //se foi criado pelo user, se foi criado por um admin(mas foi atribuido ao worker desse user), se nao possuir user(só old)
+                //se foi criado pelo user, se foi criado por um admin(mas foi atribuido ao worker desse user ou a nenhum user), se nao possuir user(só old)
                 if(donor.user?.id === user.id || (donor.user?.admin && (donor.worker.id === user.worker_id || donor.worker.id === null)) || !donor.user){
                     return donor
                 }

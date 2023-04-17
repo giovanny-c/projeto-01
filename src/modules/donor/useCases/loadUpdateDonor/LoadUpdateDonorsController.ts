@@ -7,14 +7,16 @@ class LoadUpdateDonorController {
 
     async handle(req: Request, res: Response): Promise<any> {
 
-        const { donor_id: id } = req.params
+        const { donor_id } = req.params
+        const {id: user_id} = req.user
+
 
         const loadUpdateDonorUseCase = container.resolve(LoadUpdateDonorUseCase)
 
-        const donor = await loadUpdateDonorUseCase.execute({id})
+        const {donor, workers} = await loadUpdateDonorUseCase.execute({donor_id, user_id})
 
 
-        return res.render("views/donors/create-donor", {donor, error: req.error, success: req.success} )
+        return res.render("views/donors/create-donor", {donor, workers, error: req.error, success: req.success} )
     }
 }
 export { LoadUpdateDonorController }

@@ -5,6 +5,7 @@ import { Donation } from "../../../donations/entities/donation";
 import { IDonationsRepository } from "../../../donations/repositories/IDonationsRepository";
 import { Donor } from "../../entities/donor";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
+import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 
 
 
@@ -16,7 +17,9 @@ class GetDonorAndDonationsUseCase {
         @inject("DonorsRepository")
         private donorsRepository: IDonorsRepository,
         @inject("UsersRepository")
-        private usersRepository: IUsersRepository
+        private usersRepository: IUsersRepository,
+        @inject("WorkersRepository")
+        private workersRepository: IWorkersReposiroty
 
     ) { }
 
@@ -28,8 +31,20 @@ class GetDonorAndDonationsUseCase {
             throw new AppError("Doador nao encontrado", 404)
         }
 
-        const user = await this.usersRepository.findById(donorExists.user_id)
+        let worker
+        if(donorExists.worker_id){
 
+            worker = await this.workersRepository.findById(donorExists.worker_id)
+        }
+
+
+        // const user = await this.usersRepository.findById(donorExists.user_id)
+
+        // if(user){
+
+
+
+        // }
 
 
        // const donations = await this.donationsRepository.findDonationsByDonorId(donorExists.id)
@@ -38,7 +53,7 @@ class GetDonorAndDonationsUseCase {
 
         const results = {
             donor: donorExists,
-            worker: user.worker
+            worker: worker || null
             //donations
         }
         return results
