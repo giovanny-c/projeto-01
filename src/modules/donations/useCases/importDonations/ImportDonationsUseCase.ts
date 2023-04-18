@@ -31,6 +31,7 @@ interface IImportDonation {
     valor: number
     doador: string
     funcionario: string
+    worker_id?: string
     
 }
 
@@ -72,9 +73,9 @@ class ImportDonationsUseCase {
 
     }
 
-    validateFields(data: IImportDonation[], file_path): void {
+    async validateFields(data: IImportDonation[], file_path): Promise<IImportDonation[]>{
 
-        data.forEach((donation, index) => {
+        const validatedFields = data.map(async(donation, index) => {
             
         
             // if (!data.email) throw new AppError(`Please fill the email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
@@ -100,63 +101,61 @@ class ImportDonationsUseCase {
             //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(donation) + 1}`, 400)
             // }
 
-            donation.doador = donation.doador.split(/\s/)
-                .filter(string => string !== "")
+            donation.doador = donation.doador.split(/\s/)//separa no espaçp
+                .filter(string => string !== "")//tira caracters vazio
                 .map((string, index) => { //pega a primeira letra e transforma em upper
 
-                //todas as palavras maiores que duas letras exeto dos. das.
+                //todas as palavras maiores que duas letras exeto dos. das. OU a primeira palavra
                 if (string.match(/(?!das(?!\w+)|dos(?!\w+))\b\w{3,}/) || index === 0) {
 
+                    // transforma a primeira letra em maiusculo
                     return string.replace(/^\w/, string.charAt(0).toUpperCase())
 
                 }
-
+                //retorna
                 return string
 
             }).join(" ")
 
-            if(typeof donation.valor !== "number"){
+            if(typeof +(donation.valor) !== "number"){
 
-                
-                // throw new AppError(`O campo valor precisa ser um numero, na linha ${index + 1}`, 400)
+                throw new AppError(`O campo valor precisa ser um numero, na linha ${index + 1}`, 400)
 
             }
 
+            const validateWorker = await this.workersRepository.findByName(donation.funcionario)
+
+            if(!validateWorker){
+                throw new AppError(`Funcionário nao encontrado, na linha ${index + 1}`, 400)
+            }
+
+
+            return {
+                doador: donation.doador,
+                funcionario: donation.funcionario,
+                worker_id: validateWorker.id,
+                valor: +(donation.valor)
+            }
 
         })
+
+        return await Promise.all(validatedFields)
     }
 
     @getExecutionTime()
     async proccessDonations(donations: IImportDonation[], user_id: string, ngo_id, file_path: string): Promise<void | string> {
         
 
-        this.validateFields(donations, file_path)
+        const validatedDionations = await this.validateFields(donations, file_path)
 
-        //ver qual e mais rapido
-        //promise all ou
-        //voltar para o for?
-        //testar o map sem async await ?
-        
             
-        for (const donation of donations) {
+        for (const donation of validatedDionations) {
             
         
             const created_at = this.dateProviderRepository.dateNow()
          
             const payed_at =  this.dateProviderRepository.dateNow()
-        
-            //procura worker
-            let worker = await this.workersRepository.findByName(donation.funcionario)
-
-            
-            // //se  nao existir, cria
-            //melhor deixar null
-            // if (!worker) {
-            //     worker = await this.workersRepository.create(data.funcionario)
-            // }
-            
-            //let donationValue = +(donation.valor.replace(/(?!\,+)[\D]/g,"").replace(/\,/,"."))
-            
+                    
             try {
 
                 
@@ -169,7 +168,7 @@ class ImportDonationsUseCase {
                     donation_value: donation.valor,
                     donor_name: donation.doador,
                     user_id: user_id,
-                    worker_id: worker?.id || null,
+                    worker_id: donation.worker_id || null,
                     created_at,
                     is_payed: true,
                     payed_at,

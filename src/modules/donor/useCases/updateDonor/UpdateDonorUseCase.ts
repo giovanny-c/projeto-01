@@ -36,9 +36,9 @@ class UpdateDonorUseCase {
         phone = phone.replace(/(\+\d\d )/g, "").replace(/[\(\)]/g,"") //tira os () e o +55 se tiver
 
         //Refazer
-        if (!name) name = donorExists.name
+        if (!name || name === "") name = donorExists.name
         if (!email) email = donorExists.email
-        if (!phone) phone = donorExists.phone
+        if (!phone || phone === "") phone = donorExists.phone
 
         //ve se o user existe
         const checkUser = await this.usersRepository.findById(user_id)
