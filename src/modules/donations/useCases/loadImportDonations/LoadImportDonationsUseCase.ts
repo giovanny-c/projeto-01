@@ -7,6 +7,7 @@ import { DonationCounter } from "../../entities/donation_counter";
 import { Ngo } from "../../entities/ngos";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
+import path from "path"
 
 
 interface IRequest {
@@ -15,6 +16,8 @@ interface IRequest {
 
 interface IResponse {
     ngo: Ngo
+    file_path: string
+    file_name: string
 }
 
 @injectable()
@@ -40,13 +43,15 @@ class LoadImportDonationsUseCase {
 
             if(!ngo) throw new AppError("Instituição nao encontrada", 404)
 
-        }
+        }   
 
-    
-        return  {
-            ngo
-        }
         
+        
+        return  {
+            ngo,
+            file_path: "./examples/exemplo.xlsx",
+            file_name: "exemplo"
+        }
     
     }
 

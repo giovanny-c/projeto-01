@@ -46,6 +46,27 @@ form {
     margin: 0px
 }
 
+.example {
+    width: 800px;
+    margin: 150px auto 0px auto;
+}
+
+a {
+
+    margin-left: 2px;
+    background-color: var(--color-call-to-action);
+    color: var(--color-letters-clear);
+    text-decoration: none;
+    padding: 2px;
+    border-radius: 4px;
+    box-shadow: 1px 1px 1px 1px var(--color-letters);
+}
+
+a:hover {
+    background-color: var(--color-hover);
+}
+
+
 button {
     width: 220px;
 

@@ -15,6 +15,7 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { Ngo } from "../../entities/ngos";
 import { getExecutionTime } from "../../../../../utils/decorators/executionTime";
+import { number } from "joi";
 
 interface IRequest {
     file: Express.Multer.File
@@ -83,25 +84,25 @@ class ImportDonationsUseCase {
                 fs.unlink(file_path, (err)=> {
                     if (err) console.error(err)
                 })
-                throw new AppError(`Por favor preencha o campo valor, na linha ${index + 1}`, 400)
+                throw new AppError(`Por favor preencha o campo valor, na linha ${index + 2}`, 400)
             } 
             if (!donation.funcionario) {
                 fs.unlink(file_path, (err)=> {
                     if (err) console.error(err)
                 })
-                throw new AppError(`Por favor preencha o campo funcionario, na linha ${index + 1}`, 400)
+                throw new AppError(`Por favor preencha o campo funcionario, na linha ${index + 2}`, 400)
             }
             if (!donation.doador) {
                 fs.unlink(file_path, (err)=> {
                     if (err) console.error(err)
                 })
-                throw new AppError(`Por favor preencha o campo doador, na linha ${index + 1}`, 400)
+                throw new AppError(`Por favor preencha o campo doador, na linha ${index + 2}`, 400)
             }
             // if (!this.dateProviderRepository.isValidDate(donation.created_at)) {
             //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(donation) + 1}`, 400)
             // }
 
-            donation.doador = donation.doador.split(/\s/)//separa no espaçp
+            const donation_donor = donation.doador.split(/\s/)//separa no espaçp
                 .filter(string => string !== "")//tira caracters vazio
                 .map((string, index) => { //pega a primeira letra e transforma em upper
 
@@ -117,24 +118,28 @@ class ImportDonationsUseCase {
 
             }).join(" ")
 
-            if(typeof +(donation.valor) !== "number"){
 
-                throw new AppError(`O campo valor precisa ser um numero, na linha ${index + 1}`, 400)
+            const donation_value = +(donation.valor)
+            
+            if(typeof donation_value !== "number" || Number.isNaN(donation_value)){
+
+                throw new AppError(`O campo valor precisa ser um numero, na linha ${index + 2}`, 400)
 
             }
 
-            const validateWorker = await this.workersRepository.findByName(donation.funcionario)
+            const worker_name = donation.funcionario.replace(/\s+$/g, "")
+            const validateWorker = await this.workersRepository.findByName(worker_name)
 
             if(!validateWorker){
-                throw new AppError(`Funcionário nao encontrado, na linha ${index + 1}`, 400)
+                throw new AppError(`Funcionário nao encontrado, na linha ${index + 2}`, 400)
             }
 
 
             return {
-                doador: donation.doador,
-                funcionario: donation.funcionario,
+                valor: donation_value,
+                doador: donation_donor,
+                funcionario: worker_name,
                 worker_id: validateWorker.id,
-                valor: +(donation.valor)
             }
 
         })
@@ -184,7 +189,7 @@ class ImportDonationsUseCase {
 
             } catch (err) {
                 console.error(err)
-                throw new AppError(`Nao foi possivel importar doação. Na linha: ${donations.indexOf(donation) + 1}`)
+                throw new AppError(`Nao foi possivel importar doação. Na linha: ${donations.indexOf(donation) + 2}`)
                 //return `It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`
             }
 

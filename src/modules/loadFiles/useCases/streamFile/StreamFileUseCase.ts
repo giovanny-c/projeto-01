@@ -1,4 +1,4 @@
-import { inject, injectable } from "tsyringe";
+import {  injectable } from "tsyringe";
 import * as fs from "fs"
 import { AppError } from "../../../../shared/errors/AppError";
 import {resolve} from "path"
@@ -12,7 +12,7 @@ class StreamFileUseCase {
         
         try {
 
-            if(!file_path.match("tmp")){
+            if(!file_path.match(/(tmp)|(examples)/)){
                 throw new Error("O caminho do arquivo esta incorreto")
             }
             
