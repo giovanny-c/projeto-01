@@ -82,3 +82,80 @@ function removeFormError(input) {
 
 
 }
+
+
+
+function verifyCreateUserFields(form, event) {
+    for (element of form.elements) {
+
+
+        removeFormError(element)
+
+
+        if (!element.value && (element.tagName !== "BUTTON" && element.className !== "email-field") && element.tagName !== "SELECT") {
+
+            element.style.border = "1px solid red"
+
+            let itemTag = element.parentNode.parentNode
+
+            itemTag.classList.add("form-error")
+
+            let tagP = document.createElement("p")
+            tagP.innerHTML = "* insira um valor"
+
+
+            itemTag.appendChild(tagP)
+
+
+            event.preventDefault()
+        }
+
+    }
+
+    var passwordField = document.querySelector('input[name="password"]')
+    var confirmPasswordField = document.querySelector('input[name="confirm_password"]')
+
+
+
+
+    if (passwordField.value.lenght < 4) {
+        passwordField.style.border = "1px solid red"
+
+        let itemTag = passwordField.parentNode.parentNode
+
+        itemTag.classList.add("form-error")
+
+        let tagP = document.createElement("p")
+        tagP.innerHTML = "*a sennha deve ter pelo menos 4 caracteres"
+        itemTag.appendChild(tagP)
+
+
+        event.preventDefault()
+
+    }
+    if (confirmPasswordField.value.lenght < 4) {
+        confirmPasswordField.style.border = "1px solid red"
+
+        let itemTag = confirmPasswordField.parentNode.parentNode
+
+        itemTag.classList.add("form-error")
+
+        let tagP = document.createElement("p")
+        tagP.innerHTML = "*a sennha deve ter pelo menos 4 caracteres"
+        itemTag.appendChild(tagP)
+
+
+        event.preventDefault()
+
+    }
+    if (passwordField.value !== confirmPasswordField.value) {
+
+    }
+
+
+
+}
+
+
+
+

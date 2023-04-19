@@ -121,7 +121,9 @@
 {% elif not user %}
 
     <div class="form">
-            <form id="#form" method="POST" action="/usuarios/criar"  enctype="multipart/form-data">
+            <form id="#form" method="POST" action="/usuarios/criar"  enctype="multipart/form-data"
+            onsubmit="verifyCreateUserFields(this, event)"
+            >
 
                     
                     
@@ -204,7 +206,7 @@
 {% endif %}
 
 
-        
+        <script src="/scriptForValidateFields.js"></script>
     
      
     {# <a href="/donations/receipt/{{donation.id}}" class="button" target="_blank">Gerar Recibo</a> #}

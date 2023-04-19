@@ -48,10 +48,10 @@ form {
 
 .example {
     width: 800px;
-    margin: 150px auto 0px auto;
+    margin: 60px auto 0px auto;
 }
 
-a {
+.example a {
 
     margin-left: 2px;
     background-color: var(--color-call-to-action);
