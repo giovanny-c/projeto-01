@@ -15,7 +15,7 @@ class UpdateDonorController {
 
         const updateDonorUseCase = container.resolve(UpdateDonorUseCase)
 
-        const {donor} = await updateDonorUseCase.execute({ id, name, email, phone, worker_id, user_id })
+        const {donor} = await updateDonorUseCase.execute({ id, name, email: email.toLowerCase() as string, phone, worker_id, user_id })
 
         return res.redirect(`/doadores/${donor.id}`)
     }

@@ -18,7 +18,7 @@ class UpdateUserController {
             id, 
             name, 
             password, 
-            email, 
+            email: email.toLowerCase() as string, 
             is_admin, 
             admin_id: admin? admin_id : "", // se admin for true passa o adminId
             worker_id

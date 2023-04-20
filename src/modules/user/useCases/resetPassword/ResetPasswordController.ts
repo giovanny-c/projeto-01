@@ -13,7 +13,7 @@ class ResetPasswordController {
 
         const resetPasswordUseCase = container.resolve(ResetPasswordUseCase)
 
-        const {success} = await resetPasswordUseCase.execute({email, password , password_confirmation, token: token as string})
+        const {success} = await resetPasswordUseCase.execute({email: email.toLowerCase() as string, password , password_confirmation, token: token as string})
         req.session.success = success
         
         return res.status(200).redirect("/entrar")

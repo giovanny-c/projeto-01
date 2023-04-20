@@ -47,7 +47,8 @@ class ResetPasswordUseCase {
             throw new AppError("A senha e confirmação não combinam")
         }
 
-        if (!password.match(/([A-Za-z0-9ãõç\-.*&$#@!?=+_]{4,})/g)) {
+       
+        if(password.match(/([^A-Za-z0-9ãõç\-.*&$#@!?=+_])/g) || password.length < 4) {
 
             throw new AppError("Forneça um senha valida", 400)
         }

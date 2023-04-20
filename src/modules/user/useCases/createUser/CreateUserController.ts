@@ -14,7 +14,7 @@ class CreateUserController {
 
         const createUserUseCase = container.resolve(CreateUserUseCase)
 
-        await createUserUseCase.execute({ name, password, confirm_password, email, is_admin, worker_id })
+        await createUserUseCase.execute({ name, password, confirm_password, email: email.toLowerCase() as string, is_admin, worker_id })
 
         return res.status(201).redirect(`/usuarios`)
     }

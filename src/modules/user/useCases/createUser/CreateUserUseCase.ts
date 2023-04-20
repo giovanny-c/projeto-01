@@ -37,7 +37,7 @@ class CreateUserUseCase {
         
 
 
-        if((!name || name === undefined) || !name.match(/([A-Za-z0-9ãõç]{3,})/g)){
+        if((!name || name === undefined) || name.match(/([^A-Za-z0-9ãõç\s])/g) || name.length < 3){
             throw new AppError("Forneça um nome de usuário valido", 400)
         }
 
@@ -45,7 +45,7 @@ class CreateUserUseCase {
             throw new AppError("Forneça um email valido", 400)
         }
 
-        if ((!password || password === undefined) || !password.match(/([A-Za-z0-9ãõç\-.*&$#@!?=+_]{4,})/g)) {
+        if ((!password || password === undefined) || password.match(/([^A-Za-z0-9ãõç\-.*&$#@!?=+_])/g) || password.length < 4) {
 
             throw new AppError("Forneça um senha valida", 400)
         }
@@ -84,7 +84,7 @@ class CreateUserUseCase {
             password_hash: 
             hash, 
             salt, 
-            email, 
+            email: email, 
             admin: is_admin === "true" ? true : false,  //se tiver marcado
             worker_id: worker_id || null,
             worker: worker || null

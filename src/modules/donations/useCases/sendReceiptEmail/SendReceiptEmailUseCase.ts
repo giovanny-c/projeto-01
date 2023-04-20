@@ -87,6 +87,7 @@ class SendReceiptEmailUseCase {
 
         if(donors_ids){
 
+            //separa na virgula
             donorsEmails = await Promise.all(donors_ids.match(/[\w\d-]+(?=,)/g).map(async(donor_id) => {
 
                 if(donor_id === ""){

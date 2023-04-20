@@ -39,7 +39,7 @@
                         <div>
                         <input      
                             type="text" name="donor_name" value="" placeholder="Nome do Doador"
-                            onkeypress="removeFormError(this)"
+                            onkeydown="removeFormError(this)"
                             onblur="Mask.apply(this, 'formatName')"
                             />
                         </div>
@@ -49,8 +49,8 @@
                         <div>
                         <input      
                             type="text" name="donation_value" value="" placeholder="00,00"
-                            onkeypress="removeFormError(this)"
-                            onkeydown="Mask.apply(this, 'formatBRL')"
+                            
+                            onkeydown="removeFormError(this); Mask.apply(this, 'formatBRL'); "
                             />
                         </div>
                 </div>

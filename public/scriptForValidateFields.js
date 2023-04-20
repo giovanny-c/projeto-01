@@ -84,44 +84,19 @@ function removeFormError(input) {
 }
 
 
+//sera que so essa serve pra todos os forms?
+function verifyCreateUserFields(event) {
 
-function verifyCreateUserFields(form, event) {
-
-
-    for (element of form.elements) {
-
-
-        removeFormError(element)
-
-
-        if (!element.value && (element.tagName !== "BUTTON" && element.className !== "email-field") && element.tagName !== "SELECT" && element.type !== "checkbox") {
-
-            element.style.border = "1px solid red"
-
-            let itemTag = element.parentNode.parentNode
-
-            itemTag.classList.add("form-error")
-
-            let tagP = document.createElement("p")
-            tagP.innerHTML = "* insira um valor"
-
-
-            itemTag.appendChild(tagP)
-
-
-            event.preventDefault()
-        }
-
-    }
 
     var nameField = document.querySelector('input[name="user_name"]')
     var emailField = document.querySelector('input[name="email"]')
     var passwordField = document.querySelector('input[name="password"]')
     var confirmPasswordField = document.querySelector('input[name="confirm_password"]')
 
+    if (nameField.value.match(/([^A-Za-z0-9ãõç\s])/g) || nameField.value.length < 3) {
 
+        removeFormError(nameField)
 
-    if (nameField.value.lenght < 3) {
         nameField.style.border = "1px solid red"
 
         let itemTag = nameField.parentNode.parentNode
@@ -129,27 +104,26 @@ function verifyCreateUserFields(form, event) {
         itemTag.classList.add("form-error")
 
         let tagP = document.createElement("p")
-        tagP.innerHTML = "*o nome deve ter pelo menos 3 caracteres"
+
+
+        if (nameField.value.length < 3) {
+
+            tagP.innerHTML = "*o nome deve ter pelo menos 3 caracteres"
+
+        } else {
+            tagP.innerHTML = "*o nome contem caracteres invalidos"
+
+        }
+
         itemTag.appendChild(tagP)
 
-
         event.preventDefault()
+
     }
-    if (!nameField.match(/([A-Za-z0-9ãõç]{3,})/g)) {
-        nameField.style.border = "1px solid red"
+    if (passwordField.value.match(/([^A-Za-z0-9ãõç\-.*&$#@!?=+_])/g) || passwordField.value.length < 4) {
 
-        let itemTag = nameField.parentNode.parentNode
+        removeFormError(passwordField)
 
-        itemTag.classList.add("form-error")
-
-        let tagP = document.createElement("p")
-        tagP.innerHTML = "*nome invalido"
-        itemTag.appendChild(tagP)
-
-
-        event.preventDefault()
-    }
-    if (passwordField.value.lenght < 4) {
         passwordField.style.border = "1px solid red"
 
         let itemTag = passwordField.parentNode.parentNode
@@ -157,43 +131,24 @@ function verifyCreateUserFields(form, event) {
         itemTag.classList.add("form-error")
 
         let tagP = document.createElement("p")
-        tagP.innerHTML = "*a sennha deve ter pelo menos 4 caracteres"
+
+        if (passwordField.value.length < 4) {
+
+            tagP.innerHTML = "*a sennha deve ter pelo menos 4 caracteres"
+        } else {
+            tagP.innerHTML = "*a senha contem caracteres invalidos"
+        }
+
         itemTag.appendChild(tagP)
 
 
         event.preventDefault()
 
-    }
-    if (confirmPasswordField.value.lenght < 4) {
-        confirmPasswordField.style.border = "1px solid red"
-
-        let itemTag = confirmPasswordField.parentNode.parentNode
-
-        itemTag.classList.add("form-error")
-
-        let tagP = document.createElement("p")
-        tagP.innerHTML = "*a sennha deve ter pelo menos 4 caracteres"
-        itemTag.appendChild(tagP)
-
-
-        event.preventDefault()
-
-    }
-    if (!passwordField.match(/([A-Za-z0-9ãõç\-.*&$#@!?=+_]{4,})/g)) {
-        passwordField.style.border = "1px solid red"
-
-        let itemTag = passwordField.parentNode.parentNode
-
-        itemTag.classList.add("form-error")
-
-        let tagP = document.createElement("p")
-        tagP.innerHTML = "*senha invalida"
-        itemTag.appendChild(tagP)
-
-
-        event.preventDefault()
     }
     if (passwordField.value !== confirmPasswordField.value) {
+
+        removeFormError(confirmPasswordField)
+
         confirmPasswordField.style.border = "1px solid red"
 
         let itemTag = confirmPasswordField.parentNode.parentNode
@@ -207,7 +162,10 @@ function verifyCreateUserFields(form, event) {
 
         event.preventDefault()
     }
-    if (!emailField.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+    if (!emailField.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+
+        removeFormError(emailField)
+
         emailField.style.border = "1px solid red"
 
         let itemTag = emailField.parentNode.parentNode
@@ -215,48 +173,26 @@ function verifyCreateUserFields(form, event) {
         itemTag.classList.add("form-error")
 
         let tagP = document.createElement("p")
-        tagP.innerHTML = "*email invalido"
+        tagP.innerHTML = "*formato de email invalido"
         itemTag.appendChild(tagP)
 
 
         event.preventDefault()
     }
 
+
 }
 
-function verifyUpdateUserFields(form, event) {
+function verifyUpdateUserFields(event) {
 
-
-    for (element of form.elements) {
-
-
-        removeFormError(element)
-
-
-        if (!element.value && (element.tagName !== "BUTTON" && element.className !== "email-field") && element.tagName !== "SELECT" && element.type !== "checkbox") {
-
-            element.style.border = "1px solid red"
-
-            let itemTag = element.parentNode.parentNode
-
-            itemTag.classList.add("form-error")
-
-            let tagP = document.createElement("p")
-            tagP.innerHTML = "* insira um valor"
-
-
-            itemTag.appendChild(tagP)
-
-
-            event.preventDefault()
-        }
-
-    }
 
     var nameField = document.querySelector('input[name="user_name"]')
     var emailField = document.querySelector('input[name="email"]')
 
-    if (nameField.value.lenght < 3) {
+    if (nameField.value.match(/([^A-Za-z0-9ãõç\s])/g) || nameField.value.length < 3) {
+
+        removeFormError(nameField)
+
         nameField.style.border = "1px solid red"
 
         let itemTag = nameField.parentNode.parentNode
@@ -264,27 +200,26 @@ function verifyUpdateUserFields(form, event) {
         itemTag.classList.add("form-error")
 
         let tagP = document.createElement("p")
-        tagP.innerHTML = "*o nome deve ter pelo menos 3 caracteres"
+
+
+        if (nameField.value.length < 3) {
+
+            tagP.innerHTML = "*o nome deve ter pelo menos 3 caracteres"
+
+        } else {
+            tagP.innerHTML = "*o nome contem caracteres invalidos"
+
+        }
+
         itemTag.appendChild(tagP)
 
-
         event.preventDefault()
+
     }
-    if (!nameField.match(/([A-Za-z0-9ãõç]{3,})/g)) {
-        nameField.style.border = "1px solid red"
+    if (!emailField.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
 
-        let itemTag = nameField.parentNode.parentNode
+        removeFormError(emailField)
 
-        itemTag.classList.add("form-error")
-
-        let tagP = document.createElement("p")
-        tagP.innerHTML = "*nome invalido"
-        itemTag.appendChild(tagP)
-
-
-        event.preventDefault()
-    }
-    if (!emailField.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
         emailField.style.border = "1px solid red"
 
         let itemTag = emailField.parentNode.parentNode
@@ -292,7 +227,7 @@ function verifyUpdateUserFields(form, event) {
         itemTag.classList.add("form-error")
 
         let tagP = document.createElement("p")
-        tagP.innerHTML = "*email invalido"
+        tagP.innerHTML = "*formato de email invalido"
         itemTag.appendChild(tagP)
 
 
@@ -300,41 +235,17 @@ function verifyUpdateUserFields(form, event) {
     }
 }
 
-function verifyResetPasswordFields(form, event) {
-    for (element of form.elements) {
-
-
-        removeFormError(element)
-
-
-        if (!element.value && (element.tagName !== "BUTTON" && element.className !== "email-field") && element.tagName !== "SELECT" && element.type !== "checkbox") {
-
-            element.style.border = "1px solid red"
-
-            let itemTag = element.parentNode.parentNode
-
-            itemTag.classList.add("form-error")
-
-            let tagP = document.createElement("p")
-            tagP.innerHTML = "* insira um valor"
-
-
-            itemTag.appendChild(tagP)
-
-
-            event.preventDefault()
-        }
-
-    }
+function verifyResetPasswordFields(event) {
 
 
     var emailField = document.querySelector('input[name="email"]')
     var passwordField = document.querySelector('input[name="password"]')
     var confirmPasswordField = document.querySelector('input[name="confirm_password"]')
 
+    if (passwordField.value.match(/([^A-Za-z0-9ãõç\-.*&$#@!?=+_])/g) || passwordField.value.length < 4) {
 
+        removeFormError(passwordField)
 
-    if (passwordField.value.lenght < 4) {
         passwordField.style.border = "1px solid red"
 
         let itemTag = passwordField.parentNode.parentNode
@@ -342,43 +253,24 @@ function verifyResetPasswordFields(form, event) {
         itemTag.classList.add("form-error")
 
         let tagP = document.createElement("p")
-        tagP.innerHTML = "*a sennha deve ter pelo menos 4 caracteres"
+
+        if (passwordField.value.length < 4) {
+
+            tagP.innerHTML = "*a sennha deve ter pelo menos 4 caracteres"
+        } else {
+            tagP.innerHTML = "*a senha contem caracteres invalidos"
+        }
+
         itemTag.appendChild(tagP)
 
 
         event.preventDefault()
 
-    }
-    if (confirmPasswordField.value.lenght < 4) {
-        confirmPasswordField.style.border = "1px solid red"
-
-        let itemTag = confirmPasswordField.parentNode.parentNode
-
-        itemTag.classList.add("form-error")
-
-        let tagP = document.createElement("p")
-        tagP.innerHTML = "*a sennha deve ter pelo menos 4 caracteres"
-        itemTag.appendChild(tagP)
-
-
-        event.preventDefault()
-
-    }
-    if (!passwordField.match(/([A-Za-z0-9ãõç\-.*&$#@!?=+_]{4,})/g)) {
-        passwordField.style.border = "1px solid red"
-
-        let itemTag = passwordField.parentNode.parentNode
-
-        itemTag.classList.add("form-error")
-
-        let tagP = document.createElement("p")
-        tagP.innerHTML = "*senha invalida"
-        itemTag.appendChild(tagP)
-
-
-        event.preventDefault()
     }
     if (passwordField.value !== confirmPasswordField.value) {
+
+        removeFormError(confirmPasswordField)
+
         confirmPasswordField.style.border = "1px solid red"
 
         let itemTag = confirmPasswordField.parentNode.parentNode
@@ -392,7 +284,10 @@ function verifyResetPasswordFields(form, event) {
 
         event.preventDefault()
     }
-    if (!emailField.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+    if (!emailField.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+
+        removeFormError(emailField)
+
         emailField.style.border = "1px solid red"
 
         let itemTag = emailField.parentNode.parentNode
@@ -400,12 +295,14 @@ function verifyResetPasswordFields(form, event) {
         itemTag.classList.add("form-error")
 
         let tagP = document.createElement("p")
-        tagP.innerHTML = "*email invalido"
+        tagP.innerHTML = "*formato de email invalido"
         itemTag.appendChild(tagP)
 
 
         event.preventDefault()
     }
+
+
 }
 
 

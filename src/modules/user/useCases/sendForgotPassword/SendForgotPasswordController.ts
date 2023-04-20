@@ -11,7 +11,7 @@ class SendForgotPasswordController {
 
         const sendForgotPasswordUseCase = container.resolve(SendForgotPasswordUseCase)
 
-        const {success} =  await sendForgotPasswordUseCase.execute(email)
+        const {success} =  await sendForgotPasswordUseCase.execute(email.toLowerCase() as string)
 
         return res.status(200).render("views/session/forgot", {success} )
     }
