@@ -9,7 +9,7 @@ import { AppError } from "../errors/AppError";
 
 export async function ensureAdmin(req: Request, res: Response, next: NextFunction) {
 
-   console.log("admin")
+   
    if(!req.session.user.admin || !req.user.admin ){
 
         let back 

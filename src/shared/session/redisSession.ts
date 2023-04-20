@@ -6,7 +6,7 @@ let RedisStore = connectRedis(session)
 const redisSession = {
     secret: process.env.SESSION_SECRET as string,
     store: new RedisStore({
-        client: redisClient as any
+        client: redisClient
     }),
     resave: true, //atualiza o cookie quando for feito um request pelo client
     rolling: true, //enquanto resave for true nao vai permitir que a sessao 'morra' se o use estiver ativo
@@ -22,6 +22,7 @@ const redisSession = {
     },
 
 }
+
 
 
 export { redisSession }

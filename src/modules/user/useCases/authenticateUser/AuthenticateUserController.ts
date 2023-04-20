@@ -16,6 +16,11 @@ class AuthenticateUserController {
         req.session.user = response.user
         req.session.created_at = response.created_at
 
+        if(!response.user.admin){//se o user nao for admin 
+            req.session.cookie.originalMaxAge = 1000 * 60 * 60
+            // o tempo do cookie e de 1h
+        }
+
         return res.redirect("/")
     }
 

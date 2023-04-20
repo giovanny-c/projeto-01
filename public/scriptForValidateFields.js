@@ -137,7 +137,7 @@ function verifyCreateUserFields(event) {
 
             tagP.innerHTML = "*a sennha deve ter pelo menos 4 caracteres"
         } else {
-            tagP.innerHTML = "*a senha contem caracteres invalidos"
+            tagP.innerHTML = "*a senha contem caracteres invalidos. caracteres especiais permitidos ãõç-.*&$#@!?=+_"
         }
 
         itemTag.appendChild(tagP)
@@ -260,7 +260,7 @@ function verifyResetPasswordFields(event) {
 
             tagP.innerHTML = "*a sennha deve ter pelo menos 4 caracteres"
         } else {
-            tagP.innerHTML = "*a senha contem caracteres invalidos"
+            tagP.innerHTML = "*a senha contem caracteres invalidos. caracteres especiais permitidos ãõç-.*&$#@!?=+_"
         }
 
         itemTag.appendChild(tagP)
