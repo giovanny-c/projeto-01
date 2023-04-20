@@ -29,13 +29,17 @@
 
     <div class="form">
         
-            <form id="#form" method="POST"  enctype="multipart/form-data">
+            <form id="#form" method="POST"  enctype="multipart/form-data"
+            onsubmit= "verifyUpdateUserFields(this, event)"
+            >
 
                     
                 <div class="item">
                         <div>
                         <input      
-                            type="text" name="user_name"  value="{{user.name}}" placeholder="Nome do Usuário"/>
+                            type="text" name="user_name"  value="{{user.name}}" placeholder="Nome do Usuário"
+                            onkeypress="removeFormError(this)"
+                            />
                         </div>
                 </div>
 
@@ -43,7 +47,9 @@
                     <div class="item">
                         <div>
                         <input      
-                            type="password" name="password"  value="" placeholder="Digite a senha"/>
+                            type="password" name="password"  value="" placeholder="Digite a senha"
+                            onkeypress="removeFormError(this)"
+                            />
                         </div>
                     </div> 
                 {% endif %} 
@@ -51,7 +57,10 @@
                 <div class="item">
                         <div>
                         <input      
-                            type="email" name="email"  value="{{user.email}}" placeholder="Digite o email" onkeydown="Mask.apply(this, 'formatEmail')"/>
+                            type="email" name="email"  value="{{user.email}}" placeholder="Digite o email" 
+                            onkeydown="Mask.apply(this, 'formatEmail')"
+                            onkeypress="removeFormError(this)"
+                            />
                         </div>
                 </div>
 
@@ -130,7 +139,9 @@
                 <div class="item">
                         <div>
                         <input      
-                            type="text"  name="user_name"  value="" placeholder="Nome do Usuário"/>
+                            type="text"  name="user_name"  value="" placeholder="Nome do Usuário"
+                            onkeypress="removeFormError(this)"
+                            />
                         </div>
                 </div>
 
@@ -138,14 +149,18 @@
                 <div class="item">
                         <div>
                         <input      
-                            type="password" name="password"  value="" placeholder="Digite a senha"/>
+                            type="password" name="password"  value="" placeholder="Digite a senha"
+                            onkeypress="removeFormError(this)"
+                            />
                         </div>
                 </div>
                 
                 <div class="item">
                         <div>
                         <input      
-                            type="password" name="confirm_password"  value="" placeholder="Digite a confirmação da senha"/>
+                            type="password" name="confirm_password"  value="" placeholder="Digite a confirmação da senha"
+                            onkeypress="removeFormError(this)"
+                            />
                         </div>
                 </div>
 
@@ -153,7 +168,9 @@
                         <div>
                         <input      
                             type="email" name="email"  value="" placeholder="Digite o email"
-                            onkeydown="Mask.apply(this, 'formatEmail')"/>
+                            onkeydown="Mask.apply(this, 'formatEmail')"
+                            onkeypress="removeFormError(this)"
+                            />
                         </div>
                 </div>
 

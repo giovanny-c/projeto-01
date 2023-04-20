@@ -52,7 +52,7 @@ class CreateUserUseCase {
 
         if(password !== confirm_password){
 
-            throw new AppError("A senha e a confirmação não combinam", 400)
+            throw new AppError("A senha e a confirmação não correspondem", 400)
         }
 
 
