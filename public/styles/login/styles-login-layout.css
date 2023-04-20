@@ -110,3 +110,14 @@ header .menu {
     text-align: center;
 
 }
+
+.form-error {
+
+
+    color: rgb(216, 91, 91);
+}
+
+.form-error p {
+    font-size: 12px;
+    text-align: start;
+}

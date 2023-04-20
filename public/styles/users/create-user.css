@@ -5,7 +5,7 @@
 
 .item {
     margin: 30px auto;
-
+    height: 40px;
 
 }
 
@@ -16,7 +16,7 @@
     color: var(--color-letters);
     border: 1px solid var(--color-input);
     box-shadow: 2px 2px 4px 1px var(--color-letters);
-    height: 32px;
+    height: 34px;
     width: 800px;
     border-radius: 4px;
 
@@ -48,12 +48,14 @@ select {
 
 select.item {
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 
 
 .item.admin {
+    margin-top: 80px;
+    margin-bottom: 70px;
     display: grid;
     grid-template-columns: 70px 30px;
     gap: 10px;
@@ -95,7 +97,7 @@ input[type="password"] {
 
 .button button {
 
-    margin-top: 20px;
+    margin-top: 30px;
     width: 180px;
     height: 32px;
     font-size: 20px;

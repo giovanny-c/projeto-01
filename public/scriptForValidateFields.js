@@ -84,7 +84,8 @@ function removeFormError(input) {
 }
 
 
-//sera que so essa serve pra todos os forms?
+
+//input[name="confirm_password"]
 function verifyCreateUserFields(event) {
 
 
@@ -173,7 +174,7 @@ function verifyCreateUserFields(event) {
         itemTag.classList.add("form-error")
 
         let tagP = document.createElement("p")
-        tagP.innerHTML = "*formato de email invalido"
+        tagP.innerHTML = "*email invalido"
         itemTag.appendChild(tagP)
 
 
@@ -227,7 +228,7 @@ function verifyUpdateUserFields(event) {
         itemTag.classList.add("form-error")
 
         let tagP = document.createElement("p")
-        tagP.innerHTML = "*formato de email invalido"
+        tagP.innerHTML = "*email invalido"
         itemTag.appendChild(tagP)
 
 
@@ -235,12 +236,13 @@ function verifyUpdateUserFields(event) {
     }
 }
 
+//campo diferent input[name="password_confirmation"]
 function verifyResetPasswordFields(event) {
 
 
     var emailField = document.querySelector('input[name="email"]')
     var passwordField = document.querySelector('input[name="password"]')
-    var confirmPasswordField = document.querySelector('input[name="confirm_password"]')
+    var confirmPasswordField = document.querySelector('input[name="password_confirmation"]')
 
     if (passwordField.value.match(/([^A-Za-z0-9ãõç\-.*&$#@!?=+_])/g) || passwordField.value.length < 4) {
 
@@ -295,7 +297,7 @@ function verifyResetPasswordFields(event) {
         itemTag.classList.add("form-error")
 
         let tagP = document.createElement("p")
-        tagP.innerHTML = "*formato de email invalido"
+        tagP.innerHTML = "*email invalido"
         itemTag.appendChild(tagP)
 
 
