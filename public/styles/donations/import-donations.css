@@ -62,7 +62,7 @@ form {
     box-shadow: 1px 1px 1px 1px var(--color-letters);
 }
 
-a:hover {
+.example a:hover {
     background-color: var(--color-hover);
 }
 

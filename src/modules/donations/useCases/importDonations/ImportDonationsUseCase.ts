@@ -69,7 +69,9 @@ class ImportDonationsUseCase {
         let sheet = Object.keys(excelData.Sheets)[0]
 
         //poe o conteudo da 1ª planilha em donations    
-        return  xlsx.utils.sheet_to_json(excelData.Sheets[sheet], { raw: true, dateNF: 'yyyy-mm-dd' }) as IImportDonation[]
+        return xlsx.utils.sheet_to_json(excelData.Sheets[sheet], { raw: true, dateNF: 'yyyy-mm-dd' }) as IImportDonation[]
+    
+        
         
 
     }
@@ -84,19 +86,19 @@ class ImportDonationsUseCase {
                 fs.unlink(file_path, (err)=> {
                     if (err) console.error(err)
                 })
-                throw new AppError(`Por favor preencha o campo valor, na linha ${index + 2}`, 400)
+                throw new AppError(`Campo valor não encontrado`, 400)
             } 
             if (!donation.funcionario) {
                 fs.unlink(file_path, (err)=> {
                     if (err) console.error(err)
                 })
-                throw new AppError(`Por favor preencha o campo funcionario, na linha ${index + 2}`, 400)
+                throw new AppError(`Campo funcionário não encontrado`, 400)
             }
             if (!donation.doador) {
                 fs.unlink(file_path, (err)=> {
                     if (err) console.error(err)
                 })
-                throw new AppError(`Por favor preencha o campo doador, na linha ${index + 2}`, 400)
+                throw new AppError(`Campo doador não encontrado`, 400)
             }
             // if (!this.dateProviderRepository.isValidDate(donation.created_at)) {
             //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(donation) + 1}`, 400)
@@ -188,6 +190,8 @@ class ImportDonationsUseCase {
                 
 
             } catch (err) {
+
+                
                 console.error(err)
                 throw new AppError(`Nao foi possivel importar doação. Na linha: ${donations.indexOf(donation) + 2}`)
                 //return `It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`
@@ -218,10 +222,9 @@ class ImportDonationsUseCase {
             await this.proccessDonations(this.loadDonations(file), user_id, ngo_id, file.path)
             
         } catch (error) {
-
             fs.unlink(file.path, (err)=> {
-                if (err) console.error(err)
-            })
+                    if (err) console.error(err)
+                })
             
             throw new AppError(error.message, error.status)
         }

@@ -61,7 +61,7 @@ class ImportDonorsUseCase{
                 fs.promises.unlink(file.path)
 
                 reject(err)
-
+                
             })
         
         
@@ -71,10 +71,19 @@ class ImportDonorsUseCase{
     }
 
     async execute(file: Express.Multer.File , user_id: string){
-
+//e colocar o import por .xlsx tbm
         if(!file) throw new AppError("Nenhum arquivo enviado")
         
-        const donors = await this.loadDonors(file)
+        let donors
+        try {
+            
+            donors = await this.loadDonors(file)
+       
+        
+        } catch (error) {
+            console.error(error)
+            throw new AppError("Não foi possivel ler o arquivo")
+        }
 
         donors.map( async donor => {
 
@@ -91,6 +100,8 @@ class ImportDonorsUseCase{
         })
 
         return
+    
+        
     }
 
 
