@@ -4,5 +4,5 @@ dist
 tmp
 .vscode
 readMe
-templates
+
 docker-compose.yml
