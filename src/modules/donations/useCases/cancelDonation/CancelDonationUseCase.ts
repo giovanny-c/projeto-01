@@ -59,7 +59,7 @@ class CancelDonationUseCase {
         await this.donationsRepository.markDonationAsCanceled(donationExists.id)
 
         
-        await this.fileProvider.generateFile({...donationExists, is_donation_canceled: true}, true)
+        await this.fileProvider.generateFile({...donationExists, is_donation_canceled: true}, false)
 
 
         return {

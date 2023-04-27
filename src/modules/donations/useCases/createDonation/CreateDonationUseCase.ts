@@ -53,7 +53,7 @@ class CreateDonationUseCase {
 
 
 
-    async execute({ ngo_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at }: IRequest): Promise<IResponse> {
+    async execute({ ngo_id, donor_name, user_id, worker_id, donation_value, is_payed, payed_at, donation_date }: IRequest): Promise<IResponse> {
 
 
         if(!donor_name || donor_name === "") throw new AppError("Forneça o nome do doador")
@@ -93,7 +93,7 @@ class CreateDonationUseCase {
 
         if(is_payed && !payed_at){//se for pago mas nao tiver data
 
-            payed_at = this.dateProvider.dateNow()
+            payed_at = donation_date || this.dateProvider.dateNow()
         }
 
         const donation = await this.donationsRepository.create({
@@ -106,7 +106,7 @@ class CreateDonationUseCase {
             donation_value,
             is_payed: true,
             payed_at: payed_at,
-            created_at: this.dateProvider.dateNow()
+            created_at: donation_date || this.dateProvider.dateNow()
          })
 
 

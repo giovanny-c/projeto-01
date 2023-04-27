@@ -10,6 +10,7 @@ import { Ngo } from "../../entities/ngos";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
+import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 
 
 interface IRequest {
@@ -22,6 +23,7 @@ interface IResponse {
     ngo: Ngo
     ngo_donation_counter: DonationCounter | Partial<DonationCounter>
     workers: Worker[]
+    date: Date
 }
 
 @injectable()
@@ -38,7 +40,9 @@ class LoadCreateDonationUseCase {
         @inject("UsersRepository")
         private usersRepository: IUsersRepository,
         @inject("WorkersRepository")
-        private workersRepository: IWorkersReposiroty
+        private workersRepository: IWorkersReposiroty,
+        @inject("DayjsDateProvider")
+        private dateProvider: IDateProvider,
 
     ) { }
 
@@ -61,6 +65,7 @@ class LoadCreateDonationUseCase {
             throw new AppError("Usuário não encontrado")
         }
         
+        const date = this.dateProvider.formatDate(this.dateProvider.dateNow(), "YYYY-MM-DD")
         
 
 
@@ -69,7 +74,8 @@ class LoadCreateDonationUseCase {
         return  {
             ngo,
             ngo_donation_counter: counter,
-            workers: !user.worker_id ? workers : [user.worker]
+            workers: !user.worker_id ? workers : [user.worker],
+            date
         }
         
     

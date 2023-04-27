@@ -4,7 +4,7 @@ import Joi from "joi"
 
 export default function validateFields(data: Partial<IRequest>){
 
-    const {donor_name, donation_value, worker_id, ngo_id, user_id} = data
+    const {donor_name, donation_value, worker_id, ngo_id, user_id, donation_date} = data
 
 //trocar o app error por input error
     const schema = Joi.object({
@@ -25,6 +25,9 @@ export default function validateFields(data: Partial<IRequest>){
             "string.empty": "Forneça o nome de um funcionário valido para essa doação.",
             "any.required": "Forneça um valor para o campo funcionário."
         }),
+        donation_date: Joi.date().messages({
+            "date.base": "Forneça uma data valida para esse doação"
+        }),
         ngo_id: Joi.string().uuid().required().messages({
             "string.base": "Instituição não encontrada.",
             "string.empty": "Instituição não encontrada.",
@@ -35,6 +38,7 @@ export default function validateFields(data: Partial<IRequest>){
             "string.empty": "Usuário não encontrado.",
             "any.required": "Usuário não encontrado."
         }),
+
         
         //.error(new InputError("Forneça um nome valido para essa doação.", 400, "Valor inválido"))
     })
@@ -44,6 +48,7 @@ export default function validateFields(data: Partial<IRequest>){
         donor_name,
         donation_value,
         worker_id,
+        donation_date,
         ngo_id,
         user_id
     })

@@ -1,4 +1,4 @@
-import { PDFDocument, PDFFont, PDFImage, PDFPage, rgb } from "pdf-lib"
+import { PDFDocument, PDFFont, PDFImage, PDFPage, degrees, rgb } from "pdf-lib"
 
 import fs from "fs"
 
@@ -188,8 +188,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
         })
 
-        //FALTA
-        //employee name e assinatura do responsavel
+        
 
         let refferingTo = "Doação" 
         page.drawText(refferingTo, {
@@ -214,10 +213,11 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         if(donation.is_donation_canceled){
 
             page.drawText("CANCELADO", {
-                y: page.getHeight() / 3,
-                x: page.getWidth() - (page.getWidth() - 86),
-                color: rgb(0.95, 0.1, 0.1),
-                size: 110,
+                y: page.getHeight() - 190,
+                x: page.getWidth() - (page.getWidth() - 170),
+                rotate: degrees(-13),
+                color: rgb(0, 0, 0),
+                size: 85,
 
             })
         }

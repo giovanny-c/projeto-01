@@ -54,7 +54,7 @@ class DonorsRepository implements IDonorsRepository {
         .leftJoinAndSelect("donors.worker","workers")
         .where("donors.name ILIKE :name ", {name: `%${value}%`})
         .orWhere("donors.email ILIKE :email ", {email: `%${value}%`})
-        .orWhere("donors.phone ILIKE :phone ", {phone: `%${value}%`})
+        // .orWhere("donors.phone ILIKE :phone ", {phone: `%${value}%`})
         
         if(user_id){
             donors.andWhere("donors.user_id = :user_id OR donors.user_id = NULL", {user_id})

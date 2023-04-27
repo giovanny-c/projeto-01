@@ -35,6 +35,7 @@
 
                     
                     
+                <label>Nome do doador</label>
                 <div class="item">
                         <div>
                         <input      
@@ -45,6 +46,7 @@
                         </div>
                 </div>
 
+                <label>Valor da doação</label>
                 <div class="item">
                         <div>
                         <input      
@@ -55,6 +57,7 @@
                         </div>
                 </div>
 
+                <label>Funcionário</label>
                 <div class="item">
                     <div>
                     <select class="item" name="worker_id"
@@ -74,6 +77,18 @@
 
                     </select>
                     </div>
+                </div>
+
+                <label>Data do recibo</label>
+                <div class="item">
+                        <div>
+                        <input      
+                            type="date" name="donation_date"
+                            value="{{date}}"
+                            onchange="removeFormError(this)"
+                            
+                            />
+                        </div>
                 </div>
 
                 

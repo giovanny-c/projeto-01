@@ -12,19 +12,19 @@ class GenerateFileController {
         
         const {file} = req.params
         
-        let params = req.body
+        let bodyParams = req.body
         
        
-       if(Object.keys(params).length === 0){
+       if(Object.keys(bodyParams).length === 0){
 
-        params = req.query
+        bodyParams = req.query
 
        }
 
       
         const generateFile = container.resolve(GenerateFileUseCase)
 
-        const result = await generateFile.execute({file, params})
+        const result = await generateFile.execute({file, params: bodyParams })
 
         
         let style = "color: white; text-align: center; font: caption; font-size: 40px"
@@ -33,7 +33,7 @@ class GenerateFileController {
         
         if(!result){
             
-            if(Object.keys(params).length){
+            if(Object.keys(bodyParams).length){
 
                 return res.status(result.error.status).send(result.error.message)
                 
@@ -43,13 +43,14 @@ class GenerateFileController {
         }
         if(result.error){
 
-            if(Object.keys(params).length){
+            html =  `<p class="error" style="${style}">Erro: ${result.error.status}</p><p class="error" style="${style}">${result.error.message}</p>`
+            
+            if(Object.keys(bodyParams).length){
 
-                return res.status(result.error.status).send(result.error.message)
+                return res.status(result.error.status).send(html)
                 
             }
             
-            html =  `<p class="error" style="${style}">Erro: ${result.error.status}</p><p class="error" style="${style}">${result.error.message}</p>`
 
             return res.status(result.error.status).send(html)
             
@@ -66,13 +67,14 @@ class GenerateFileController {
             
             } catch (error) {
 
-                if(Object.keys(params).length){
+                html =  `<p class="error" style="${style}">Erro: ${result.error.status}</p><p class="error" style="${style}">${result.error.message}</p>`
+                
+                if(Object.keys(bodyParams).length){
 
-                    return res.status(result.error.status).send(result.error.message)
+                    return res.status(result.error.status).send(html)
                     
                 }
 
-                html =  `<p class="error" style="${style}">Erro: ${result.error.status}</p><p class="error" style="${style}">${result.error.message}</p>`
 
                 return res.status(500).send(html)
             

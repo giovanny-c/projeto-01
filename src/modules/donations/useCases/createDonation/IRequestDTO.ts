@@ -5,6 +5,7 @@ export default interface IRequest {
     worker_id:string 
     donation_value: number
     is_payed: string
+    donation_date?: Date
     payed_at?: Date
     
 }

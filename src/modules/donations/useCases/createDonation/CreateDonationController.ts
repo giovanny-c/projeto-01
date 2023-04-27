@@ -10,7 +10,7 @@ class CreateDonationController {
     async handle(req: Request, res: Response): Promise<any> {
 
 
-        let { donation_value, donor_name, worker_id, is_payed, payed_at } = req.body
+        let { donation_value, donor_name, worker_id, is_payed, payed_at, donation_date } = req.body
         const { id: user_id, admin } = req.user
         const {ngo_id} = req.params
 
@@ -21,7 +21,7 @@ class CreateDonationController {
         donation_value = +(donation_value.replace(/(?!\,+)[\D]/g,"").replace(/\,/,".") as string ) 
        
         
-        const {error, value} = validateFields({donation_value, donor_name, worker_id, ngo_id, user_id})
+        const {error, value} = validateFields({donation_value, donor_name, worker_id, ngo_id, user_id, donation_date})
 
         if(error){
 
@@ -35,14 +35,15 @@ class CreateDonationController {
         
         const createDonationUseCase = container.resolve(CreateDonationUseCase)
 
-
+        
 
         const {donation} = await createDonationUseCase.execute({ 
             ngo_id, 
             donor_name,
             user_id, 
             worker_id,
-            donation_value, 
+            donation_value,
+            donation_date, 
             is_payed, 
             payed_at, 
         })
