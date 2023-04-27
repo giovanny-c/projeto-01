@@ -37,7 +37,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
         page.drawImage(template, { //"desenha" a imagem
             y: 0,
-            x: 40,
+            x: 40,//x: 40,
             width: 800, //*0.75?
             height: 365,//*0.75?
             // rotate: degrees(90)
@@ -222,7 +222,36 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             })
         }
 
+        //linha horizontal ______
+        page.drawLine({
+            start: {x:0 ,y: 0},
+            end: {x: 800, y: 0 },
+            color: rgb(0.5, 0.5, 0.5),
+            lineCap: 1,
+            thickness: 0.1,
+            
+        })
+        //linha vertical |
+        page.drawLine({
+            start: {x:826 ,y: 0},
+            end: {x:826, y: 365},
+            color: rgb(0.5, 0.5, 0.5),
+            lineCap: 1,
+            thickness: 0.1
+        })
+        // //linha vertical |
+        // page.drawLine({
+        //     start: {x:26 ,y: 0},
+        //     end: {x:26, y: 365},
+        //     color: rgb(0.5, 0.5, 0.5),
+        //     lineCap: 1,
+        //     thickness: 0.1
+        // })
+
+        
         page.scale(0.75, 0.75)
+
+
 
         
 

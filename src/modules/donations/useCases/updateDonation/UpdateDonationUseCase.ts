@@ -18,6 +18,7 @@ import IRequest from "./IRequestDTO";
 
 
 
+
 interface IResponse {
     donation: Donation,
     ngo: Ngo

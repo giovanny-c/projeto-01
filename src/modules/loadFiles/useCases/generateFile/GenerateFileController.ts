@@ -12,19 +12,18 @@ class GenerateFileController {
         
         const {file} = req.params
         
-        let bodyParams = req.body
-        
-       
-       if(Object.keys(bodyParams).length === 0){
+        let params = req.body
 
-        bodyParams = req.query
+       if(Object.keys(req.body).length === 0){
+        //se a rota for get
+        params = req.query
 
        }
 
       
         const generateFile = container.resolve(GenerateFileUseCase)
 
-        const result = await generateFile.execute({file, params: bodyParams })
+        const result = await generateFile.execute({file, params })
 
         
         let style = "color: white; text-align: center; font: caption; font-size: 40px"
@@ -33,7 +32,7 @@ class GenerateFileController {
         
         if(!result){
             
-            if(Object.keys(bodyParams).length){
+            if(Object.keys(req.body).length){
 
                 return res.status(result.error.status).send(result.error.message)
                 
@@ -45,9 +44,9 @@ class GenerateFileController {
 
             html =  `<p class="error" style="${style}">Erro: ${result.error.status}</p><p class="error" style="${style}">${result.error.message}</p>`
             
-            if(Object.keys(bodyParams).length){
+            if(Object.keys(req.body).length > 1){
 
-                return res.status(result.error.status).send(html)
+                return res.status(result.error.status).send(result.error.message)
                 
             }
             
@@ -69,7 +68,7 @@ class GenerateFileController {
 
                 html =  `<p class="error" style="${style}">Erro: ${result.error.status}</p><p class="error" style="${style}">${result.error.message}</p>`
                 
-                if(Object.keys(bodyParams).length){
+                if(Object.keys(req.body).length){
 
                     return res.status(result.error.status).send(html)
                     
