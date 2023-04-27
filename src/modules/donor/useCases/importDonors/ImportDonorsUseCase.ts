@@ -45,7 +45,7 @@ class ImportDonorsUseCase{
 
                 donors.push({
                     name: `${first_name} ${middle_name} ${last_name}`,
-                    email: email.toLowerCase() as string,
+                    email: email?.toLowerCase() as string || null,
                     phone: phone || ""
                 })
 
@@ -88,6 +88,10 @@ class ImportDonorsUseCase{
         donors.map( async donor => {
 
             const {name, email, phone} = donor
+
+            if(!email){
+                return
+            }
 
             const donorExists = await this.donorsRepository.findByEmail(email)
 

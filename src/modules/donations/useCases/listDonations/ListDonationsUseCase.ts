@@ -78,7 +78,7 @@ class ListDonationsUseCase {
         //if (offset.valueOf !== Number) throw new AppError("this is not a valid offset")
 
         //se nao tiver data inicial cria uma data 1 mes antes da atual no formato yyyy-mm-dd
-        if (!startDate) startDate = this.dateProvider.formatDate(this.dateProvider.addOrSubtractTime("sub", "month", 1), "YYYY-MM-DD")
+        // if (!startDate) startDate = this.dateProvider.formatDate(this.dateProvider.addOrSubtractTime("sub", "month", 1), "YYYY-MM-DD")
         
         //se nao tiver data final cria uma do momento atal, se tiver poe 86399 segundo a ela
         !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
