@@ -71,7 +71,7 @@ label {
 }
 
 select.item {
-    margin: 0px;
+    margin: 0px 0px 30px;
     font-size: 30px;
     color: var(--color-letters);
     background-color: var(--color-input);

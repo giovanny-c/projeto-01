@@ -14,15 +14,8 @@ import { Ngo } from "../../entities/ngos";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
+import IRequest from "./IRequestDTO";
 
-interface IRequest {
-    ngo_id:string 
-    donation_id: string
-    donor_name: string
-    worker_id:string 
-    donation_value: number
-    is_donation_canceled: string
-}
 
 
 interface IResponse {
@@ -48,12 +41,14 @@ class UpdateDonationUseCase {
         @inject("CacheProvider")
         private cacheProvider: ICacheProvider,
         @inject("StorageProvider")
-        private storageProvider: IStorageProvider
+        private storageProvider: IStorageProvider,
+        @inject("DayjsDateProvider")
+        private dateProvider: IDateProvider,
     ) { }
 
 
 
-    async execute({ ngo_id, donor_name, worker_id, donation_value, is_donation_canceled, donation_id}: IRequest): Promise<IResponse> {
+    async execute({ ngo_id, donor_name, worker_id, donation_value, is_donation_canceled, donation_id, donation_date}: IRequest): Promise<IResponse> {
 
         if(!donation_id || donation_id === "") throw new AppError("Doação não encontrada")
        
@@ -83,8 +78,9 @@ class UpdateDonationUseCase {
             worker_id, 
             donor_name,
             donation_value,
+            created_at: donation_date || this.dateProvider.dateNow(),
             is_donation_canceled: is_donation_canceled === "true" ? true : false
-            
+
         })
 
         const updatedDonation = await this.donationsRepository.findOneById(donation.id)

@@ -12,6 +12,7 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 import { Worker } from "../../../workers/entities/worker";
+import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 
 interface IRequest{
     ngo_id: string
@@ -22,9 +23,10 @@ interface IResponse {
     donation: Donation
     ngo: Ngo
     workers: Worker[]
+    date: Date
    
 }
-
+ 
 
 @injectable()
 class LoadUpdateDonationUseCase {
@@ -37,7 +39,9 @@ class LoadUpdateDonationUseCase {
         @inject("NgoRepository")
         private ngoRepository: INgoRepository,
         @inject("WorkersRepository")
-        private workersRepository: IWorkersReposiroty
+        private workersRepository: IWorkersReposiroty,
+        @inject("DayjsDateProvider")
+        private dateProvider: IDateProvider,
     ) {
 
     }
@@ -73,13 +77,14 @@ class LoadUpdateDonationUseCase {
         
         // await this.fileProvider.generateFile(donation, true)
 
-
+        const date = this.dateProvider.formatDate(donation.created_at, "YYYY-MM-DD")
         
     
         return {   
             donation,
             ngo, 
-            workers
+            workers,
+            date
         }
     }
 

@@ -5,4 +5,5 @@ export default interface IUpdateDonation {
     worker_id?: string,
     donation_value?: number
     is_donation_canceled?: boolean
+    created_at?: Date
 }

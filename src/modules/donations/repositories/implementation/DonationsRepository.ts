@@ -43,12 +43,13 @@ class DonationsRepository implements IDonationsRepository {
 
     }
 
-    async update({id, donation_value, donor_name, worker_id, is_donation_canceled}: IUpdateDonation){
+    async update({id, donation_value, donor_name, worker_id, is_donation_canceled, created_at}: IUpdateDonation){
 
         await this.repository.update({id},{
             donation_value,
             donor_name,
             worker_id,
+            created_at,
             is_donation_canceled,
         })
 

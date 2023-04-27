@@ -33,8 +33,8 @@
         <div class="form">
             <form id="#form" class="form" action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/atualizar?_method=PUT" method="post" enctype="multipart/form-data">
 
-                    
-                    
+                <label>Nome do doador</label>    
+                
                 <div class="item">
                         <div>
                         <input      
@@ -44,6 +44,7 @@
                         </div>
                 </div>
 
+                <label>Valor da doação</label>
                 <div class="item">
                         <div>
                         <input      
@@ -54,8 +55,9 @@
                         </div>
                 </div>
 
-                
-                <select class="item" name="worker_id">
+                <label>Funcionário</label>
+                <div class="item">
+                <select class="item"  name="worker_id">
                 
                 {% for worker in workers %}
 
@@ -88,19 +90,34 @@
                 {% endfor %}
 
                 </select>
+                </div>
 
 
-
-
+                <label for="donation_date">Data do recibo</label>
                 <div class="item">
+                        <div>
+                        <input      
+                            type="date" name="donation_date"
+                            value="{{date}}"
+                            onchange="removeFormError(this)"
+                            
+                            />
+                        </div>
+                </div>
+
+
+
+
+
+                {# <div class="item"></div> #}
                         <div>
                         <input      
                             type="hidden" name="donation_id" value="{{donation.id}}"/>
                         </div>
-                </div>
-
+                
+                <label>Cancelado:</label> 
                 <div class="item">
-                    <div class=label><p>Cancelado:</p> </div>
+                    
                         <div>
                             
                         <input      
