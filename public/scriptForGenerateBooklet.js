@@ -73,11 +73,11 @@ function warnBigFiles(event, initial, final) {
 
     if (final - initial > 100) {
 
-        const confirmation = confirm("Deseja gerar esse arquivo? A operação pode demorar alguns segundos")
+        alert("A operação pode demorar alguns segundos")
 
-        if (!confirmation) {
-            event.preventDefault()
-        }
+        // if (!confirmation) {
+        //     event.preventDefault()
+        // }
 
     }
 }

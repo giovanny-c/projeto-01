@@ -44,8 +44,8 @@ class ImportDonorsUseCase{
                 }
 
                 donors.push({
-                    name: `${first_name} ${middle_name} ${last_name}`,
-                    email: email?.toLowerCase() as string || null,
+                    name: `${first_name} ${middle_name} ${last_name}`.trim(),
+                    email: email?.toLowerCase() as string || null, //ver se consertou mais tarde
                     phone: phone || ""
                 })
 
