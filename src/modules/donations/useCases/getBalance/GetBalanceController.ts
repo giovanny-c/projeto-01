@@ -37,7 +37,7 @@ class GetBalanceController {
             worker_id: worker_id as string
             
         })
-
+        
         return res.status(200).render("views/donations/balance", {donations, ngo, search_terms, workers, sum, error: req.error, success: req.success})
     }
 }

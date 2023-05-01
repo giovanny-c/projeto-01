@@ -41,7 +41,7 @@ function formatDateStaticLoop(tds) {
 
         const year = date.getFullYear();
 
-        const month = `0${date.getMonth() + 1}`.slice(-2);
+        const month = `0${date.getUTCMonth() + 1}`.slice(-2);
         //slice(-2) vai pegar os dois ultimos caracteres da string
 
         const day = `0${date.getUTCDate()}`.slice(-2);
@@ -66,7 +66,8 @@ function formatDateStaticP(pDates) {
         var date = new Date(dates[i]);
 
         const year = date.getFullYear();
-        const month = `0${date.getMonth() + 1}`.slice(-2);
+        const month = `0${date.getUTCMonth() + 1}`.slice(-2);
+
         const day = `0${date.getUTCDate()}`.slice(-2);
 
         var formatedDate = `${day}/${month}/${year}`
