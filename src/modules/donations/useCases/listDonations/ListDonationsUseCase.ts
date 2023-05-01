@@ -1,13 +1,17 @@
-import dayjs from "dayjs";
+
 import { inject, injectable } from "tsyringe";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { AppError } from "../../../../shared/errors/AppError";
-import { IFindOptions } from "../../dtos/IFindOptionsDTO";
 import { Donation } from "../../entities/donation";
 import { Ngo } from "../../entities/ngos";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
+import { User } from "../../../user/entities/user";
+import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
+import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
+import { Worker } from "../../../workers/entities/worker";
+
 
 
 interface IRequest {
@@ -20,12 +24,14 @@ interface IRequest {
     endDate: string | Date
     ngo_id: string
     donor_name: string
-    worker_name: string
+    worker_id: string
+    user: Partial<User>
 }
 
 interface IResponse {
     ngo: Ngo
     donations: Donation[],
+    workers: Worker[],
     search_terms: {
         donation_number: number
         orderBy: string
@@ -35,7 +41,7 @@ interface IResponse {
         endDate: string | Date
         ngo_id: string
         donor_name: string
-        worker_name: string
+        worker_id: string
     }
 }
 
@@ -51,10 +57,15 @@ class ListDonationsUseCase {
         @inject("CacheProvider")
         private cacheProvider: ICacheProvider,
         @inject("NgoRepository")
-        private ngoRepository: INgoRepository
+        private ngoRepository: INgoRepository,
+        @inject("UsersRepository")
+        private usersRepository: IUsersRepository,
+        @inject("WorkersRepository")
+        private workersRepository: IWorkersReposiroty
+
     ) { }
 
-    async execute({ orderBy, limit, page, startDate, endDate, ngo_id, worker_name, donor_name, donation_number }: IRequest): Promise<IResponse> {
+    async execute({ orderBy, limit, page, startDate, endDate, ngo_id, worker_id, donor_name, donation_number, user }: IRequest): Promise<IResponse> {
 
 
         let ngo: Ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
@@ -65,6 +76,22 @@ class ListDonationsUseCase {
 
             if(!ngo) throw new AppError("Instituição nao encontrada", 404)
         }
+
+        //se o user nao for admin
+        if(!user.admin){
+
+            if(!user.id){
+                throw new AppError("Usuario nao encontrado.")
+            }
+
+            worker_id = (await this.usersRepository.findById(user.id)).worker.id
+            console.log(worker_id)
+
+            if(!worker_id || worker_id === ""){
+                throw new AppError("Nao foram encontradas doações para esse funcionário, ou ele nao existe")
+            }
+        }
+
 
         if (orderBy !== "ASC") orderBy = "DESC"
 
@@ -86,7 +113,7 @@ class ListDonationsUseCase {
 
         const donations =  await this.donationsRepository.findDonationsBy({
             ngo_id,
-            worker_name,
+            worker_id,
             donor_name,
             donation_number,
             orderBy: orderBy as "ASC" | "DESC",
@@ -97,16 +124,20 @@ class ListDonationsUseCase {
         })
 
 
+        const workers = await this.workersRepository.find()
+
+
         
         
         return {
             donations,
             ngo,
+            workers,
             search_terms:{
                 donation_number,
                 ngo_id,
                 donor_name,
-                worker_name,
+                worker_id,
                 startDate,
                 endDate: this.dateProvider.formatDate(endDate as Date, "YYYY-MM-DD"),
                 orderBy,

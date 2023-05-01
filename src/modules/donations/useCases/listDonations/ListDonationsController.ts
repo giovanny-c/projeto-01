@@ -15,18 +15,21 @@ class ListDonationsController {
             pagina: page, 
             data_de_inicio: startDate, 
             data_de_termino: endDate, 
-            funcionario: worker_name, 
+            funcionario: worker_id, 
             doador: donor_name,
             numero_da_doacao: donation_number
         } = req.query
 
+        console.log(worker_id)
+
 
         const {ngo_id} = req.params
         
+        const {user} = req
 
         const listDonationsUseCase = container.resolve(ListDonationsUseCase)
 
-        const {donations, ngo, search_terms} = await listDonationsUseCase.execute({
+        const {donations, ngo, workers, search_terms} = await listDonationsUseCase.execute({
             orderBy: orderBy as string,
             limit: +(limit),
             page: +(page),
@@ -35,10 +38,11 @@ class ListDonationsController {
             endDate: endDate as string,
             donor_name: donor_name as string,
             ngo_id: ngo_id as string,
-            worker_name: worker_name as string
+            worker_id: worker_id as string,
+            user
         })
 
-        return res.status(200).render("views/donations/search-donations", {donations, ngo, search_terms, error: req.error, success: req.success})
+        return res.status(200).render("views/donations/search-donations", {donations, ngo, workers, search_terms, user, error: req.error, success: req.success})
     }
 }
 

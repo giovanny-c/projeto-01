@@ -222,6 +222,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             })
         }
 
+        
         //linha horizontal ______
         page.drawLine({
             start: {x:0 ,y: 0},

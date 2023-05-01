@@ -38,7 +38,7 @@ div.search-paramns .search input.value {
 
 div.search-paramns .search input.text {
     margin-top: 40px;
-    width: 47.66%;
+    width: 60.66%;
 
 }
 
@@ -53,6 +53,22 @@ div.search-paramns .search input[type=date] {
     width: 28%;
     text-align: center;
 }
+
+select.item {
+    margin-top: 40px;
+    margin-left: 9px;
+    font-size: 26px;
+
+    color: var(--color-letters);
+    background-color: var(--color-input);
+    height: 28px;
+    width: 34.66%;
+    border-radius: 4px;
+    border: 1px solid var(--color-input);
+    box-shadow: 2px 2px 4px 1px var(--color-call-to-action);
+
+}
+
 
 div.search-paramns .search .radio {
     display: grid;

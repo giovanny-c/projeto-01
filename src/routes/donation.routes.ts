@@ -131,7 +131,7 @@ donationRoutes.get("/instituicao/:ngo_id/doacao/nova", handleMessage, loadCreate
 donationRoutes.post("/instituicao/:ngo_id/doacao/nova", upload.none(), createDonationController.handle)//cria a donation
 
 //listar
-donationRoutes.get("/instituicao/:ngo_id/doacao/listar", ensureAdmin, handleMessage, listDonationsController.handle)
+donationRoutes.get("/instituicao/:ngo_id/doacao/listar", handleMessage, listDonationsController.handle)
 
 //importar
 donationRoutes.get("/instituicao/:ngo_id/doacao/importar", ensureAdmin, handleMessage, loadImportDonationsController.handle)

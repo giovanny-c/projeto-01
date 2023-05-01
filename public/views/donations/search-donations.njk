@@ -42,15 +42,28 @@
                         value="{{search_terms.donor_name}}"
                     {% endif %}
                 >
-                <input 
-                    class="text"
-                    type="text"
-                    name="funcionario"
-                    placeholder="Buscar por Funcionarios"
-                    {% if search_terms %}
-                        value="{{search_terms.worker_name}}"
-                    {% endif %}
-                >
+                {% if user.admin %}
+                    
+                    <select class="item" name="funcionario">
+                        <option value="" selected disabled hidden>Escolha o funcionário</option>
+                        <option value="">Todos</option>
+                    {% for worker in workers %}        
+                        <option value="{{worker.id}}"
+                            {% if search_terms.worker_id == worker.id %}
+                                selected
+                            {% endif %}
+                            >
+                                {{worker.name}}    
+                        </option>
+                    {% endfor %}
+                    </select>
+                    
+                {% else %}
+                    <select class="item" name="funcionario" style="visibility: hidden">
+                        <option value="" selected disabled hidden>Escolha o funcionário</option>
+                    </select>
+                {% endif %}
+                    
                 <input 
                     type="date"
                     name="data_de_inicio"
@@ -145,7 +158,7 @@
         <div class="pagination">
             <div>
             {% if search_terms.page != 1 %}
-                <a id="previous_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float - 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_name}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}">
+                <a id="previous_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float - 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_id}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}">
                 << Página anterior </a>
             {% endif %}
             </div>
@@ -153,7 +166,7 @@
                 {# caracter invisivel #}
             <div>
             {% if donations| length >= search_terms.limit %}
-                <a id="next_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float + 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_name}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}">
+                <a id="next_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float + 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_id}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}">
                 
                 Próxima página >></a>  
             {% endif %}
