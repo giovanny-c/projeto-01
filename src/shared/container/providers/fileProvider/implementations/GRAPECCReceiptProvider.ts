@@ -15,8 +15,6 @@ import { getExecutionTime } from "../../../../../../utils/decorators/executionTi
 @singleton()
 class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
-   
-
     async generateReceipt(doc: PDFDocument, donation: Donation, saveFile: boolean, template: PDFImage, templateSign: PDFImage, font?: PDFFont): Promise<Uint8Array> {
 
         const storageProvider = container.resolve(LocalStorageProvider);
@@ -26,35 +24,35 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         // page.setRotation(degrees(90))
         
         
-        page.setSize(794, 1095);
+        // page.setSize(794, 841);
 
-        const y = 730
+        const y = 568.14
 
         const pageWidth = page.getWidth()
-
+        
         page.drawImage(template, {
             y: 0 + y,
-            x: 40,
-            width: pageWidth - 74,
-            height: 365, //*0.75?
-            // rotate: degrees(90)
+            x: 30,
+            width: pageWidth - 55,
+            height: 273.75,
+            
         });
 
         page.drawImage(templateSign, {
-            y: 28 + y,
-            x: 419,
-            width: 75,
-            height: 48
+            y: 21 + y,
+            x: 314.25,
+            width: 56.25,
+            height: 36
         });
 
         //numero da doaçao
         page.drawText(donation.donation_number.toString(), {
-            y: 229 + y,
-            x: 180,
+            y: 171.75 + y,
+            x: 135,
 
             // rotate: degrees(90),
             color: rgb(0.95, 0.1, 0.1),
-            size: 23 //*0.75?
+            size: 17.25 //*0.75?
         });
 
 
@@ -62,10 +60,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
         //valor numerico
         page.drawText(valor, {
-            y: 230 + y,
-            x: 522,
+            y: 172.5 + y,
+            x: 391.50,
             // rotate: degrees(90),
-            size: 30,
+            size: 22.50,
             font,
             color: rgb(0.143, 0.133, 0.610) //rgb(0.122, 0.160, 0.797)
         });
@@ -77,10 +75,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         }
         //nome
         page.drawText(nomeArray[0], {
-            y: 207 + y,
-            x: 193,
+            y: 155.25 + y,
+            x: 144.75,
             // rotate: degrees(90),
-            size: 23,
+            size: 17.25,
             // maxWidth: 560,
             // wordBreaks: [" ", "-"],
             // lineHeight: 21,
@@ -91,10 +89,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         if (nomeArray[1] && nomeArray[1].length) {
 
             page.drawText(nomeArray[1], {
-                y: 186 + y,
-                x: 75,
+                y: 139.50 + y,
+                x: 56.25,
                 // rotate: degrees(90),
-                size: 23,
+                size: 17.25,
                 font,
                 color: rgb(0.143, 0.133, 0.610)
             });
@@ -113,10 +111,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         vpeArray[0] = vpeArray[0].at(0).toUpperCase() + vpeArray[0].substring(1);
 
         page.drawText(vpeArray[0], {
-            y: 161 + y,
-            x: 180,
+            y: 120.75 + y,
+            x: 135,
             // rotate: degrees(90),
-            size: 23,
+            size: 17.25,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
@@ -124,10 +122,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         if (vpeArray[1] && vpeArray[1].length) {
 
             page.drawText(vpeArray[1], {
-                y: 139 + y,
-                x: 75,
+                y: 104.25 + y,
+                x: 56.25,
                 // rotate: degrees(90),
-                size: 23,
+                size: 17.25,
                 font,
                 color: rgb(0.143, 0.133, 0.610)
             });
@@ -141,27 +139,27 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         let mesUpper = mes.at(0).toUpperCase() + mes.substring(1);
 
         page.drawText(dia, {
-            y: 70 + y,
-            x: 410,
+            y: 52.50 + y,
+            x: 307.50,
             // rotate: degrees(90),
-            size: 25,
+            size: 18.75,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
 
         page.drawText(mesUpper, {
-            y: 70 + y,
-            x: 487,
+            y: 52.50 + y,
+            x: 365.25,
             // rotate: degrees(90),
-            size: 25,
+            size: 18.75,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
         page.drawText(ano, {
-            y: 70 + y,
-            x: 668,
+            y: 52.50 + y,
+            x: 501,
             // rotate: degrees(90),
-            size: 25,
+            size: 18.75,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
@@ -170,18 +168,18 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
         let refferingTo = "Doação";
         page.drawText(refferingTo, {
-            y: 118 + y,
-            x: 170,
-            size: 22,
+            y: 88.50 + y,
+            x: 127.50,
+            size: 16.50,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
 
         //workwer
         page.drawText(donation.worker?.name || "", {
-            y: 16 + y,
-            x: 80,
-            size: 20,
+            y: 12 + y,
+            x: 60,
+            size: 15,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
@@ -189,11 +187,11 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         if (donation.is_donation_canceled) {
 
             page.drawText("CANCELADO", {
-                y: page.getHeight() - 192,
-                x: page.getWidth() - (page.getWidth() - 165),
-                rotate: degrees(-13),
+                y: page.getHeight() - 144,
+                x: page.getWidth() - (page.getWidth() - 120),
+                rotate: degrees(-12),
                 color: rgb(0, 0, 0),
-                size: 85,
+                size: 63.75,
             });
         }
 
@@ -201,7 +199,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         //linha horizontal ______
         page.drawLine({
             start: { x: 0, y: y },
-            end: { x: 800, y: y },
+            end: { x: 600, y: y },
             color: rgb(0.5, 0.5, 0.5),
             lineCap: 1,
             thickness: 0.1,
@@ -222,7 +220,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         //     lineCap: 1,
         //     thickness: 0.1
         // })
-        page.scale(0.75, 0.75);
+        // page.scale(0.75, 0.75);
 
 
 
@@ -249,8 +247,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             storageProvider.saveAsync(dir, file_name, pdfBytes);
         }
 
-
-        return pdfBytes;
+        return pdfBytes
     }
 
     async generateReceiptForBooklet(doc: PDFDocument, donation: Donation, saveFile: boolean, template: PDFImage, templateSign: PDFImage, font?: PDFFont): Promise<Uint8Array> {
@@ -262,35 +259,35 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         // page.setRotation(degrees(90))
         
         
-        page.setSize(794, 365);
+        page.setSize(page.getWidth(), 273.75);
 
         const y = 0
-        
-        const pageWidth = page.getWidth()
 
+        const pageWidth = page.getWidth()
+        
         page.drawImage(template, {
             y: 0 + y,
-            x: 40,
-            width: pageWidth - 74,
-            height: 365, //*0.75?
-            // rotate: degrees(90)
+            x: 30,
+            width: pageWidth - 55,
+            height: 273.75,
+            
         });
 
         page.drawImage(templateSign, {
-            y: 28 + y,
-            x: 419,
-            width: 75,
-            height: 48
+            y: 21 + y,
+            x: 314.25,
+            width: 56.25,
+            height: 36
         });
 
         //numero da doaçao
         page.drawText(donation.donation_number.toString(), {
-            y: 229 + y,
-            x: 180,
+            y: 171.75 + y,
+            x: 135,
 
             // rotate: degrees(90),
             color: rgb(0.95, 0.1, 0.1),
-            size: 23 //*0.75?
+            size: 17.25 //*0.75?
         });
 
 
@@ -298,10 +295,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
         //valor numerico
         page.drawText(valor, {
-            y: 230 + y,
-            x: 522,
+            y: 172.5 + y,
+            x: 391.50,
             // rotate: degrees(90),
-            size: 30,
+            size: 22.50,
             font,
             color: rgb(0.143, 0.133, 0.610) //rgb(0.122, 0.160, 0.797)
         });
@@ -313,10 +310,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         }
         //nome
         page.drawText(nomeArray[0], {
-            y: 207 + y,
-            x: 193,
+            y: 155.25 + y,
+            x: 144.75,
             // rotate: degrees(90),
-            size: 23,
+            size: 17.25,
             // maxWidth: 560,
             // wordBreaks: [" ", "-"],
             // lineHeight: 21,
@@ -327,10 +324,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         if (nomeArray[1] && nomeArray[1].length) {
 
             page.drawText(nomeArray[1], {
-                y: 186 + y,
-                x: 75,
+                y: 139.50 + y,
+                x: 56.25,
                 // rotate: degrees(90),
-                size: 23,
+                size: 17.25,
                 font,
                 color: rgb(0.143, 0.133, 0.610)
             });
@@ -349,10 +346,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         vpeArray[0] = vpeArray[0].at(0).toUpperCase() + vpeArray[0].substring(1);
 
         page.drawText(vpeArray[0], {
-            y: 161 + y,
-            x: 180,
+            y: 120.75 + y,
+            x: 135,
             // rotate: degrees(90),
-            size: 23,
+            size: 17.25,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
@@ -360,10 +357,10 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         if (vpeArray[1] && vpeArray[1].length) {
 
             page.drawText(vpeArray[1], {
-                y: 139 + y,
-                x: 75,
+                y: 104.25 + y,
+                x: 56.25,
                 // rotate: degrees(90),
-                size: 23,
+                size: 17.25,
                 font,
                 color: rgb(0.143, 0.133, 0.610)
             });
@@ -377,27 +374,27 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         let mesUpper = mes.at(0).toUpperCase() + mes.substring(1);
 
         page.drawText(dia, {
-            y: 70 + y,
-            x: 410,
+            y: 52.50 + y,
+            x: 307.50,
             // rotate: degrees(90),
-            size: 25,
+            size: 18.75,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
 
         page.drawText(mesUpper, {
-            y: 70 + y,
-            x: 487,
+            y: 52.50 + y,
+            x: 365.25,
             // rotate: degrees(90),
-            size: 25,
+            size: 18.75,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
         page.drawText(ano, {
-            y: 70 + y,
-            x: 668,
+            y: 52.50 + y,
+            x: 501,
             // rotate: degrees(90),
-            size: 25,
+            size: 18.75,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
@@ -406,18 +403,18 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
         let refferingTo = "Doação";
         page.drawText(refferingTo, {
-            y: 118 + y,
-            x: 170,
-            size: 22,
+            y: 88.50 + y,
+            x: 127.50,
+            size: 16.50,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
 
         //workwer
         page.drawText(donation.worker?.name || "", {
-            y: 16 + y,
-            x: 80,
-            size: 20,
+            y: 12 + y,
+            x: 60,
+            size: 15,
             font,
             color: rgb(0.143, 0.133, 0.610)
         });
@@ -425,23 +422,23 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         if (donation.is_donation_canceled) {
 
             page.drawText("CANCELADO", {
-                y: page.getHeight() - 192,
-                x: page.getWidth() - (page.getWidth() - 165),
-                rotate: degrees(-13),
+                y: page.getHeight() - 144,
+                x: page.getWidth() - (page.getWidth() - 120),
+                rotate: degrees(-12),
                 color: rgb(0, 0, 0),
-                size: 85,
+                size: 63.75,
             });
         }
 
 
         //linha horizontal ______
-        page.drawLine({
-            start: { x: 0, y: y },
-            end: { x: 800, y: y },
-            color: rgb(0.5, 0.5, 0.5),
-            lineCap: 1,
-            thickness: 0.1,
-        });
+        // page.drawLine({
+        //     start: { x: 0, y: y },
+        //     end: { x: 600, y: y },
+        //     color: rgb(0.5, 0.5, 0.5),
+        //     lineCap: 1,
+        //     thickness: 0.1,
+        // });
         //linha vertical |
         // page.drawLine({
         //     start: { x: 826, y: y },
@@ -458,7 +455,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         //     lineCap: 1,
         //     thickness: 0.1
         // })
-        page.scale(0.75, 0.75);
+        // page.scale(0.75, 0.75);
 
 
 
@@ -485,8 +482,7 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             storageProvider.saveAsync(dir, file_name, pdfBytes);
         }
 
-
-        return pdfBytes;
+        return pdfBytes
 
     }
 
@@ -576,8 +572,8 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             });
             //linha vertical |
             page.drawLine({
-                start: { x: 26, y: y },
-                end: { x: 26, y: y + receipt.height },
+                start: { x: 28, y: y },
+                end: { x: 28, y: y + receipt.height },
                 color: rgb(0.5, 0.5, 0.5),
                 lineCap: 1,
                 thickness: 0.1
