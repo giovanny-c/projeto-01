@@ -77,12 +77,21 @@ class GetBalanceUseCase {
 
         const workers = await this.workersRepository.find()
 
-         //se nao tiver data inicial cria uma data 1 mes antes da atual no formato yyyy-mm-dd
-        if (!startDate) startDate = this.dateProvider.formatDate(this.dateProvider.addOrSubtractTime("sub", "month", 1), "YYYY-MM-DD")
-        
-         //se nao tiver data final cria uma do momento atal, se tiver poe 86399 segundo a ela
+        //se nao tiver data final cria uma do momento atal, se tiver poe 86399 segundo a ela
         !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
+        
 
+        if(!startDate){
+            
+            startDate = this.dateProvider.formatDate(this.dateProvider.convertToDate( `${endDate.toString().slice(0,7)}-01`), "YYYY-MM-DD")
+
+        }
+        
+        //se nao tiver data inicial cria uma data 1 mes antes da atual no formato yyyy-mm-dd
+              
+        //this.dateProvider.formatDate(this.dateProvider.addOrSubtractTime("sub", "month", 1), "YYYY-MM-DD")
+       
+       
         
 
         const {donations, sum} =  await this.donationsRepository.countDonationsValues({
