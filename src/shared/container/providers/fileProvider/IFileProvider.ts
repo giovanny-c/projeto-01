@@ -1,5 +1,6 @@
 import { PDFDocument, PDFFont, PDFImage } from "pdf-lib"
 import { Donation } from "../../../../modules/donations/entities/donation"
+import { ICreateBooklet, IGenerateFile } from "./dtos/IFileProviderDTOs"
 
 interface ICreateBooletResponse{
 
@@ -11,10 +12,8 @@ interface ICreateBooletResponse{
 
 interface IFileProvider {
 
-    generateFile(donation: Donation, saveFile: boolean): Promise<Uint8Array | void>
-    generateFileForBooklet(donation: Donation, saveFile: boolean): Promise<Uint8Array>
-    createBooklet(data: Donation[], saveFile: boolean ): Promise<ICreateBooletResponse>
-    //generateReceiptForGrapecc(doc: PDFDocument, donation: Donation, saveFile: boolean, templatePng: PDFImage, font?: PDFFont): Promise<Uint8Array>
+    generateFile(data: IGenerateFile): Promise<Uint8Array | void>
+    createBooklet(data: ICreateBooklet ): Promise<ICreateBooletResponse>
 
 }
 

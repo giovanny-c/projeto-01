@@ -1,73 +1,73 @@
 
-import { inject, injectable } from "tsyringe";
+// import { inject, injectable } from "tsyringe";
 
-import { Response } from "express";
+// import { Response } from "express";
 
-import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
-import { AppError } from "../../../../shared/errors/AppError";
-import { IDonationsRepository } from "../../repositories/IDonationsRepository";
-import { Donation } from "../../entities/donation";
-import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
+// import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
+// import { AppError } from "../../../../shared/errors/AppError";
+// import { IDonationsRepository } from "../../repositories/IDonationsRepository";
+// import { Donation } from "../../entities/donation";
+// import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 
-interface IResponse {
+// interface IResponse {
 
-    file: string
-    name: string
-}
+//     file: string
+//     name: string
+// }
 
-@injectable()
-class GenerateReceiptUseCase {
+// @injectable()
+// class GenerateReceiptUseCase {
 
-    constructor(
-        @inject("DonationsRepository")
-        private donationsRepository: IDonationsRepository,
-        @inject("FileProvider")
-        private fileProvider: IFileProvider,
-        @inject("DayjsDateProvider")
-        private dateProvider: IDateProvider
-    ) {
+//     constructor(
+//         @inject("DonationsRepository")
+//         private donationsRepository: IDonationsRepository,
+//         @inject("FileProvider")
+//         private fileProvider: IFileProvider,
+//         @inject("DayjsDateProvider")
+//         private dateProvider: IDateProvider
+//     ) {
 
-    }
+//     }
 
-    async execute(id: string, res: Response): Promise<IResponse> {
-
-
-        const donation = await this.donationsRepository.findOneById(id)
-
-        if (!donation) {
-            throw new AppError("This donation does not exists")
-        }
-
-        if (donation.is_payed !== true) {
-            throw new AppError("Cant generate a receipt of a donation that wasn't payed")
-        }
-
-        // const stream = res.writeHead(200, {
-        //     "Content-Type": "application/pdf",
-        //     "Content-Disposition": `attachment;filename=recibo${donation.id}.pdf`,
-        // })
-
-        donation.payed_at = this.dateProvider.formatDate(donation.payed_at, "DD/MM/YYYY")
-
-        const pdfBytes = await this.fileProvider.generateFile(donation, true)
-
-        const buffer = Buffer.from(pdfBytes as Uint8Array)
-
-        return {
-            file: buffer.toString("base64"),
-            name: `${donation.donation_number}`
-        }
+//     async execute(id: string, res: Response): Promise<IResponse> {
 
 
-        //juntar getdonation e generate?
-        //fazer forma mais elegante de mostrar o download(tela de preview)
+//         const donation = await this.donationsRepository.findOneById(id)
+
+//         if (!donation) {
+//             throw new AppError("This donation does not exists")
+//         }
+
+//         if (donation.is_payed !== true) {
+//             throw new AppError("Cant generate a receipt of a donation that wasn't payed")
+//         }
+
+//         // const stream = res.writeHead(200, {
+//         //     "Content-Type": "application/pdf",
+//         //     "Content-Disposition": `attachment;filename=recibo${donation.id}.pdf`,
+//         // })
+
+//         donation.payed_at = this.dateProvider.formatDate(donation.payed_at, "DD/MM/YYYY")
+
+//         const pdfBytes = await this.fileProvider.generateFile(donation, true)
+
+//         const buffer = Buffer.from(pdfBytes as Uint8Array)
+
+//         return {
+//             file: buffer.toString("base64"),
+//             name: `${donation.donation_number}`
+//         }
+
+
+//         //juntar getdonation e generate?
+//         //fazer forma mais elegante de mostrar o download(tela de preview)
 
 
 
 
-    }
+//     }
 
 
-}
+// }
 
-export { GenerateReceiptUseCase }
+// export { GenerateReceiptUseCase }

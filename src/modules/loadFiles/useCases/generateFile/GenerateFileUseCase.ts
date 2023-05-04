@@ -117,7 +117,11 @@ class GenerateFileUseCase {
         
         const donation = await this.donationsRepository.findOneById(donation_id)
         
-        const pdfBytes = await this.fileProvider.generateFile(donation, false)
+        const pdfBytes = await this.fileProvider.generateFile({
+            donation, 
+            saveFile: false,
+            generateForBooklet: false
+        })
         
         if(!pdfBytes || !pdfBytes.length){
             
@@ -189,7 +193,9 @@ class GenerateFileUseCase {
         }
         
         
-        const {file: pdfBytes} = await this.fileProvider.createBooklet(donations, false)
+        const {file: pdfBytes} = await this.fileProvider.createBooklet({
+            donations, 
+            saveFile: false})
         
 
 

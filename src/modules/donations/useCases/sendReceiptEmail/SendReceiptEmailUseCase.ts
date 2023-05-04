@@ -144,7 +144,11 @@ class SendReceiptEmailUseCase {
             
         // }
 
-        let file = await this.fileProvider.generateFile(donation, false)
+        let file = await this.fileProvider.generateFile({
+            donation, 
+            saveFile: false,
+            generateForBooklet: false
+        })
 
         if(!file){
             throw new AppError("Erro ao gerar o arquivo", 500)

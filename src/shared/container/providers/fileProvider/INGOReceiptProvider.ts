@@ -1,13 +1,12 @@
-import { PDFDocument, PDFFont, PDFImage } from "pdf-lib";
-import { Donation } from "../../../../modules/donations/entities/donation";
+
 import { ICreateBooletResponse } from "./IFileProvider";
+import { ICreateReceiptBooklet, IGenerateReceipt } from "./dtos/IReceiptProviderDTOs";
 
 
 interface INGOReceiptProvider {
 
-    generateReceiptForBooklet(doc: PDFDocument, donation: Donation, saveFile: boolean, template: PDFImage, templateSign: PDFImage,  font?: PDFFont): Promise<Uint8Array>
-    generateReceipt(doc: PDFDocument, donation: Donation, saveFile: boolean, template: PDFImage, templateSign: PDFImage,  font?: PDFFont): Promise<Uint8Array>
-    createBooklet(doc: PDFDocument, data: Donation[], saveFile: boolean): Promise<ICreateBooletResponse>
+    generateReceipt(data: IGenerateReceipt): Promise<Uint8Array>
+    createBooklet(data: ICreateReceiptBooklet): Promise<ICreateBooletResponse>
 }
 
 export {INGOReceiptProvider}
