@@ -42,7 +42,7 @@ class ListDonationsController {
             user
         })
 
-        return res.status(200).render("views/donations/search-donations", {donations, ngo, workers, search_terms, user, error: req.error, success: req.success})
+        return res.status(200).render("views/donations/search-donations", {donations, ngo, workers, search_terms, user, username: req.user.name, error: req.error, success: req.success})
     }
 }
 

@@ -13,7 +13,7 @@ class FindAllNgosController {
 
         const ngos =  await findAllNgos.execute()
 
-        return res.status(200).render("views/ngos/ngos", {ngos, error: req.error, success: req.success, admin})
+        return res.status(200).render("views/ngos/ngos", {ngos, username: req.user.name, error: req.error, success: req.success, admin})
     }
 
 

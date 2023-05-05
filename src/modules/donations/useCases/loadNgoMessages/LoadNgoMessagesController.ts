@@ -17,7 +17,7 @@ class LoadNgoMessagesController {
 
         const {ngo, messages} = await loadEmailMessages.execute(ngo_id)
         
-        return res.status(201).render("views/ngos/ngo-messages", {ngo, messages, error: req.error, success: req.success})
+        return res.status(201).render("views/ngos/ngo-messages", {ngo, messages, username: req.user.name, error: req.error, success: req.success})
 
     }
 

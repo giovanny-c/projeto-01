@@ -16,7 +16,7 @@ class LoadUserUpdateController {
 
         const {user, workers} = await loadUserUpdateUseCase.execute({id})
 
-        return res.status(200).render("views/users/create-user", {user, workers, admin_id, error: req.error, success: req.success})
+        return res.status(200).render("views/users/create-user", {user, workers, admin_id, username: req.user.name, error: req.error, success: req.success})
     }
 
 }

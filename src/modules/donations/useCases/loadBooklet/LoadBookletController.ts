@@ -17,16 +17,16 @@ class LoadBookletController{
 
         const {file_path,  file_name,  ngo} = await loadBookletUseCase.execute({ngo_id, year, month, file_name: fileName})
 
-        return res.status(200).render("views/donations/booklet", {file_path, file_name, ngo, error: req.error, success: req.success})
+        return res.status(200).render("views/donations/booklet", {file_path, file_name, ngo, username: req.user.name, error: req.error, success: req.success})
        
 
         // return res.render("views/donations/booklet", {
         //     file: file.pipe(res),
-        //     file_name, ngo, error: req.error, success: req.success})
+        //     file_name, ngo, username: req.user.name, error: req.error, success: req.success})
 
         // .on("finish", () => {
             
-        //     // res.render("views/donations/booklet", {file: file, file_name, ngo, error: req.error, success: req.success})
+        //     // res.render("views/donations/booklet", {file: file, file_name, ngo, username: req.user.name, error: req.error, success: req.success})
         // })
     }
 }

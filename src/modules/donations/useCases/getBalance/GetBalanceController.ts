@@ -38,7 +38,7 @@ class GetBalanceController {
             
         })
         
-        return res.status(200).render("views/donations/balance", {donations, ngo, search_terms, workers, sum, error: req.error, success: req.success})
+        return res.status(200).render("views/donations/balance", {donations, ngo, search_terms, workers, sum, username: req.user.name, error: req.error, success: req.success})
     }
 }
 

@@ -14,7 +14,7 @@ class GetDonorAndDonationsController {
         const {donor, worker} = await getDonorAndDonationsUseCase.execute(id)
 
 
-        return res.render("views/donors/donor", {donor, worker, error: req.error, success: req.success} )
+        return res.render("views/donors/donor", {donor, worker, username: req.user.name, error: req.error, success: req.success} )
     }
 }
 export { GetDonorAndDonationsController }

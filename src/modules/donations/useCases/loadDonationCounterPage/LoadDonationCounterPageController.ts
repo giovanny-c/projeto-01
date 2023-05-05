@@ -18,7 +18,7 @@ class LoadDonationCounterPageController {
 
         const {ngo, ngo_donation_counter} = await setDonatoionCounter.execute({id})
 
-        return res.status(200).render("views/ngos/donation-counter", {ngo, ngo_donation_counter, error: req.error, success: req.success})
+        return res.status(200).render("views/ngos/donation-counter", {ngo, ngo_donation_counter, username: req.user.name, error: req.error, success: req.success})
 
     }
 

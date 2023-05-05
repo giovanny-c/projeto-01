@@ -13,7 +13,7 @@ class ManageAllNgosController {
 
         const ngos =  await manageAllNgos.execute()
 
-        return res.status(200).render("views/ngos/manage-ngos", {ngos, error: req.error, success: req.success})
+        return res.status(200).render("views/ngos/manage-ngos", {ngos, username: req.user.name, error: req.error, success: req.success})
     }
 
 

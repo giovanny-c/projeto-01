@@ -1,32 +1,31 @@
 import { NextFunction, Request, Response } from "express";
 import { container } from "tsyringe";
-import { getExecutionTime } from "../../../utils/decorators/executionTime";
 import { DayjsDateProvider } from "../container/providers/dateProvider/implementations/DayjsDateProvider";
-import { AppError } from "../errors/AppError";
+
 
 
 
 
 
 export async function ensureAuthenticated(req: Request, res: Response, next: NextFunction) {
-
-    console.log(req.socket.remoteAddress)
+        
+    // console.log(req.socket.remoteAddress)
     // console.log(`${req.ip}--${req.ips}`)
     
     if (!req.session || !req.session.user) {
-
+        
         req.session.error = {
             message: "Sessão expirada, por favor entre de novo.",
             status: 401
         }
         return res.redirect("/entrar")
-
-
-
+        
+        
+        
     }
-
     
-   
+    
+    
     const dateProvider = container.resolve(DayjsDateProvider)
     // 
     let [amount, time_unit] = String(process.env.ABSOLUTE_SESSION_TIME_OUT).split(" ")
@@ -48,15 +47,18 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
     // console.log(req.sessionID)
 
     req.user = {
-
+        
         id: req.session.user.id,
+        name: req.session.user.name,
         admin: req.session.user.admin,
 
+        
     }
-
-
-
+    
+    
+    
     next()
-
-
+    
+    
 }
+

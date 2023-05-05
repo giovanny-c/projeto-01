@@ -60,13 +60,21 @@
 
                 </div>
 
-            <a class="logout" href="/sair">Sair</a>
+            <div class="logout">
+                {% if username %}
+                    <p>{{username}}</p> 
+                {% endif %}
+                    <p> - </p>
+
+                <a class="logout-btn" href="/sair">Sair</a>  
+            </div>
+            
 
                 
             </div>
 
              <script>
-                const a = document.querySelector(".logout")
+                const a = document.querySelector(".logout-btn")
 
                     a.addEventListener("click", function(event){
 
