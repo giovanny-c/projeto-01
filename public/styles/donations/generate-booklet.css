@@ -64,6 +64,8 @@
     color: var(--color-letters-clear);
     box-shadow: 1px 1px 1px 1px var(--color-letters);
     cursor: pointer;
+
+
 }
 
 .button button:hover {
