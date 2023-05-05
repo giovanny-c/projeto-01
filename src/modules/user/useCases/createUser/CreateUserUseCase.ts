@@ -35,7 +35,7 @@ class CreateUserUseCase {
 
         
         
-
+        
 
         if((!name || name === undefined) || name.match(/([^A-Za-z0-9ãõç\s])/g) || name.length < 3){
             throw new AppError("Forneça um nome de usuário valido", 400)
@@ -55,6 +55,9 @@ class CreateUserUseCase {
             throw new AppError("A senha e a confirmação não correspondem", 400)
         }
 
+
+        name = name.replace(/\s+$/g, "")
+        email = email.replace(/\s+$/g, "")
 
         const userAlreadyExists = await this.usersRepository.findByNameOrEmail(name, email)
 

@@ -10,7 +10,9 @@ import { AppError } from "../errors/AppError";
 
 export async function ensureAuthenticated(req: Request, res: Response, next: NextFunction) {
 
-   
+    console.log(req.socket.remoteAddress)
+    // console.log(`${req.ip}--${req.ips}`)
+    
     if (!req.session || !req.session.user) {
 
         req.session.error = {
@@ -42,6 +44,8 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
         return res.redirect("/entrar")
 
     }
+
+    // console.log(req.sessionID)
 
     req.user = {
 

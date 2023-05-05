@@ -21,6 +21,7 @@ class AuthenticateUserController {
             // o tempo do cookie e de 1h
         }
 
+        
         return res.redirect("/")
     }
 

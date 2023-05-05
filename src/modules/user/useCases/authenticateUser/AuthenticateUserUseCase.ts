@@ -39,6 +39,8 @@ class AuthenticateUserUseCase {
 
     async execute({ nameOrEmail, password }: IRequest): Promise<IResponse> {
 
+        nameOrEmail = nameOrEmail.replace(/\s+$/g, "")
+
         const user = await this.usersRepository.findOneByEmailOrName(nameOrEmail); //mudar depois
 
 
@@ -54,7 +56,7 @@ class AuthenticateUserUseCase {
         }
 
         
-
+        //criar se nao  existir e altera se ja existir
         await this.cacheProvider.set(`user-${user.id}`, JSON.stringify(instanceToPlain(user)))
 
         const created_at = this.dateProvider.dateNow()
