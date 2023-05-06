@@ -39,6 +39,8 @@ class FilterDonorsUseCase {
         }) 
 
         // para ir na ordem do valor
+        // ex: t
+        // t1, t2, t3, at, bt, ct,
         donors.sort((a, b) => {
             
            
@@ -56,7 +58,7 @@ class FilterDonorsUseCase {
             }
         })
 
-        console.log(donors)
+        
         
         
         return donors

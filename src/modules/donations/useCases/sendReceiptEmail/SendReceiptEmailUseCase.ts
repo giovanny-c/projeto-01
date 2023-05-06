@@ -82,27 +82,43 @@ class SendReceiptEmailUseCase {
         if(!ngo) throw new AppError("Instituição nao encontrada", 404)
         
 
-        //filtra os ids que vem todos juntos
+
+        
+        
         let donorsEmails: string[] = [] 
 
         if(donors_ids){
-
-            //separa na virgula
-            donorsEmails = await Promise.all(donors_ids.match(/[\w\d-]+(?=,)/g).map(async(donor_id) => {
+            //filtra os ids que vem todos juntos e nao deixa vir valores duplicados com o Set
+            let donors_ids_array = [...new Set(donors_ids.match(/[\w\d-]+(?=,)/g).map(donor_id => {
 
                 if(donor_id === ""){
                     return
                 }
 
+                return donor_id
+
+            }))];
+
+            //tambem filtra os duplicados
+            //    donors_ids_array.filter((value, index, self) => self.indexOf(value) === index)
+
+            //separa na virgula
+            donorsEmails = await Promise.all(donors_ids_array.map(async(donor_id) => {
+
                 const donor = await this.donorsRepository.findById(donor_id)
-                
+            
                 if(!donor){
                     return
                 }
-
+                
                 return donor.email
+                
+
+                
             })) 
         }
+
+console.log(donorsEmails)
 
         if(email){
 

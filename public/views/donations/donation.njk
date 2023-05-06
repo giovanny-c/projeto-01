@@ -118,26 +118,33 @@
 
                 <ul class="donors-list"></ul>
 
-                <div class="item email-form">
-                    <div>
-                        <select name="message_id" id="message_id"
-                         onchange="removeFormError(this)">
-                        {% for message in messages %}
-                            <option value="" selected disabled hidden>Escolha a mensagem</option>
-                            <option value="{{message.id}}">
-                                {{message.name}}                           
-                            </option>
-                        {% endfor %}
-                        </select>
-                    </div>
-                </div>
+
+                <div class ="inline">
 
                 
-                
-                <button type="submit" form="form-email"  class="button email-form-button">
-                Enviar Recibo
-                </button>
-                
+                    <div class="item email-form">
+                        <div>
+                            <select name="message_id" id="message_id"
+                            onchange="removeFormError(this)">
+                            {% for message in messages %}
+                                <option value="" selected disabled hidden>Escolha a mensagem</option>
+                                <option value="{{message.id}}">
+                                    {{message.name}}                           
+                                </option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    
+
+                    
+                        <button type="submit" form="form-email"  class="button email-form-button">
+                        Enviar Recibo
+                        </button>
+                    
+                    
+                </div>
                 
                 
                 
