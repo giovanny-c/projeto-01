@@ -2,7 +2,8 @@ import { inject, injectable } from "tsyringe"
 import { AppError } from "../../../../shared/errors/AppError"
 import { IUsersRepository } from "../../repositories/IUsersRepository"
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider"
-import { User } from "@sentry/node"
+import { User } from "../../entities/user"
+
 
 
 
@@ -29,12 +30,12 @@ class LogOutUseCase {
                 user = await this.usersRepository.findById(user_id)
                 
                 if (!user) {
-                    throw new AppError("User not found", 400)
+                    throw new AppError("Usuário não emcontrado", 400)
                 }    
             }
 
 
-            await this.cacheProvider.delete(`user-${user.id}`)
+            // await this.cacheProvider.delete(`user-${user.id}`)
     }
 
 

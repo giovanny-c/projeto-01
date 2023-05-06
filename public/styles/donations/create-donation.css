@@ -30,6 +30,10 @@
     box-shadow: 2px 2px 4px 1px var(--color-letters);
 }
 
+.item div {
+    height: 38px;
+}
+
 
 .item.admin {
     display: grid;

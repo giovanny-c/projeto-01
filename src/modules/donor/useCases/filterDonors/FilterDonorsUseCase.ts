@@ -16,7 +16,7 @@ class FilterDonorsUseCase {
         private donorsRepository: IDonorsRepository
     ){}
 
-    @getExecutionTime()
+    
     async execute(value: string): Promise<void | Partial<Donor>[]>{
 
         if(!value || value.length < 1){

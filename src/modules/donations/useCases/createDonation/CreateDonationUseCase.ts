@@ -14,6 +14,7 @@ import { IDonationCounterRepository } from "../../repositories/IDonationCounterR
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import IRequest from "./IRequestDTO";
+import { User } from "../../../user/entities/user";
 
 
 
@@ -60,7 +61,21 @@ class CreateDonationUseCase {
         if(!donation_value || donation_value <= 0) throw new AppError("Forneça o valor para esse doação")
         if(!worker_id) throw new AppError("Escolha um funcionário para esse doação")
 
-        const userExists = await this.usersRepository.findById(user_id)
+
+        let userExists = JSON.parse(await this.cacheProvider.get(`user-${user_id}`)) as User
+
+        
+        if(!userExists){
+            
+            userExists = await this.usersRepository.findById(user_id)
+            
+            if (!userExists) {
+                throw new AppError("Usuário não emcontrado", 400)
+            }    
+        }
+       
+
+
        //const donorExists = await this.donorsRepository.findById(donor_id)
         const workerExists = await this.workersRepository.findById(worker_id)
 
