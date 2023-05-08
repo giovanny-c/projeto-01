@@ -25,6 +25,13 @@ class RedisCacheProvider implements ICacheProvider{
         return syncRedisDel(key)
     }
     
+
+    // async scan<T>(cursor: number, options: {type: string | Buffer, match: string}): Promise<T | undefined> {
+
+    //     const syncRedisScan = promisify(redisClient.scan).bind(redisClient)
+
+    //     return syncRedisScan(cursor, options)
+    // }
     // async get<T>(value: string): Promise<T | undefined> { //transforma a func get do redis em async
     //     const syncRedisGet = promisify(redisClient.get).bind(redisClient)
         

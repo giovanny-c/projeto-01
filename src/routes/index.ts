@@ -6,12 +6,16 @@ import { fileRoutes } from "./file.routes"
 import { loginRoutes } from "./login.routes"
 import { userRoutes } from "./user.routes"
 import { workerRoutes } from "./worker.routes"
+import { limitSessions } from "../shared/middlewares/limitSessions"
 
 
 
 const router = Router()
 
+// router.use(limitSessions)
+
 router.use(["/usuarios", "/doadores", "/funcionarios", "/instituicao"], ensureAuthenticated)
+
 
 router.use(fileRoutes)
 router.use(loginRoutes)

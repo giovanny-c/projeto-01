@@ -71,6 +71,7 @@ class ImportDonationsUseCase {
         //poe o conteudo da 1ª planilha em donations    
         return xlsx.utils.sheet_to_json(excelData.Sheets[sheet], { raw: true, dateNF: 'yyyy-mm-dd' }) as IImportDonation[]
     
+        //e se usar xlsx.stream.to_json???
         
         
 

@@ -11,7 +11,7 @@ import { DeleteNgoController } from "../modules/donations/useCases/deleteNgo/Del
 import { DeleteNgoMessageController } from "../modules/donations/useCases/deleteNgoMessage/DeleteNgoMessageController";
 import { FindAllNgosController } from "../modules/donations/useCases/findAllNgos/FindAllNgosController";
 import { GenerateBookletController } from "../modules/donations/useCases/generateBooklet/GenerateBookletController";
-import { GenerateReceiptController } from "../modules/donations/useCases/generateReceipt/GenerateReceiptController";
+// import { GenerateReceiptController } from "../modules/donations/useCases/generateReceipt/GenerateReceiptController";
 import { GetBalanceController } from "../modules/donations/useCases/getBalance/GetBalanceController";
 import { GetDonationController } from "../modules/donations/useCases/getDonation/GetDonationController";
 import { GetNgoController } from "../modules/donations/useCases/getNgo/GetNgoController";
