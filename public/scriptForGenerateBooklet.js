@@ -102,7 +102,7 @@ function warnBigFiles(event, initial, final) {
 
     if (final - initial > 100) {
 
-        alert("A operação pode demorar alguns segundos")
+        alert("A operação pode demorar alguns segundos. Não feche ou recarregue a aba.")
 
         // if (!confirmation) {
         //     event.preventDefault()
@@ -112,7 +112,7 @@ function warnBigFiles(event, initial, final) {
     }
 
     if (final - initial > 300) {
-        alert("A operação pode demorar alguns minutos")
+        alert("A operação pode demorar alguns minutos. Não feche ou recarregue a aba.")
 
         // if (!confirmation) {
         //     event.preventDefault()

@@ -14,19 +14,25 @@ class ExportDonationsUseCase {
     async execute(){
 
         try {
-            const data = [
+            // const data = 
+            
+            const workSheet = xlsx.utils.json_to_sheet([
                 {name: "Jonh", age: 25},
                 {name: "Marie", age: 23},
                 {name: "Annie", age: 22}
-            ]
-            
-            const workSheets = xlsx.utils.json_to_sheet(data)
+            ])
 
-            const file = xlsx.writeXLSX({
-                Sheets: workSheets,
-                SheetNames: ["name", "age"],
-            }, {
-                type: "buffer"
+            const workBook = xlsx.utils.book_new()
+
+            xlsx.utils.book_append_sheet(workBook, workSheet, "Donations")
+
+            console.log(workBook)
+            const file = xlsx.writeXLSX(
+               workBook
+                , {
+                type: "buffer",
+                bookType: "xlsx",
+                
             }) as Buffer
 
 
