@@ -69,7 +69,7 @@ class ImportDonationsUseCase {
         let sheet = Object.keys(excelData.Sheets)[0]
 
         //poe o conteudo da 1ª planilha em donations    
-        return xlsx.utils.sheet_to_json(excelData.Sheets[sheet], { raw: true, dateNF: 'yyyy-mm-dd' }) as IImportDonation[]
+        return xlsx.utils.sheet_to_json(excelData.Sheets[sheet], { raw: true, dateNF: 'yyyy-mm-dd', defval: null}) as IImportDonation[]
     
         //e se usar xlsx.stream.to_json??? 
         
@@ -79,27 +79,72 @@ class ImportDonationsUseCase {
 
     async validateFields(data: IImportDonation[], file_path): Promise<IImportDonation[]>{
 
+        let foundWorkers = await this.workersRepository.find()
+
+
+
         const validatedFields = data.map(async(donation, index) => {
             
+            //checka se falta alguma celula
+            //por do lado de fora como Object.keys(data[0]) ?
+            if(index === 0){
+                
+                let checkCols = [
+                    "doador",
+                    "valor",
+                    "funcionario"
+                ]
+                
+                let sheetCols = Object.keys(donation)
+
+                let missingCols = []
+
+                checkCols.forEach(column =>{
+                    
+                    if(!sheetCols.includes(column)){
+                        
+                        missingCols.push(column)
+                        
+                    }
+                    
+                })
+                
+                if(missingCols.length > 0){
+                    
+                    if(missingCols.length > 1){
+                        throw new AppError(`Adicione as seguintes colunas não encontradas: ${missingCols.join(", ")}`)
+                    }
+
+                    throw new AppError(`Adicione a seguinte coluna não encontrada: ${missingCols.join()}`)
+
+                }
+                
+
+               
+                
+            }
+
         
             // if (!data.email) throw new AppError(`Please fill the email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
             if (!donation.valor){
                 fs.unlink(file_path, (err)=> {
                     if (err) console.error(err)
                 })
-                throw new AppError(`Campo valor não encontrado`, 400)
+                throw new AppError(`Forneça um valor para a doação, na linha ${index + 2}`, 400)
             } 
             if (!donation.funcionario) {
                 fs.unlink(file_path, (err)=> {
                     if (err) console.error(err)
                 })
-                throw new AppError(`Campo funcionário não encontrado`, 400)
+                throw new AppError(`Forneça o nome de um funcionário, na linha ${index + 2}`, 400)
             }
             if (!donation.doador) {
                 fs.unlink(file_path, (err)=> {
                     if (err) console.error(err)
                 })
-                throw new AppError(`Campo doador não encontrado`, 400)
+
+    
+                throw new AppError(`Forneça um nome para o doador, na linha ${index + 2}`, 400)
             }
             // if (!this.dateProviderRepository.isValidDate(donation.created_at)) {
             //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(donation) + 1}`, 400)
@@ -121,6 +166,8 @@ class ImportDonationsUseCase {
 
             }).join(" ")
 
+            console.log(`"${donation_donor}"`)
+
 
             const donation_value = +(donation.valor)
             
@@ -129,11 +176,17 @@ class ImportDonationsUseCase {
                 throw new AppError(`O campo valor precisa ser um numero, na linha ${index + 2}`, 400)
 
             }
+            if(donation_value === 0){
+                throw new AppError(`O valor tem que ser maior que 0, na linha ${index + 2}`, 400)
+            }
 
             const worker_name = donation.funcionario.replace(/\s+$/g, "")
-            const validateWorker = await this.workersRepository.findByName(worker_name)
 
-            if(!validateWorker){
+            const worker = foundWorkers.find(worker => worker.name === worker_name)
+
+            
+
+            if(!worker){
                 throw new AppError(`Funcionário nao encontrado, na linha ${index + 2}`, 400)
             }
 
@@ -142,7 +195,7 @@ class ImportDonationsUseCase {
                 valor: donation_value,
                 doador: donation_donor,
                 funcionario: worker_name,
-                worker_id: validateWorker.id,
+                worker_id: worker.id,
             }
 
         })
