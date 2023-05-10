@@ -16,6 +16,7 @@ import { IDonationCounterRepository } from "../../repositories/IDonationCounterR
 import { Ngo } from "../../entities/ngos";
 import { getExecutionTime } from "../../../../../utils/decorators/executionTime";
 import { number } from "joi";
+import { error } from "pdf-lib";
 
 interface IRequest {
     file: Express.Multer.File
@@ -69,6 +70,7 @@ class ImportDonationsUseCase {
         let sheet = Object.keys(excelData.Sheets)[0]
 
         //poe o conteudo da 1ª planilha em donations    
+        //defval null necessario
         return xlsx.utils.sheet_to_json(excelData.Sheets[sheet], { raw: true, dateNF: 'yyyy-mm-dd', defval: null}) as IImportDonation[]
     
         //e se usar xlsx.stream.to_json??? 
@@ -150,8 +152,11 @@ class ImportDonationsUseCase {
             //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(donation) + 1}`, 400)
             // }
 
-            const donation_donor = donation.doador.split(/\s/)//separa no espaçp
-                .filter(string => string !== "")//tira caracters vazio
+            //donor
+
+
+            const donation_donor = donation.doador.split(/\s/)//separa no espaço vazio
+                .filter(string => string !== "" )//tira caracters vazio
                 .map((string, index) => { //pega a primeira letra e transforma em upper
 
                 //todas as palavras maiores que duas letras exeto dos. das. OU a primeira palavra
@@ -166,9 +171,19 @@ class ImportDonationsUseCase {
 
             }).join(" ")
 
-            console.log(`"${donation_donor}"`)
+            
+           
+            if(!donation_donor){
+
+                throw new AppError(`Forneça um nome para o doador, na linha ${index + 2}`, 400)
+
+            }
 
 
+            // se o doador for espaços vazios
+
+
+            //value
             const donation_value = +(donation.valor)
             
             if(typeof donation_value !== "number" || Number.isNaN(donation_value)){
@@ -180,11 +195,10 @@ class ImportDonationsUseCase {
                 throw new AppError(`O valor tem que ser maior que 0, na linha ${index + 2}`, 400)
             }
 
+            //worker
             const worker_name = donation.funcionario.replace(/\s+$/g, "")
 
             const worker = foundWorkers.find(worker => worker.name === worker_name)
-
-            
 
             if(!worker){
                 throw new AppError(`Funcionário nao encontrado, na linha ${index + 2}`, 400)
