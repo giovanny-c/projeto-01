@@ -15,8 +15,8 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { Ngo } from "../../entities/ngos";
 import { getExecutionTime } from "../../../../../utils/decorators/executionTime";
-import { number } from "joi";
-import { error } from "pdf-lib";
+
+
 
 interface IRequest {
     file: Express.Multer.File
@@ -34,6 +34,7 @@ interface IImportDonation {
     doador: string
     funcionario: string
     worker_id?: string
+    data: Date
     
 }
 
@@ -75,6 +76,7 @@ class ImportDonationsUseCase {
     
         //e se usar xlsx.stream.to_json??? 
         
+
         
 
     }
@@ -86,7 +88,8 @@ class ImportDonationsUseCase {
 
 
         const validatedFields = data.map(async(donation, index) => {
-            
+
+
             //checka se falta alguma celula
             //por do lado de fora como Object.keys(data[0]) ?
             if(index === 0){
@@ -94,7 +97,8 @@ class ImportDonationsUseCase {
                 let checkCols = [
                     "doador",
                     "valor",
-                    "funcionario"
+                    "funcionario",
+                    "data"
                 ]
                 
                 let sheetCols = Object.keys(donation)
@@ -126,6 +130,9 @@ class ImportDonationsUseCase {
                 
             }
 
+
+           
+
         
             // if (!data.email) throw new AppError(`Please fill the email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
             if (!donation.valor){
@@ -148,9 +155,11 @@ class ImportDonationsUseCase {
     
                 throw new AppError(`Forneça um nome para o doador, na linha ${index + 2}`, 400)
             }
-            // if (!this.dateProviderRepository.isValidDate(donation.created_at)) {
-            //     throw new AppError(`Invalid date at payed_at on line: ${object.indexOf(donation) + 1}`, 400)
-            // }
+
+            //se for numero ou nao for uma data valida mas nao for nulo
+            if (  typeof donation.data === "number" || (typeof donation.data !== "object" && !this.dateProviderRepository.isValidDate(donation.data)) ) {
+                throw new AppError(`Forneça uma data valida, na linha: ${index + 2}`, 400)
+            }
 
             //donor
 
@@ -210,6 +219,7 @@ class ImportDonationsUseCase {
                 doador: donation_donor,
                 funcionario: worker_name,
                 worker_id: worker.id,
+                data: donation.data
             }
 
         })
@@ -227,7 +237,7 @@ class ImportDonationsUseCase {
         for (const donation of validatedDionations) {
             
         
-            const created_at = this.dateProviderRepository.dateNow()
+            const created_at = donation.data || this.dateProviderRepository.dateNow()
          
             const payed_at =  this.dateProviderRepository.dateNow()
                     
