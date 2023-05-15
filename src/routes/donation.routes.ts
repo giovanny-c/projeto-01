@@ -120,11 +120,11 @@ donationRoutes.delete("/instituicao/:ngo_id/mensagens/:message_id", ensureAdmin,
 
 //gerar talao
 donationRoutes.get("/instituicao/:ngo_id/gerar-talao", ensureAdmin, handleMessage, loadGenerateBookletController.handle)
-//nao utilizada no momento
-donationRoutes.post("/instituicao/:ngo_id/gerar-talao", ensureAdmin, upload.none(), generateBookletController.handle)
+//nao utilizada no momento, ta no fileRoutes
+// donationRoutes.post("/instituicao/:ngo_id/gerar-talao", ensureAdmin, upload.none(), generateBookletController.handle)
 
 //mostrar talao
-donationRoutes.get("/instituicao/:ngo_id/talao/:year/:month/:file_name", ensureAdmin, handleMessage, loadBookletController.handle )
+// donationRoutes.get("/instituicao/:ngo_id/talao/:year/:month/:file_name", ensureAdmin, handleMessage, loadBookletController.handle )
 
 //altera numero contador de doação
 donationRoutes.get("/instituicao/:ngo_id/contador/", ensureAdmin, handleMessage, loadDonationCounterPageController.handle)

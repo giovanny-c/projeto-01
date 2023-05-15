@@ -62,7 +62,7 @@ class UpdateDonationUseCase {
 
         let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
 
-        if(!ngo.id){
+        if(!ngo || !ngo.id){
             
             ngo = await this.ngoRepository.findById(ngo_id)
 

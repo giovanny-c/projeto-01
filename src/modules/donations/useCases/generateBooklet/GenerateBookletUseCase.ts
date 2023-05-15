@@ -1,5 +1,4 @@
 import {injectable, inject} from "tsyringe"
-import { splitDate } from "../../../../../utils/splitDate";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
@@ -7,19 +6,13 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { Ngo } from "../../entities/ngos";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
+import stream from "stream"
 
 interface IRequest {
-    first_number: number
-    last_number: number
+    donation_number_interval: [number, number]
     ngo_id: string
 }
 
-interface IResponse {
-    ngo: Ngo
-    year: string
-    month: string
-    file_name: string
-}
 
 
 @injectable()
@@ -41,43 +34,56 @@ class GenerateBookletUseCase {
     }
 
 
-    async execute({first_number, last_number, ngo_id}: IRequest):Promise<IResponse>{
+    async execute({donation_number_interval, ngo_id}: IRequest){
         
-        let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
+        let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`)) as Ngo
 
-        if(!ngo.id){
+        console.log(ngo)
+        if(!ngo || !ngo.id){
             ngo =  await this.ngoRepository.findById(ngo_id)
 
             if(!ngo) throw new AppError("Instituição nao encontrada", 404)
 
         }   
-
-
-        if(last_number - first_number < 0){
-            throw new AppError("O numero inicial deve ser menor que o numero final", 400)
-        }
-
-        const donations = await this.donationsRepository.findForGenerateBooklet({
-            donation_number_interval: [first_number, last_number],
-            ngo_id
-        })  
-
-
-        const {year, month} =  this.dateProvider.splitDate(this.dateProvider.dateNow())
-        
-        try {
-            const {file_name} = await this.fileProvider.createBooklet({donations, saveFile: true})
+       
             
-            return{
-            ngo,
-            year,
-            month,
-            file_name
-            }  
-
-        } catch (error) {
-            throw new AppError("Não foi possivel criar o talão de recibos", 500)
+        if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (typeof donation_number_interval[0] !== "number" || typeof donation_number_interval[1] !== "number" )){
+            
+            throw new AppError("O numero inicial deve ser menor que o final.", 400)
         }
+        
+        const donations = await this.donationsRepository.findForGenerateBooklet({
+            donation_number_interval,
+            ngo_id
+        })
+
+        
+
+        if(!donations.length){
+            
+            throw new AppError("Nenhuma doação encontrada.", 404)
+            
+        }
+        
+        
+        const {file: pdfBytes} = await this.fileProvider.createBooklet({
+            donations, 
+            saveFile: false})
+        
+
+
+        const file = stream.Readable.from(Buffer.from(pdfBytes))
+        
+        return {
+            
+            file,
+            file_name: `${ngo.name}_${donation_number_interval[0]}__${donation_number_interval[1]}.pdf`,
+            content_type: "application/pdf"
+        
+        }
+        
+            
+       
 
          
     }

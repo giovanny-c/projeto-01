@@ -37,32 +37,32 @@ class GenerateFileUseCase {
     async execute({file, params}: IRequest): Promise<IResponse> {
 
         
-        if(file === "booklet"){
+        // if(file === "booklet"){
 
 
 
-            try {
-                const [initial, final] = params.interval.slice(0,2)
+        //     try {
+        //         const [initial, final] = params.interval.slice(0,2)
 
-                const {ngo_id} = params 
+        //         const {ngo_id} = params 
             
             
-                return await this.generateBooklet([+(initial), +(final)], ngo_id )
+        //         return await this.generateBooklet([+(initial), +(final)], ngo_id )
             
-            } catch (error) {
+        //     } catch (error) {
                 
-                return {
+        //         return {
 
-                    error:{
-                        message: error.message || error,
-                        status: error.status || 500
-                    }
+        //             error:{
+        //                 message: error.message || error,
+        //                 status: error.status || 500
+        //             }
                     
-                }
-            }
+        //         }
+        //     }
            
         
-        }   
+        // }   
 
 
         if(file === "receipt"){
@@ -146,71 +146,71 @@ class GenerateFileUseCase {
         
     }
 
-    private async generateBooklet( interval: number[], ngo_id: string ){
+    // private async generateBooklet( interval: number[], ngo_id: string ){
         
-        if(!ngo_id.match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/)){
+    //     if(!ngo_id.match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/)){
             
 
-            return {
+    //         return {
 
-                error: {
-                    message: "Tipo do id invalido.",
-                    status: 400
-                }
-            } 
-        }
+    //             error: {
+    //                 message: "Tipo do id invalido.",
+    //                 status: 400
+    //             }
+    //         } 
+    //     }
             
-        if(interval[1] - interval[0]  < 0 || (typeof interval[0] !== "number" || typeof interval[1] !== "number" )){
-            return {
-                error: {
-                    message: "O numero inicial deve ser menor que o numero final.",
-                    status: 400
-                }
-            } 
+    //     if(interval[1] - interval[0]  < 0 || (typeof interval[0] !== "number" || typeof interval[1] !== "number" )){
+    //         return {
+    //             error: {
+    //                 message: "O numero inicial deve ser menor que o numero final.",
+    //                 status: 400
+    //             }
+    //         } 
              
-        }
+    //     }
 
-        const donations = await this.donationsRepository.findForGenerateBooklet({
-            donation_number_interval: interval,
-            ngo_id: ngo_id
+    //     const donations = await this.donationsRepository.findForGenerateBooklet({
+    //         donation_number_interval: interval,
+    //         ngo_id: ngo_id
             
-        })
+    //     })
 
         
 
-        if(!donations.length){
+    //     if(!donations.length){
             
             
-            return {
-                error: {
-                    message: "Nenhuma Doação encontrada.",
-                    status: 400
-                }
-            } 
+    //         return {
+    //             error: {
+    //                 message: "Nenhuma Doação encontrada.",
+    //                 status: 400
+    //             }
+    //         } 
             
-        }
+    //     }
         
         
-        const {file: pdfBytes} = await this.fileProvider.createBooklet({
-            donations, 
-            saveFile: false})
+    //     const {file: pdfBytes} = await this.fileProvider.createBooklet({
+    //         donations, 
+    //         saveFile: false})
         
 
 
-        const readable = stream.Readable.from(Buffer.from(pdfBytes))
+    //     const readable = stream.Readable.from(Buffer.from(pdfBytes))
         
-        return {
-            response: {
-                readable,
-                file_name: `${interval[0]}__${interval[1]}.pdf`,
-                content_type: "application/pdf"
-            }
-        }
+    //     return {
+    //         response: {
+    //             readable,
+    //             file_name: `${interval[0]}__${interval[1]}.pdf`,
+    //             content_type: "application/pdf"
+    //         }
+    //     }
         
             
        
         
-    }
+    // }
     
 
 
