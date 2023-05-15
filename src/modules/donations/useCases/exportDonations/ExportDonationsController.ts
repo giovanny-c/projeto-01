@@ -34,12 +34,16 @@ class ExportDonationsController {
             ngo_id, 
             donation_number_interval })
 
-        res.set("Content-Disposition", `inline; filename=${file_name}`)
+        res.set("Content-Disposition", `attachment; filename=${file_name}`)
         // res.set('Content-Type', "application/pdf")
         res.status(201)
 
+
         file.pipe(res)
 
+        // res.on("finish", ()=> {
+        //     console.log(res)
+        // })
         
 
         
