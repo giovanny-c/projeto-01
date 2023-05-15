@@ -1,0 +1,75 @@
+{% extends "views/layout.njk" %}
+
+{% block head %}
+    
+    <title>Exportar Doações - {{ngo.name}} - Castanharo Telemarketing </title>
+
+    <link rel="stylesheet" href="/styles/donations/generate-booklet.css">
+
+{% endblock %}
+
+{% block content %}
+    
+   
+        <div class="page-title">
+            
+                {{ngo.name}}
+                
+        </div>
+
+        <div class="sub-title">
+            Exportar Doações
+        </div>
+       
+
+
+        <form class="form" id="#form" action="/instituicao/{{ngo.id}}/doacao/exportar" method="POST">
+
+         
+            
+            <div class="label"> <p>Inicio</p> </div> <div class="label"> <p>Fim</p> </div><div> </div>
+            <div class="item">
+
+                    <div>
+                        
+                    <input      
+                        type="number" name="initial_number"  placeholder="0"/>
+                    </div>
+
+            </div> 
+
+           
+            <div class="item">
+
+                    <div>
+                       
+                    <input      
+                        type="number" name="final_number"  placeholder="0"/>
+                    </div>
+
+            </div>
+            
+            <div class="button">
+                <button>Exportar</button> 
+            </div>
+               
+            
+
+        </form>
+
+
+        
+        {# <div class="download-file-div">
+            <a class="inactive"
+            id="download-btn"
+            download="{{file_name}}">Baixar
+            </a>
+        </div>
+         #}
+
+{#         
+        <a href="/instituicao/{{ngo.id}}/doacao/exportar">donations</a>
+
+        <script src="/scriptForGenerateBooklet.js"></script> #}
+    
+{% endblock %}    

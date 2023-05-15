@@ -43,6 +43,7 @@ import { UpdateNgoController } from "../modules/donations/useCases/updateNgo/Upd
 import { ensureAdmin } from "../shared/middlewares/ensureAdmin";
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated";
 import { handleMessage } from "../shared/middlewares/handleMessage";
+import { LoadExportDonationsController } from "../modules/donations/useCases/loadExportDonations/LoadExportDonationsController";
 
 
 
@@ -90,6 +91,8 @@ const deleteNgoMessageController = new DeleteNgoMessageController()
 const loadUpdateDonationController = new LoadUpdateDonationController()
 const updateDonationController = new UpdateDonationController()
 
+const loadExportDonationsController = new LoadExportDonationsController()
+
 //inicio//pagina inicial mostra todas as ongs
 donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
 
@@ -117,6 +120,7 @@ donationRoutes.delete("/instituicao/:ngo_id/mensagens/:message_id", ensureAdmin,
 
 //gerar talao
 donationRoutes.get("/instituicao/:ngo_id/gerar-talao", ensureAdmin, handleMessage, loadGenerateBookletController.handle)
+//nao utilizada no momento
 donationRoutes.post("/instituicao/:ngo_id/gerar-talao", ensureAdmin, upload.none(), generateBookletController.handle)
 
 //mostrar talao
@@ -137,8 +141,15 @@ donationRoutes.get("/instituicao/:ngo_id/doacao/listar", handleMessage, listDona
 donationRoutes.get("/instituicao/:ngo_id/doacao/importar", ensureAdmin, handleMessage, loadImportDonationsController.handle)
 donationRoutes.post("/instituicao/:ngo_id/doacao/importar", ensureAdmin, upload.single("file"), importDonationsController.handle)
 
+
+//exportar
+donationRoutes.get("/instituicao/:ngo_id/doacao/exportar", ensureAuthenticated, ensureAdmin, handleMessage, loadExportDonationsController.handle)
+
+
+
 //pegar doaçao
 donationRoutes.get("/instituicao/:ngo_id/doacao/ultima", ensureAdmin, handleMessage, getDonationController.handle)
+//nao pega mais o file
 donationRoutes.get("/instituicao/:ngo_id/doacao/:donation_number", ensureAdmin, handleMessage, getDonationController.handle)
 
 //atualizar doação

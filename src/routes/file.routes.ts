@@ -17,9 +17,16 @@ const exportDonationsController = new ExportDonationsController()
 const fileRoutes = Router()
 
 //testat sem handleMessage
+//stream de files do tmp ou examples
 fileRoutes.get("/file", ensureAuthenticated, ensureAdmin, handleMessage, streamFileController.handle)
+
+//gera o recibo
 fileRoutes.get("/file/generate/:file", ensureAuthenticated, ensureAdmin, handleMessage, generateFileController.handle)
+
+//gera o talao
 fileRoutes.post("/file/generate/:file", ensureAuthenticated, ensureAdmin, handleMessage, generateFileController.handle)
-fileRoutes.get("/file/donations", ensureAuthenticated, ensureAdmin, handleMessage, exportDonationsController.handle)
+
+//gera o export de doaçoes em xlsx.
+fileRoutes.post("/instituicao/:ngo_id/doacao/exportar", ensureAuthenticated, ensureAdmin, handleMessage, exportDonationsController.handle)
 
 export {fileRoutes}

@@ -1,9 +1,12 @@
-import { createWriteStream } from "fs";
 import { inject, injectable } from "tsyringe";
 import * as xlsx from "xlsx"
 import stream from "stream"
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
-import { Index } from "typeorm";
+
+interface IRequest {
+    ngo_id: string
+    donation_number_interval: [number, number]
+}
 
 
 @injectable()
@@ -16,19 +19,19 @@ class ExportDonationsUseCase {
 
     }
 
-    async execute(){
+    async execute({donation_number_interval,ngo_id }: IRequest){
 
         try {
+
+            
             
         // pegar do front dps
-            const body = {
-                dni: [1000,1100],
-                ni: "9a543ae0-6ea2-4eef-b3de-623ad77af6ed"
-            }
+        
+            
 
             const donations = await Promise.all(
                 (await this.donationsRepository.findForGenerateBooklet({
-                    donation_number_interval: body.dni, ngo_id: body.ni
+                    donation_number_interval, ngo_id
                 })).map( (donation) => {
                     
                     return {
@@ -46,27 +49,32 @@ class ExportDonationsUseCase {
                 })
             ) 
             
+            
             const workSheet = xlsx.utils.json_to_sheet(donations, {
                 dateNF: "dd/mm/yyyy",
                 
             })
-
+            
             const workBook = xlsx.utils.book_new()
 
             xlsx.utils.book_append_sheet(workBook, workSheet, "Doações")
 
+            const file_name = `${donations[0].instituicao}-doações-${donation_number_interval[0]}-${donation_number_interval[1]}.xlsx`
             
             const file = xlsx.writeXLSX(
                workBook
-                , {
-                type: "buffer",
-                bookType: "xlsx",
-                
+               , {
+                   type: "buffer",
+                   bookType: "xlsx",
+                   
             }) as Buffer
+            
 
-
-            return stream.Readable.from(file)
-                
+            return{ 
+                file: stream.Readable.from(file),
+                file_name
+            }
+            
         } catch (error) {
             console.error(error)
         }
