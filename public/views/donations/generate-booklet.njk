@@ -25,7 +25,7 @@
         </div>
 
 
-        <form class="form" id="#form" action="/instituicao/{{ngo.id}}/gerar-talao" method="POST">
+        <form class="form" id="#form" >
 
             <input type="hidden" name="ngo_id" value="{{ngo.id}}">
 
@@ -53,24 +53,21 @@
             </div>
             
             <div class="button">
-                <button 
-                {# type="button"
-                    onclick="warnBigFiles(
+                <button               
+                type="button"
+                onclick="warnBigFiles(
                             event,
                             document.querySelector(`input[name='first_number']`).value,
                             document.querySelector(`input[name='last_number']`).value
                 );
                 fetchGenerateBooklet(
-                'booklet',
-                {
-                interval: [
-                    document.querySelector(`input[name='first_number']`).value,
-                    document.querySelector(`input[name='last_number']`).value
-                ],
-                ngo_id: document.querySelector(`input[name='ngo_id']`).value
-                },
-                document.querySelector('#download-btn')
-                );" #}
+                    '{{ngo.id}}',
+                    {
+                    initial_number: document.querySelector(`input[name='first_number']`).value,
+                    final_number: document.querySelector(`input[name='last_number']`).value
+                    },
+                    document.querySelector('#download-btn')
+                );"
                 >Gerar</button> 
             </div>
                
@@ -88,7 +85,10 @@
         </div>
         
 
-        
+        <script src="/scriptForGenerateBooklet.js"></script>
+
+
+  
 
         {# <script src="/scriptForGenerateBooklet.js"></script> #}
 

@@ -6,12 +6,14 @@
 
 // disable()
 
-async function fetchGenerateBooklet(file, params, tag) {
+
+//refazer com a rota nova
+async function fetchGenerateBooklet(ngo_id, params, tag) {
 
 
     var button = document.querySelector("button")
 
-    console.log(button)
+
 
     button.disabled = true
     button.style.cursor = "default"
@@ -26,11 +28,12 @@ async function fetchGenerateBooklet(file, params, tag) {
 
     try {
 
-        const [ini, fin] = params.interval.slice(0, 2)
+        const { initial_number, final_number } = params
 
-        if (fin - ini < 0) {
-            tag.className = "download-error"
-            tag.innerHTML = "O numero Inicial deve ser menor que o numero final."
+        if (final_number - initial_number < 0) {
+            tag.className = "messages error"
+            tag.innerHTML = "Erro: O numero Inicial deve ser menor que o numero final."
+            tag.fontstyle = "default"
             tag.removeAttribute("href")
 
             button.disabled = false
@@ -40,7 +43,8 @@ async function fetchGenerateBooklet(file, params, tag) {
         }
 
 
-        const response = await fetch(`/file/generate/${file}`, {
+
+        const response = await fetch(`/instituicao/${ngo_id}/gerar-talao`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -53,7 +57,7 @@ async function fetchGenerateBooklet(file, params, tag) {
             const error = await response.text()
 
 
-            tag.className = "download-error"
+            tag.className = "messages error"
             tag.removeAttribute("href")
             tag.innerHTML = error || "Erro ao gerar arquivo"
 
@@ -61,12 +65,16 @@ async function fetchGenerateBooklet(file, params, tag) {
 
         }
 
+        if (response.status !== 201) {
+            console.log(response)
+        }
+
         if (response.status === 201) {
 
             const blob = await response.blob()
             const fileUrl = URL.createObjectURL(blob)
 
-            const file_name = ini + "__" + fin + ".pdf"
+            const file_name = initial_number + "__" + final_number + ".pdf"
 
             tag.className = "download-file"
             tag.innerHTML = "Baixar"
@@ -83,9 +91,9 @@ async function fetchGenerateBooklet(file, params, tag) {
 
 
         console.error(err)
-        tag.className = "download-error"
+        tag.className = "messages error"
         tag.removeAttribute("href")
-        tag.innerHTML = err || "Erro ao gerar o arquivo."
+        tag.innerHTML = err || "Erro: Erro ao gerar o arquivo."
 
         button.disabled = false
         button.style.cursor = "pointer"
@@ -121,6 +129,10 @@ function warnBigFiles(event, initial, final) {
         return
     }
 }
+
+
+
+
 
 //pegar do template dps
 

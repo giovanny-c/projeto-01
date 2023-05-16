@@ -38,7 +38,7 @@ class GenerateBookletUseCase {
         
         let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`)) as Ngo
 
-        console.log(ngo)
+        
         if(!ngo || !ngo.id){
             ngo =  await this.ngoRepository.findById(ngo_id)
 
@@ -46,8 +46,7 @@ class GenerateBookletUseCase {
 
         }   
        
-            
-        if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (typeof donation_number_interval[0] !== "number" || typeof donation_number_interval[1] !== "number" )){
+        if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (isNaN(donation_number_interval[0])  ||  isNaN(donation_number_interval[1]) )){
             
             throw new AppError("O numero inicial deve ser menor que o final.", 400)
         }
@@ -73,6 +72,8 @@ class GenerateBookletUseCase {
 
 
         const file = stream.Readable.from(Buffer.from(pdfBytes))
+
+        
         
         return {
             
