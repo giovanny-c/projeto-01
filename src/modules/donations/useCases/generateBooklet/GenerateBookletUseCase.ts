@@ -7,6 +7,7 @@ import { Ngo } from "../../entities/ngos";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import stream from "stream"
+import { Donation } from "../../entities/donation";
 
 interface IRequest {
     donation_number_interval: [number, number]
@@ -36,51 +37,72 @@ class GenerateBookletUseCase {
 
     async execute({donation_number_interval, ngo_id}: IRequest){
         
-        let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`)) as Ngo
-
-        
-        if(!ngo || !ngo.id){
-            ngo =  await this.ngoRepository.findById(ngo_id)
-
-            if(!ngo) throw new AppError("Instituição nao encontrada", 404)
-
-        }   
+        try {
+            
+            
+           
        
-        if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (isNaN(donation_number_interval[0])  ||  isNaN(donation_number_interval[1]) )){
+            let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`)) as Ngo
+
             
-            throw new AppError("O numero inicial deve ser menor que o final.", 400)
-        }
-        
-        const donations = await this.donationsRepository.findForGenerateBooklet({
-            donation_number_interval,
-            ngo_id
-        })
 
-        
+            //esta encontrando o ngo mesmo passando ele errado
+            //parece que esta executando a rota duas vezes (pelo front?)
+            //na segunda manda o ngo_id certo
+            if(!ngo || !ngo.id){
+                ngo =  await this.ngoRepository.findById(ngo_id)
 
-        if(!donations.length){
+                
+
+                if(!ngo) throw new AppError("Instituição nao encontrada", 404)
+
+            }   
+        
+            if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (isNaN(donation_number_interval[0])  ||  isNaN(donation_number_interval[1]) )){
+                
+                throw new AppError("O numero inicial deve ser menor que o final.", 400)
+            }
             
-            throw new AppError("Nenhuma doação encontrada.", 404)
             
-        }
-        
-        
-        const {file: pdfBytes} = await this.fileProvider.createBooklet({
-            donations, 
-            saveFile: false})
-        
-
-
-        const file = stream.Readable.from(Buffer.from(pdfBytes))
-
-        
-        
-        return {
             
-            file,
-            file_name: `${ngo.name}_${donation_number_interval[0]}__${donation_number_interval[1]}.pdf`,
-            content_type: "application/pdf"
-        
+            const donations = await this.donationsRepository.findForGenerateBooklet({
+                donation_number_interval,
+                ngo_id: ngo.id
+            })
+            
+
+            
+            
+
+            if(!donations.length){
+                
+                throw new AppError("Nenhuma doação encontrada.", 404)
+                
+            }
+            
+            
+
+            const {file: pdfBytes} = await this.fileProvider.createBooklet({
+                donations, 
+                saveFile: false})
+            
+
+
+            const file = stream.Readable.from(Buffer.from(pdfBytes))
+
+            
+            
+            return {
+                
+                file,
+                file_name: `${ngo.name}_${donation_number_interval[0]}__${donation_number_interval[1]}.pdf`,
+                content_type: "application/pdf"
+            
+            }
+
+        } catch (error) {
+            
+            throw new AppError(error.message || "Não foi posivel gerar o arquivo", error.statusCode || 500)
         }
         
             

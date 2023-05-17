@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 
 import { container } from "tsyringe";
 import { GenerateBookletUseCase } from "./GenerateBookletUseCase";
-import { AppError } from "../../../../shared/errors/AppError";
 
 
 class GenerateBookletController {
@@ -34,7 +33,10 @@ class GenerateBookletController {
         } catch (error) {
 
             console.error(error)
-            throw new AppError("Um erro aconteceu a gerar o arquivo", 500)  
+
+            res.status(error.statusCode || 500)
+            res.send(error.message || error)
+            // throw new AppError("Um erro aconteceu a gerar o arquivo", 500)  
             
         }
         

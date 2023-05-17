@@ -10,38 +10,30 @@
 //refazer com a rota nova
 async function fetchGenerateBooklet(ngo_id, params, tag) {
 
-
     var button = document.querySelector("button")
-
-
 
     button.disabled = true
     button.style.cursor = "default"
-
 
 
     tag.className = "download-wait"
     tag.innerHTML = "Gerando arquivo"
     tag.removeAttribute("href")
 
-
-
     try {
 
-        const { initial_number, final_number } = params
+        // if (final_number - initial_number < 0 || (isNaN(initial_number) || isNaN(final_number))) {
+        //     tag.className = "messages error"
+        //     tag.innerHTML = "O numero Inicial deve ser menor que o numero final."
+        //     tag.fontstyle = "default"
+        //     tag.removeAttribute("href")
 
-        if (final_number - initial_number < 0) {
-            tag.className = "messages error"
-            tag.innerHTML = "Erro: O numero Inicial deve ser menor que o numero final."
-            tag.fontstyle = "default"
-            tag.removeAttribute("href")
+        //     button.disabled = false
+        //     button.style.cursor = "pointer"
 
-            button.disabled = false
-            button.style.cursor = "pointer"
 
-            return
-        }
-
+        //     return
+        // }
 
 
         const response = await fetch(`/instituicao/${ngo_id}/gerar-talao`, {
@@ -53,28 +45,26 @@ async function fetchGenerateBooklet(ngo_id, params, tag) {
             body: JSON.stringify(params)
         })
 
-        if (!response.ok) {
-            const error = await response.text()
 
+
+
+        if (!response.ok) {// tudo que tiver status 4** ou 5**
+            const error = await response.text()
 
             tag.className = "messages error"
             tag.removeAttribute("href")
             tag.innerHTML = error || "Erro ao gerar arquivo"
 
-
-
-        }
-
-        if (response.status !== 201) {
-            console.log(response)
         }
 
         if (response.status === 201) {
 
+            const file_name = response.headers.get("content-disposition").split("=")[1]
+            //e pegar os headers para o nome
             const blob = await response.blob()
             const fileUrl = URL.createObjectURL(blob)
 
-            const file_name = initial_number + "__" + final_number + ".pdf"
+            // const file_name = initial_number + "__" + final_number + ".pdf"
 
             tag.className = "download-file"
             tag.innerHTML = "Baixar"
@@ -87,13 +77,12 @@ async function fetchGenerateBooklet(ngo_id, params, tag) {
 
 
     } catch (err) {
-        //o mesmo que response.ok
-
+        //o mesmo que !response.ok
 
         console.error(err)
         tag.className = "messages error"
         tag.removeAttribute("href")
-        tag.innerHTML = err || "Erro: Erro ao gerar o arquivo."
+        tag.innerHTML = err || "Erro ao gerar o arquivo."
 
         button.disabled = false
         button.style.cursor = "pointer"
