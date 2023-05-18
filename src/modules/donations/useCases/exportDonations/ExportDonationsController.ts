@@ -9,42 +9,35 @@ class ExportDonationsController {
 
 
     async handle(req: Request, res: Response){
-
-        const {ngo_id} = req.params 
-
-        let donation_number_interval
-
-        // if(req.query){
-        //     const {initial_number, final_number} = req.query
-
-        //     donation_number_interval = [+(initial_number), +(final_number)]
-        // }
-
-        // if(req.body){
-
-        const {initial_number, final_number} = req.body
         
-        donation_number_interval = [+(initial_number), +(final_number)]
-        // }
+        try {
+            const {ngo_id} = req.params 
 
+            const {initial_number, final_number} = req.body
+            
+            const ExportDonations = container.resolve(ExportDonationsUseCase)
 
-        const ExportDonations = container.resolve(ExportDonationsUseCase)
-
-        const {file, file_name} = await ExportDonations.execute({
-            ngo_id, 
-            donation_number_interval })
-
-        res.set("Content-Disposition", `attachment; filename=${file_name}`)
-        // res.set('Content-Type', "application/pdf")
-        res.status(201)
-
-
-        file.pipe(res)
-
-        // res.on("finish", ()=> {
-        //     console.log(res)
-        // })
         
+        
+            const {file, file_name} = await ExportDonations.execute({
+                ngo_id, 
+                donation_number_interval: [+(initial_number), +(final_number)]})
+
+            res.set("Content-Disposition", `inline; filename=${file_name}`)
+            res.status(201)
+
+
+            file.pipe(res)
+
+        } catch (error) {
+            
+
+            console.error(error)
+
+            res.status(error.statusCode || 500)
+            res.send(error.message || error)
+
+        }
 
         
 

@@ -44,11 +44,6 @@ class GenerateBookletUseCase {
        
             let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`)) as Ngo
 
-            
-
-            //esta encontrando o ngo mesmo passando ele errado
-            //parece que esta executando a rota duas vezes (pelo front?)
-            //na segunda manda o ngo_id certo
             if(!ngo || !ngo.id){
                 ngo =  await this.ngoRepository.findById(ngo_id)
 
@@ -69,9 +64,6 @@ class GenerateBookletUseCase {
                 donation_number_interval,
                 ngo_id: ngo.id
             })
-            
-
-            
             
 
             if(!donations.length){

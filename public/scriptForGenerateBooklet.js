@@ -35,7 +35,6 @@ async function fetchGenerateBooklet(ngo_id, params, tag) {
         //     return
         // }
 
-
         const response = await fetch(`/instituicao/${ngo_id}/gerar-talao`, {
             method: "POST",
             headers: {
@@ -45,15 +44,17 @@ async function fetchGenerateBooklet(ngo_id, params, tag) {
             body: JSON.stringify(params)
         })
 
-
-
-
         if (!response.ok) {// tudo que tiver status 4** ou 5**
             const error = await response.text()
 
             tag.className = "messages error"
             tag.removeAttribute("href")
             tag.innerHTML = error || "Erro ao gerar arquivo"
+
+            button.disabled = false
+            button.style.cursor = "pointer"
+
+            return
 
         }
 
@@ -74,6 +75,11 @@ async function fetchGenerateBooklet(ngo_id, params, tag) {
 
         }
 
+        button.disabled = false
+        button.style.cursor = "pointer"
+
+        return
+
 
 
     } catch (err) {
@@ -88,10 +94,7 @@ async function fetchGenerateBooklet(ngo_id, params, tag) {
         button.style.cursor = "pointer"
     }
 
-    button.disabled = false
-    button.style.cursor = "pointer"
 
-    return
 
 }
 

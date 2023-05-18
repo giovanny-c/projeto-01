@@ -23,12 +23,10 @@
        
 
 
-        <form class="form" id="#form" ]
-        action="/instituicao/{{ngo.id}}/doacao/exportar" method="POST"
-         
-        >
+ <form class="form" id="#form">
 
-         
+            {# <input type="hidden" name="ngo_id" value="{{ngo.id}}"> #}
+
             
             <div class="label"> <p>Inicio</p> </div> <div class="label"> <p>Fim</p> </div><div> </div>
             <div class="item">
@@ -53,20 +51,46 @@
             </div>
             
             <div class="button">
-                <button>Exportar</button> 
+                <button               
+                type="button"
+                onclick="warnBigFiles(
+                            event,
+                            document.querySelector(`input[name='initial_number']`).value,
+                            document.querySelector(`input[name='final_number']`).value
+                );
+                fetchExportDonations(
+                    '{{ngo.id}}',
+                    {
+                    initial_number: document.querySelector(`input[name='initial_number']`).value,
+                    final_number: document.querySelector(`input[name='final_number']`).value
+                    },
+                    document.querySelector('#download-btn')
+                );"
+                >Exportar</button>  
             </div>
                
             
 
         </form>
 
+
         
-        {# fazer o botao ficar inativo até o download começar #}
+        <div class="download-file-div">
+            <a class="inactive"
+            id="download-btn"
+            download="{{file_name}}">Baixar
+            </a>
+        </div>
+        
+        
+     
+        
+
+        <script src="/scriptForExportDonations.js"></script>
+        
+        
 
        
-{#         
-        <a href="/instituicao/{{ngo.id}}/doacao/exportar">donations</a>
 
-        <script src="/scriptForGenerateBooklet.js"></script> #}
     
 {% endblock %}    

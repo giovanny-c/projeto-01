@@ -4,6 +4,9 @@ import stream from "stream"
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { AppError } from "../../../../shared/errors/AppError";
 import { error } from "pdf-lib";
+import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
+import { INgoRepository } from "../../repositories/INgoRepository";
+import { Ngo } from "../../entities/ngos";
 
 interface IRequest {
     ngo_id: string
@@ -17,48 +20,68 @@ class ExportDonationsUseCase {
     constructor(
         @inject("DonationsRepository")
         private donationsRepository: IDonationsRepository,
+        @inject("CacheProvider")
+        private cacheProvider: ICacheProvider,
+        @inject("NgoRepository")
+        private ngoRepository: INgoRepository,
     ){
 
     }
 
     async execute({donation_number_interval,ngo_id }: IRequest){
 
-       
 
-
-        if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (typeof donation_number_interval[0] !== "number" || typeof donation_number_interval[1] !== "number" )){
-            
-            throw new AppError("O numero inicial deve ser menor que o final.", 400)
-        }
-        
-        const donations = await Promise.all(
-            (await this.donationsRepository.findForGenerateBooklet({
-                donation_number_interval, ngo_id
-            })).map( (donation) => {
-                
-                return {
-                    instituicao: donation.ngo?.name || null,
-                    numero: donation.donation_number || null,
-                    valor: donation.donation_value || null,
-                    doador: donation.donor_name || null,
-                    funcionario: donation.worker?.name || null,
-                    data: donation.created_at || null, //como a data vai sair?
-                    data_de_criacao: donation.payed_at || null,
-                    cancelada: donation.is_donation_canceled ? "SIM" : "NÃO",
-                    email_enviado: donation.is_email_sent ? "SIM" : "NÃO"
-
-                }
-            })
-        ).catch(error => {
-            console.error(error)
-            throw new AppError("Erro ao procurar doações", 500)
-        })
-
-        if(donations.length <= 0 ){
-            throw new AppError("Nenhuma doação encontrada.", 404)
-        }
-            
         try {
+
+
+            let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`)) as Ngo
+
+            if(!ngo || !ngo.id){
+                ngo =  await this.ngoRepository.findById(ngo_id)
+
+                
+
+                if(!ngo) throw new AppError("Instituição nao encontrada", 404)
+
+            }   
+
+            if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (isNaN(donation_number_interval[0])  ||  isNaN(donation_number_interval[1]) )){
+                
+                throw new AppError("O numero inicial deve ser menor que o final.", 400)
+            }
+            
+
+
+            const donations = await Promise.all(
+                (await this.donationsRepository.findForGenerateBooklet({
+                    donation_number_interval, ngo_id
+                })).map( (donation) => {
+                    
+                    return {
+                        instituicao: donation.ngo?.name || null,
+                        numero: donation.donation_number || null,
+                        valor: donation.donation_value || null,
+                        doador: donation.donor_name || null,
+                        funcionario: donation.worker?.name || null,
+                        data: donation.created_at || null, //como a data vai sair?
+                        data_de_criacao: donation.payed_at || null,
+                        cancelada: donation.is_donation_canceled ? "SIM" : "NÃO",
+                        email_enviado: donation.is_email_sent ? "SIM" : "NÃO"
+
+                    }
+                })
+            ).catch(error => {
+                console.error(error)
+                throw new AppError("Erro ao procurar doações", 500)
+            })
+
+            if(donations.length <= 0 ){
+                throw new AppError("Nenhuma doação encontrada.", 404)
+            }
+                
+
+
+        
             const workSheet = xlsx.utils.json_to_sheet(donations, {
                 dateNF: "dd/mm/yyyy",
                 
@@ -71,11 +94,11 @@ class ExportDonationsUseCase {
             const file_name = `${donations[0].instituicao}-doações-${donation_number_interval[0]}-${donation_number_interval[1]}.xlsx`
             
             const file = xlsx.writeXLSX(
-               workBook
-               , {
-                   type: "buffer",
-                   bookType: "xlsx",
-                   
+            workBook
+            , {
+                type: "buffer",
+                bookType: "xlsx",
+                
             }) as Buffer
             
 
@@ -83,11 +106,11 @@ class ExportDonationsUseCase {
                 file: stream.Readable.from(file),
                 file_name
             }
-            
+                
         } catch (error) {
 
-            console.error(error)
-            throw new AppError(`Não foi possivel exportar as doações.`, 500)
+            
+            throw new AppError(error.message || "Não foi posivel gerar o arquivo", error.statusCode || 500)
         }
 
     }
