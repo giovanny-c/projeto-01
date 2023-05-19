@@ -17,8 +17,10 @@ class ImportDonorsUseCase{
         @inject("DonorsRepository")
         private donorsRepository: IDonorsRepository) { }
 
-    loadDonors(file: Express.Multer.File): Promise<IImportDonors[]>{
+    async loadDonors(file: Express.Multer.File): Promise<IImportDonors[]>{
 
+        
+        
         return new Promise((resolve, reject) => {
 
             
@@ -33,6 +35,7 @@ class ImportDonorsUseCase{
 
             parseFile.on("data", async(line) => {
 
+               
                 const [first_name, last_name, middle_name, ] = line
                 
                 let email = line.find( value => value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/))//filtar até por qual.quer_e-mail@ser.edu.com.br
@@ -60,7 +63,14 @@ class ImportDonorsUseCase{
 
                 fs.promises.unlink(file.path)
 
-                reject(err)
+                
+                
+                const error = {
+                    message: err.message,
+                    //  `Erro na linha ${err.message.match(/((?!lines: )\d+)/)}, coluna ${err.message.match(/((?!column: )\d+)/)}.`,
+                    statusCode: 404
+                }
+                reject(error)
                 
             })
         
@@ -68,43 +78,47 @@ class ImportDonorsUseCase{
         })
 
 
+        
     }
 
     async execute(file: Express.Multer.File , user_id: string){
 //e colocar o import por .xlsx tbm
-        if(!file) throw new AppError("Nenhum arquivo enviado")
         
-        let donors
         try {
             
-            donors = await this.loadDonors(file)
-       
+            if(!file) throw new AppError("Nenhum arquivo enviado")
         
-        } catch (error) {
-            console.error(error)
-            throw new AppError("Não foi possivel ler o arquivo")
-        }
+            let donors = await this.loadDonors(file)
+       
+            console.log(donors)
+        
 
-        donors.map( async donor => {
+            donors.map( async donor => {
 
-            const {name, email, phone} = donor
+            
+                const {name, email, phone} = donor
 
-            if(!email){
-                return
-            }
+                if(!email){
+                    return
+                }
 
-            const donorExists = await this.donorsRepository.findByEmail(email)
+                const donorExists = await this.donorsRepository.findByEmail(email)
 
-            if(!donorExists){
-                await this.donorsRepository.create({
-                    name, email, phone, user_id
-                })
-            }
+                //criar o donor se o email nao existir
+                if(!donorExists){
+                    await this.donorsRepository.create({
+                        name, email, phone, user_id
+                    })
+                }
 
-        })
+            })
 
         return
-    
+        
+        } catch (error) {
+                console.error(error)
+                throw new AppError(error.message || "Não foi possivel ler o arquivo", error.statusCode || error.status || 500)
+        }
         
     }
 

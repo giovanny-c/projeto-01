@@ -3,7 +3,7 @@
 
 async function fetchExportDonations(ngo_id, params, tag) {
 
-    console.log("vai")
+
 
     var button = document.querySelector("button")
 
