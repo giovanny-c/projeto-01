@@ -35,9 +35,15 @@ interface IImportDonation {
     valor: number
     doador: string
     funcionario: string
-    worker_id?: string
     data: Date
-    
+}
+
+interface IValidatedFields  {
+    donation_value: number
+    donor_name: string
+    worker_name: string
+    worker_id: string
+    date: Date
 }
 
 
@@ -66,7 +72,7 @@ class ImportDonationsUseCase {
     }
 
 
-    async validateFields(data: IImportDonation[], file_path): Promise<IImportDonation[]>{
+    async validateFields(data: IImportDonation[]): Promise<IValidatedFields[]>{
 
         let foundWorkers = await this.workersRepository.find()
 
@@ -115,28 +121,18 @@ class ImportDonationsUseCase {
             }
 
 
-           
 
-        
             // if (!data.email) throw new AppError(`Please fill the email field at line ${object.indexOf(data) + 1}`, 400) //testar se o erro ta na linha certa
             if (!donation.valor){
-                fs.unlink(file_path, (err)=> {
-                    if (err) console.error(err)
-                })
+                
                 throw new AppError(`Forneça um valor para a doação, na linha ${index + 2}`, 400)
             } 
             if (!donation.funcionario) {
-                fs.unlink(file_path, (err)=> {
-                    if (err) console.error(err)
-                })
+              
                 throw new AppError(`Forneça o nome de um funcionário, na linha ${index + 2}`, 400)
             }
             if (!donation.doador) {
-                fs.unlink(file_path, (err)=> {
-                    if (err) console.error(err)
-                })
-
-    
+ 
                 throw new AppError(`Forneça um nome para o doador, na linha ${index + 2}`, 400)
             }
 
@@ -146,7 +142,6 @@ class ImportDonationsUseCase {
             }
 
             //donor
-
 
             const donation_donor = donation.doador.split(/\s/)//separa no espaço vazio
                 .filter(string => string !== "" )//tira caracters vazio
@@ -172,9 +167,7 @@ class ImportDonationsUseCase {
 
             }
 
-
             // se o doador for espaços vazios
-
 
             //value
             const donation_value = +(donation.valor)
@@ -197,13 +190,12 @@ class ImportDonationsUseCase {
                 throw new AppError(`Funcionário nao encontrado, na linha ${index + 2}`, 400)
             }
 
-
             return {
-                valor: donation_value,
-                doador: donation_donor,
-                funcionario: worker_name,
+                donation_value,
+                donor_name: donation_donor,
+                worker_name: worker_name,
                 worker_id: worker.id,
-                data: donation.data
+                date: donation.data
             }
 
         })
@@ -215,17 +207,18 @@ class ImportDonationsUseCase {
     async proccessDonations(donations: IImportDonation[], user_id: string, ngo_id, file_path: string): Promise<void | string> {
         
 
-        const validatedDionations = await this.validateFields(donations, file_path)
+        const validatedDonations = await this.validateFields(donations)
 
             
-        for (const donation of validatedDionations) {
+        for (const donation of validatedDonations) {
             
-        
-            const created_at = donation.data || this.dateProviderRepository.dateNow()
-         
-            const payed_at =  this.dateProviderRepository.dateNow()
-                    
             try {
+            
+                const created_at = donation.date || this.dateProviderRepository.dateNow()
+            
+                const payed_at =  this.dateProviderRepository.dateNow()
+                    
+            
 
                 
                 let {donation_number} = await this.donationCounterRepository.findByNgoId(ngo_id)
@@ -234,8 +227,8 @@ class ImportDonationsUseCase {
                 await this.donationsRepository.create({
 
                     donation_number,
-                    donation_value: donation.valor,
-                    donor_name: donation.doador,
+                    donation_value: donation.donation_value,
+                    donor_name: donation.donor_name,
                     user_id: user_id,
                     worker_id: donation.worker_id || null,
                     created_at,
@@ -255,7 +248,7 @@ class ImportDonationsUseCase {
 
                 
                 console.error(err)
-                throw new AppError(`Nao foi possivel importar doação. Na linha: ${donations.indexOf(donation) + 2}`)
+                throw new AppError(`Nao foi possivel importar as doações. Na linha: ${validatedDonations.indexOf(donation) + 2}`)
                 //return `It was not possible to create donations. Error: ${err} | on: ${object.indexOf(data) + 1}`
             }
 
@@ -264,47 +257,50 @@ class ImportDonationsUseCase {
     }
 
 
-
-
     async execute({file, user_id ,ngo_id}: IRequest): Promise<IResponse> {
 
-        if(!file) throw new AppError("Nenhum arquivo enviado")
-
-        
-        const ngoExistis = await this.ngoRepository.findById(ngo_id)
-
-        if(!ngoExistis){
-            fs.unlink(file.path, (err)=> {
-                if (err) console.error(err)
-            })
-            throw new AppError("Essa instituiçao nao existe", 400)
-        }
-    
         try {
+            
+            if(!file) throw new AppError("Nenhum arquivo enviado")
 
-            const donations = this.xlsxParserProvider.xlsxToObject<IImportDonation[]>(file, {
+            
+            const ngoExistis = await this.ngoRepository.findById(ngo_id)
+
+            if(!ngoExistis){
+                throw new AppError("Essa instituiçao nao existe", 400)
+            }
+    
+
+            const donations = this.xlsxParserProvider.xlsxToObject<IImportDonation>(file, {
                 parsingOptions: { cellDates: true },
                 xlsxToObjectOptions: { raw: true, dateNF: 'yyyy-mm-dd', defval: null}
             })
 
+            
+
             await this.proccessDonations(donations, user_id, ngo_id, file.path)
             
-        } catch (error) {
+            //deleta o file depois do load
             fs.unlink(file.path, (err)=> {
-                    if (err) console.error(err)
-                })
+                if (err) console.error(err)
+            })
             
-            throw new AppError(error.message, error.status)
+            return {
+                ngo: ngoExistis
+            }
+        
+        } catch (error) {
+            //deleta o file se der erro
+            fs.unlink(file.path, (err)=> {
+                if (err) console.error(err)
+            })
+
+            console.error(error)
+            throw new AppError(error.message || "Não foi possível importar as doações", error.statusCoder || 500)
         }
 
 
-        fs.unlink(file.path, (err)=> {
-            if (err) console.error(err)
-        })
-
-        return {
-            ngo: ngoExistis
-        }
+       
 
 
     }

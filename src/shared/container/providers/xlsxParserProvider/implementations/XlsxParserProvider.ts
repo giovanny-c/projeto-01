@@ -4,28 +4,28 @@ import { IXlsxParserProvider, xlsxToObjectOptions } from "../IXlsxParserProvider
 
 class XlsxParserProvider implements IXlsxParserProvider {
 
-    xlsxToObject<T>(file: Express.Multer.File, options: xlsxToObjectOptions): T {
+    xlsxToObject<TObject>(file: Express.Multer.File, options: xlsxToObjectOptions): TObject[] {
         
 
-          const {parsingOptions, xlsxToObjectOptions} = options
+        const {parsingOptions, xlsxToObjectOptions} = options
 
 
-          //file.path
-          const excelData = xlsx.readFile(file.path, parsingOptions) //diskstorage
+        //file.path
+        const excelData = xlsx.readFile(file.path, parsingOptions) //diskstorage
 
-          //pega o nome da primeira planilha
-          let sheet = Object.keys(excelData.Sheets)[0]
-  
-          //poe o conteudo da 1ª planilha em donations    
-          //defval null necessario
-          return xlsx.utils.sheet_to_json(excelData.Sheets[sheet], xlsxToObjectOptions) as T
-      
-          //e se usar xlsx.stream.to_json??? 
+        //pega o nome da primeira planilha
+        let sheet = Object.keys(excelData.Sheets)[0]
+
+        //poe o conteudo da 1ª planilha em donations    
+        //defval null necessario
+        return xlsx.utils.sheet_to_json(excelData.Sheets[sheet], xlsxToObjectOptions) as TObject[]
+    
+        //e se usar xlsx.stream.to_json??? 
           
   
     }
     
-    objectToXlsx<T>(data: T[], options: xlsx.JSON2SheetOpts, sheetName: string): Buffer {
+    objectToXlsx<TObject>(data: TObject[], options: xlsx.JSON2SheetOpts, sheetName: string): Buffer {
          
         const workSheet = xlsx.utils.json_to_sheet(data, options)
 

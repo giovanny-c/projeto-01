@@ -9,9 +9,9 @@ interface  xlsxToObjectOptions {
 
 interface IXlsxParserProvider {
 
-    xlsxToObject<T>(file: Express.Multer.File, options: xlsxToObjectOptions ): T 
+    xlsxToObject<TObject>(file: Express.Multer.File, options: xlsxToObjectOptions ): TObject[] 
 
-    objectToXlsx<T>( data: T[], options: xlsx.JSON2SheetOpts, sheetName: string): Buffer
+    objectToXlsx<TObject>( data: TObject[], options: xlsx.JSON2SheetOpts, sheetName: string): Buffer
     
 
 }

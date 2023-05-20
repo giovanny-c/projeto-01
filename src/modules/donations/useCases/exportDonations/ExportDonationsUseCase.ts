@@ -32,7 +32,7 @@ class ExportDonationsUseCase {
 
     }
 
-    async execute({donation_number_interval,ngo_id }: IRequest){
+    async execute({donation_number_interval, ngo_id }: IRequest){
 
 
         try {
@@ -56,7 +56,7 @@ class ExportDonationsUseCase {
             
 
 
-            const donations_sheets = await Promise.all(
+            const donation_sheet = await Promise.all(
                 (await this.donationsRepository.findForGenerateBooklet({
                     donation_number_interval, ngo_id
                 })).map( (donation) => {
@@ -79,15 +79,15 @@ class ExportDonationsUseCase {
                 throw new AppError("Erro ao procurar doações", 500)
             })
 
-            if(donations_sheets.length <= 0 ){
+            if(donation_sheet.length <= 0 ){
                 throw new AppError("Nenhuma doação encontrada.", 404)
             }
                 
 
             const sheetName = "Doações"
-            const file_name = `${donations_sheets[0].instituicao}-doações-${donation_number_interval[0]}-${donation_number_interval[1]}.xlsx`
+            const file_name = `${donation_sheet[0].instituicao}-doações-${donation_number_interval[0]}-${donation_number_interval[1]}.xlsx`
             
-            const file = this.xlsxParserProvider.objectToXlsx(donations_sheets, {dateNF: "dd/mm/yyyy"}, sheetName)
+            const file = this.xlsxParserProvider.objectToXlsx(donation_sheet, {dateNF: "dd/mm/yyyy"}, sheetName)
         
             
 
