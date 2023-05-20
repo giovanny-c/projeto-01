@@ -7,6 +7,8 @@ import { error } from "pdf-lib";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { Ngo } from "../../entities/ngos";
+import { IXlsxParserProvider } from "../../../../shared/container/providers/xlsxParserProvider/IXlsxParserProvider";
+import { Donation } from "../../entities/donation";
 
 interface IRequest {
     ngo_id: string
@@ -24,6 +26,8 @@ class ExportDonationsUseCase {
         private cacheProvider: ICacheProvider,
         @inject("NgoRepository")
         private ngoRepository: INgoRepository,
+        @inject("XlsxParserProvider")
+        private xlsxParserProvider: IXlsxParserProvider
     ){
 
     }
@@ -52,7 +56,7 @@ class ExportDonationsUseCase {
             
 
 
-            const donations = await Promise.all(
+            const donations_sheets = await Promise.all(
                 (await this.donationsRepository.findForGenerateBooklet({
                     donation_number_interval, ngo_id
                 })).map( (donation) => {
@@ -70,36 +74,21 @@ class ExportDonationsUseCase {
 
                     }
                 })
-            ).catch(error => {
+            ).catch(error => { 
                 console.error(error)
                 throw new AppError("Erro ao procurar doações", 500)
             })
 
-            if(donations.length <= 0 ){
+            if(donations_sheets.length <= 0 ){
                 throw new AppError("Nenhuma doação encontrada.", 404)
             }
                 
 
-
+            const sheetName = "Doações"
+            const file_name = `${donations_sheets[0].instituicao}-doações-${donation_number_interval[0]}-${donation_number_interval[1]}.xlsx`
+            
+            const file = this.xlsxParserProvider.objectToXlsx(donations_sheets, {dateNF: "dd/mm/yyyy"}, sheetName)
         
-            const workSheet = xlsx.utils.json_to_sheet(donations, {
-                dateNF: "dd/mm/yyyy",
-                
-            })
-            
-            const workBook = xlsx.utils.book_new()
-
-            xlsx.utils.book_append_sheet(workBook, workSheet, "Doações")
-
-            const file_name = `${donations[0].instituicao}-doações-${donation_number_interval[0]}-${donation_number_interval[1]}.xlsx`
-            
-            const file = xlsx.writeXLSX(
-            workBook
-            , {
-                type: "buffer",
-                bookType: "xlsx",
-                
-            }) as Buffer
             
 
             return{ 

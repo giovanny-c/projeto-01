@@ -15,6 +15,8 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { Ngo } from "../../entities/ngos";
 import { getExecutionTime } from "../../../../../utils/decorators/executionTime";
+import { IXlsxParserProvider } from "../../../../shared/container/providers/xlsxParserProvider/IXlsxParserProvider";
+import { options } from "joi";
 
 
 
@@ -57,29 +59,12 @@ class ImportDonationsUseCase {
         private ngoRepository: INgoRepository,
         @inject("DonationCounterRepository")
         private donationCounterRepository: IDonationCounterRepository,
+        @inject("XlsxParserProvider")
+        private xlsxParserProvider: IXlsxParserProvider
     ) {
 
     }
 
-
-    loadDonations(file: Express.Multer.File): IImportDonation[] { //talvez tenha que ser asincrona
-
-    //file.path
-        const excelData = xlsx.readFile(file.path, { cellDates: true }) //diskstorage
-
-        //pega o nome da primeira planilha
-        let sheet = Object.keys(excelData.Sheets)[0]
-
-        //poe o conteudo da 1ª planilha em donations    
-        //defval null necessario
-        return xlsx.utils.sheet_to_json(excelData.Sheets[sheet], { raw: true, dateNF: 'yyyy-mm-dd', defval: null}) as IImportDonation[]
-    
-        //e se usar xlsx.stream.to_json??? 
-        
-
-        
-
-    }
 
     async validateFields(data: IImportDonation[], file_path): Promise<IImportDonation[]>{
 
@@ -91,7 +76,6 @@ class ImportDonationsUseCase {
 
 
             //checka se falta alguma celula
-            //por do lado de fora como Object.keys(data[0]) ?
             if(index === 0){
                 
                 let checkCols = [
@@ -197,11 +181,11 @@ class ImportDonationsUseCase {
             
             if(typeof donation_value !== "number" || Number.isNaN(donation_value)){
 
-                throw new AppError(`O campo valor precisa ser um numero, na linha ${index + 2}`, 400)
+                throw new AppError(`O campo "valor" precisa ser um numero, na linha ${index + 2}`, 400)
 
             }
             if(donation_value === 0){
-                throw new AppError(`O valor tem que ser maior que 0, na linha ${index + 2}`, 400)
+                throw new AppError(`O campo "valor" tem que ser maior que 0, na linha ${index + 2}`, 400)
             }
 
             //worker
@@ -297,7 +281,13 @@ class ImportDonationsUseCase {
         }
     
         try {
-            await this.proccessDonations(this.loadDonations(file), user_id, ngo_id, file.path)
+
+            const donations = this.xlsxParserProvider.xlsxToObject<IImportDonation[]>(file, {
+                parsingOptions: { cellDates: true },
+                xlsxToObjectOptions: { raw: true, dateNF: 'yyyy-mm-dd', defval: null}
+            })
+
+            await this.proccessDonations(donations, user_id, ngo_id, file.path)
             
         } catch (error) {
             fs.unlink(file.path, (err)=> {
