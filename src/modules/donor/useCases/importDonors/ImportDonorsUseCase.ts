@@ -253,7 +253,6 @@ class ImportDonorsUseCase{
     async execute(file: Express.Multer.File , user_id: string){
 //e colocar o import por .xlsx tbm
         
-        console.log(file)
 
         if(file.mimetype === "text/csv"){
             try {
@@ -325,6 +324,7 @@ class ImportDonorsUseCase{
                     if (err) console.error(err)
                 })
 
+                return
 
             } catch (error) {
                 console.error(error)
@@ -337,6 +337,8 @@ class ImportDonorsUseCase{
             }
 
         }
+
+        throw new AppError("Não foi possivel ler o arquivo, tipo de arquivo inválido.", 400)
 
         
         

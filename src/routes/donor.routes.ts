@@ -18,6 +18,7 @@ import { UpdateDonorController } from "../modules/donor/useCases/updateDonor/Upd
 import { ensureAdmin } from "../shared/middlewares/ensureAdmin";
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated";
 import { handleMessage } from "../shared/middlewares/handleMessage";
+import { LoadExportDonorController } from "../modules/donor/useCases/loadExportDonors/LoadExportDonorsController";
 
 const upload = multer(uploadConfig)
 
@@ -34,6 +35,7 @@ const importDonorsController = new ImportDonorsController()
 const loadUpdateDonorController = new LoadUpdateDonorController()
 const deleteDonorController = new DeleteDonorController()
 const filterDonorsController = new FilterDonorsController()
+const loadExportDonorController = new LoadExportDonorController()
 
 
 
@@ -47,6 +49,8 @@ donorRoutes.post("/criar", upload.none(), createDonorController.handle)
 donorRoutes.get("/importar", ensureAdmin, handleMessage, loadImportDonorsController.handle)
 donorRoutes.post("/importar", ensureAdmin, upload.single("file"), importDonorsController.handle)
 
+donorRoutes.post("/exportar", ensureAdmin, loadExportDonorController.handle)
+
 donorRoutes.get("/listar", handleMessage, listDonorController.handle)
 
 donorRoutes.get("/filtrar", ensureAdmin, filterDonorsController.handle)
@@ -57,6 +61,8 @@ donorRoutes.get("/:donor_id/editar", ensureAdmin, handleMessage, loadUpdateDonor
 donorRoutes.put("/:donor_id/editar", ensureAdmin, upload.none(), updateDonorController.handle)
 
 donorRoutes.delete("/:donor_id/deletar", ensureAdmin, deleteDonorController.handle)
+
+
 
 export { donorRoutes }
 

@@ -30,6 +30,17 @@ class DonorsRepository implements IDonorsRepository {
         return await this.repository.save(donor)
     }
 
+    async find(){
+
+        return await this.repository.find({
+            relations: {
+                worker: true,
+                user: true
+            },
+            order: {name: "ASC"}
+        })
+    }
+
     async findByEmail(email: string): Promise<Donor> {
 
         const donor = await this.repository.findOne({ where: { email } })

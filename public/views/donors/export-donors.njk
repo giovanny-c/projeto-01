@@ -1,0 +1,64 @@
+{% extends "views/layout.njk" %}
+
+{% block head %}
+    
+    <title>Exportar Doadores - Castanharo Telemarketing </title>
+
+    <link rel="stylesheet" href="/styles/donations/generate-booklet.css">
+
+{% endblock %}
+
+{% block content %}
+    
+   
+        <div class="page-title">
+            
+            Doadores
+                
+        </div>
+
+        <div class="sub-title">
+            Exportar Doadores
+        </div>
+       
+
+
+ <form class="form" id="#form">
+
+           
+
+            <div class="button">
+                <button               
+                type="button"
+                onclick="warnBigFiles();
+                fetchExportDonations(
+                    document.querySelector('#download-btn')
+                );"
+                >Exportar</button>  
+            </div>
+               
+            
+
+        </form>
+
+
+        
+        <div class="download-file-div">
+            <a class="inactive"
+            id="download-btn"
+            download="{{file_name}}">Baixar
+            </a>
+        </div>
+        
+        
+     
+        
+
+        <script src="/scriptForExportDonors.js"></script>
+        
+        
+
+       
+
+    
+{% endblock %}    

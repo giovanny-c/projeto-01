@@ -6,6 +6,7 @@ import { Donor } from "../entities/donor"
 interface IDonorsRepository {
 
     create(data: ICreateDonorDTO): Promise<Donor>
+    find(): Promise<Donor[]>
     findByEmail(email: string): Promise<Donor>
     findByName(name: string): Promise<Donor>
     findById(id: string): Promise<Donor>

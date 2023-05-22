@@ -1,14 +1,11 @@
 import { inject, injectable } from "tsyringe";
-import * as xlsx from "xlsx"
 import stream from "stream"
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { AppError } from "../../../../shared/errors/AppError";
-import { error } from "pdf-lib";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { Ngo } from "../../entities/ngos";
 import { IXlsxParserProvider } from "../../../../shared/container/providers/xlsxParserProvider/IXlsxParserProvider";
-import { Donation } from "../../entities/donation";
 
 interface IRequest {
     ngo_id: string
