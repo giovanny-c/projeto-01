@@ -182,7 +182,7 @@ class ImportDonationsUseCase {
             }
 
             //worker
-            const worker_name = donation.funcionario.replace(/\s+$/g, "")
+            const worker_name = donation.funcionario.replace(/(^\s+)|(\s+$)/g, "")
 
             const worker = foundWorkers.find(worker => worker.name === worker_name)
 

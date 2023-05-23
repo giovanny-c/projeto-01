@@ -49,8 +49,8 @@ class LoadImportDonationsUseCase {
         
         return  {
             ngo,
-            file_path: "./examples/exemplo.xlsx",
-            file_name: "exemplo"
+            file_path: "./examples/exemplo_importar_doaçao.xlsx",
+            file_name: "exemplo_importar_doaçao"
         }
     
     }

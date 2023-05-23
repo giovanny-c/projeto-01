@@ -173,7 +173,7 @@ class ImportDonorsUseCase{
 
            
             //donor
-
+            
             const donor_name = donor.nome.split(/\s/)//separa no espaço vazio
                 .filter(string => string !== "" )//tira caracters vazio
                 .map((string, index) => { //pega a primeira letra e transforma em upper
@@ -196,35 +196,40 @@ class ImportDonorsUseCase{
 
             }
 
+            
 
-            let email = donor.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)[0]//filtar até por qual.quer_e-mail@ser.edu.com.br
+            let verifyEmail = donor.email.replace(/(^\s+)|(\s+$)/g, "").match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)//filtar até por qual.quer_e-mail@ser.edu.com.br
 
-            if(!email){
+            if(!verifyEmail){
                 throw new AppError(`Email inválido, na linha ${index + 2}`, 400)
             }
 
             //VALIDAR se ja existe email
+            let [email] = verifyEmail
 
             const emailExists = await this.donorsRepository.findByEmail(email)
 
             if(emailExists){
-                throw new AppError(`ja existe um doador cadastrado com esse Email, Erro na linha ${index + 2}`, 400)
+                throw new AppError(`ja existe um doador cadastrado com esse Email, na linha ${index + 2}`, 400)
 
             }
 
-                
-            let phone = donor.telefone.match(/(\d\d )?(\d{4,5}-\d{4})/)[0]// filtra 11 99999-0000 
-                
-            if(phone){
 
-                phone = phone.replace(/(\+\d\d )/, "")//e tira o +55 no final
-            }else{
+
+            let verifyPhone = donor.telefone.toString().replace(/(^\s+)|(\s+$)/g, "").match(/(\d\d )?(\d{4,5})(-)?(\d{4})/)
+            // filtra 11 99999-0000 ou 11 999990000 ou 99999-0000 ou 999990000
+                
+            if(!verifyPhone){
+
                 throw new AppError(`Telefone inválido, na linha ${index + 2}`, 400)
             }
-        
+                 
+
+            let phone = verifyPhone[0].replace(/(\+\d\d )/, "")//e tira o +55 no final
+            
 
             //worker
-            const worker_name = donor.funcionario.replace(/\s+$/g, "")
+            const worker_name = donor.funcionario.replace(/(^\s+)|(\s+$)/g, "")
 
             const worker = foundWorkers.find(worker => worker.name === worker_name)
 
@@ -252,12 +257,12 @@ class ImportDonorsUseCase{
 
     async execute(file: Express.Multer.File , user_id: string){
 //e colocar o import por .xlsx tbm
-        
+        if(!file) throw new AppError("Nenhum arquivo enviado")
 
         if(file.mimetype === "text/csv"){
             try {
             
-            if(!file) throw new AppError("Nenhum arquivo enviado")
+            
         
             let donors = await this.csvLoadDonors(file)
        
@@ -292,7 +297,7 @@ class ImportDonorsUseCase{
         }
         }
 
-        if(file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
+        if(file.mimetype ===  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){
 
             try {
                 
@@ -324,7 +329,7 @@ class ImportDonorsUseCase{
                     if (err) console.error(err)
                 })
 
-                return
+            return
 
             } catch (error) {
                 console.error(error)

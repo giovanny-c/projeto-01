@@ -35,14 +35,16 @@ class ExportDonorsUseCase {
             const donor_sheet = await Promise.all(
                 (await this.donorsRepository.find()
                 ).map( (donor) => {
-                    
+
+                    console.log(donor)
+
                     return {
                         
-                        nome: donor.name,
-                        email: donor.email,
-                        telefone: donor.phone,
-                        cadastro_de:  donor.worker.name,
-                        criado_por: donor.user.name,
+                        nome: donor.name || null,
+                        email: donor.email || null,
+                        telefone: donor.phone || null,
+                        funcionario:  donor.worker?.name || null,
+                        criado_por: donor.user?.name || null,
                     }
                 })
             ).catch(error => { 

@@ -15,6 +15,7 @@ class ImportDonorsController {
 
         await importDonorsUseCase.execute(file, user_id)
         
+        req.session.success = "Doadores importados com sucesso!"
 
         return res.redirect("/doadores/listar")
     }

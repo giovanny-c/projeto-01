@@ -37,6 +37,14 @@ class DonorsRepository implements IDonorsRepository {
                 worker: true,
                 user: true
             },
+            select: {
+                worker: {
+                    name: true
+                },
+                user: {
+                    name: true
+                }
+            },
             order: {name: "ASC"}
         })
     }
