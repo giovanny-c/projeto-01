@@ -231,30 +231,35 @@ const Mask = {
 
     formatPhone(value) {
 
-        // /(\(\d{2}\))*(\d{4,5}-\d{4})/g 
-        // meu codigo
-        // value = value.replace(/([^\d\(\)])/g, "")
+        if (value.replace(/\D/g, '').length > 10) {
+            return value.replace(/\D/g, '')
+                .replace(/^(\d)/, '($1')
+                .replace(/^(\(\d{2})(\d)/, '$1) $2')
+                .replace(/(\d{5})(\d{1,5})/, '$1-$2')
+                .replace(/(-\d{4})\d+?$/, '$1');
+        }
+        if (value.replace(/\D/g, '').length > 9) {
+            return value.replace(/\D/g, '')
+                .replace(/^(\d)/, '($1')
+                .replace(/^(\(\d{2})(\d)/, '$1) $2')
+                .replace(/(\d{4})(\d{1,5})/, '$1-$2')
+                .replace(/(-\d{4})\d+?$/, '$1');
+        }
 
 
-        // let value1, value2
+        if (value.replace(/\D/g, '').length === 9) {
+            return value.replace(/\D/g, '')
+                .replace(/(\d{5})(\d{1,5})/, '$1-$2')
+                .replace(/(-\d{4})\d+?$/, '$1');
+        }
 
-        // if (value.length > 5) {
 
+        if (value.replace(/\D/g, '').length < 9) {
+            return value.replace(/\D/g, '')
+                .replace(/(\d{4})(\d{1,5})/, '$1-$2')
+                .replace(/(-\d{4})\d+?$/, '$1');
+        }
 
-
-        //     value1 = value.slice(0, 5)
-        //     value2 = value.slice(5)
-
-        //     return `${value1}-${value2}`
-        // }
-
-        // return value
-
-        return value.replace(/\D/g, '')
-            .replace(/^(\d)/, '($1')
-            .replace(/^(\(\d{2})(\d)/, '$1) $2')
-            .replace(/(\d{5})(\d{1,5})/, '$1-$2')
-            .replace(/(-\d{4})\d+?$/, '$1');
 
 
     },

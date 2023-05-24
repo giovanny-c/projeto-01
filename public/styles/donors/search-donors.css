@@ -183,6 +183,10 @@ div.search-paramns button:active {
 
 }
 
+td.created_at {
+    text-align: center;
+}
+
 .table td:nth-child(odd) {
     color: var(--color-letters-clear);
 }

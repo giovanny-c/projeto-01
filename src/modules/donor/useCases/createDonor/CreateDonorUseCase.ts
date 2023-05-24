@@ -8,6 +8,7 @@ import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 import { Worker } from "../../../workers/entities/worker";
 import { instanceToPlain } from "class-transformer";
+import formatPhone from "../../../../../utils/formatPhone";
 
 @injectable()
 class CreateDonorUseCase {
@@ -23,7 +24,7 @@ class CreateDonorUseCase {
 
     async execute({ name, email, phone, user_id, worker_id}: ICreateDonorDTO) {
 
-        
+        email = email.toLowerCase() as string
 
         if(!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
             throw new AppError("formato de Email invalido", 400)
@@ -40,8 +41,11 @@ class CreateDonorUseCase {
 
         }
 
+
+        
+        
         //arruma o numero
-        phone = phone.replace(/[\(\)]/g,"")
+        phone = formatPhone(phone, false)
 
 
         //ve se o user existe

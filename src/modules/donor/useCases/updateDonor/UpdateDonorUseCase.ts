@@ -6,6 +6,7 @@ import { IDonorsRepository } from "../../repositories/IDonorsRepository";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 import { instanceToPlain } from "class-transformer";
+import formatPhone from "../../../../../utils/formatPhone";
 
 @injectable()
 class UpdateDonorUseCase {
@@ -22,7 +23,8 @@ class UpdateDonorUseCase {
 
     async execute({ id, name, email, phone, user_id, worker_id }: ICreateDonorDTO) {
 
-    
+        email = email.toLowerCase() as string
+
         if(!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
             throw new AppError("formato de Email invalido", 400)
         }
@@ -33,8 +35,11 @@ class UpdateDonorUseCase {
             throw new AppError("Doador nao encontrado", 404)
         }
 
-        phone = phone.replace(/(\+\d\d )/g, "").replace(/[\(\)]/g,"") //tira os () e o +55 se tiver
+        
+        
 
+        phone = formatPhone(phone, false)
+        
         //Refazer
         if (!name || name === "") name = donorExists.name
         if (!email) email = donorExists.email

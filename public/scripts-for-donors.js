@@ -25,15 +25,36 @@ function formatDateStaticP(pDate) {
 
 function formatPhoneStatic(pPhone) {
 
-    var phone = pPhone.innerHTML
 
+    var formatedPhone = pPhone.innerHTML.replace(/\D/g, '')
 
+    console.log(formatedPhone.length)
 
-    pPhone.innerHTML = `Telefone: ${phone.replace(/\D/g, '')
-        .replace(/^(\d)/, '($1')
-        .replace(/^(\(\d{2})(\d)/, '$1) $2')
-        .replace(/(\d{5})(\d{1,5})/, '$1-$2')
-        .replace(/(-\d{4})\d+?$/, '$1')}`
+    if (formatedPhone.length > 9) {
+
+        formatedPhone = formatedPhone
+            .replace(/^(\d)/, '($1')
+            .replace(/^(\(\d{2})(\d)/, '$1) $2')
+            .replace(/(\d{5})(\d{1,5})/, '$1-$2')
+            .replace(/(-\d{4})\d+?$/, '$1')
+    }
+
+    if (formatedPhone.length === 9) {
+        formatedPhone = formatedPhone
+            .replace(/(\d{5})(\d{1,5})/, '$1-$2')
+            .replace(/(-\d{4})\d+?$/, '$1')
+    }
+
+    if (formatedPhone.length < 9) {
+
+        formatedPhone = formatedPhone
+            .replace(/(\d{4})(\d{1,5})/, '$1-$2')
+            .replace(/(-\d{4})\d+?$/, '$1')
+    }
+
+    console.log("aaa")
+
+    pPhone.innerHTML = `Telefone: ${formatedPhone}`
 
 
 }

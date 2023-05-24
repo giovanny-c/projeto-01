@@ -15,7 +15,7 @@ class CreateDonorController {
 
         const createDonorUseCase = container.resolve(CreateDonorUseCase)
 
-        const {donor}  = await createDonorUseCase.execute({ name, email: email.toLowerCase() as string, phone, user_id, worker_id })
+        const {donor}  = await createDonorUseCase.execute({ name, email, phone, user_id, worker_id })
 
         if(!admin){
             req.session.success="Doador Criado com sucesso"

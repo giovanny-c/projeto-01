@@ -269,6 +269,10 @@
 
  }
 
+ td.created_at {
+     text-align: center;
+ }
+
  .list-item .content:hover {
      background-color: var(--color-hover);
      color: var(--color-letters-clear);

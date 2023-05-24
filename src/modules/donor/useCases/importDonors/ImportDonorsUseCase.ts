@@ -5,6 +5,7 @@ import * as fs from "fs"
 import { AppError } from "../../../../shared/errors/AppError";
 import { IXlsxParserProvider } from "../../../../shared/container/providers/xlsxParserProvider/IXlsxParserProvider";
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
+import formatPhone from "../../../../../utils/formatPhone";
 
 interface ICSVImportDonors{
     name: string
@@ -67,6 +68,8 @@ class ImportDonorsUseCase{
                 if(phone){
 
                     phone = phone.replace(/(\+\d\d )/, "")//e tira o +55 no final
+                
+                    phone = formatPhone(phone, false)
                 }
 
                 donors.push({
@@ -218,15 +221,19 @@ class ImportDonorsUseCase{
 
             let verifyPhone = donor.telefone.toString().replace(/(^\s+)|(\s+$)/g, "").match(/(\d\d )?(\d{4,5})(-)?(\d{4})/)
             // filtra 11 99999-0000 ou 11 999990000 ou 99999-0000 ou 999990000
-                
+
+             
             if(!verifyPhone){
 
                 throw new AppError(`Telefone inválido, na linha ${index + 2}`, 400)
             }
-                 
+                   
 
-            let phone = verifyPhone[0].replace(/(\+\d\d )/, "")//e tira o +55 no final
+            let phone = verifyPhone[0].replace(/(\+\d\d )/, "")//e tira o +55
+
             
+
+            phone = formatPhone(phone, false)
 
             //worker
             const worker_name = donor.funcionario.replace(/(^\s+)|(\s+$)/g, "")
