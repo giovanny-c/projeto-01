@@ -65,9 +65,10 @@ class ImportDonorsUseCase{
                 let email = line.find( value => value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/))//filtar até por qual.quer_e-mail@ser.edu.com.br
                 let phone = line.find( value => value.match(/(\d\d )?(\d{4,5}-\d{4})/)) as string // filtra 11 99999-0000 
                 
+                
                 if(phone){
 
-                    phone = phone.replace(/(\+\d\d )/, "")//e tira o +55 no final
+                    phone = phone.replace(/(\+\d\d )/, "")//e tira o +55
                 
                     phone = formatPhone(phone, false)
                 }
@@ -217,10 +218,24 @@ class ImportDonorsUseCase{
 
             }
 
+        //    formatos validos
+        
+// (11)98765-4321
+// (11)987654321
+// 11 98765-4321
+// 11 987654321
 
+// (11)8765-4321
+// (11)87654321
+// 11 8765-4321
+// 11 87654321
 
-            let verifyPhone = donor.telefone.toString().replace(/(^\s+)|(\s+$)/g, "").match(/(\d\d )?(\d{4,5})(-)?(\d{4})/)
-            // filtra 11 99999-0000 ou 11 999990000 ou 99999-0000 ou 999990000
+// 987654321
+// 98765-4331
+// 8765-4331
+// 87654331
+
+            let verifyPhone = donor.telefone.toString().replace(/\D/g, "").match(/(((\(\d\d\))|(\d\d\s))?(\d{4,5})(-)?(\d{4}))$/)
 
              
             if(!verifyPhone){
@@ -229,9 +244,7 @@ class ImportDonorsUseCase{
             }
                    
 
-            let phone = verifyPhone[0].replace(/(\+\d\d )/, "")//e tira o +55
-
-            
+            let phone = verifyPhone[0]
 
             phone = formatPhone(phone, false)
 

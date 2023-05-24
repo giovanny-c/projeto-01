@@ -30,12 +30,20 @@ function formatPhoneStatic(pPhone) {
 
     console.log(formatedPhone.length)
 
-    if (formatedPhone.length > 9) {
+    if (formatedPhone.length > 10) {
 
         formatedPhone = formatedPhone
             .replace(/^(\d)/, '($1')
             .replace(/^(\(\d{2})(\d)/, '$1) $2')
             .replace(/(\d{5})(\d{1,5})/, '$1-$2')
+            .replace(/(-\d{4})\d+?$/, '$1')
+    }
+
+    if (formatedPhone.length > 9) {
+        formatedPhone = formatedPhone
+            .replace(/^(\d)/, '($1')
+            .replace(/^(\(\d{2})(\d)/, '$1) $2')
+            .replace(/(\d{4})(\d{1,5})/, '$1-$2')
             .replace(/(-\d{4})\d+?$/, '$1')
     }
 

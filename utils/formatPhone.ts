@@ -12,7 +12,8 @@ export default function formatPhone(phone: string, paranthese: boolean): string{
 
     if (phone.length > 10) {
         //se phone = 11987654321
-        phone = phone.replace(/\d+(\d{11}$)/g, '$1') //pega os ultimos 11
+        
+        phone = phone.replace(/^\d+(\d{11}$)/, '$1') //pega os ultimos 11
         .replace(/^(\d)/, `($1`) // busca o 1 digito e poe e subistitui por (1 
         .replace(/^(\(\d{2})(\d)/, `$1) $2`) // busca o primeiro e segundo junto do "("  E o proximo digito e substitui por (11) 9
         .replace(/(\d{5})(\d{1,5})/, '$1-$2')//busca os uma cadeia de 5 digitos e uma de 4 e junta 98765-4321
@@ -27,7 +28,7 @@ export default function formatPhone(phone: string, paranthese: boolean): string{
     }
     if (phone.length > 9) {
         //se phone = 11987654321
-        phone = phone.replace(/\d+(\d{10}$)/g, '$1') //pega os ultimos 
+        phone = phone.replace(/^\d+(\d{10}$)/, '$1') //pega os ultimos 
         .replace(/^(\d)/, `($1`) // busca o 1 digito e poe e subistitui por (1 
         .replace(/^(\(\d{2})(\d)/, `$1) $2`) // busca o primeiro e segundo junto do "("  E o proximo digito e substitui por (11) 9
         .replace(/(\d{4})(\d{1,5})/, '$1-$2')//busca os uma cadeia de 5 digitos e uma de 4 e junta 98765-4321
@@ -42,7 +43,7 @@ export default function formatPhone(phone: string, paranthese: boolean): string{
     }
         
     if (phone.length === 9) {
-        phone = phone
+        phone = phone.replace(/^\d+(\d{9}$)/, '$1')
         .replace(/(\d{5})(\d{1,5})/, '$1-$2')
         .replace(/(-\d{4})\d+?$/, '$1')
         
@@ -50,7 +51,7 @@ export default function formatPhone(phone: string, paranthese: boolean): string{
     }
     if (phone.length < 9) {
         
-        phone = phone
+        phone = phone.replace(/^\d+(\d{8}$)/, '$1')
         .replace(/(\d{4})(\d{1,5})/, '$1-$2')
         .replace(/(-\d{4})\d+?$/, '$1')
 
