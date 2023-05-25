@@ -210,33 +210,26 @@ class ImportDonorsUseCase{
 
             //VALIDAR se ja existe email
             let [email] = verifyEmail
-
+            console.log(email)
             const emailExists = await this.donorsRepository.findByEmail(email)
-
+            console.log(emailExists)
             if(emailExists){
                 throw new AppError(`ja existe um doador cadastrado com esse Email, na linha ${index + 2}`, 400)
 
             }
 
-        //    formatos validos
-        
-// (11)98765-4321
-// (11)987654321
-// 11 98765-4321
-// 11 987654321
+            //phone
+            let verifyPhone
+            
+            if(donor.telefone.toString().replace(/\D/g, "").length > 9){
 
-// (11)8765-4321
-// (11)87654321
-// 11 8765-4321
-// 11 87654321
+                verifyPhone = donor.telefone.toString().replace(/(^\s+)|(\s+$)/g, "").match(/(((\(\d\d\))|(\d\d\s))(\d{4,5})(-)?(\d{4}))$/)
+            
+            }else{
 
-// 987654321
-// 98765-4331
-// 8765-4331
-// 87654331
+                verifyPhone = donor.telefone.toString().replace(/(^\s+)|(\s+$)/g, "").match(/(\d{4,5})(-)?(\d{4})$/)
 
-            let verifyPhone = donor.telefone.toString().replace(/\D/g, "").match(/(((\(\d\d\))|(\d\d\s))?(\d{4,5})(-)?(\d{4}))$/)
-
+            }
              
             if(!verifyPhone){
 

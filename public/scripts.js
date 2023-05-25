@@ -238,7 +238,7 @@ const Mask = {
                 .replace(/(\d{5})(\d{1,5})/, '$1-$2')
                 .replace(/(-\d{4})\d+?$/, '$1');
         }
-        if (value.replace(/\D/g, '').length > 9) {
+        if (value.replace(/\D/g, '').length === 10) {
             return value.replace(/\D/g, '')
                 .replace(/^(\d)/, '($1')
                 .replace(/^(\(\d{2})(\d)/, '$1) $2')

@@ -28,7 +28,7 @@ function formatPhoneStatic(pPhone) {
 
     var formatedPhone = pPhone.innerHTML.replace(/\D/g, '')
 
-    console.log(formatedPhone.length)
+
 
     if (formatedPhone.length > 10) {
 
@@ -39,7 +39,7 @@ function formatPhoneStatic(pPhone) {
             .replace(/(-\d{4})\d+?$/, '$1')
     }
 
-    if (formatedPhone.length > 9) {
+    if (formatedPhone.length === 10) {
         formatedPhone = formatedPhone
             .replace(/^(\d)/, '($1')
             .replace(/^(\(\d{2})(\d)/, '$1) $2')
@@ -60,7 +60,7 @@ function formatPhoneStatic(pPhone) {
             .replace(/(-\d{4})\d+?$/, '$1')
     }
 
-    console.log("aaa")
+
 
     pPhone.innerHTML = `Telefone: ${formatedPhone}`
 

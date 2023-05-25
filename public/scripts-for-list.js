@@ -87,31 +87,37 @@ function formatDateStaticP(pDates) {
 
 function formatPhoneStaticLoop(tds) {
 
-    for (phone in tds) {
-        if (phone.replace(/\D/g, '').length > 10) {
-            return phone.replace(/\D/g, '')
+    for (phone_div of tds) {
+        // phone
+        let phone = phone_div.innerHTML.replace(/\D/g, '')
+
+
+        if (phone.length > 10) {
+
+            phone_div.innerHTML = phone.replace(/\D/g, '')
                 .replace(/^(\d)/, '($1')
                 .replace(/^(\(\d{2})(\d)/, '$1) $2')
                 .replace(/(\d{5})(\d{1,5})/, '$1-$2')
                 .replace(/(-\d{4})\d+?$/, '$1');
         }
-        if (phone.replace(/\D/g, '').length > 9) {
-            return phone.replace(/\D/g, '')
+        if (phone.length === 10) {
+
+            phone_div.innerHTML = phone.replace(/\D/g, '')
                 .replace(/^(\d)/, '($1')
                 .replace(/^(\(\d{2})(\d)/, '$1) $2')
                 .replace(/(\d{4})(\d{1,5})/, '$1-$2')
-                .replace(/(-\d{4})\d+?$/, '$1');
+                .replace(/(-\d{4})\d+?$/, '$1')
         }
 
-        if (phone.replace(/\D/g, '').length === 9) {
-            return phone.replace(/\D/g, '')
+        if (phone.length === 9) {
+            phone_div.innerHTML = phone.replace(/\D/g, '')
                 .replace(/(\d{5})(\d{1,5})/, '$1-$2')
                 .replace(/(-\d{4})\d+?$/, '$1');
         }
 
 
-        if (phone.replace(/\D/g, '').length < 9) {
-            return phone.replace(/\D/g, '')
+        if (phone.length < 9) {
+            phone_div.innerHTML = phone.replace(/\D/g, '')
                 .replace(/(\d{4})(\d{1,5})/, '$1-$2')
                 .replace(/(-\d{4})\d+?$/, '$1');
         }
@@ -130,6 +136,7 @@ var totalValue = document.querySelector("p.total")
 var tdsDate = document.getElementsByClassName("created_at")
 var totalDates = document.querySelector("p.total-date")
 var tdsPhones = document.getElementsByClassName("lPhone")
+
 
 if (totalValue) {
     formatToBRLStatic(totalValue)

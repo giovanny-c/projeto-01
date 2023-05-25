@@ -42,8 +42,6 @@ class CreateDonorUseCase {
         }
 
 
-        
-        
         //arruma o numero
         phone = formatPhone(phone, false)
 
