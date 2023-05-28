@@ -3,6 +3,7 @@ import { dataSource } from "../../../../database";
 import ICreateNgo from "../../dtos/ICreateNgoDTO";
 import { Ngo } from "../../entities/ngos";
 import { INgoRepository } from "../INgoRepository";
+import IUpdateNgoTemplate from "../../dtos/IUpdateNgoTemplateDTO";
 
 
 
@@ -44,8 +45,14 @@ class NgoRepository implements INgoRepository{
     }
 
     async delete(id: string){
-        return await this.repository.delete(id)
+        await this.repository.delete(id)
     }
+
+    async updateTemplate({ngo_id, template_name}: IUpdateNgoTemplate): Promise<void> {
+        
+        await this.repository.update(ngo_id, {template_name})
+    }
+
 }
 
 export {NgoRepository}

@@ -32,12 +32,14 @@ class ListDonorsUseCase {
         page = page || 1
         limit = limit || 30
         
+        
         let offset = limit * (page - 1)
 
         const user = instanceToPlain(await this.usersRepository.findById(user_id))
         const donors = instanceToPlain(await this.donorsRepository.findBy(value, +(limit), offset, user_id)) as Donor[]
 
         let filteredDonors = donors
+        console.log(donors)
         
         if(!is_admin){
 

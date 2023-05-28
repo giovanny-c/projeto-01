@@ -22,6 +22,8 @@ class ListDonorsController {
             is_admin: user.admin? true : false
         })
 
+       
+
         return res.render("views/donors/search-donors", {donors, search_terms, username: req.user.name, error: req.error, success: req.success})
     }
 

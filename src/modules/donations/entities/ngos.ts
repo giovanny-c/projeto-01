@@ -20,6 +20,9 @@ class Ngo {
     @Column()
     full_name: string
 
+    @Column()
+    template_name: string
+
     @Exclude()
     @OneToMany(() => NgoEmail, ngo_emails => ngo_emails.ngo, {cascade: true})
     ngo_emails: NgoEmail[]

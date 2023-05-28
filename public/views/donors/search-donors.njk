@@ -90,7 +90,7 @@
                   
                 {# caracter invisivel #}
             <div>
-            {% if donations| length >= search_terms.limit %}
+            {% if donors| length >= search_terms.limit %}
                 <a id="next_page" href="/doadores/listar?pagina={{search_terms.page|float + 1}}&limit=30&valor={{search_terms.value}}">
                 
                 Próxima página >></a>  
