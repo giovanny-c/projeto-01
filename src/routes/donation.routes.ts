@@ -44,6 +44,8 @@ import { ensureAdmin } from "../shared/middlewares/ensureAdmin";
 import { ensureAuthenticated } from "../shared/middlewares/ensureAuthenticated";
 import { handleMessage } from "../shared/middlewares/handleMessage";
 import { LoadExportDonationsController } from "../modules/donations/useCases/loadExportDonations/LoadExportDonationsController";
+import { LoadUpdateNgoTemplateController } from "../modules/donations/useCases/loadUpdateNgoTemplate/LoadUpdateNgoTemplateController";
+import { UpdateNgoTemplateController } from "../modules/donations/useCases/updateNgoTemplate/UpdateNgoTemplateController";
 
 
 
@@ -93,6 +95,9 @@ const updateDonationController = new UpdateDonationController()
 
 const loadExportDonationsController = new LoadExportDonationsController()
 
+const loadUpdateNgoTemplateController = new LoadUpdateNgoTemplateController()
+const updateNgoTemplateController = new UpdateNgoTemplateController()
+
 //inicio//pagina inicial mostra todas as ongs
 donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
 
@@ -116,6 +121,9 @@ donationRoutes.delete("/instituicao/:ngo_id/deletar", ensureAdmin, upload.none()
 donationRoutes.get("/instituicao/:ngo_id/mensagens", ensureAdmin,  handleMessage, loadNgoMessagesController.handle)
 donationRoutes.get("/instituicao/:ngo_id/mensagens/:message_id", ensureAdmin,  handleMessage, loadNgoMessageController.handle)
 donationRoutes.delete("/instituicao/:ngo_id/mensagens/:message_id", ensureAdmin, upload.none(), deleteNgoMessageController.handle)
+//atualizar template
+donationRoutes.get("/instituicao/:ngo_id/template", ensureAdmin,  handleMessage, loadUpdateNgoTemplateController.handle)
+donationRoutes.post("/instituicao/:ngo_id/template", ensureAdmin,  handleMessage, updateNgoTemplateController.handle)
 
 
 //gerar talao

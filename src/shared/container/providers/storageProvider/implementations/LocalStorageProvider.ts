@@ -163,7 +163,7 @@ class LocalStorageProvider implements IStorageProvider {
         try {   
             const file_path = resolve(dir, file_name)
 
-            console.log(file_path)
+            
             const file = await fsPromises.readFile(file_path, {
                 encoding: returnInBase64 ? "base64" : null 
             })
@@ -172,7 +172,7 @@ class LocalStorageProvider implements IStorageProvider {
             return file
             
         } catch (error) {
-            console.log("erro de leitura: ")
+            
             console.error(error)
             // throw new AppError("Não foi possivel ler o arquivo, ou ele nao existe.")
         }

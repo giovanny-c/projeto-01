@@ -33,11 +33,12 @@ class PDF_LIBFileProvider implements IFileProvider {
         }
 
         //pega o template
-        const templatePath = `./templates/${donation.ngo.alias}_template.jpg` //template do recibo
+        const templatePath = resolve(".", "templates", `${donation.ngo.alias}_template.jpg`) //template do recibo
         const signPath = resolve(".", "templates", "signs", "ricardo_sign3.png" )
 
         let uint8Array
         let uint8ArraySign 
+
         try {
             
             uint8Array = await fsPromises.readFile(templatePath)// le o tamplate do recibo
