@@ -22,6 +22,8 @@ import { INgosEmailsRepository } from "../../modules/donations/repositories/INgo
 import { NgosEmailsRepository } from "../../modules/donations/repositories/implementation/NgosEmailsRepository";
 import { NgosMessagesRepository } from "../../modules/donations/repositories/implementation/NgosMessagesRepository";
 import { INgosMessagesRepository } from "../../modules/donations/repositories/INgosMessagesRepository";
+import { INgosTemplateConfigRepository } from "../../modules/donations/repositories/INgosTemplateConfigRepository";
+import { NgosTemplateConfigRepository } from "../../modules/donations/repositories/implementation/NgosTemplateConfigRepository";
 
 
 
@@ -55,12 +57,11 @@ container.registerSingleton<INgoRepository>(
     NgoRepository
 )
 
-
-
-container.registerSingleton<IWorkersReposiroty>(
-    "WorkersRepository",
-    WorkersRepository
+container.registerSingleton<INgosTemplateConfigRepository>(
+    "NgoTemplateConfigRepository",
+    NgosTemplateConfigRepository
 )
+
 
 container.registerSingleton<INgosEmailsRepository>(
     "NgosEmailsRepository",
@@ -70,4 +71,16 @@ container.registerSingleton<INgosEmailsRepository>(
 container.registerSingleton<INgosMessagesRepository>(
     "NgosMessagesRepository",
     NgosMessagesRepository
-)
+    )
+    
+    
+    container.registerSingleton<IWorkersReposiroty>(
+        "WorkersRepository",
+        WorkersRepository
+    )
+    
+    
+
+
+
+

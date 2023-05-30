@@ -3,10 +3,9 @@ import { container } from "tsyringe";
 import { GetNgoUseCase } from "../getNgo/GetNgoUseCase";
 
 
-class LoadUpdateNgoTemplateController {
+class LoadUpdateNgoTemplateConfigController {
 
     async handle(req: Request, res: Response){
-
         const {ngo_id: id} = req.params
 
         
@@ -14,10 +13,10 @@ class LoadUpdateNgoTemplateController {
 
         const {ngo} = await getNgo.execute(id)
 
-        return res.status(200).render("views/ngos/ngo-template-update", {ngo, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/ngos/ngo-template-config-update", {ngo, username: req.user.name, error: req.error, success: req.success})
 
     }
 
 }
 
-export {LoadUpdateNgoTemplateController}
+export {LoadUpdateNgoTemplateConfigController}

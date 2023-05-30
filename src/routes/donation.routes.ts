@@ -46,6 +46,8 @@ import { handleMessage } from "../shared/middlewares/handleMessage";
 import { LoadExportDonationsController } from "../modules/donations/useCases/loadExportDonations/LoadExportDonationsController";
 import { LoadUpdateNgoTemplateController } from "../modules/donations/useCases/loadUpdateNgoTemplate/LoadUpdateNgoTemplateController";
 import { UpdateNgoTemplateController } from "../modules/donations/useCases/updateNgoTemplate/UpdateNgoTemplateController";
+import { LoadUpdateNgoTemplateConfigController } from "../modules/donations/useCases/loadUpdateNgoTemplateConfig/LoadUpdateNgoTemplateConfigController";
+import { UpdateNgoTemplateConfigController } from "../modules/donations/useCases/updateNgoTemplateConfig/UpdateNgoTemplateConfigController";
 
 
 
@@ -98,6 +100,9 @@ const loadExportDonationsController = new LoadExportDonationsController()
 const loadUpdateNgoTemplateController = new LoadUpdateNgoTemplateController()
 const updateNgoTemplateController = new UpdateNgoTemplateController()
 
+const loadUpdateNgoTemplateConfigController = new LoadUpdateNgoTemplateConfigController()
+const updateNgoTemplateConfigController = new UpdateNgoTemplateConfigController()
+
 //inicio//pagina inicial mostra todas as ongs
 donationRoutes.get("/", ensureAuthenticated,  handleMessage, findAllNgosController.handle)
 
@@ -121,9 +126,13 @@ donationRoutes.delete("/instituicao/:ngo_id/deletar", ensureAdmin, upload.none()
 donationRoutes.get("/instituicao/:ngo_id/mensagens", ensureAdmin,  handleMessage, loadNgoMessagesController.handle)
 donationRoutes.get("/instituicao/:ngo_id/mensagens/:message_id", ensureAdmin,  handleMessage, loadNgoMessageController.handle)
 donationRoutes.delete("/instituicao/:ngo_id/mensagens/:message_id", ensureAdmin, upload.none(), deleteNgoMessageController.handle)
+
 //atualizar template
 donationRoutes.get("/instituicao/:ngo_id/template", ensureAdmin,  handleMessage, loadUpdateNgoTemplateController.handle)
-donationRoutes.post("/instituicao/:ngo_id/template", ensureAdmin,  handleMessage, updateNgoTemplateController.handle)
+donationRoutes.post("/instituicao/:ngo_id/template", ensureAdmin,  handleMessage,  upload.single("file"), updateNgoTemplateController.handle)
+//att config template
+donationRoutes.get("/instituicao/:ngo_id/template-config", ensureAdmin,  handleMessage, loadUpdateNgoTemplateConfigController.handle)
+donationRoutes.post("/instituicao/:ngo_id/template-config", ensureAdmin,  handleMessage,  upload.single("file"), updateNgoTemplateConfigController.handle)
 
 
 //gerar talao

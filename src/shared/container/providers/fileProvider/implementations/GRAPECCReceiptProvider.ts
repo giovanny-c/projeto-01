@@ -25,12 +25,14 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 
         const page = doc.addPage();
 
-        //x 595 | y 841
+        //default: x 595 | y 841
         
         //se for gerar recibo 
+        // numero base para calcular a posição
         let y = 568.14
 
         //se for pra gerar para talao
+        //a pagina vai ter 841 por 273
         if(generateForBooklet){
 
             page.setSize(page.getWidth(), 273.75);
