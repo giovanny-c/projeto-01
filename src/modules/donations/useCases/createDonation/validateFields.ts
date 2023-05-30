@@ -51,6 +51,8 @@ export default function validateFields(data: Partial<IRequest>){
         donation_date,
         ngo_id,
         user_id
+    }, {
+        convert: false
     })
 
     // if(error){

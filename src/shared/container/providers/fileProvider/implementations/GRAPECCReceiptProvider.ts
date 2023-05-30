@@ -274,8 +274,8 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         const [month, year] = dateProvider.formatDate(dateProvider.dateNow(), "MM/YYYY").toString().split("/");
 
 
-        let pageIndex = 0;
-        let index = 1;
+        let pageIndex = 0;//da pagina do booklet
+        let index = 1; //da posição do recibo na pagina do booklet
 
 
         const files_promises = await Promise.all(donations.map(async (donation) => {

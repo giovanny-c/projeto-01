@@ -46,7 +46,9 @@ export default function validateFields(data: Partial<IRequest>){
         worker_id,
         donation_date,
         ngo_id,
-    })
+    },
+    {convert: false}
+    )
 
     // if(error){
         // throw new InputError(error.details[0].message, value)  

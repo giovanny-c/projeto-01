@@ -7,6 +7,8 @@ import { INgoRepository } from "../../repositories/INgoRepository";
 import { AppError } from "../../../../shared/errors/AppError";
 import * as fs from "fs"
 import { INgosTemplateConfigRepository } from "../../repositories/INgosTemplateConfigRepository";
+import validateFields from "./validateFields";
+import { INGOtemplateConfig } from "../../../../shared/container/providers/fileProvider/INGOReceiptProvider";
 
 
 interface IRequest{
@@ -53,9 +55,15 @@ class UpdateNgoTemplateConfigUseCase {
             })
 
             //verifica se tem todos os campos
-            const config = JSON.parse(json)
+            const config = JSON.parse(json) as INGOtemplateConfig
             
-            console.log(config)
+            const {error, value} = validateFields(config)
+
+            console.log(config.generate_receipt.base_y)
+            console.log(value.generate_receipt.base_y)
+            if(error){
+                throw new AppError(error, 400)
+            }
 
             //update da no banco
             const ngoTemplateConfig = await this.ngoTemplateConfigRepository.findByNgoId(ngo_id)
@@ -80,7 +88,7 @@ class UpdateNgoTemplateConfigUseCase {
             })
 
             console.error(err)
-            throw new AppError("Não foi possivel salvar o arquivo", 500)
+            throw new AppError(err.message || "Não foi possivel salvar o arquivo", err.statusCode || 500)
 
         }
 
