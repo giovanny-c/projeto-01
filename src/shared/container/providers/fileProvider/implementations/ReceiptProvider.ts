@@ -11,6 +11,7 @@ import { DayjsDateProvider } from "../../dateProvider/implementations/DayjsDateP
 import { ICreateBooletResponse } from "../IFileProvider";
 import { getExecutionTime } from "../../../../../../utils/decorators/executionTime";
 import { ICreateReceiptBooklet, IGenerateReceipt } from "../dtos/IReceiptProviderDTOs";
+import { AppError } from "../../../../errors/AppError";
 
 
 @singleton()
@@ -42,10 +43,13 @@ class ReceiptProvider implements INGOReceiptProvider {
             draw_month,
             draw_year,
             draw_horizontal_line,
-            base_y,
+            base_y: config_base_y,
             generate_for_booklet,
             text_color
         } = template_config.generate_receipt
+
+        //separa as cores
+        const {r,g,b} = text_color.color
 
         //cria uma pagina no documento
         const page = doc.addPage();
@@ -54,7 +58,7 @@ class ReceiptProvider implements INGOReceiptProvider {
         
         //se for gerar recibo (gera numa folha 14 inteira)(o y conta de baixo(menor) para cima(maior))
         // numero base para calcular a posição
-        let y = base_y
+        let base_y = config_base_y
         
         //pega a largura da page
         const pageWidth = page.getWidth()
@@ -64,76 +68,73 @@ class ReceiptProvider implements INGOReceiptProvider {
         if(generateForBooklet){
             page.setSize(pageWidth, generate_for_booklet.page_height);
 
-            y = 0 
+            base_y = 0 
         }
 
-        
-        page.drawImage(template, {
-            y: 0 + y,
-            x: 30,
-            width: pageWidth - 55,
-            height: 273.75,
-            
-        });
+        //desenha template
+        draw_template.y += base_y
+        draw_template.width += pageWidth
+        page.drawImage(template, draw_template);
 
-        page.drawImage(templateSign, {
-            y: 21 + y,
-            x: 314.25,
-            width: 56.25,
-            height: 36
-        });
+
+        //desenha a assinatura
+        draw_sign.y += base_y
+        page.drawImage(templateSign, draw_sign);
 
         
         //numero da doaçao
-        page.drawText(donation.donation_number.toString(), {
-            y: 171.75 + y,
-            x: 135,
+        draw_donation_number.y += base_y
+        let {r:dn_r, g: dn_g ,b: dn_b } = draw_donation_number.color
 
-            // rotate: degrees(90),
-            color: rgb(0.95, 0.1, 0.1),
-            size: 17.25 //*0.75?
+        page.drawText(donation.donation_number.toString(), {
+            ...draw_donation_number,
+            color: rgb(dn_r, dn_g, dn_b)
+            ,
+            
         });
 
 
-        let [, valor] = formatToBRL(donation.donation_value as number).toString().split("$");
 
         //valor numerico
+        let [, valor] = formatToBRL(donation.donation_value as number).toString().split("$");
+
+        draw_value.y += base_y
         page.drawText(valor, {
-            y: 172.5 + y,
-            x: 391.50,
-            // rotate: degrees(90),
-            size: 22.50,
+            ...draw_value,
             font,
-            color: rgb(0.143, 0.133, 0.610) //rgb(0.122, 0.160, 0.797)
+            color: rgb(r, g, b)
         });
 
+
+        //nome por extenso
         //se terminar em a e i o u nao seguido de n m r s z o e?
         let nomeArray: string[] = donation.donor_name.match(/.{1,50}\b/g);
         if (font) {
             nomeArray = donation.donor_name.match(/.{1,50}\b/g);
         }
-        //nome
+
+        const {line_1: name_line_1, line_2: name_line_2} = draw_name
+
+        //linha 1
+        name_line_1.y += base_y
         page.drawText(nomeArray[0], {
-            y: 155.25 + y,
-            x: 144.75,
-            // rotate: degrees(90),
-            size: 17.25,
+            ...name_line_1,
             // maxWidth: 560,
             // wordBreaks: [" ", "-"],
             // lineHeight: 21,
             font,
-            color: rgb(0.143, 0.133, 0.610)
+            color: rgb(r, g, b)
         });
 
+        //linha 2
         if (nomeArray[1] && nomeArray[1].length) {
 
+            name_line_2.y += base_y
+
             page.drawText(nomeArray[1], {
-                y: 139.50 + y,
-                x: 56.25,
-                // rotate: degrees(90),
-                size: 17.25,
+                ...name_line_2,
                 font,
-                color: rgb(0.143, 0.133, 0.610)
+                color: rgb(r, g, b)
             });
         }
 
@@ -146,27 +147,30 @@ class ReceiptProvider implements INGOReceiptProvider {
         // if(!vpeArray[0].match(/[ ,]$|( e)$/) ) {
         //     vpeArray[0] = `${vpeArray[0]}-`
         //    console.log(vpeArray)
+
         //primeira letra maiuscula
         vpeArray[0] = vpeArray[0].at(0).toUpperCase() + vpeArray[0].substring(1);
 
+        const {line_1: value_line_1, line_2: value_line_2} = draw_extense_value
+
+        //linha 1
+        value_line_1.y += base_y
+
         page.drawText(vpeArray[0], {
-            y: 120.75 + y,
-            x: 135,
-            // rotate: degrees(90),
-            size: 17.25,
+            ...value_line_1,
             font,
-            color: rgb(0.143, 0.133, 0.610)
+            color: rgb(r, g, b)
         });
 
+        //linha 2
         if (vpeArray[1] && vpeArray[1].length) {
 
+            value_line_2.y += base_y
+
             page.drawText(vpeArray[1], {
-                y: 104.25 + y,
-                x: 56.25,
-                // rotate: degrees(90),
-                size: 17.25,
+                ...value_line_2,
                 font,
-                color: rgb(0.143, 0.133, 0.610)
+                color: rgb(r, g, b)            
             });
         }
 
@@ -177,71 +181,81 @@ class ReceiptProvider implements INGOReceiptProvider {
 
         let mesUpper = mes.at(0).toUpperCase() + mes.substring(1);
 
+        //dia
+        draw_day.y += base_y
+
         page.drawText(dia, {
-            y: 52.50 + y,
-            x: 307.50,
-            // rotate: degrees(90),
-            size: 18.75,
+            ...draw_day,
             font,
-            color: rgb(0.143, 0.133, 0.610)
+            color: rgb(r, g, b)
         });
 
+
+        //mes
+        draw_month.y += base_y
         page.drawText(mesUpper, {
-            y: 52.50 + y,
-            x: 365.25,
-            // rotate: degrees(90),
-            size: 18.75,
+            ...draw_month,
             font,
-            color: rgb(0.143, 0.133, 0.610)
+            color: rgb(r, g, b)
         });
+
+        //ano
+        draw_year.y += base_y 
         page.drawText(ano, {
-            y: 52.50 + y,
-            x: 501,
-            // rotate: degrees(90),
-            size: 18.75,
+            ...draw_year,
             font,
-            color: rgb(0.143, 0.133, 0.610)
+            color: rgb(r, g, b)
         });
 
 
 
+        //referente a doação
+        draw_reffering_to.y += base_y
         let refferingTo = "Doação";
         page.drawText(refferingTo, {
-            y: 88.50 + y,
-            x: 127.50,
-            size: 16.50,
+            ...draw_reffering_to,
             font,
-            color: rgb(0.143, 0.133, 0.610)
+            color: rgb(r, g, b)
         });
 
         //workwer
+        draw_worker.y += base_y
         page.drawText(donation.worker?.name || "", {
-            y: 12 + y,
-            x: 60,
-            size: 15,
+            ...draw_worker,
             font,
-            color: rgb(0.143, 0.133, 0.610)
+            color: rgb(r, g, b)
         });
+
 
         if (donation.is_donation_canceled) {
 
+            const {y: dcd_y, x: dcd_x, rotate, size} = draw_canceled_donation
+
             page.drawText("CANCELADO", {
-                y: page.getHeight() - 144,
-                x: page.getWidth() - (page.getWidth() - 120),
-                rotate: degrees(-12),
+                y: page.getHeight() - dcd_y,
+                x: page.getWidth() - (page.getWidth() - dcd_x),
+                rotate: degrees(rotate),
                 color: rgb(0, 0, 0),
-                size: 63.75,
+                size,
             });
         }
 
 
+        
         //linha horizontal ______
+        const { start, end, color: dhl_color, line_cap, thickness} = draw_horizontal_line
+
+        start.y += base_y
+        end.y += base_y
+
+        const {r: dhl_r, g: dhl_g, b: dhl_b} = dhl_color
+
         page.drawLine({
-            start: { x: 0, y: y + 0.5 },
-            end: { x: 600, y: y + + 0.5},
-            color: rgb(0.5, 0.5, 0.5),
-            lineCap: 1,
-            thickness: 0.1,
+            start,
+            end,
+            color: rgb(dhl_r, dhl_g, dhl_b),
+            lineCap: line_cap,
+            thickness
         });
 
       
@@ -264,31 +278,27 @@ class ReceiptProvider implements INGOReceiptProvider {
         // page.scale(0.75, 0.75);
 
 
+        //cria um array de bytes
+        const pdfBytes = await doc.save();  
 
-
-
-        const pdfBytes = await doc.save(); //cria um array de bytes 
-
-
-
-
-
-
-
-        //criar o pdf no dir
-        //se mudar a estensao muda o arquivo?
-        //const dir = resolve(__dirname, "..", "tmp", "receipts", "")
+        //salva
         if (saveFile) {
 
             //chama o storage provider pra salvar
-            const storageProvider = container.resolve(LocalStorageProvider);
-
-            // let dir2 = path.join("C:","Users","Giovanny","Desktop","recibos", `${donation.ngo.name}`, `${ano}`, `${mes}`)
-            let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`;
-            let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`;
-
-
-            storageProvider.saveAsync(dir, file_name, pdfBytes);
+            try {
+                const storageProvider = container.resolve(LocalStorageProvider);
+                
+                // let dir2 = path.join("C:","Users","Giovanny","Desktop","recibos", `${donation.ngo.name}`, `${ano}`, `${mes}`)
+                let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`;
+                let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`;
+                
+                
+                storageProvider.saveAsync(dir, file_name, pdfBytes);
+                
+            } catch (error) {
+                console.error(error)
+                throw new AppError("Não foi posivel salvar o arquivo", 500)
+            }
         }
 
         return pdfBytes
@@ -303,146 +313,171 @@ class ReceiptProvider implements INGOReceiptProvider {
         template_config 
     }: ICreateReceiptBooklet): Promise<ICreateBooletResponse> {
 
-        const storageProvider = container.resolve(LocalStorageProvider);
-        const dateProvider = container.resolve(DayjsDateProvider);
 
-        const [month, year] = dateProvider.formatDate(dateProvider.dateNow(), "MM/YYYY").toString().split("/");
-
+        const {draw_vertical_line} = template_config.generate_booklet
+        
+        
 
         let pageIndex = 0;//da pagina do booklet
         let index = 1; //da posição do recibo na pagina do booklet
 
 
-        const files_promises = await Promise.all(donations.map(async (donation) => {
-            //para pegar o arquivo
-            // let {dia, mes, ano} = getFormatedDateForReceipt(donation.created_at)
-            // let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
-            // let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
-            // fazer error handling para arquivos que nao existirem
-            let receitpPdf: Buffer | Uint8Array;
+        let files_promises
 
-            // try {
-            //     receitpPdf = await fs.promises.readFile(resolve(dir, file_name))
-            // } catch (error) {
-            //     if(error || !receitpPdf){
-            const fileProvider = container.resolve(PDF_LIBFileProvider);
+        try { //gera os recibos(individualmente)
+           
+            files_promises = await Promise.all(donations.map(async (donation) => {
+                //para pegar o arquivo
+                // let {dia, mes, ano} = getFormatedDateForReceipt(donation.created_at)
+                // let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
+                // let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`
+                // fazer error handling para arquivos que nao existirem
+                
+    
+                // try {
+                //     receitpPdf = await fs.promises.readFile(resolve(dir, file_name))
+                // } catch (error) {
+                //     if(error || !receitpPdf){
+    
+                //chama o provider
+                const fileProvider = container.resolve(PDF_LIBFileProvider);
+    
+                //gera os recibos(individualmente)
+                let receitpPdf = await fileProvider.generateFile({
+                    donation, 
+                    saveFile: false, 
+                    generateForBooklet: true,
+                    template_name,
+                    template_config
+    
+                })
+    
+               
+                return receitpPdf
+            }))
 
-            //se nao salvase o arquivo iria mais rapido?
-            //provavel q sim
-            receitpPdf = await fileProvider.generateFile({
-                donation, 
-                saveFile: false, 
-                generateForBooklet: true,
-                template_name,
-                template_config
-            });
+        } catch (error) {
+            console.error(error)
+            throw new AppError("Erro ao gerar recibos.", 500)
+        }
+        
+
+        let pages_promises
+
+        try { //monta as paginas, com os recibos
+
+            let {start, end, line_cap, thickness} = draw_vertical_line
+            let {r: dvl_r, g: dvl_g, b: dvl_b} = draw_vertical_line.color
+
+            
+            pages_promises = await Promise.all(files_promises.map(async (file) => {
+    
+                const [receipt] = await doc.embedPdf(file, [0]);
+    
+                if (index === 1) {
+    
+                    doc.addPage();
+    
+                }
+    
+    
+    
+                //pega a pagina atual
+                let page = doc.getPage(pageIndex);
+    
+                
+                
+                //poe o recibo na page, baseado na:  altura da pagina - sua altura * index(posição do recibo na pagina: 1, 2 ou 3)
+                const base_y = page.getHeight() - receipt.height * index; //posição y
+    
+    
+                
+                //coloca a img no pdf
+                page.drawPage(receipt, {
+                    y: base_y,
+                    x: 0,
+                    //width: page.getWidth()
+                    //tira o 50 daqui e poe 75 no generateRecipeForBooklet drawImage
+                    //que fica similar, 
+                });
+    
+                // if(donation.is_donation_canceled){
+                //     page.drawText("CANCELADO", {
+                //         y: y + receipt.height / 3,
+                //         x: receipt.width - (receipt.width - 60),
+                //         color: rgb(0.95, 0.1, 0.1),
+                //         size: 74,
+                //     })
+                // }
+                //linha horizontal ______
+                // page.drawLine({
+                //     start: { x: 0, y: y + 0.5 },
+                //     end: { x: page.getWidth(), y: y + 0.5 },
+                //     color: rgb(0.5, 0.5, 0.5),
+                //     lineCap: 1,
+                //     thickness: 0.1,
+                // });
+                //linha vertical |
+
+                
+
+                page.drawLine({
+                    start: { x: start.x , y: base_y },
+                    end: { x: end.x , y: base_y + receipt.height },
+                    color: rgb(dvl_r, dvl_g, dvl_b),
+                    lineCap: line_cap,
+                    thickness,
+                });
+    
+    
+    
+    
+                //se chegar a 3 acabou a pagina 
+                if (index === 3) {
+                    index = index - 3;
+                    pageIndex++;
+    
+    
+                }
+    
+    
+                index++;
+    
+                //? pra retornar so a ultima vez que densenhar a page
+                //if(pageIndex > lastPageIndex) return page
+                return page;
+    
+    
+            }));
+
+        } catch (error) {
+            console.error(error)
+            throw new AppError("Erro ao gerar o talão", 500)
+        }
 
 
-
-            //     }
-            // }
-            return receitpPdf;
-        }));
-
-        const pages_promises = await Promise.all(files_promises.map(async (file) => {
-
-            const [receipt] = await doc.embedPdf(file, [0]);
-
-            if (index === 1) {
-
-                doc.addPage();
-
-            }
-
-
-
-            //pega a pagina atual
-            let page = doc.getPage(pageIndex);
-
-
-            //page.setSize(receipt.width, receipt.height * 3)
-            const y = page.getHeight() - receipt.height * index; //posição y
-
-
-
-            //coloca a img no pdf
-            page.drawPage(receipt, {
-                y,
-                x: 0,
-                //width: page.getWidth()
-                //tira o 50 daqui e poe 75 no generateRecipeForBooklet drawImage
-                //que fica similar, 
-            });
-
-            // if(donation.is_donation_canceled){
-            //     page.drawText("CANCELADO", {
-            //         y: y + receipt.height / 3,
-            //         x: receipt.width - (receipt.width - 60),
-            //         color: rgb(0.95, 0.1, 0.1),
-            //         size: 74,
-            //     })
-            // }
-            //linha horizontal ______
-            // page.drawLine({
-            //     start: { x: 0, y: y + 0.5 },
-            //     end: { x: page.getWidth(), y: y + 0.5 },
-            //     color: rgb(0.5, 0.5, 0.5),
-            //     lineCap: 1,
-            //     thickness: 0.1,
-            // });
-            //linha vertical |
-            page.drawLine({
-                start: { x: 28, y: y },
-                end: { x: 28, y: y + receipt.height },
-                color: rgb(0.5, 0.5, 0.5),
-                lineCap: 1,
-                thickness: 0.1
-            });
-
-
-
-
-            //se chegar a 3 acabou a pagina 
-            if (index === 3) {
-                index = index - 3;
-                pageIndex++;
-
-
-            }
-
-
-            index++;
-
-            //? pra retornar so a ultima vez que densenhar a page
-            //if(pageIndex > lastPageIndex) return page
-            return page;
-
-
-        }));
-
-
-
+        //poe todas as paginas no arquivo
         doc.embedPages(pages_promises);
 
-
-
+        //salva(cria um buffer)
         const pdfBytes = await doc.save(); //cria um array de bytes 
 
-
-
-
-
-        // const pdfBuffer = await doc.saveAsBase64()
-        //salva
-        let dir = `./tmp/booklet/${year}/${month}/${donations[0].ngo.name}`;
-
+        //nome
         let file_name = `${donations[0].donation_number}__${donations[donations.length - 1].donation_number}.pdf`;
 
-        //tipo isso
-        // if(compression){
-        //     file_name += ".gz"
-        // }
+        
+        //salva
         if (saveFile) {
+
+            //formara a data 
+            const dateProvider = container.resolve(DayjsDateProvider);
+
+            const [month, year] = dateProvider.formatDate(dateProvider.dateNow(), "MM/YYYY").toString().split("/");
+            
+            //dir para salvar
+            let dir = `./tmp/booklet/${year}/${month}/${donations[0].ngo.name}`;
+
+            const storageProvider = container.resolve(LocalStorageProvider);
 
             await storageProvider.saveSync(dir, file_name, pdfBytes);
 
