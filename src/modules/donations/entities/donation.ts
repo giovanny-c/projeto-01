@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, Generated, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from "typeorm";
 
 import { v4 as uuidV4 } from "uuid"
 
@@ -6,6 +6,7 @@ import { Donor } from "../../donor/entities/donor";
 import { User } from "../../user/entities/user";
 import { Worker } from "../../workers/entities/worker";
 import { Ngo } from "./ngos";
+import { NgosTemplateConfig } from "./ngos_template_config";
 
 @Entity("donations")
 class Donation {
@@ -46,7 +47,6 @@ class Donation {
     
     @Column() 
     ngo_id: string
-
 
     @Column()
     donation_value: number

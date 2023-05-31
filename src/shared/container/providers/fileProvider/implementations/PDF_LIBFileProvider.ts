@@ -1,91 +1,110 @@
 import { PDFDocument, PrintScaling } from "pdf-lib"
 import fontkit from "@pdf-lib/fontkit"
-import fs from "fs"
 import * as fsPromises from "fs/promises"
 import {resolve} from "path"
 import { ICreateBooletResponse, IFileProvider } from "../IFileProvider";
-import { Donation } from "../../../../../modules/donations/entities/donation";
 
 
 import { AppError } from "../../../../errors/AppError";
 
-import { container, InjectionToken, singleton } from "tsyringe";
+import { container, singleton } from "tsyringe";
 
-import {GRAPECCReceiptProvider} from "./GRAPECCReceiptProvider" 
+import { ReceiptProvider} from "./ReceiptProvider" 
 import { ICreateBooklet, IGenerateFile } from "../dtos/IFileProviderDTOs"
 
-const generateReceiptMethods = {
+// const generateReceiptMethods = {
 
-    GRAPECC: GRAPECCReceiptProvider,
+//     GRAPECC: GRAPECCReceiptProvider,
     
-    GOTA: "GOTAReceiptProvider Nao implementado",
+//     GOTA: "GOTAReceiptProvider Nao implementado",
         
-}
+// }
 
 @singleton()
 class PDF_LIBFileProvider implements IFileProvider {
 
 
-    async generateFile({donation, generateForBooklet, saveFile}: IGenerateFile): Promise<Uint8Array> {
+    async generateFile({
+        donation, 
+        template_name,
+        template_config,
+        generateForBooklet, 
+        saveFile, 
+    }: IGenerateFile): Promise<Uint8Array> {
 
+        
         if (!donation.donation_number){
             throw new AppError("Doação nao encontrada", 404)
         }
 
-        //pega o template
-        const templatePath = resolve(".", "templates", `${donation.ngo.alias}_template.jpg`) //template do recibo
+        //Pega o template e a assinatura
+        const templatePath = resolve(".", "templates", template_name) //template do recibo
         const signPath = resolve(".", "templates", "signs", "ricardo_sign3.png" )
 
         let uint8Array
         let uint8ArraySign 
 
-        try {
-            
-            uint8Array = await fsPromises.readFile(templatePath)// le o tamplate do recibo
-            uint8ArraySign = await fsPromises.readFile(signPath)
-
-            if(!uint8Array || !uint8ArraySign){
-                return 
-            }
-
+        try {  //ler arquivo
+            uint8Array = await fsPromises.readFile(templatePath) 
         } catch (error) {
-            return
+            throw new AppError("Arquivo de template não encontrado.", 500)
+        }
+
+        try {//ler assinatura
+            uint8ArraySign = await fsPromises.readFile(signPath)
+            
+        } catch (error) {
+            throw new AppError("Arquivo de assinatura não encontrado.", 500)
         }
         
-        
 
+        //cria o document
         const doc = await PDFDocument.create()
         
         //config de impressao
-        doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault)
-        doc.setTitle(`${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}`)
+        doc.catalog.getOrCreateViewerPreferences().setPrintScaling(PrintScaling.AppDefault) //opçao de impresao padra do applicativo
+        doc.setTitle(`${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}`) // nome da impressao, não sei se esta usando
         
 
         //pega a fonte
         doc.registerFontkit(fontkit)
+        //carrega o arquivo da fonte
+        let fontBuffer
         
-        const fontBuffer = await fsPromises.readFile("./fonts/Roustel.ttf")
+        try {
+            fontBuffer = await fsPromises.readFile("./fonts/Roustel.ttf")
+        } catch (error) {
+            return
+        }
+
+        //embed a fonte no documento
+        let font
         
-        const font = await doc.embedFont(fontBuffer)
+        if(fontBuffer){
+            font = await doc.embedFont(fontBuffer)
+        }
         
-        
-        const template = await doc.embedJpg(uint8Array) //poe o template no pdf
+        //embed do template e sign
+        const template = await doc.embedJpg(uint8Array) 
         const templateSign = await doc.embedPng(uint8ArraySign)
 
         //vai injetar o metodo de criação de pdf dinamicamente
+        // const provider: InjectionToken = generateReceiptMethods[donation.ngo.alias]   
 
-        const provider: InjectionToken = generateReceiptMethods[donation.ngo.alias]   
 
-        const receiptProvider = container.resolve(provider)  
+        //chama o provider
+        const receiptProvider = container.resolve(ReceiptProvider)  
     
         const pdfBytes = await receiptProvider.generateReceipt({
             doc, 
             donation, 
             saveFile, 
             template, 
-            templateSign, 
+            templateSign,
+            template_config, 
             font,
-            generateForBooklet
+            generateForBooklet,
+
         })
         
         return  pdfBytes
@@ -94,7 +113,12 @@ class PDF_LIBFileProvider implements IFileProvider {
     }
 
 
-    async createBooklet({donations, saveFile}: ICreateBooklet): Promise<ICreateBooletResponse> {
+    async createBooklet({
+        donations, 
+        saveFile, 
+        template_name, 
+        template_config
+    }: ICreateBooklet): Promise<ICreateBooletResponse> {
 
         if(!donations.length){
             
@@ -103,23 +127,25 @@ class PDF_LIBFileProvider implements IFileProvider {
         }
 
         const doc = await PDFDocument.create()
-
         doc.setTitle(`${donations[0].donation_number}__${donations[donations.length-1].donation_number}`)
         
-        const provider: InjectionToken = generateReceiptMethods[donations[0].ngo.alias]   
 
-        let receiptProvider
-        
-        try {
-            
-            receiptProvider = container.resolve(provider)     
-            
-        } catch (error) {
-            throw new AppError("Metodo ainda não implementado!")   
-        }
-        
-        
-        return await receiptProvider.createBooklet({doc, donations, saveFile})
+        // const provider: InjectionToken = generateReceiptMethods[donations[0].ngo.alias]   
+        // let receiptProvider
+        // try {          
+        //     receiptProvider = container.resolve(provider)      
+        // } catch (error) {
+        //     throw new AppError("Metodo ainda não implementado!")   
+        // }
+
+        const receiptProvider = container.resolve(ReceiptProvider)
+
+        return await receiptProvider.createBooklet({
+            doc, 
+            donations, 
+            saveFile, 
+            template_name, 
+            template_config})
 
         
     }

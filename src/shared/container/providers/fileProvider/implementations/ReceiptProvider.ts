@@ -14,33 +14,59 @@ import { ICreateReceiptBooklet, IGenerateReceipt } from "../dtos/IReceiptProvide
 
 
 @singleton()
-class GRAPECCReceiptProvider implements INGOReceiptProvider {
+class ReceiptProvider implements INGOReceiptProvider {
 
-    async generateReceipt({doc, donation, saveFile, template, templateSign, font, generateForBooklet}: IGenerateReceipt): Promise<Uint8Array> {
+    async generateReceipt({
+        doc, 
+        donation, 
+        saveFile, 
+        generateForBooklet,
+        font, 
+        template, 
+        templateSign, 
+        template_config,
+    }: IGenerateReceipt): Promise<Uint8Array> {
 
-       
-        
-        const storageProvider = container.resolve(LocalStorageProvider);
+       //extrai todas as props de gen_receipt
+        const { 
+            draw_template, 
+            draw_sign, 
+            draw_donation_number, 
+            draw_value,
+            draw_extense_value,
+            draw_name,
+            draw_worker,
+            draw_reffering_to,
+            draw_canceled_donation,
+            draw_day,
+            draw_month,
+            draw_year,
+            draw_horizontal_line,
+            base_y,
+            generate_for_booklet,
+            text_color
+        } = template_config.generate_receipt
 
-
+        //cria uma pagina no documento
         const page = doc.addPage();
 
         //default: x 595 | y 841
         
-        //se for gerar recibo 
+        //se for gerar recibo (gera numa folha 14 inteira)(o y conta de baixo(menor) para cima(maior))
         // numero base para calcular a posição
-        let y = 568.14
+        let y = base_y
+        
+        //pega a largura da page
+        const pageWidth = page.getWidth()
 
         //se for pra gerar para talao
-        //a pagina vai ter 841 por 273
+        //a pagina vai ter ser do tamnho do recibo(na altura) (largura padrao A4)
         if(generateForBooklet){
+            page.setSize(pageWidth, generate_for_booklet.page_height);
 
-            page.setSize(page.getWidth(), 273.75);
-
-            y = 0
+            y = 0 
         }
 
-        const pageWidth = page.getWidth()
         
         page.drawImage(template, {
             y: 0 + y,
@@ -254,6 +280,9 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
         //const dir = resolve(__dirname, "..", "tmp", "receipts", "")
         if (saveFile) {
 
+            //chama o storage provider pra salvar
+            const storageProvider = container.resolve(LocalStorageProvider);
+
             // let dir2 = path.join("C:","Users","Giovanny","Desktop","recibos", `${donation.ngo.name}`, `${ano}`, `${mes}`)
             let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`;
             let file_name = `${donation.donor_name}_${dia}_${donation.donation_number}_${donation.id}.pdf`;
@@ -266,7 +295,13 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
     }
 
     @getExecutionTime()
-    async createBooklet({donations, doc, saveFile }: ICreateReceiptBooklet): Promise<ICreateBooletResponse> {
+    async createBooklet({
+        donations, 
+        doc, 
+        saveFile, 
+        template_name,
+        template_config 
+    }: ICreateReceiptBooklet): Promise<ICreateBooletResponse> {
 
         const storageProvider = container.resolve(LocalStorageProvider);
         const dateProvider = container.resolve(DayjsDateProvider);
@@ -297,7 +332,9 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
             receitpPdf = await fileProvider.generateFile({
                 donation, 
                 saveFile: false, 
-                generateForBooklet: true
+                generateForBooklet: true,
+                template_name,
+                template_config
             });
 
 
@@ -427,4 +464,4 @@ class GRAPECCReceiptProvider implements INGOReceiptProvider {
 }
 
 
-export {GRAPECCReceiptProvider}
+export {ReceiptProvider}

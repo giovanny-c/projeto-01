@@ -7,6 +7,8 @@ import ICacheProvider from "../../../../shared/container/providers/cacheProvider
 import { AppError } from "../../../../shared/errors/AppError";
 import * as stream from "stream"
 import IResponse from "../dtos/IResponseDTO";
+import { Donation } from "../../../donations/entities/donation";
+import { INgosTemplateConfigRepository } from "../../../donations/repositories/INgosTemplateConfigRepository";
 
 
 
@@ -28,6 +30,8 @@ class GenerateFileUseCase {
         
         @inject("DonationsRepository")
         private donationsRepository: IDonationsRepository,
+        @inject("NgosTemplateConfigRepository")
+        private ngosTemplateConfigRepository: INgosTemplateConfigRepository,
         @inject("FileProvider")
         private fileProvider: IFileProvider,
     ){
@@ -113,7 +117,9 @@ class GenerateFileUseCase {
             } 
         }
         
-        const donation = await this.donationsRepository.findOneById(donation_id)
+        const donation = await this.donationsRepository.findOneById(donation_id) as Donation
+
+        const config = await this.ngosTemplateConfigRepository.findByNgoId(donation.ngo.id)
         
         const pdfBytes = await this.fileProvider.generateFile({
             donation, 
