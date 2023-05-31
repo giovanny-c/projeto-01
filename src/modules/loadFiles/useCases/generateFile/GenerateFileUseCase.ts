@@ -9,6 +9,7 @@ import * as stream from "stream"
 import IResponse from "../dtos/IResponseDTO";
 import { Donation } from "../../../donations/entities/donation";
 import { INgosTemplateConfigRepository } from "../../../donations/repositories/INgosTemplateConfigRepository";
+import { INGOtemplateConfig } from "../../../../shared/container/providers/fileProvider/INGOReceiptProvider";
 
 
 
@@ -30,8 +31,8 @@ class GenerateFileUseCase {
         
         @inject("DonationsRepository")
         private donationsRepository: IDonationsRepository,
-        @inject("NgosTemplateConfigRepository")
-        private ngosTemplateConfigRepository: INgosTemplateConfigRepository,
+        @inject("NgoTemplateConfigRepository")
+        private ngoTemplateConfigRepository: INgosTemplateConfigRepository,
         @inject("FileProvider")
         private fileProvider: IFileProvider,
     ){
@@ -117,35 +118,63 @@ class GenerateFileUseCase {
             } 
         }
         
-        const donation = await this.donationsRepository.findOneById(donation_id) as Donation
 
-        const config = await this.ngosTemplateConfigRepository.findByNgoId(donation.ngo.id)
+        try {
+            
+            const donation = await this.donationsRepository.findOneById(donation_id) as Donation
+
+            if(!donation.ngo?.template_name){
+                
+                return {
+                    error: {
+                        message: "Não Foi possivel gerar esse arquivo. Ele não possui um template ou não foi encontrado!",
+                        status: 500
+                    }
+                } 
+                
+            }
+
+
+            const template_config = await this.ngoTemplateConfigRepository.findByNgoId(donation.ngo.id)
+
+            if(!template_config){
+                return {
+                    error: {
+                        message: "Não Foi possivel gerar esse arquivo. Ele não possui uma configuração de template!",
+                        status: 500
+                    }
+                } 
+            }
+
+            let config =  JSON.parse(template_config.configuration) as INGOtemplateConfig
+
+            const pdfBytes = await this.fileProvider.generateFile({
+                donation, 
+                saveFile: false,
+                generateForBooklet: false,
+                template_config: config,
+                template_name: donation.ngo.template_name
+            }) as Buffer
+            
         
-        const pdfBytes = await this.fileProvider.generateFile({
-            donation, 
-            saveFile: false,
-            generateForBooklet: false
-        })
-        
-        if(!pdfBytes || !pdfBytes.length){
+            const readable = stream.Readable.from(Buffer.from(pdfBytes))
             
             return {
-                error: {
-                    message: "Não Foi possivel gerar esse arquivo. Ele não possui um template!",
-                    status: 500
+                response: {
+                    readable,
+                    file_name: `${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}.pdf`,
+                    content_type: "application/pdf"
                 }
-            } 
-            
-        }
+            }
 
 
-        const readable = stream.Readable.from(Buffer.from(pdfBytes))
-        
-        return {
-            response: {
-                readable,
-                file_name: `${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}.pdf`,
-                content_type: "application/pdf"
+        } catch (error) {
+            console.error(error)
+            return {
+                error:{
+                    message: "Não foi possivel gerar o recibo.",
+                    status: 500
+                } 
             }
         }
 

@@ -8,6 +8,8 @@ import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import stream from "stream"
 import { Donation } from "../../entities/donation";
+import { INgosTemplateConfigRepository } from "../../repositories/INgosTemplateConfigRepository";
+import { INGOtemplateConfig } from "../../../../shared/container/providers/fileProvider/INGOReceiptProvider";
 
 interface IRequest {
     donation_number_interval: [number, number]
@@ -24,8 +26,8 @@ class GenerateBookletUseCase {
         private fileProvider: IFileProvider,
         @inject("DonationsRepository")
         private donationsRepository: IDonationsRepository,
-        @inject("DayjsDateProvider")
-        private dateProvider: IDateProvider,
+        @inject("NgoTemplateConfigRepository")
+        private ngoTemplateConfigRepository: INgosTemplateConfigRepository,
         @inject("NgoRepository")
         private ngoRepository: INgoRepository,
         @inject("CacheProvider")
@@ -44,7 +46,8 @@ class GenerateBookletUseCase {
        
             let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`)) as Ngo
 
-            if(!ngo || !ngo.id){
+            if(!ngo || !ngo.id || !ngo.template_name){
+                
                 ngo =  await this.ngoRepository.findById(ngo_id)
 
                 
@@ -71,12 +74,29 @@ class GenerateBookletUseCase {
                 throw new AppError("Nenhuma doação encontrada.", 404)
                 
             }
-            
-            
 
+            if(!ngo.template_name){
+                throw new AppError("Não Foi possivel gerar esse arquivo. Ele não possui um template ou não foi encontrado!", 500)
+            }
+
+            const template_config = await this.ngoTemplateConfigRepository.findByNgoId(ngo_id)
+
+            if(!template_config){
+             
+                throw new AppError("Não Foi possivel gerar esse arquivo. Ele não possui uma configuração de template!", 500)
+                
+            }    
+            
+            let config =  JSON.parse(template_config.configuration) as INGOtemplateConfig
+            
+            
             const {file: pdfBytes} = await this.fileProvider.createBooklet({
                 donations, 
-                saveFile: false})
+                saveFile: false,
+                template_config: config,
+                template_name: ngo.template_name
+            
+            })
             
 
 
@@ -93,7 +113,7 @@ class GenerateBookletUseCase {
             }
 
         } catch (error) {
-            
+            console.error(error)
             throw new AppError(error.message || "Não foi posivel gerar o arquivo", error.statusCode || 500)
         }
         

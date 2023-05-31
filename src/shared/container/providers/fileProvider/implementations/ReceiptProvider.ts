@@ -12,6 +12,7 @@ import { ICreateBooletResponse } from "../IFileProvider";
 import { getExecutionTime } from "../../../../../../utils/decorators/executionTime";
 import { ICreateReceiptBooklet, IGenerateReceipt } from "../dtos/IReceiptProviderDTOs";
 import { AppError } from "../../../../errors/AppError";
+import { height } from "pdfkit/js/page";
 
 
 @singleton()
@@ -73,8 +74,13 @@ class ReceiptProvider implements INGOReceiptProvider {
 
         //desenha template
         draw_template.y += base_y
-        draw_template.width += pageWidth
-        page.drawImage(template, draw_template);
+        
+        page.drawImage(template, {
+            y: draw_template.y,
+            x: draw_template.x,
+            width: pageWidth - draw_template.width,
+            height: draw_template.height
+        });
 
 
         //desenha a assinatura
@@ -322,11 +328,11 @@ class ReceiptProvider implements INGOReceiptProvider {
         let index = 1; //da posição do recibo na pagina do booklet
 
 
-        let files_promises
+        
 
         try { //gera os recibos(individualmente)
            
-            files_promises = await Promise.all(donations.map(async (donation) => {
+            let files_promises = await Promise.all(donations.map(async (donation) => {
                 //para pegar o arquivo
                 // let {dia, mes, ano} = getFormatedDateForReceipt(donation.created_at)
                 // let dir = `./tmp/receipts/${donation.ngo.name}/${ano}/${mes}`
@@ -356,21 +362,14 @@ class ReceiptProvider implements INGOReceiptProvider {
                 return receitpPdf
             }))
 
-        } catch (error) {
-            console.error(error)
-            throw new AppError("Erro ao gerar recibos.", 500)
-        }
-        
 
-        let pages_promises
-
-        try { //monta as paginas, com os recibos
+        //monta as paginas, com os recibos
 
             let {start, end, line_cap, thickness} = draw_vertical_line
             let {r: dvl_r, g: dvl_g, b: dvl_b} = draw_vertical_line.color
 
             
-            pages_promises = await Promise.all(files_promises.map(async (file) => {
+            let pages_promises = await Promise.all(files_promises.map(async (file) => {
     
                 const [receipt] = await doc.embedPdf(file, [0]);
     
@@ -450,14 +449,15 @@ class ReceiptProvider implements INGOReceiptProvider {
     
             }));
 
+            
+            
+            //poe todas as paginas no arquivo
+            doc.embedPages(pages_promises);
+            
         } catch (error) {
             console.error(error)
-            throw new AppError("Erro ao gerar o talão", 500)
+            throw new AppError(error.message || "Erro ao gerar o talão", error.statusCode || 500)
         }
-
-
-        //poe todas as paginas no arquivo
-        doc.embedPages(pages_promises);
 
         //salva(cria um buffer)
         const pdfBytes = await doc.save(); //cria um array de bytes 
