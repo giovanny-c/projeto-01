@@ -143,6 +143,12 @@ class ImportDonationsUseCase {
 
             //donor
 
+
+
+            if(donation.doador.match(/[\\\/:*?<>|",]/g)){
+                throw new AppError(`Caracter invalido: "${donation.doador.match(/[\\\/:*?<>|",]/g)[0]}". Forneça um nome valido para o doador, na linha ${index + 2}`, 400)
+            }
+
             const donation_donor = donation.doador.split(/\s/)//separa no espaço vazio
                 .filter(string => string !== "" )//tira caracters vazio
                 .map((string, index) => { //pega a primeira letra e transforma em upper

@@ -375,6 +375,11 @@ export default function validateFields(data){
 
         },
         generate_booklet: {
+            receipts_per_page: Joi.number().required().messages({
+                "number.base": "Forneça um numero valido para o generate_booklet.receipts_per_page.",
+                "number.empty": "Forneça um numero para o generate_booklet.receipts_per_page.",
+                "any.required": "propriedade faltando: generate_booklet.receipts_per_page."
+            }),
             draw_vertical_line: {
                 start: {
                     x: Joi.number().required().messages({
@@ -423,7 +428,7 @@ export default function validateFields(data){
       
 
         
-        //.error(new InputError("Forneça um nome valido para essa doação.", 400, "Valor inválido"))
+        
     })
 
 

@@ -25,9 +25,20 @@ class UpdateNgoUseCase{
 
     async execute({full_name, id, name}:IRequest){
 
-        if(!name) throw new AppError("Forneça uma abreviação para a Institiução")
-        if(!full_name) throw new AppError("Forneça um nome para a Institiução")
+        if(!full_name || full_name === ""){
+            throw new AppError("Forneça um nome valido para a instituição", 400)
+        }
+        if(!name || name === ""){
+            throw new AppError("Forneça uma abreviação ou acrônimo valido para a instituição", 400)
+        }
+        
         if(!id || id === "" ) throw new AppError("Não foi possivel encontrar a instituição")
+
+
+        if(name.match(/[\\\/:*?<>|",]/)){
+            throw new AppError(`Caracter invalido: "${name.match(/[\\\/:*?<>|",]/)[0]}" .Forneça uma abreviação ou acrônimo valido para a instituição`, 400)
+        }
+       
 
         const ngo = await this.ngoRepository.findById(id)
 

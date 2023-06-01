@@ -1,10 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
 import { IDonationsRepository } from "../../../donations/repositories/IDonationsRepository";
-import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
-import { INgoRepository } from "../../../donations/repositories/INgoRepository";
-import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
-import { AppError } from "../../../../shared/errors/AppError";
+
 import * as stream from "stream"
 import IResponse from "../dtos/IResponseDTO";
 import { Donation } from "../../../donations/entities/donation";
@@ -156,13 +153,16 @@ class GenerateFileUseCase {
                 template_name: donation.ngo.template_name
             }) as Buffer
             
+
+            let file_name = `${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}.pdf`.replace(/[\\\/:*?<>|",]/g, "")
+
         
             const readable = stream.Readable.from(Buffer.from(pdfBytes))
             
             return {
                 response: {
                     readable,
-                    file_name: `${donation.donor_name}_${donation.donation_number}_${donation.ngo.name}.pdf`,
+                    file_name,
                     content_type: "application/pdf"
                 }
             }

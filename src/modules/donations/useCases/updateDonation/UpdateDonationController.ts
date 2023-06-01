@@ -15,8 +15,8 @@ class UpdateDonationController {
         const {ngo_id} = req.params
 
         //remove a mascara do front e transforma para float com "."
-        donation_value = donation_value.replace(/(?!\,+)[\D]/g,"").replace(/\,/,".") as string
-       
+        donation_value = +(donation_value.replace(/(?!\,+)[\D]/g,"").replace(/\,/,".") as string )        
+    
        
         const {error, value} = validateFields({donation_value, donor_name, worker_id, ngo_id, donation_date})
 

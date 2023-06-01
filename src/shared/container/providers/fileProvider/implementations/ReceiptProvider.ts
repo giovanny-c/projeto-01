@@ -29,6 +29,7 @@ class ReceiptProvider implements INGOReceiptProvider {
         template_config,
     }: IGenerateReceipt): Promise<Uint8Array> {
 
+        
        //extrai todas as props de gen_receipt
         const { 
             draw_template, 
@@ -320,7 +321,7 @@ class ReceiptProvider implements INGOReceiptProvider {
     }: ICreateReceiptBooklet): Promise<ICreateBooletResponse> {
 
 
-        const {draw_vertical_line} = template_config.generate_booklet
+        const {draw_vertical_line, receipts_per_page} = template_config.generate_booklet
         
         
 
@@ -431,16 +432,13 @@ class ReceiptProvider implements INGOReceiptProvider {
     
     
     
-                //se chegar a 3 acabou a pagina 
-                if (index === 3) {
-                    index = index - 3;
-                    pageIndex++;
-    
-    
+                //se chegar até "receipts_per_page" acabou a pagina 
+                if (index === receipts_per_page) {
+                    index = 0;  //zera o index
+                    pageIndex++; //passa para a proxima pagina
                 }
     
-    
-                index++;
+                index++; 
     
                 //? pra retornar so a ultima vez que densenhar a page
                 //if(pageIndex > lastPageIndex) return page

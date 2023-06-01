@@ -118,6 +118,7 @@ interface INGOtemplateConfig {
         }
     },
     generate_booklet: {
+        receipts_per_page: number
         draw_vertical_line: {
             start: {
                 x: number

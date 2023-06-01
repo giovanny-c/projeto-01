@@ -1,17 +1,14 @@
 import { inject, injectable } from "tsyringe";
-import { getFormatedDateForReceipt } from "../../../../../utils/splitDateForReceipt";
+
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
 import { IStorageProvider } from "../../../../shared/container/providers/storageProvider/IStorageProvider";
 import { AppError } from "../../../../shared/errors/AppError";
-import { IDonorsRepository } from "../../../donor/repositories/IDonorsRepository";
-import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
+
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
-import { ICreateDonationsDTO } from "../../dtos/ICreateDonationsDTO";
 import { Donation } from "../../entities/donation";
 import { Ngo } from "../../entities/ngos";
-import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import IRequest from "./IRequestDTO";

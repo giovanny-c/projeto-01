@@ -1,7 +1,5 @@
 import {Request, Response} from "express"
 import {container} from "tsyringe"
-import {extname} from "path"
-import { error } from "pdf-lib"
 import { GenerateFileUseCase } from "./GenerateFileUseCase"
 
 
@@ -24,6 +22,8 @@ class GenerateFileController {
         const generateFile = container.resolve(GenerateFileUseCase)
 
         const result = await generateFile.execute({file, params })
+
+        
 
         
         let style = "color: white; text-align: center; font: caption; font-size: 40px"

@@ -70,7 +70,7 @@ class CreateDonationUseCase {
             userExists = await this.usersRepository.findById(user_id)
             
             if (!userExists) {
-                throw new AppError("Usuário não emcontrado", 400)
+                throw new AppError("Usuário não encontrado", 400)
             }    
         }
        
