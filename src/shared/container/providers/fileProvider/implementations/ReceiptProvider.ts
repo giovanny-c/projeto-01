@@ -115,16 +115,54 @@ class ReceiptProvider implements INGOReceiptProvider {
 
         //nome por extenso
         //se terminar em a e i o u nao seguido de n m r s z o e?
-        let nomeArray: string[] = donation.donor_name.match(/.{1,50}\b/g);
-        if (font) {
-            nomeArray = donation.donor_name.match(/.{1,50}\b/g);
-        }
+        //(\b\w+[áâãàÁÂÃÀéêÉÊíîÍÎóôõÓÔÕúûÚÛ]*) para dar match em álavras que terminan em
+        //(.{1,50}\b\w+[áâãàÁÂÃÀéêÉÊíîÍÎóôõÓÔÕúûÚÛ]*) interessante!!
+      
+        // let nomeArray: string[] = donation.donor_name.match(/.{1,50}\b/g);
+
+
+        //TESTAR MAIS
+        let nomeArray = donation.donor_name.split(" ")
+
+        let line_lenght = 50
+        let actual_lenght = nomeArray.length - 1
+
+        let first_line: string[] = [], second_line: string[] = []
+
+        nomeArray.forEach((name) => {
+            
+            actual_lenght += name.length
+
+            if(actual_lenght < line_lenght){
+                //se for menor poe na linha 1
+                first_line.push(name)
+            }
+
+            if(actual_lenght === line_lenght){
+                // se for igual poe na linha 1
+                first_line.push(name)
+            }
+
+            if(actual_lenght > line_lenght){
+                //se for maior poe na linha 2
+
+                second_line.push(name)
+            }
+        });
+
+        // first_line.join(" ")
+        // second_line.join(" ")
+
+    
+        // if (font) {
+        //     nomeArray = donation.donor_name.match(/.{1,50}\b/g);
+        // }
 
         const {line_1: name_line_1, line_2: name_line_2} = draw_name
 
         //linha 1
         name_line_1.y += base_y
-        page.drawText(nomeArray[0], {
+        page.drawText(/*nomeArray[0]*/first_line.join(" "), {
             ...name_line_1,
             // maxWidth: 560,
             // wordBreaks: [" ", "-"],
@@ -134,11 +172,12 @@ class ReceiptProvider implements INGOReceiptProvider {
         });
 
         //linha 2
-        if (nomeArray[1] && nomeArray[1].length) {
+        console.log(second_line.length)
+        if (/*nomeArray[1] && nomeArray[1].length*/second_line.length) {
 
             name_line_2.y += base_y
 
-            page.drawText(nomeArray[1], {
+            page.drawText(/*nomeArray[1]*/second_line.join(" "), {
                 ...name_line_2,
                 font,
                 color: rgb(r, g, b)
