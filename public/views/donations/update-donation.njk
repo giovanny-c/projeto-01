@@ -31,7 +31,9 @@
         </div>
 
         <div class="form">
-            <form id="#form" class="form" action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/atualizar?_method=PUT" method="post" enctype="multipart/form-data">
+            <form id="#form" class="form" action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/atualizar?_method=PUT" method="post" enctype="multipart/form-data"
+            onsubmit="verifyEmptyInput(this, event)"
+            >
 
                 <label>Nome do doador</label>    
                 

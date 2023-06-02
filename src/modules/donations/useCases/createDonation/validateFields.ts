@@ -7,13 +7,24 @@ export default function validateFields(data: Partial<IRequest>){
 
     const {donor_name, donation_value, worker_id, ngo_id, user_id, donation_date} = data
 
+
+    // const customNameValidator = (value: string, helpers: Joi.CustomHelpers) => {
+
+        
+
+    //     if (value.match(/[\\\/:*?<>|",]/)) {
+    //       return helpers.error(`"string.invalidChar": Forneça um nome valido para essa doação. Contem caracteres não permitidos: "${value.match(/[\\\/:*?<>|",]/)[0]}`);
+    //     }
+    //     return value;
+    //   };
 //trocar o app error por input error
     const schema = Joi.object({
 
-        donor_name: Joi.string().min(1).regex(/[\\\/:*?<>|",]/).required().messages({
+        donor_name: Joi.string().min(1).pattern(/^[^\\\/:*?<>|",]*$/).required().messages({
             "string.base": "Forneça um nome valido para essa doação.",
             "string.empty": "Forneça um nome valido para essa doação.",
-            "any.required": "Forneça um valor para o campo nome"
+            "any.required": "Forneça um valor para o campo nome",
+            "string.pattern.base": 'Forneça um nome valido para essa doação. Contem um dos seguintes caracteres não permitidos: (/\\:*?<>|",)',
         }),
         donation_value: Joi.number().greater(0).precision(2).required().messages({
             "number.base": "Forneça um valor valido para essa doação.",
