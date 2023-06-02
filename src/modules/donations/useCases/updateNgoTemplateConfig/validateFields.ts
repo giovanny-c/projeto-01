@@ -139,7 +139,19 @@ export default function validateFields(data){
                 }),
             },
             draw_name: {
-                line_1: {
+                line_lenght: {
+                    line_1_lenght: Joi.number().required().messages({
+                        "number.base": "Forneça um numero valido para o generate_receipt.draw_name.line_lenght.line_1_lenght.",
+                        "number.empty": "Forneça um numero para o generate_receipt.draw_name.line_lenght.line_1_lenght.",
+                        "any.required": "propriedade faltando: generate_receipt.draw_name.line_lenght.line_1_lenght."
+                    }),
+                    line_2_lenght: Joi.number().required().messages({
+                        "number.base": "Forneça um numero valido para o generate_receipt.draw_name.line_lenght.line_2_lenght.",
+                        "number.empty": "Forneça um numero para o generate_receipt.draw_name.line_lenght.line_2_lenght.",
+                        "any.required": "propriedade faltando: generate_receipt.draw_name.line_lenght.line_2_lenght."
+                    }),
+                },
+                line_1: {  
                     x: Joi.number().required().messages({
                         "number.base": "Forneça um numero valido para o generate_receipt.draw_name.line_1.x.",
                         "number.empty": "Forneça um numero para o generate_receipt.draw_name.line_1.x.",
@@ -175,6 +187,18 @@ export default function validateFields(data){
                 }
             },
             draw_extense_value: {
+                line_lenght: {
+                    line_1_lenght: Joi.number().required().messages({
+                        "number.base": "Forneça um numero valido para o generate_receipt.draw_extense_value.line_lenght.line_1_lenght.",
+                        "number.empty": "Forneça um numero para o generate_receipt.draw_extense_value.line_lenght.line_1_lenght.",
+                        "any.required": "propriedade faltando: generate_receipt.draw_extense_value.line_lenght.line_1_lenght."
+                    }),
+                    line_2_lenght: Joi.number().required().messages({
+                        "number.base": "Forneça um numero valido para o generate_receipt.draw_extense_value.line_lenght.line_2_lenght.",
+                        "number.empty": "Forneça um numero para o generate_receipt.draw_extense_value.line_lenght.line_2_lenght.",
+                        "any.required": "propriedade faltando: generate_receipt.draw_extense_value.line_lenght.line_2_lenght."
+                    }),
+                },
                 line_1: {
                     x: Joi.number().required().messages({
                         "number.base": "Forneça um numero valido para o generate_receipt.draw_extense_value.line_1.x.",

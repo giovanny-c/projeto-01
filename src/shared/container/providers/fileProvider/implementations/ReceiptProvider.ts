@@ -1,5 +1,4 @@
-import { PDFDocument, PDFFont, PDFImage, degrees, rgb } from "pdf-lib";
-import { Donation } from "../../../../../modules/donations/entities/donation";
+import { degrees, rgb } from "pdf-lib";
 import formatToBRL from "../../../../../../utils/formatToBRL";
 import extenso from "extenso";
 import { getFormatedDateForReceipt } from "../../../../../../utils/splitDateForReceipt";
@@ -12,7 +11,8 @@ import { ICreateBooletResponse } from "../IFileProvider";
 import { getExecutionTime } from "../../../../../../utils/decorators/executionTime";
 import { ICreateReceiptBooklet, IGenerateReceipt } from "../dtos/IReceiptProviderDTOs";
 import { AppError } from "../../../../errors/AppError";
-import { height } from "pdfkit/js/page";
+
+import splitFor2Lines from "../../../../../../utils/splitFor2Lines";
 
 
 @singleton()
@@ -117,67 +117,36 @@ class ReceiptProvider implements INGOReceiptProvider {
         //se terminar em a e i o u nao seguido de n m r s z o e?
         //(\b\w+[áâãàÁÂÃÀéêÉÊíîÍÎóôõÓÔÕúûÚÛ]*) para dar match em álavras que terminan em
         //(.{1,50}\b\w+[áâãàÁÂÃÀéêÉÊíîÍÎóôõÓÔÕúûÚÛ]*) interessante!!
-      
         // let nomeArray: string[] = donation.donor_name.match(/.{1,50}\b/g);
 
 
         //TESTAR MAIS
-        let nomeArray = donation.donor_name.split(" ")
-
-        let line_lenght = 50
-        let actual_lenght = nomeArray.length - 1
-
-        let first_line: string[] = [], second_line: string[] = []
-
-        nomeArray.forEach((name) => {
-            
-            actual_lenght += name.length
-
-            if(actual_lenght < line_lenght){
-                //se for menor poe na linha 1
-                first_line.push(name)
-            }
-
-            if(actual_lenght === line_lenght){
-                // se for igual poe na linha 1
-                first_line.push(name)
-            }
-
-            if(actual_lenght > line_lenght){
-                //se for maior poe na linha 2
-
-                second_line.push(name)
-            }
-        });
-
-        // first_line.join(" ")
-        // second_line.join(" ")
-
-    
-        // if (font) {
-        //     nomeArray = donation.donor_name.match(/.{1,50}\b/g);
-        // }
-
+        //transformar essa func numa utils
+        //por o line_1_lenght e line_2_lenght e  do name e value nas configs 
+        
         const {line_1: name_line_1, line_2: name_line_2} = draw_name
+
+        const {line_1_lenght: name_1_lh, line_2_lenght: name_2_lh} = draw_name.line_lenght
+
+        const {first_line: first_name_line, second_line: second_name_line} = splitFor2Lines(donation.donor_name, name_1_lh, name_2_lh)
+    
 
         //linha 1
         name_line_1.y += base_y
-        page.drawText(/*nomeArray[0]*/first_line.join(" "), {
+        page.drawText(first_name_line, {
             ...name_line_1,
+            font,
+            color: rgb(r, g, b)
             // maxWidth: 560,
             // wordBreaks: [" ", "-"],
             // lineHeight: 21,
-            font,
-            color: rgb(r, g, b)
         });
 
         //linha 2
-        console.log(second_line.length)
-        if (/*nomeArray[1] && nomeArray[1].length*/second_line.length) {
-
+        if (second_name_line.length) {
             name_line_2.y += base_y
 
-            page.drawText(/*nomeArray[1]*/second_line.join(" "), {
+            page.drawText(second_name_line, {
                 ...name_line_2,
                 font,
                 color: rgb(r, g, b)
@@ -185,35 +154,32 @@ class ReceiptProvider implements INGOReceiptProvider {
         }
 
         //valor por extenso
+        const {line_1: value_line_1, line_2: value_line_2} = draw_extense_value
+
+        const {line_1_lenght: ev_1_lh, line_2_lenght: ev_2_lh} = draw_extense_value.line_lenght
+
         let valorPorExtenso = extenso(valor, { mode: "currency", currency: { type: "BRL" }, locale: "br" });
 
-        let vpeArray: string[] = valorPorExtenso.match(/.{1,58}\b/g);
+        valorPorExtenso = valorPorExtenso.at(0).toUpperCase() + valorPorExtenso.substring(1);
 
-        //para separar com hifen (nao funcionou 100%)
-        // if(!vpeArray[0].match(/[ ,]$|( e)$/) ) {
-        //     vpeArray[0] = `${vpeArray[0]}-`
-        //    console.log(vpeArray)
+        const {first_line: first_value_line, second_line: second_value_line} = splitFor2Lines(valorPorExtenso, ev_1_lh, ev_2_lh)
 
-        //primeira letra maiuscula
-        vpeArray[0] = vpeArray[0].at(0).toUpperCase() + vpeArray[0].substring(1);
-
-        const {line_1: value_line_1, line_2: value_line_2} = draw_extense_value
 
         //linha 1
         value_line_1.y += base_y
 
-        page.drawText(vpeArray[0], {
+        page.drawText(first_value_line, {
             ...value_line_1,
             font,
             color: rgb(r, g, b)
         });
 
         //linha 2
-        if (vpeArray[1] && vpeArray[1].length) {
+        if (second_value_line && second_value_line.length) {
 
             value_line_2.y += base_y
 
-            page.drawText(vpeArray[1], {
+            page.drawText(second_value_line, {
                 ...value_line_2,
                 font,
                 color: rgb(r, g, b)            

@@ -45,18 +45,26 @@ interface INGOtemplateConfig {
             size: number
         },
         draw_name: {
+            line_lenght: {
+                line_1_lenght: number
+                line_2_lenght: number
+            }
             line_1: {
                 y: number
                 x: number
                 size: number
             },
-            line_2: {
+            line_2: {           
                 y: number
                 x: number
                 size: number
             }
         },
         draw_extense_value: {
+            line_lenght: {
+                line_1_lenght: number
+                line_2_lenght: number
+            }
             line_1: {
                 y: number
                 x: number
