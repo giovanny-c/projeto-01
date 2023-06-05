@@ -20,7 +20,7 @@ class ListDonationsController {
             numero_da_doacao: donation_number
         } = req.query
 
-        console.log(worker_id)
+        
 
 
         const {ngo_id} = req.params

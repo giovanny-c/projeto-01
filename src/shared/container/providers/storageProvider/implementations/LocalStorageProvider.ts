@@ -92,7 +92,7 @@ class LocalStorageProvider implements IStorageProvider {
 
     }
 
-    @getExecutionTime() //transformar em fsPromise?
+     //transformar em fsPromise?
     saveAsync(dir: string, file_name:string, file: Uint8Array ): void{
 
         
@@ -125,7 +125,7 @@ class LocalStorageProvider implements IStorageProvider {
 
     }
 
-    @getExecutionTime() //await asyncrono tem que escrever tudo para que o getFile consiga pegar sem erros
+     //await asyncrono tem que escrever tudo para que o getFile consiga pegar sem erros
     async saveSync(dir: string, file_name:string, file: Uint8Array ): Promise<void>{
 
 
@@ -155,7 +155,7 @@ class LocalStorageProvider implements IStorageProvider {
 
     }
 
-    @getExecutionTime()
+    
     async getFile(dir: string, file_name: string, returnInBase64?: boolean): Promise<Buffer | string | void>{
 
         
@@ -256,7 +256,7 @@ class LocalStorageProvider implements IStorageProvider {
         return data
     }
           
-    @getExecutionTime()
+    
     saveFileStream(dir: string, file_name: string, file: Uint8Array | Buffer){
 
         const file_path = resolve(dir, file_name)

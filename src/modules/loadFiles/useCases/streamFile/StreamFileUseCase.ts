@@ -21,10 +21,7 @@ class StreamFileUseCase {
             
             const readable = fs.createReadStream(resolve(file_path))
             
-            // readable.on("data", (chunck) => {
-            //     console.log(chunck.slice(0,1))
-            // })
-            
+      
             return readable
                
 

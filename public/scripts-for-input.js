@@ -17,6 +17,3 @@ function formatToBRLInput(input) {
 var donationValue = document.querySelector('input[name="donation_value"]')
 
 
-if (donationValue) {
-    console.log(formatToBRLInput(donationValue))
-}

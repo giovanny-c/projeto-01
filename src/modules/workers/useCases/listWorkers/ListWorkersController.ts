@@ -13,7 +13,7 @@ class ListWorkersController {
         const listWorkersUseCase = container.resolve(ListWorkersUseCase)
 
         const workers = await listWorkersUseCase.execute()
-        console.log(workers)
+       
 
         return res.status(200).render("views/workers/workers", {workers, username: req.user.name, error: req.error, success: req.success})
     }

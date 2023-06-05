@@ -2,13 +2,13 @@
 
 
 function hideList(tag) {
-    console.log("a")
-    console.log(tag.srcElement.className)
+
+
     if (tag.srcElement.className === "receiver-content" || tag.srcElement.id === "email") {
         return
     }
 
-    console.log("b")
+
     var donorsList = document.querySelector(".donors-list")
 
     //destruir as divs a cada novo iput

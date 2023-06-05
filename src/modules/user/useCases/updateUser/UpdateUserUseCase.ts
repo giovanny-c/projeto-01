@@ -56,7 +56,7 @@ class UpdateUserUseCase {
         //se tem usuarios com o mesmo email ou nome
         const foundUsers = await this.usersRepository.findByNameOrEmail(name, email)
         
-        // console.log(foundUsers.filter(user => user.id !== id )[0])
+        
 
         if (foundUsers.filter(user => user.id !== id ).length) {// se tiver encontrado um user com id diferente do que esta sendo editado
             

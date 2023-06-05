@@ -48,7 +48,7 @@ class SetEmailMessageUseCase {
         
 
         const ngo =  await this.ngoRepository.findById(ngo_id)
-        console.log(ngo)
+        
 
         if(!ngo){
             throw new AppError("Instituição nao encontrada", 400)

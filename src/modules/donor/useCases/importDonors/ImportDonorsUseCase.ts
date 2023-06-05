@@ -210,9 +210,9 @@ class ImportDonorsUseCase{
 
             //VALIDAR se ja existe email
             let [email] = verifyEmail
-            console.log(email)
+            
             const emailExists = await this.donorsRepository.findByEmail(email)
-            console.log(emailExists)
+            
             if(emailExists){
                 throw new AppError(`ja existe um doador cadastrado com esse Email, na linha ${index + 2}`, 400)
 
@@ -279,7 +279,7 @@ class ImportDonorsUseCase{
         
             let donors = await this.csvLoadDonors(file)
        
-            console.log(donors)
+            
         
 
             donors.map( async donor => {

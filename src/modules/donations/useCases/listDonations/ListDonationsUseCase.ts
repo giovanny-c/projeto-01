@@ -85,7 +85,7 @@ class ListDonationsUseCase {
             }
 
             worker_id = (await this.usersRepository.findById(user.id)).worker.id
-            console.log(worker_id)
+            
 
             if(!worker_id || worker_id === ""){
                 throw new AppError("Nao foram encontradas doações para esse funcionário, ou ele nao existe")

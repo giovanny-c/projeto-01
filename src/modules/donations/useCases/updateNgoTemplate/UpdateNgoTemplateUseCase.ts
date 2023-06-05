@@ -27,7 +27,7 @@ class UpdateNgoTemplateUseCase {
         if(!file){
             throw new AppError("Arquivo não enviado", 400)
         }
-        console.log(file.mimetype)
+        
         if(file.mimetype !== "image/jpeg"){
             throw new AppError("Formato do arquivo invalido", 400)
         }

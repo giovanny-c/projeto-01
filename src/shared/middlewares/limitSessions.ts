@@ -19,7 +19,7 @@ export async function limitSessions(req, res, next){
     
     const sessions = await redisClient.scan(0, {MATCH: "*", TYPE: "string", COUNT: 100 })
 // :*:${ip}
-    console.log(sessions)
+    // console.log(sessions)
 
     next()
 }

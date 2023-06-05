@@ -39,7 +39,7 @@ class ListDonorsUseCase {
         const donors = instanceToPlain(await this.donorsRepository.findBy(value, +(limit), offset, user_id)) as Donor[]
 
         let filteredDonors = donors
-        console.log(donors)
+        
         
         if(!is_admin){
 

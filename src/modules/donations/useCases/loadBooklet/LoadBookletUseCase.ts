@@ -40,7 +40,7 @@ class LoadBookletUseCase {
 
     }
     
-    @getExecutionTime()
+   
     async execute({ngo_id, file_name, month, year}: IRequest): Promise<IResponse>{
         
         let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))

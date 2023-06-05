@@ -316,7 +316,7 @@ class ReceiptProvider implements INGOReceiptProvider {
         return pdfBytes
     }
 
-    @getExecutionTime()
+    
     async createBooklet({
         donations, 
         doc, 

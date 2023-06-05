@@ -35,7 +35,7 @@ class UpdateNgoTemplateConfigUseCase {
         if(!file){
             throw new AppError("Arquivo não enviado", 400)
         }
-        console.log(file.mimetype)
+        
         if(file.mimetype !== "application/json"){
             throw new AppError("Formato do arquivo invalido", 400)
         }
@@ -59,8 +59,8 @@ class UpdateNgoTemplateConfigUseCase {
             
             const {error, value} = validateFields(config)
 
-            console.log(config.generate_receipt.base_y)
-            console.log(value.generate_receipt.base_y)
+            // console.log(config.generate_receipt.base_y)
+            // console.log(value.generate_receipt.base_y)
             if(error){
                 throw new AppError(error, 400)
             }

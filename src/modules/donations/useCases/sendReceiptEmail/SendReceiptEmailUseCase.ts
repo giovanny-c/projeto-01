@@ -20,6 +20,7 @@ import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { INgosEmailsRepository } from "../../repositories/INgosEmailRepository";
 import { INgosMessagesRepository } from "../../repositories/INgosMessagesRepository";
+import { INgosTemplateConfigRepository } from "../../repositories/INgosTemplateConfigRepository";
 
 
 interface IRequest {
@@ -52,34 +53,34 @@ class SendReceiptEmailUseCase {
         private mailProvider: IMailProvider,
         @inject("DonorsRepository")
         private donorsRepository: IDonorsRepository,
-        @inject("StorageProvider")
-        private storageProvider: IStorageProvider,
         @inject("FileProvider")
         private fileProvider: IFileProvider,
-        
+        @inject("NgoTemplateConfigRepository")
+        private ngoTemplateConfigRepository: INgosTemplateConfigRepository
         
 
     ) { }
 
-    @getExecutionTime()
+    
+    
     async execute({ ngo_id, donation_id, donors_ids, message_id, email}: IRequest) {
 
         if(!donors_ids && (!email || email === undefined) ) throw new AppError("Insira pelo menos um email")
         if(!message_id) throw new AppError("Escolha a mensagem do email")
-        if(!ngo_id ) throw new AppError("Instituição nao encontrada")
-        if(!donation_id) throw new AppError("Doação nao encontrada")                
+        if(!ngo_id ) throw new AppError("Instituição não encontrada")
+        if(!donation_id) throw new AppError("Doação não encontrada")                
         
         
         let ngo: Ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
 
-        if(!ngo || !ngo.id){
+        if(!ngo || !ngo.id || ngo.template_name){
             ngo =  await this.ngoRepository.findById(ngo_id)
 
-            if(!ngo) throw new AppError("Instituição nao encontrada", 404)
+            if(!ngo) throw new AppError("Instituição não encontrada", 404)
 
         }
 
-        if(!ngo) throw new AppError("Instituição nao encontrada", 404)
+        if(!ngo) throw new AppError("Instituição não encontrada", 404)
         
 
 
@@ -88,7 +89,7 @@ class SendReceiptEmailUseCase {
         let donorsEmails: string[] = [] 
 
         if(donors_ids){
-            //filtra os ids que vem todos juntos e nao deixa vir valores duplicados com o Set
+            //filtra os ids que vem todos juntos e não deixa vir valores duplicados com o Set
             let donors_ids_array = [...new Set(donors_ids.match(/[\w\d-]+(?=,)/g).map(donor_id => {
 
                 if(donor_id === ""){
@@ -118,29 +119,41 @@ class SendReceiptEmailUseCase {
             })) 
         }
 
-console.log(donorsEmails)
+
 
         if(email){
 
             donorsEmails.push(email)
         }
 
-        if(donorsEmails.length < 1) throw new AppError("Email nao encontrado ou nao existe")
+        if(donorsEmails.length < 1) throw new AppError("Email não encontrado ou não existe")
         
 
         const donation = await this.donationsRepository.findOneById(donation_id)
         
-        if(!donation) throw new AppError("Doação nao encontrada ou nao existe")
+
+        if(!donation) throw new AppError("Doação não encontrada ou não existe")
         if(donation.is_donation_canceled) throw new AppError("Não é possivel enviar um recibo de uma doação que foi cancelada")
         
         const ngo_emails = await this.ngosEmailsRepository.findAllfromNgo(ngo.id)
         
-        if(!ngo_emails) throw new AppError("Email nao encontrado ou nao existe")
+        if(!ngo_emails) throw new AppError("Email não encontrado ou não existe")
 
 
         const message = await this.ngosMessagesRepository.findById(message_id)
         
-        if(!message) throw new AppError("Mensagem nao encontrado ou nao existe")
+        if(!message) throw new AppError("Mensagem não encontrado ou não existe")
+
+
+        const ngo_template_config = await this.ngoTemplateConfigRepository.findByNgoId(ngo_id)
+
+        if(!ngo_template_config || !ngo_template_config.configuration) throw new AppError("Configuração do template do recibo não encontrado ou não existe")
+        
+        const config = JSON.parse(ngo_template_config.configuration)
+
+        if(!ngo.template_name) throw new AppError("Template do recibo não encontrado ou não existe")
+
+
 
 
         // const {dia, mes , ano} = getFormatedDateForReceipt(donation.created_at)
@@ -155,7 +168,7 @@ console.log(donorsEmails)
         // //usar o fs.stat ou access en vez desse?
         // const receipt = await this.storageProvider.getFile(dir, file_name, false)
 
-        // //se a file nao existir cria ela na hora
+        // //se a file não existir cria ela na hora
         // if(!receipt){
             
         // }
@@ -163,7 +176,9 @@ console.log(donorsEmails)
         let file = await this.fileProvider.generateFile({
             donation, 
             saveFile: false,
-            generateForBooklet: false
+            generateForBooklet: false,
+            template_config: config,
+            template_name: ngo.template_name
         })
 
         if(!file){

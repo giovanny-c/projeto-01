@@ -12,7 +12,7 @@ class MailProvider implements IMailProvider{
     
     
 
-    @getExecutionTime()
+    
     async sendMail({service, from, password, to, subject, body}: ISendEmailRequest): Promise<void> {
 
         const mailer = nodemailer.createTransport({
@@ -42,7 +42,7 @@ class MailProvider implements IMailProvider{
                 attachments: body.attachments || null
             })   
         .then(info => {
-                 console.log({info})
+                 
         }) 
         .catch(error => { 
             // mandar pra uma rota que 

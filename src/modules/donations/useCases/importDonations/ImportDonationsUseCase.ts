@@ -209,7 +209,7 @@ class ImportDonationsUseCase {
         return await Promise.all(validatedFields)
     }
 
-    @getExecutionTime()
+   
     async proccessDonations(donations: IImportDonation[], user_id: string, ngo_id, file_path: string): Promise<void | string> {
         
 

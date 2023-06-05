@@ -41,7 +41,7 @@ class LoadUpdateDonorUseCase {
         }
 
         const user = instanceToPlain(await this.usersRepository.findById(user_id)) as User
-console.log(donor)
+
         if(user.admin){
 
             const workers = await this.workersRepository.find()

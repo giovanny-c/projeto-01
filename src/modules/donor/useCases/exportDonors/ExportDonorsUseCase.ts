@@ -36,7 +36,7 @@ class ExportDonorsUseCase {
                 (await this.donorsRepository.find()
                 ).map( (donor) => {
 
-                    console.log(donor)
+                    
 
                     return {
                         
