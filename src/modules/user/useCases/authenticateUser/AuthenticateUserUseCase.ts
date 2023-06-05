@@ -7,7 +7,7 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
-import { validatePassword } from "../../../../../utils/passwordUtils";
+import { validatePassword } from "../../../../utils/passwordUtils";
 
 interface IRequest {
     nameOrEmail: string

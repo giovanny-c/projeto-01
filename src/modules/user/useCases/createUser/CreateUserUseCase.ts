@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { AppError } from "../../../../shared/errors/AppError";
-import { genPassword } from "../../../../../utils/passwordUtils";
+import { genPassword } from "../../../../utils/passwordUtils";
 import { instanceToPlain } from "class-transformer"
 import { User } from "../../entities/user";
 import { IMailProvider } from "../../../../shared/container/providers/mailProvider/IMailProvider";

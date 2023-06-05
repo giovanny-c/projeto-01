@@ -5,7 +5,7 @@ import * as fs from "fs"
 import { AppError } from "../../../../shared/errors/AppError";
 import { IXlsxParserProvider } from "../../../../shared/container/providers/xlsxParserProvider/IXlsxParserProvider";
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
-import formatPhone from "../../../../../utils/formatPhone";
+import formatPhone from "../../../../utils/formatPhone";
 
 interface ICSVImportDonors{
     name: string

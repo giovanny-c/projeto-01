@@ -3,7 +3,7 @@ import { v4 as uuidV4 } from "uuid"
 import { dataSource } from "../runMigration"
 import "dotenv"
 
-import { genPassword } from "../../../utils/passwordUtils"
+import { genPassword } from "../../utils/passwordUtils"
 import { User } from "../../modules/user/entities/user"
 
 async function create() {

@@ -1,7 +1,6 @@
 
 import { inject, injectable } from "tsyringe";
-import formatToBRL from "../../../../../utils/formatToBRL";
-import { getFormatedDateForReceipt } from "../../../../../utils/splitDateForReceipt";
+import formatToBRL from "../../../../utils/formatToBRL";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { IFileProvider } from "../../../../shared/container/providers/fileProvider/IFileProvider";
@@ -12,13 +11,10 @@ import { Donation } from "../../entities/donation";
 import { Ngo } from "../../entities/ngos";
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
-import path from "path"
 import { INgosMessagesRepository } from "../../repositories/INgosMessagesRepository";
-import { NgosMessagesRepository } from "../../repositories/implementation/NgosMessagesRepository";
 import { NgoMessage } from "../../entities/ngos_messages";
 import { IDonorsRepository } from "../../../donor/repositories/IDonorsRepository";
 import { Donor } from "../../../donor/entities/donor";
-import * as fs from "fs" 
 
 interface IRequest{
     ngo_id: string

@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-import { getExecutionTime } from "../../../../../utils/decorators/executionTime";
 import ICacheProvider from "../../../../shared/container/providers/cacheProvider/ICacheProvider";
 import { IStorageProvider } from "../../../../shared/container/providers/storageProvider/IStorageProvider";
 import { AppError } from "../../../../shared/errors/AppError";

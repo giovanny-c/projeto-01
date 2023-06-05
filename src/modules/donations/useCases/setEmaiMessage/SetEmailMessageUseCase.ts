@@ -1,5 +1,4 @@
 import { inject, injectable } from "tsyringe";
-import { getFormatedDateForMessages } from "../../../../../utils/splitDateForReceipt";
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 
 import { AppError } from "../../../../shared/errors/AppError";

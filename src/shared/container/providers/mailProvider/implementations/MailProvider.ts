@@ -1,8 +1,4 @@
 import * as nodemailer from "nodemailer"
-import { Transporter } from "nodemailer"
-import { info } from "pdfkit";
-import { getExecutionTime } from "../../../../../../utils/decorators/executionTime";
-import { AppError } from "../../../../errors/AppError";
 
 import { IMailProvider, ISendEmailRequest } from "../IMailProvider";
 

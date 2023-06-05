@@ -4,10 +4,9 @@ import { inject, injectable } from "tsyringe";
 
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
-import { User } from "../../entities/user";
-import { instanceToPlain } from "class-transformer";
+
 import { AppError } from "../../../../shared/errors/AppError";
-import { validatePassword } from "../../../../../utils/passwordUtils";
+import { validatePassword } from "../../../../utils/passwordUtils";
 
 interface IRequest {
     user_id: string

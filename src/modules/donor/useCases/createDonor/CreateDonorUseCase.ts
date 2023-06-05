@@ -1,14 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import { AppError } from "../../../../shared/errors/AppError";
 import { ICreateDonorDTO } from "../../dtos/ICreateDonorDTO";
-import { Donor } from "../../entities/donor";
 
 import { IDonorsRepository } from "../../repositories/IDonorsRepository";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
 import { Worker } from "../../../workers/entities/worker";
 import { instanceToPlain } from "class-transformer";
-import formatPhone from "../../../../../utils/formatPhone";
+import formatPhone from "../../../../utils/formatPhone";
 
 @injectable()
 class CreateDonorUseCase {

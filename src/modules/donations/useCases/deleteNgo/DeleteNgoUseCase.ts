@@ -5,7 +5,7 @@ import { AppError } from "../../../../shared/errors/AppError";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import * as uuid from "uuid"
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
-import { validatePassword } from "../../../../../utils/passwordUtils";
+import { validatePassword } from "../../../../utils/passwordUtils";
 import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 
 interface IRequest{

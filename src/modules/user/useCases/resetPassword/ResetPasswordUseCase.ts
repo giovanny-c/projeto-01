@@ -4,10 +4,10 @@ import { inject, injectable } from "tsyringe";
 import { IMailProvider } from "../../../../shared/container/providers/mailProvider/IMailProvider";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
-import { v4 as uuidV4 } from "uuid"
+
 import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
 import { IUsersTokensRepository } from "../../repositories/IUsersTokensRepository";
-import { genPassword } from "../../../../../utils/passwordUtils";
+import { genPassword } from "../../../../utils/passwordUtils";
 
 interface IRequest {
     token: string
