@@ -1,12 +1,9 @@
 import { inject, injectable } from "tsyringe";
-import { encrypt, validatePassword } from "../../../../../utils/passwordUtils";
+import { encrypt, validatePassword } from "../../../../utils/passwordUtils";
 
 import { AppError } from "../../../../shared/errors/AppError";
 import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
-import { DonationCounter } from "../../entities/donation_counter";
 
-import { Ngo } from "../../entities/ngos";
-import { IDonationCounterRepository } from "../../repositories/IDonationCounterRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { INgosEmailsRepository } from "../../repositories/INgosEmailRepository";
 

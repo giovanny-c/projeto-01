@@ -5,8 +5,8 @@ import { v4 as uuidV4 } from "uuid"
 import { Donor } from "../../donor/entities/donor";
 import { User } from "../../user/entities/user";
 import { Worker } from "../../workers/entities/worker";
+
 import { Ngo } from "./ngos";
-import { NgosTemplateConfig } from "./ngos_template_config";
 
 @Entity("donations")
 class Donation {
