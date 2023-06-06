@@ -27,4 +27,5 @@ class Worker {
     }
 }
 
+
 export { Worker }

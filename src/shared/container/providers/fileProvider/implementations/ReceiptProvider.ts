@@ -1,6 +1,7 @@
 import { degrees, rgb } from "pdf-lib";
-import formatToBRL from "../../../../../utils/formatToBRL";
 import extenso from "extenso";
+import formatToBRL from "../../../../../utils/formatToBRL";
+import splitFor2Lines from "../../../../../utils/splitFor2Lines";
 import { getFormatedDateForReceipt } from "../../../../../utils/splitDateForReceipt";
 import { PDF_LIBFileProvider } from "./PDF_LIBFileProvider";
 import { container, singleton } from "tsyringe";
@@ -11,7 +12,6 @@ import { ICreateBooletResponse } from "../IFileProvider";
 import { ICreateReceiptBooklet, IGenerateReceipt } from "../dtos/IReceiptProviderDTOs";
 import { AppError } from "../../../../errors/AppError";
 
-import splitFor2Lines from "../../../../../utils/splitFor2Lines";
 
 
 @singleton()

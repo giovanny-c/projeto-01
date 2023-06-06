@@ -1,6 +1,8 @@
 
 // formata para 12 98765-4321 ou 98765-4321 ou 8765-4321
 // com parenteses  para (12) 98765-4321
+
+
 export default function formatPhone(phone: string, paranthese: boolean): string{
 
     phone = phone.replace(/\D/g, "")

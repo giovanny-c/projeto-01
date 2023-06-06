@@ -19,7 +19,10 @@ import { redisSession } from "./shared/session/redisSession"
 
 //import upload from "@config/upload"
 
-import router from "../src/routes/index"
+
+
+
+import router from "./routes/index"
 
 import { errorHandler } from "./shared/errors/errorHandler"
 import { AppError } from "./shared/errors/AppError"
