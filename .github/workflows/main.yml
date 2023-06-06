@@ -31,7 +31,7 @@ jobs:
           password: ${{secrets.SSH_PASSWORD}}
           port: ${{secrets.SSH_PORT}}
           key: ${{secrets.SSH_KEY}}
-          source: ".,!node_modules,!/src/database/*.ts"
-          target: "/app/projeto-01"
+          source: "., !node_modules, !src/database/*.ts"
+          target: "~/app/projeto-01"
         
         
