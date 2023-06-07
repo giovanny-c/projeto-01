@@ -51,7 +51,7 @@
                 <div class="item">
                         <div>
                         <input      
-                            type="text" name="donation_value" value="{{donation.donation_value}}" placeholder="00,00"
+                            type="text" name="donation_value" value="{{donation.donation_value}}" placeholder="R$ 0,00"
                             onkeydown="removeFormError(this); Mask.apply(this, 'formatBRL');"
                             />
                         </div>
@@ -143,8 +143,8 @@
         </div>
 
 
-        <script src="/scriptForValidateFields.js"></script>
         <script src="/scripts-for-input.js"></script>
+        <script src="/scriptForValidateFields.js"></script>
         <script>
 
             const form = document.querySelector(".form")

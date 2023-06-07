@@ -1,10 +1,12 @@
 {
   "name": "castanharo_telemarketing",
   "version": "0.9.1",
-  "main": "index.js",
+  "main": "dist/server.js",
   "author": "Giovanny Castanharo <giovanycast@hotmail.com>",
   "license": "MIT",
   "scripts": {
+    "production": "node dist/server.js",
+    "prod_seed:admin": "node dist/database/seed/admin.js",
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn --poll src/server.ts",
     "migration:run": "ts-node-dev ./node_modules/typeorm/cli migration:run -d \"./src/database/runMigration.ts\" ",
     "migration:revert": "ts-node-dev ./node_modules/typeorm/cli migration:revert -d \"./src/database/runMigration.ts\" ",

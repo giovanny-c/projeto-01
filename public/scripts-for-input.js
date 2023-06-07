@@ -16,4 +16,5 @@ function formatToBRLInput(input) {
 
 var donationValue = document.querySelector('input[name="donation_value"]')
 
+formatToBRLInput(donationValue)
 
