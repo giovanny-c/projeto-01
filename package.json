@@ -1,6 +1,6 @@
 {
   "name": "castanharo_telemarketing",
-  "version": "0.9.1",
+  "version": "1.0.0",
   "main": "dist/server.js",
   "author": "Giovanny Castanharo <giovanycast@hotmail.com>",
   "license": "MIT",

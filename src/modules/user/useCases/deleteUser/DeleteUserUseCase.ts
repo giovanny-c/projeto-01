@@ -41,7 +41,12 @@ class DeleteUserUseCase {
             throw new AppError("Usuario nao encontrado", 400)
         }
 
-        if(user.admin){
+        if(user.admin || user.master){
+
+            if(user.master){
+                throw new AppError("Não é possivel deletar o admin master.", 400)
+
+            }
             
             const admin_users = await this.usersRepository.countAdmins()
 

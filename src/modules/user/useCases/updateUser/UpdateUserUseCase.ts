@@ -82,7 +82,7 @@ class UpdateUserUseCase {
 
         const count_admin_users = await this.usersRepository.countAdmins()
 
-        if(admin_user.master && (count_admin_users <= 1 && is_admin !== "true")){
+        if(admin_user.master || (count_admin_users <= 1 && is_admin !== "true")){
             
             if(admin_user.master){
                 throw new AppError("O administrador master não pode remover seu status de admin.")
