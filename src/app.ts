@@ -66,21 +66,23 @@ app.use(function(req, res, next) {
     next()
 })
 
+
 app.use(rateLimiter)
-// Sentry.init({
-//     dsn: process.env.SENTRY_DSN,
-//     integrations: [
-//         new Sentry.Integrations.Http({tracing: true}),
 
-//         new Tracing.Integrations.Express({app})
-//     ],
 
-//     tracesSampleRate: 1.0,
-// })
+Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [
+        new Sentry.Integrations.Http({tracing: true}),
 
-// app.use(Sentry.Handlers.requestHandler())
-// app.use(Sentry.Handlers.tracingHandler())
+        new Tracing.Integrations.Express({app})
+    ],
 
+    tracesSampleRate: 1.0,
+})
+
+app.use(Sentry.Handlers.requestHandler())
+app.use(Sentry.Handlers.tracingHandler())
 
 
 
@@ -88,7 +90,20 @@ app.use(rateLimiter)
 //routes
 app.use(router)
 
-// app.use(Sentry.Handlers.errorHandler())
+app.use(Sentry.Handlers.errorHandler({
+    shouldHandleError(error){
+
+        let code = error.status || error.statusCode
+
+        if(+(code) >= 400 && +(code) <= 600){
+
+            return true
+            
+        }
+
+        return false
+    }
+}))
 
 //middleware de erro apos as rotas
 app.use(errorHandler)
