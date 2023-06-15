@@ -1,7 +1,7 @@
 import * as nodemailer from "nodemailer"
 
 import { IMailProvider, ISendEmailRequest } from "../IMailProvider";
-import { AppError } from "@shared/errors/AppError";
+import { AppError } from "../../../../errors/AppError"
 
 
 
