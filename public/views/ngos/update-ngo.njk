@@ -62,10 +62,15 @@
             Deletar
         </div>
             <form id="#form" class="form-delete" method="POST" action="/instituicao/{{ngo.id}}/deletar?_method=DELETE" enctype="multipart/form-data">
+                
+                <div class="item">
+                    <input type="text" name="delete_name" value="" placeholder="Digite o nome completo da instituição para DELETAR a instituição">
+                </div>
 
                 <div class="item">
-                    <input type="password" name="password" value="" placeholder="Digite a sua senha para deletar a instituição">
+                    <input type="password" name="password" value="" placeholder="Digite a sua senha para DELETAR a instituição">
                 </div>
+
                 <div class="button "><button class="delete" type="submit">Deletar</button> </div>
             </form>
     </div>

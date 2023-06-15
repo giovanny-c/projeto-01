@@ -190,6 +190,7 @@ class SendReceiptEmailUseCase {
         
          
 
+        
         this.mailProvider.sendMail({
             service: ngo_emails[0].service,
             from: ngo_emails[0].email,

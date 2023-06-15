@@ -71,25 +71,33 @@ class UpdateUserUseCase {
         const admin_user = instanceToPlain(await this.usersRepository.findById(admin_id)) as User
 
         if(!user){
-            throw new AppError("Usuario nao encontrado", 400)
+            throw new AppError("Usuario nao encontrado.", 400)
         }
 
-        //se o user for outro admin
-        if(user.admin && (user.id !== admin_user.id) && !admin_user.master){
+        if(!admin_user.admin){
+            throw new AppError("Apenas admins podem acessar esse conteudo.", 400)
 
-            throw new AppError("Voce nao pode editar o usuário de outro admin", 400)
         }
 
-        const count_admin_users = await this.usersRepository.countAdmins()
+        //se o user tentar alterar seu proprio admin
+        if(user.admin && user.id === admin_user.id && is_admin !== "true"){
 
-        if(admin_user.master || (count_admin_users <= 1 && is_admin !== "true")){
-            
+            //e for master
             if(admin_user.master){
-                throw new AppError("O administrador master não pode remover seu status de admin.")
+                throw new AppError("O administrador master não pode remover seu status de admin.", 403)
             }
 
-            throw new AppError("Não foi possível atualizar o Usuário. Deve haver pelo menos um admin", 400)
+            throw new AppError("Não foi possível atualizar o Usuário. Somento o usuario master pode remover um status de admin.", 403)
+
         }
+
+        //se o user que esta sendo alterado for admin e for diferente do user que esta alterando e o admin que esta alterando nao for master
+        if(user.admin && user.id !== admin_user.id && !admin_user.master){
+
+            throw new AppError("Voce nao pode editar o usuário de outro admin.", 403)
+        }
+
+
         
         //se estiver alterando o propio user e a senha nao for valida
         if(user.id === admin_id && !validatePassword(password, user.salt, user.password_hash)){

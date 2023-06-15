@@ -1,6 +1,7 @@
 import * as nodemailer from "nodemailer"
 
 import { IMailProvider, ISendEmailRequest } from "../IMailProvider";
+import { AppError } from "@shared/errors/AppError";
 
 
 
@@ -22,8 +23,8 @@ class MailProvider implements IMailProvider{
         //necessario?
         mailer.verify()
         .catch(error => { 
-            console.error(error)
-            //throw new AppError("Não foi possivel se conectar ao servidor do email ou não foi possivel enviar o email", 500)
+            
+            throw new AppError(`Não foi possivel se conectar ao servidor do email ou não foi possivel enviar o email. Erro: ${error}`, 500)
         })
         
         //tranformar em async?
@@ -43,7 +44,7 @@ class MailProvider implements IMailProvider{
         .catch(error => { 
             // mandar pra uma rota que 
             //vai pegar esse erro e salvar em algum lugar?
-            console.error(error)
+            throw new AppError(`Não foi possivel enviar o email. Erro: ${error}`, 500)
             
             //throw new AppError("Não foi possivel enviar o email", 500)
         })

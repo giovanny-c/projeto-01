@@ -13,6 +13,7 @@ interface IRequest{
     ngo_id: string
     user_id: string
     password: string
+    delete_name: string
 }
 
 @injectable()
@@ -32,7 +33,7 @@ class DeleteNgoUseCase{
 
     }
 
-    async execute({ngo_id, user_id, password}:IRequest){
+    async execute({ngo_id, user_id, password, delete_name}:IRequest){
 
         if(!ngo_id || uuid.validate(ngo_id) === false) throw new AppError("Não foi possivel encontrar a instituição")
         if(!user_id || uuid.validate(user_id) === false) throw new AppError("Usuario nao encontrado")
@@ -45,6 +46,14 @@ class DeleteNgoUseCase{
         const user = await this.usersRepository.findById(user_id)
 
         if(!user) throw new AppError("Usuario nao encontrado")
+
+        if(!user.master){
+            throw new AppError("Não é possivel deletar essa instituição. Apenas o admin master pode faze-lo.")
+        }
+
+        if(ngo.full_name !== delete_name){
+            throw new AppError("Não foi possível deletar a instituição. O nome da instituição esta errado.")
+        }
 
         if(!validatePassword(password, user.salt, user.password_hash)){
             throw new AppError("Senha incorreta", 400)
