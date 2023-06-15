@@ -6,7 +6,7 @@ import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { INgosEmailsRepository } from "../../repositories/INgosEmailRepository";
-import { IMailProvider } from "@shared/container/providers/mailProvider/IMailProvider";
+import { IMailProvider } from "../../../../shared/container/providers/mailProvider/IMailProvider";
 
 
 interface IRequest {
