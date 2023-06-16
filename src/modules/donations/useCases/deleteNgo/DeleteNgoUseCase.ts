@@ -52,7 +52,7 @@ class DeleteNgoUseCase{
         }
 
         if(ngo.full_name !== delete_name){
-            throw new AppError("Não foi possível deletar a instituição. O nome da instituição esta errado.")
+            throw new AppError("Não foi possível deletar a instituição. Forneça o nome da instituição corretamente.")
         }
 
         if(!validatePassword(password, user.salt, user.password_hash)){

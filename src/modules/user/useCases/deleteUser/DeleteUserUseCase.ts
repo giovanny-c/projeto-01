@@ -6,7 +6,6 @@ import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 
 import { AppError } from "../../../../shared/errors/AppError";
-import { validatePassword } from "../../../../utils/passwordUtils";
 import { instanceToPlain } from "class-transformer";
 import { User } from "../../../user/entities/user";
 
@@ -25,7 +24,7 @@ class DeleteUserUseCase {
         private usersRepository: IUsersRepository) {
     }
 
-    async execute({user_id, admin_id, password}: IRequest) {
+    async execute({user_id, admin_id}: IRequest) {
 
         
         

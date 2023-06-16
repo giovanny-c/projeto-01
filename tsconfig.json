@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "module": "commonjs",
     "outDir": "./dist",
+    "rootDir": "./",
     "baseUrl": "./src",
     "paths": {
       "@config/*": [

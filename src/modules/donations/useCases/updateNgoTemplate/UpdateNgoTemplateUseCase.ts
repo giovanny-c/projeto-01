@@ -3,11 +3,13 @@ import { IStorageProvider } from "../../../../shared/container/providers/storage
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { AppError } from "../../../../shared/errors/AppError";
 import * as fs from "fs"
+import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 
 
 interface IRequest{
     file: Express.Multer.File
     ngo_id: string
+    admin_id: string
 }
 
 @injectable()
@@ -17,10 +19,12 @@ class UpdateNgoTemplateUseCase {
         @inject("StorageProvider")
         private storageProvider: IStorageProvider,
         @inject("NgoRepository")
-        private ngoRepository: INgoRepository
+        private ngoRepository: INgoRepository,
+        @inject("UsersRepository")
+        private usersRepository: IUsersRepository
     ){}
 
-    async execute({file, ngo_id}: IRequest){
+    async execute({file, ngo_id, admin_id}: IRequest){
 
        
 
@@ -37,6 +41,13 @@ class UpdateNgoTemplateUseCase {
         if(!ngo){
             throw new AppError("Instituição não encontrada", 404)
         }
+
+        const user = await this.usersRepository.findById(admin_id)
+
+        if(!user || !user.master){
+            throw new AppError("Apenas o admin master pode atualizar o template da instituição", 403)
+        }
+
 
         //novo nome 
         const template_name = `${ngo.alias}_template.jpg`

@@ -9,11 +9,13 @@ import * as fs from "fs"
 import { INgosTemplateConfigRepository } from "../../repositories/INgosTemplateConfigRepository";
 import validateFields from "./validateFields";
 import { INGOtemplateConfig } from "../../../../shared/container/providers/fileProvider/INGOReceiptProvider";
+import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 
 
 interface IRequest{
     file: Express.Multer.File
     ngo_id: string
+    admin_id: string
 }
 
 @injectable()
@@ -25,10 +27,12 @@ class UpdateNgoTemplateConfigUseCase {
         @inject("NgoRepository")
         private ngoRepository: INgoRepository,
         @inject("NgoTemplateConfigRepository")
-        private ngoTemplateConfigRepository: INgosTemplateConfigRepository
+        private ngoTemplateConfigRepository: INgosTemplateConfigRepository,
+        @inject("UsersRepository")
+        private usersRepository: IUsersRepository,
     ){}
 
-    async execute({file, ngo_id}: IRequest){
+    async execute({file, ngo_id, admin_id}: IRequest){
 
        
 
@@ -45,6 +49,13 @@ class UpdateNgoTemplateConfigUseCase {
         if(!ngo){
             throw new AppError("Instituição não encontrada", 404)
         }
+
+        const user = await this.usersRepository.findById(admin_id)
+
+        if(!user || !user.master){
+            throw new AppError("Apenas o admin master pode atualizar a configuração de template da instituição", 403)
+        }
+
 
         
         try{

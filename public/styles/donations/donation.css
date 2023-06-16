@@ -247,6 +247,12 @@
      margin: 0;
      padding: 0;
 
+
+ }
+
+ .donors-list .list-item .content {
+     height: fit-content;
+     font-size: 30px;
  }
 
  .list-item {

@@ -14,10 +14,12 @@ class UpdateNgoTemplateConfigController {
 
         const {file} = req
         const {ngo_id} = req.params
+        const {id: admin_id} = req.user
+
 
         const updateTemplateConfig = container.resolve(UpdateNgoTemplateConfigUseCase)
 
-        await updateTemplateConfig.execute({file, ngo_id})
+        await updateTemplateConfig.execute({file, ngo_id, admin_id})
 
         req.session.success = "Configuração do template atualizada com sucesso!"
 

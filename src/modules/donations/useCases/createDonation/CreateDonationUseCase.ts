@@ -103,8 +103,13 @@ class CreateDonationUseCase {
             if(!ngo) throw new AppError("Instituição nao encontrada", 404)
         }
 
-        const {donation_number} = await this.donationCounterRepository.findByNgoId(ngo_id)
+        const donation_counter = await this.donationCounterRepository.findByNgoId(ngo_id)
 
+        if(!donation_counter){
+            throw new AppError("O contador de doação não possui um valor", 500)
+        }
+
+        const {donation_number} = donation_counter
 
         if(is_payed && !payed_at){//se for pago mas nao tiver data
 

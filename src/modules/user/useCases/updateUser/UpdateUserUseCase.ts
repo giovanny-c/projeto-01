@@ -4,9 +4,11 @@ import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { AppError } from "../../../../shared/errors/AppError";
 import { genPassword, validatePassword } from "../../../../utils/passwordUtils";
 import { instanceToPlain } from "class-transformer"
-import { User } from "../../entities/user";
-import { IWorkersReposiroty } from "../../../workers/repositories/IWorkersRepository";
+// import { User } from "../../entities/user";
+import {IWorkersReposiroty} from "../../../workers/repositories/IWorkersRepository";
 import { Worker } from "../../../workers/entities/worker";
+import { User } from "../../../user/entities/user";
+
 
 interface IRequest {
     id: string
@@ -58,7 +60,7 @@ class UpdateUserUseCase {
         
         
 
-        if (foundUsers.filter(user => user.id !== id ).length) {// se tiver encontrado um user com id diferente do que esta sendo editado
+        if (foundUsers.filter(user => user.id !== id ).length) { // se tiver encontrado um user com id diferente do que esta sendo editado
             
             throw new AppError("Esse usuário ja existe", 400)
         
@@ -101,6 +103,11 @@ class UpdateUserUseCase {
         
         //se estiver alterando o propio user e a senha nao for valida
         if(user.id === admin_id && !validatePassword(password, user.salt, user.password_hash)){
+
+            if(password){
+                throw new AppError("Senha incorreta.", 400)
+
+            }
 
             throw new AppError("Digite a sua senha para editar seu cadastro", 400)
         }
