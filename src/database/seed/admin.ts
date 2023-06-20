@@ -5,6 +5,7 @@ import "dotenv"
 
 import { genPassword } from "../../utils/passwordUtils"
 import { User } from "../../modules/user/entities/user"
+import { error } from "pdf-lib"
 
 async function create() {
     
@@ -17,17 +18,32 @@ async function create() {
     const name = process.env.ADM_SEED_NAME 
     const email = process.env.ADM_SEED_EMAIL
     
+    const adm_master = await dataSource.query(`SELECT * FROM users WHERE email = ${email}`)
+
+    if(adm_master){
+    
+        throw error("User master already exists!")
+
+    }
+
     await dataSource.query(
         `INSERT INTO users(id, name, email, password_hash, salt, admin, master)
         VALUES ('${id}', '${name}', '${email}', '${hash}', '${salt}', true, true)
         `
     )
     
-    dataSource.destroy()
+    
     
 
     
 }
 
 
-create().then(() => console.log("User admin created!")).catch(console.error)
+create()
+.then(() => {
+    console.log("User admin master created!")
+}).catch((error) => {
+    console.error(error)
+}).finally(() =>{
+    dataSource.destroy()
+})

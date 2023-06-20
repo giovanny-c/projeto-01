@@ -8,6 +8,7 @@ import { IDonationCounterRepository } from "../../repositories/IDonationCounterR
 import { IDonationsRepository } from "../../repositories/IDonationsRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 
+
 interface IResponse {
     ngo: Ngo
     ngo_donation_counter: DonationCounter
@@ -44,7 +45,6 @@ class GetNgoUseCase {
         if(!ngo) throw new AppError("Instituição nao encontrada", 404)
 
         const ngo_donation_counter = await this.donationCounterRepository.findByNgoId(ngo.id)
-
 
 
         return {ngo, ngo_donation_counter}

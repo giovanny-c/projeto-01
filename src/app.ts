@@ -32,9 +32,18 @@ import * as Tracing from "@sentry/tracing"
 
 import rateLimiter from "./shared/middlewares/rateLimiter"
 
+///*import WEB SOCKET */
+import http from "http"
+import * as socket from "socket.io"
+
 const app = express()
 
+///**CONFIG DO WEB SOCKET */
+const httpServer = new http.Server(app)
+const socketIO = new socket.Server(httpServer)
+// const http = require("http").Server(app)
 
+///////
 
 //front
 app.use(express.static("public"))
@@ -45,7 +54,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));//front 
 
-
+ 
 
 
 nunjucks.configure("public", {
@@ -86,6 +95,29 @@ app.use(Sentry.Handlers.tracingHandler())
 
 
 
+//CONFIG DO SOCKET IO
+socketIO.on("connection", (socket) => {
+    
+    console.log(`${socket.id} user just connected`);
+    
+    //como emitir o evento do email no email
+    // socketIO.emit("response", {message: "this works", success: "sucesso"})
+  
+    socket.on('disconnect', () => {
+        console.log('A user disconnected');
+    });
+
+    // socket.on("message", (data) => {
+
+    //     socket.emit("response", data)
+    //     // socket.emitWithAck
+    //     // socket.to para um room especifico(so com admins talvez?)
+    // })
+
+})
+
+// app.set("socketio", socketIO)
+
 
 //routes
 app.use(router)
@@ -109,4 +141,4 @@ app.use(Sentry.Handlers.errorHandler({
 app.use(errorHandler)
 
 
-export {app}
+export {app, httpServer, socketIO}
