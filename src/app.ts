@@ -1,6 +1,6 @@
 import "reflect-metadata"
 
-import express from "express"
+import express, { response } from "express"
 import cors from "cors"
 
 import "express-async-errors"
@@ -33,17 +33,15 @@ import * as Tracing from "@sentry/tracing"
 import rateLimiter from "./shared/middlewares/rateLimiter"
 
 ///*import WEB SOCKET */
-import http from "http"
-import * as socket from "socket.io"
+import {createServer} from "http"
+import {Server, Socket} from "socket.io"
 
 const app = express()
 
 ///**CONFIG DO WEB SOCKET */
-const httpServer = new http.Server(app)
-const socketIO = new socket.Server(httpServer)
-// const http = require("http").Server(app)
-
-///////
+const httpServer = createServer(app)
+const socketHandler = new Server(httpServer)
+//////
 
 //front
 app.use(express.static("public"))
@@ -95,30 +93,6 @@ app.use(Sentry.Handlers.tracingHandler())
 
 
 
-//CONFIG DO SOCKET IO
-socketIO.on("connection", (socket) => {
-    
-    console.log(`${socket.id} user just connected`);
-    
-    //como emitir o evento do email no email
-    // socketIO.emit("response", {message: "this works", success: "sucesso"})
-  
-    socket.on('disconnect', () => {
-        console.log('A user disconnected');
-    });
-
-    // socket.on("message", (data) => {
-
-    //     socket.emit("response", data)
-    //     // socket.emitWithAck
-    //     // socket.to para um room especifico(so com admins talvez?)
-    // })
-
-})
-
-// app.set("socketio", socketIO)
-
-
 //routes
 app.use(router)
 
@@ -141,4 +115,4 @@ app.use(Sentry.Handlers.errorHandler({
 app.use(errorHandler)
 
 
-export {app, httpServer, socketIO}
+export {app, httpServer, socketHandler}

@@ -118,19 +118,6 @@ class SetNgoEmailUseCase {
             throw new AppError(error || error.message || "Erro ao atualizar email: Erro ao enviar o email de teste, confirme se o email e a senha estão corretos")
         }
 
-        //, quando arrumar, tbm vai mandar um email de confirmação para o user master para vericar e confirmar que email de tal ngo foi alterado
-        //tipo isso
-        
-        // service: process.env.BUSINESS_EMAIL_SERVICE ,
-        // from: process.env.BUSINESS_EMAIL,
-        // password: process.env.BUSINESS_EMAIL_PASSWORD,
-        // to: user_master.email,
-        // subject: ´Confirmação de alteração de email de instituição ${ngo.name}`,
-        // body: {
-        //     text: `O email da instituição ${ngo.name} foi alterado para ${email}. para confirmar clique aqui <a href= url da instituiçao >AQUI</a>`
-        // }
-
-        //PROBLEMA: se nao quiser confirmar, como voltar para o emial de antes sem utilizar 2 rows no banco?
         
 
         let encoded_password = encrypt(password)
