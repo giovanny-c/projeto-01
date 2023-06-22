@@ -149,10 +149,11 @@ class SetNgoEmailUseCase {
             service
         })
 
-    
+        
         return {
             email: newEmail,
-            ngo
+            ngo,
+            success: "Email enviado. Verifique a caixa de entrada do email cadastrado para confirmação. "
         }
         
     

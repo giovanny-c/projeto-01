@@ -200,9 +200,10 @@ class SendReceiptEmailUseCase {
             body: {
                 text: message.message,
                 attachments: [attachment]
+                }
             }
             
-        })
+        )
 
         await this.donationsRepository.markEmailSentForDonation(donation.id)
 
@@ -210,7 +211,8 @@ class SendReceiptEmailUseCase {
 
         return {
             ngo,
-            donation
+            donation,
+            success: "Email enviado!"
         }
 
         

@@ -15,8 +15,12 @@ class SetNgoEmailController {
         
         const setNgoEmail = container.resolve(SetNgoEmailUseCase)
 
-        const {ngo} = await setNgoEmail.execute({ngo_id, email: email.toLowerCase() as string, password, user_id, user_password})
+        const {ngo, success} = await setNgoEmail.execute({ngo_id, email: email.toLowerCase() as string, password, user_id, user_password})
         
+        req.session.success = success
+
+
+
         return res.status(201).redirect(`/instituicao/${ngo.id}/gerenciar`)
 
     }

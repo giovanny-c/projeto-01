@@ -4,9 +4,6 @@ import { DayjsDateProvider } from "../container/providers/dateProvider/implement
 
 
 
-
-
-
 export async function ensureAuthenticated(req: Request, res: Response, next: NextFunction) {
         
     // console.log(req.socket.remoteAddress)
@@ -23,6 +20,9 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
         
         
     }
+
+
+   
     
     
     
@@ -42,6 +42,8 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
         return res.redirect("/entrar")
 
     }
+    
+
 
     // console.log(req.sessionID)
 
@@ -57,6 +59,7 @@ export async function ensureAuthenticated(req: Request, res: Response, next: Nex
     
     
     next()
+
     
     
 }

@@ -32,16 +32,13 @@ import * as Tracing from "@sentry/tracing"
 
 import rateLimiter from "./shared/middlewares/rateLimiter"
 
-///*import WEB SOCKET */
-import {createServer} from "http"
-import {Server, Socket} from "socket.io"
+
 
 const app = express()
 
-///**CONFIG DO WEB SOCKET */
-const httpServer = createServer(app)
-const socketHandler = new Server(httpServer)
-//////
+
+
+
 
 //front
 app.use(express.static("public"))
@@ -115,4 +112,4 @@ app.use(Sentry.Handlers.errorHandler({
 app.use(errorHandler)
 
 
-export {app, httpServer, socketHandler}
+export {app}

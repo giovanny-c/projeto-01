@@ -16,10 +16,12 @@ class SendReceiptEmailController {
         const { ngo_id } = req.params
         const { message_id, donation_id, donors_ids, email } = req.body
         
+
         const SendReceiptEmail = container.resolve(SendReceiptEmailUseCase)
 
-        const {ngo, donation} = await SendReceiptEmail.execute({ngo_id, donation_id, donors_ids, message_id, email: email.toLowerCase() as string})
-        // req.session.success = success
+        const {ngo, donation, success} = await SendReceiptEmail.execute({ngo_id, donation_id, donors_ids, message_id, email: email.toLowerCase() as string})
+        
+        req.session.success = success
 
         return res.status(201).redirect(`/instituicao/${ngo.id}/doacao/${donation.donation_number}`)
 
