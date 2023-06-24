@@ -32,11 +32,29 @@ import * as Tracing from "@sentry/tracing"
 
 import rateLimiter from "./shared/middlewares/rateLimiter"
 
-
+///*import WEB SOCKET */
+import {createServer} from "http"
+import {Server, Socket} from "socket.io"
 
 const app = express()
 
+///**CONFIG DO WEB SOCKET */
+const httpServer = createServer(app)
+const socketHandler = new Server(httpServer)
+//////
 
+
+socketHandler.on("connection", (socket: Socket) => {
+
+    // console.log(`user joined room "${req.session}"`)
+    // socket.join(req.session.user.name)
+
+    socket.on("join-room", (room)=> {
+        
+        socket.join(room)
+
+    })
+})
 
 
 
@@ -112,4 +130,4 @@ app.use(Sentry.Handlers.errorHandler({
 app.use(errorHandler)
 
 
-export {app}
+export {app, httpServer, socketHandler}

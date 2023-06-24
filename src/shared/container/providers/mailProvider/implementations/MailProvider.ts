@@ -20,45 +20,21 @@ class MailProvider implements IMailProvider{
         })
 
         //necessario?
-        mailer.verify()
-        .catch(error => { 
-  
-            
-           console.error(error)
-            // throw new AppError(`Não foi possivel se conectar ao servidor do email ou não foi possivel enviar o email. Erro: ${error}`, 500)
-        })
+        await mailer.verify()
         
         //tranformar em async?
 
-        
-        mailer.sendMail({
+        //mudar para async e usar await try catch no set email e nao usar nada no send receipt?
+        // ou criar um webhook para msgs de erro (tentar esse 1°)
+        await mailer.sendMail({
                 from,
                 to,
                 subject,
                 text: body.text || null,
                 html: body.html || null,
                 attachments: body.attachments || null
-            })   
-        .then(info => {
-            
-            // let emails = to
-            // if(Array.isArray(to)){
-            //     emails = to.join(", ")
-            // }
-
-  
-
-        }) 
-        .catch(error => { 
-
-            console.error(error)
-        
-            // mandar pra uma rota que 
-            //vai pegar esse erro e salvar em algum lugar?
-            // throw new AppError(`Não foi possivel enviar o email. Erro: ${error}`, 500)
-            
-            //throw new AppError("Não foi possivel enviar o email", 500)
         })
+        
     }
 
 }

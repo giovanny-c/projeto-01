@@ -109,13 +109,31 @@ class SetNgoEmailUseCase {
                 to: [email, user.email],
                 subject: "teste de email",
                 body: {
-                    text: "Email enviado para teste de atualização de email de instituição"
+                    text: `Email enviado para teste de atualização de email de instituição, email atualizado para ${email}`
                 }
                 
             })
             
         } catch (error) {
-            throw new AppError(error || error.message || "Erro ao atualizar email: Erro ao enviar o email de teste, confirme se o email e a senha estão corretos")
+
+            let error_message 
+            if(error.responseCode >= 400 && error.responseCode <= 499){
+
+                error_message = "Não foi possível enviar o email de teste. Tente novamente em instantes."
+                
+            }
+            if(error.responseCode >= 500 ){
+
+                error_message = "Não foi possível enviar o email de teste, Erro: " + `${error.Response}` 
+                
+                if(error.responseCode === 535){
+                    error_message = "Erro ao atualizar email. Verifique se o email e a senha estão corretos"
+    
+                }
+
+            }
+            
+            throw new AppError(error_message || error)
         }
 
         

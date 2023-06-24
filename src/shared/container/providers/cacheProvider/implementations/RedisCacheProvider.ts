@@ -24,6 +24,33 @@ class RedisCacheProvider implements ICacheProvider{
         
         return syncRedisDel(key)
     }
+
+
+    //poe no começo do array //    ou so um
+    async pushToArray<T>(key: string, ...value: string[]): Promise<T | undefined>{
+        const syncRedisLPush = promisify(redisClient.lPush).bind(redisClient)
+        
+        return syncRedisLPush(key, value)
+    }
+
+
+    async deleteFromArray<T>(key: string, index: number): Promise<T | undefined>{
+        const syncRedisLIndex = promisify(redisClient.lIndex).bind(redisClient)
+        
+        const itemToRemove = syncRedisLIndex(key, index)
+
+        const syncRedisLRem = promisify(redisClient.lRem).bind(redisClient)
+
+        return syncRedisLRem(key, 0, itemToRemove)
+    }
+    
+
+    //retorna os valors
+    async getArray<T>(key: string): Promise<T | undefined>{
+        const syncRedisLRange = promisify(redisClient.lRange).bind(redisClient)
+        
+        return syncRedisLRange(key, 0, -1)
+    }
     
 
     // async scan<T>(cursor: number, options: {type: string | Buffer, match: string}): Promise<T | undefined> {
@@ -41,6 +68,7 @@ class RedisCacheProvider implements ICacheProvider{
     
 
     //talvez aproveite algo depois 
+    // poe no redis e incrementa 1
     // async addInCart<T>(item_id: string, user_id: string): Promise<T | undefined>{
 
     //     const getItem = promisify(redisClient.hGet).bind(redisClient)

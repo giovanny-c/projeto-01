@@ -18,6 +18,8 @@ import { INgosEmailsRepository } from "../../repositories/INgosEmailRepository";
 import { INgosMessagesRepository } from "../../repositories/INgosMessagesRepository";
 import { INgosTemplateConfigRepository } from "../../repositories/INgosTemplateConfigRepository";
 
+import { socketHandler } from "../../../../app";
+
 
 interface IRequest {
     donors_ids: string
@@ -25,6 +27,7 @@ interface IRequest {
     ngo_id: string
     message_id: string
     email: string
+    username: string
     
 }
 
@@ -59,7 +62,7 @@ class SendReceiptEmailUseCase {
 
     
     
-    async execute({ ngo_id, donation_id, donors_ids, message_id, email}: IRequest) {
+    async execute({ ngo_id, donation_id, donors_ids, message_id, email, username}: IRequest) {
 
         if(!donors_ids && (!email || email === undefined) ) throw new AppError("Insira pelo menos um email")
         if(!message_id) throw new AppError("Escolha a mensagem do email")
@@ -190,7 +193,9 @@ class SendReceiptEmailUseCase {
         
          
 
-        
+        //sem await termina a função na hr,
+        //com continua até enviar
+
         this.mailProvider.sendMail({
             service: ngo_emails[0].service,
             from: ngo_emails[0].email,
@@ -204,6 +209,36 @@ class SendReceiptEmailUseCase {
             }
             
         )
+        .then(info => {
+            
+            socketHandler.to(username).emit("response", {success: true, message: `Email enviado para: ${donorsEmails.join(", ")}`})
+        })
+        .catch(error => {
+            
+            let error_message 
+            if(error.responseCode >= 400 && error.responseCode <= 499){
+
+                error_message = "Não foi possível enviar o email. Tente novamente em instantes."
+
+            }
+            if(error.responseCode >= 500 ){
+
+                error_message = "Não foi possível enviar o email, Erro: " + `${error.Response}` 
+                
+                if(error.responseCode === 535){
+
+                    error_message = "Não foi possível enviar o email. Credenciais incorretas, verifique se o email e a senha estão corretos."
+                }
+
+                //usar emit
+            }
+            
+            setTimeout(()=> 
+                socketHandler.to(username).emit("response", {success: false, message: error_message})
+                , 1500)
+            
+        })
+    
 
         await this.donationsRepository.markEmailSentForDonation(donation.id)
 
