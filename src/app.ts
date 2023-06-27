@@ -44,17 +44,6 @@ const socketHandler = new Server(httpServer)
 //////
 
 
-socketHandler.on("connection", (socket: Socket) => {
-
-    // console.log(`user joined room "${req.session}"`)
-    // socket.join(req.session.user.name)
-
-    socket.on("join-room", (room)=> {
-        
-        socket.join(room)
-
-    })
-})
 
 
 
@@ -81,12 +70,12 @@ app.set("view engine", "njk")
 //session redis
 app.use(session(redisSession))
 
-app.use(function(req, res, next) {
-    if(!req.session){
-       throw new AppError("Redis down!", 500)
-    }
-    next()
-})
+// app.use(function(req, res, next) {
+//     if(!req.session){
+//        throw new AppError("Redis down!", 500)
+//     }
+//     next()
+// })
 
 
 app.use(rateLimiter)
@@ -106,7 +95,21 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler())
 app.use(Sentry.Handlers.tracingHandler())
 
+//web socket handler
+//por a sessao com redis amannah
+socketHandler.on("connection", (socket: Socket) => {
 
+    // console.log(`user joined room "${req.session}"`)
+    // socket.join(req.session.user.name)
+    
+    //@ts-expect-error
+    console.log(socket.request.sessionStore)
+    socket.on("join-room", (room)=> {
+        
+        socket.join(room)
+
+    })
+})
 
 //routes
 app.use(router)

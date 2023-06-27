@@ -117,6 +117,9 @@ class SetNgoEmailUseCase {
         } catch (error) {
 
             let error_message 
+            if(error.statusCode){
+                error_message = `Não foi possivel atualizar o email, Erro: ${error.statusCode}`
+            }
             if(error.responseCode >= 400 && error.responseCode <= 499){
 
                 error_message = "Não foi possível enviar o email de teste. Tente novamente em instantes."
@@ -133,7 +136,7 @@ class SetNgoEmailUseCase {
 
             }
             
-            throw new AppError(error_message || error)
+            throw new AppError(error_message || error.message || error)
         }
 
         
