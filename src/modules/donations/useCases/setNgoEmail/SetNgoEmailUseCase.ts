@@ -101,6 +101,7 @@ class SetNgoEmailUseCase {
 
         //manda o email de teste 
         //manda um email para ele mesmo para testar testar
+        console.log(email)
         try {
             await this.mailProvider.sendMail({
                 service: service,
@@ -118,7 +119,7 @@ class SetNgoEmailUseCase {
 
             let error_message 
             if(error.statusCode){
-                error_message = `Não foi possivel atualizar o email, Erro: ${error.statusCode}`
+                error_message = `Não foi possivel atualizar o email, Erro: ${error.message || error.response || "Não foi possivel identificar o erro."}`
             }
             if(error.responseCode >= 400 && error.responseCode <= 499){
 
@@ -174,7 +175,7 @@ class SetNgoEmailUseCase {
         return {
             email: newEmail,
             ngo,
-            success: "Email enviado. Verifique a caixa de entrada do email cadastrado para confirmação. "
+            // success: "Email enviado. Verifique a caixa de entrada do email cadastrado para confirmação. "
         }
         
     

@@ -15,7 +15,7 @@ import "./shared/container"
 //redis e session
 import "./shared/redis/redisConnect"
 import session from "express-session"
-import { redisSession } from "./shared/session/redisSession"
+import { redisSession, wrapSessionForSocketIo } from "./shared/session/redisSession"
 
 //import upload from "@config/upload"
 
@@ -34,13 +34,15 @@ import rateLimiter from "./shared/middlewares/rateLimiter"
 
 ///*import WEB SOCKET */
 import {createServer} from "http"
-import {Server, Socket} from "socket.io"
+import socketio, {Socket} from "socket.io"
+
+ 
 
 const app = express()
 
 ///**CONFIG DO WEB SOCKET */
 const httpServer = createServer(app)
-const socketHandler = new Server(httpServer)
+const socketHandler = new socketio.Server(httpServer)
 //////
 
 
@@ -68,7 +70,7 @@ app.set("view engine", "njk")
 
 
 //session redis
-app.use(session(redisSession))
+app.use(redisSession)
 
 // app.use(function(req, res, next) {
 //     if(!req.session){
@@ -76,7 +78,6 @@ app.use(session(redisSession))
 //     }
 //     next()
 // })
-
 
 app.use(rateLimiter)
 
@@ -95,20 +96,16 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler())
 app.use(Sentry.Handlers.tracingHandler())
 
+
 //web socket handler
+//sharing session with socket.io
+socketHandler.use(wrapSessionForSocketIo(redisSession))
 //por a sessao com redis amannah
 socketHandler.on("connection", (socket: Socket) => {
-
-    // console.log(`user joined room "${req.session}"`)
-    // socket.join(req.session.user.name)
-    
     //@ts-expect-error
-    console.log(socket.request.sessionStore)
-    socket.on("join-room", (room)=> {
-        
-        socket.join(room)
-
-    })
+    socket.join(socket.request.session.user.id)
+    
+ 
 })
 
 //routes

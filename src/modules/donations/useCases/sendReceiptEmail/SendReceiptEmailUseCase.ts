@@ -27,7 +27,7 @@ interface IRequest {
     ngo_id: string
     message_id: string
     email: string
-    username: string
+    user_id: string
     
 }
 
@@ -62,7 +62,7 @@ class SendReceiptEmailUseCase {
 
     
     
-    async execute({ ngo_id, donation_id, donors_ids, message_id, email, username}: IRequest) {
+    async execute({ ngo_id, donation_id, donors_ids, message_id, email, user_id}: IRequest) {
 
         if(!donors_ids && (!email || email === undefined) ) throw new AppError("Insira pelo menos um email")
         if(!message_id) throw new AppError("Escolha a mensagem do email")
@@ -211,7 +211,7 @@ class SendReceiptEmailUseCase {
         )
         .then(info => {
             
-            socketHandler.to(username).emit("response", {success: true, message: `Email enviado para: ${donorsEmails.join(", ")}`})
+            socketHandler.to(user_id).emit("response", {success: true, message: `Email enviado para: ${donorsEmails.join(", ")}`})
         })
         .catch(error => {
             
@@ -234,7 +234,7 @@ class SendReceiptEmailUseCase {
             }
             
             setTimeout(()=> 
-                socketHandler.to(username).emit("response", {success: false, message: error_message})
+                socketHandler.to(user_id).emit("response", {success: false, message: error_message})
                 , 1500)
             
         })

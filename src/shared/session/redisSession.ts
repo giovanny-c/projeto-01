@@ -1,9 +1,15 @@
+import "dotenv/config"
 import { redisClient } from "../redis/redisConfig";
-import session from "express-session"
 import connectRedis from "connect-redis"
 
+import session from "express-session"
+
+import { Socket } from "socket.io";
+import { NextFunction } from "express";
+
 let RedisStore = connectRedis(session)
-const redisSession = {
+
+const redisSession = session({
     secret: process.env.SESSION_SECRET as string,
     store: new RedisStore({
         client: redisClient
@@ -21,8 +27,10 @@ const redisSession = {
 
     },
 
-}
+})
+
+const wrapSessionForSocketIo = expressMiddleware => (soket: Socket, next: NextFunction) => expressMiddleware(soket.request, {}, next)
 
 
 
-export { redisSession }
+export { redisSession, wrapSessionForSocketIo }

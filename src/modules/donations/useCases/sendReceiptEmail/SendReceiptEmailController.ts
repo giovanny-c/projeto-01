@@ -15,11 +15,11 @@ class SendReceiptEmailController {
 
         const { ngo_id } = req.params
         const { message_id, donation_id, donors_ids, email } = req.body
-        const {name: username} = req.user
+        const {id: user_id} = req.user
 
         const SendReceiptEmail = container.resolve(SendReceiptEmailUseCase)
 
-        const {ngo, donation, success} = await SendReceiptEmail.execute({ngo_id, donation_id, donors_ids, message_id, email: email.toLowerCase() as string, username})
+        const {ngo, donation, success} = await SendReceiptEmail.execute({ngo_id, donation_id, donors_ids, message_id, email: email.toLowerCase() as string, user_id})
         
         req.session.success = success
 
