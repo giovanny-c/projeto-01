@@ -20,7 +20,3 @@ socket.on("response", (data) => {
 
 })
 
-const room = document.querySelector(".logout p").innerHTML
-
-socket.emit("join-room", room)
-
