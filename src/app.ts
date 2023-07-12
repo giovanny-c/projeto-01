@@ -102,8 +102,11 @@ app.use(Sentry.Handlers.tracingHandler())
 socketHandler.use(wrapSessionForSocketIo(redisSession))
 //por a sessao com redis amannah
 socketHandler.on("connection", (socket: Socket) => {
+    
     //@ts-expect-error
-    socket.join(socket.request.session.user.id)
+    const room = socket.request.session.user?.id || ""
+
+    socket.join(room)
     
  
 })
