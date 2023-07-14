@@ -7,7 +7,7 @@ class LoadCreateWorkerController{
         
         
         
-        return res.render("views/workers/create-worker", {username: req.user.name, error: req.error, success: req.success})
+        return res.render("views/workers/create-worker", {ngos: req.ngos, username: req.user.name, error: req.error, success: req.success})
         
 
 

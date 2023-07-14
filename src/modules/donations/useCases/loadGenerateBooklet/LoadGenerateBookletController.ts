@@ -17,7 +17,7 @@ class LoadGenerateBookletController {
 
         const {ngo, donation_counter} = await loadGenerateBooklet.execute({ngo_id})
             
-        return res.status(200).render("views/donations/generate-booklet", {ngo, donation_counter, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/donations/generate-booklet", {ngos: req.ngos, ngo, donation_counter, username: req.user.name, error: req.error, success: req.success})
 
     }
 

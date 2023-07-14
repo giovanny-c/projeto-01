@@ -9,7 +9,7 @@ class LoadCreateNgoController {
 
 
 
-        return res.status(200).render("views/ngos/create-ngo", {username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/ngos/create-ngo", {ngos: req.ngos, username: req.user.name, error: req.error, success: req.success})
 
     }
 

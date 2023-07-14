@@ -15,7 +15,7 @@ class ListWorkersController {
         const workers = await listWorkersUseCase.execute()
        
 
-        return res.status(200).render("views/workers/workers", {workers, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/workers/workers", {ngos: req.ngos, workers, username: req.user.name, error: req.error, success: req.success})
     }
 
 

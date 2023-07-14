@@ -18,9 +18,9 @@ async function create() {
     const name = process.env.ADM_SEED_NAME 
     const email = process.env.ADM_SEED_EMAIL
     
-    const adm_master = await dataSource.query(`SELECT * FROM users WHERE email = ${email}`)
+    const adm_master = await dataSource.query(`SELECT * FROM users WHERE email = '${email}'`)
 
-    if(adm_master){
+    if(adm_master.length){
     
         throw error("User master already exists!")
 

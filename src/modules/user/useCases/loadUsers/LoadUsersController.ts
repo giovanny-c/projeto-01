@@ -14,7 +14,7 @@ class LoadUsersController {
 
         const users = await loadUsersUseCase.execute()
 
-        return res.status(200).render("views/users/users", {users, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/users/users", {ngos: req.ngos, users, username: req.user.name, error: req.error, success: req.success})
     }
 
 }

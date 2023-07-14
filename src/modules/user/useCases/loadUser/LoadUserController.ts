@@ -21,7 +21,7 @@ class LoadUserController {
 
         
 
-        return res.status(200).render("views/users/user", {user, admin_user, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/users/user", {ngos: req.ngos, user, admin_user, username: req.user.name, error: req.error, success: req.success})
     }
 
 }

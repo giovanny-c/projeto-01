@@ -7,6 +7,7 @@ import { loginRoutes } from "./login.routes"
 import { userRoutes } from "./user.routes"
 import { workerRoutes } from "./worker.routes"
 import { limitSessions } from "../shared/middlewares/limitSessions"
+import { loadNgosForMenu } from "../shared/middlewares/loadNgosForMenu"
 
 
 
@@ -16,6 +17,7 @@ const router = Router()
 
 router.use(["/usuarios", "/doadores", "/funcionarios", "/instituicao"], ensureAuthenticated)
 
+router.use(loadNgosForMenu)
 
 router.use(fileRoutes)
 router.use(loginRoutes)

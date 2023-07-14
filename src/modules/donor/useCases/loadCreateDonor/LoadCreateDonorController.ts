@@ -14,7 +14,7 @@ class LoadCreateDonorController {
         //passa o id se for admin
         const workers = await loadCreateDonor.execute(admin? id : null)
 
-        return res.render("views/donors/create-donor", {workers, username: req.user.name, error: req.error, success: req.success})
+        return res.render("views/donors/create-donor", {ngos: req.ngos, workers, username: req.user.name, error: req.error, success: req.success})
     }
 
 

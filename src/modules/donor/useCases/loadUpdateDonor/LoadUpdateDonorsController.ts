@@ -16,7 +16,7 @@ class LoadUpdateDonorController {
         const {donor, workers} = await loadUpdateDonorUseCase.execute({donor_id, user_id})
 
 
-        return res.render("views/donors/create-donor", {donor, workers, username: req.user.name, error: req.error, success: req.success} )
+        return res.render("views/donors/create-donor", {ngos: req.ngos, donor, workers, username: req.user.name, error: req.error, success: req.success} )
     }
 }
 export { LoadUpdateDonorController }

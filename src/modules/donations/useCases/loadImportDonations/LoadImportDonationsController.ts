@@ -18,7 +18,7 @@ class LoadImportDonationsController {
 
         const {ngo, file_path, file_name} = await loadImportDonations.execute({ngo_id})
 
-        return res.status(200).render("views/donations/import-donations", {ngo, file_path, file_name, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/donations/import-donations", {ngos: req.ngos, ngo, file_path, file_name, username: req.user.name, error: req.error, success: req.success})
 
     }
 

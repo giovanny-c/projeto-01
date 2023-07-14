@@ -8,7 +8,11 @@ declare namespace Express {
             admin: boolean
             
         }
-       error: {
+        ngos: {
+            id: string
+            name: string
+        }[]
+        error: {
                 message: string
                 status: number
         }

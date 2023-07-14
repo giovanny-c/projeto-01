@@ -2,6 +2,7 @@
 import { redisClient } from "../../../../redis/redisConfig"
 import { promisify } from "util"
 import ICacheProvider from "../ICacheProvider"
+import { getExecutionTime } from "../../../../../utils/decorators/executionTime"
 
 class RedisCacheProvider implements ICacheProvider{
 
@@ -23,6 +24,37 @@ class RedisCacheProvider implements ICacheProvider{
         const syncRedisDel = promisify(redisClient.del).bind(redisClient)
         
         return syncRedisDel(key)
+    }
+
+    
+    async scan<T>(pattern: string, count: number = 1): Promise<T | undefined>{
+        const syncRedisScan = promisify(redisClient.scan).bind(redisClient)
+        
+        const scanAll = async (pattern) => {
+            const found = [];
+            let cursor = '0';
+          
+            do {
+              const reply = await syncRedisScan(cursor, 'MATCH', pattern, "COUNT", count);
+          
+              cursor = reply[0];
+              found.push(...reply[1]);
+            } while (cursor !== '0');
+          
+            return found as T;
+        }
+
+        return scanAll(pattern)
+
+        // return syncRedisScan("0", 'MATCH', pattern, "COUNT", count);
+        
+    }
+
+
+    async mGet<T>(keys: string[]): Promise<T | undefined>{
+        const syncRedisMGet = promisify(redisClient.mGet).bind(redisClient)
+        
+        return syncRedisMGet(keys)
     }
 
 

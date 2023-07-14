@@ -12,7 +12,7 @@ class LoadCreateUserController {
 
         const workers = await loadCreateUser.execute()
         
-        return res.status(200).render("views/users/create-user", {workers, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/users/create-user", {ngos: req.ngos, workers, username: req.user.name, error: req.error, success: req.success})
     }
 
 }

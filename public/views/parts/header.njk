@@ -20,6 +20,12 @@
 
                         
                             <a href="/">Instituições</a>
+
+                            <div class="dropdown-menu">
+                                {% for ngo in ngos %}
+                                    <a href="/instituicao/{{ngo.id}}">{{ngo.name}}</a>
+                                {% endfor %}
+                            </div>
                             
                             
                             <a href="/funcionarios">Funcionários</a>

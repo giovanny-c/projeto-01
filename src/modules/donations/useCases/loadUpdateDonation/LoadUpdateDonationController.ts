@@ -16,7 +16,7 @@ class LoadUpdateDonationController {
 
         const {ngo, donation, workers, date} = await loadCreateDonation.execute({ngo_id, donation_number: +(donation_number)})
 
-        return res.status(200).render("views/donations/update-donation", {ngo, workers, donation, date, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/donations/update-donation", {ngos: req.ngos, ngo, workers, donation, date, username: req.user.name, error: req.error, success: req.success})
 
     }
 

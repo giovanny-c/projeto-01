@@ -16,7 +16,7 @@ class LoadExportDonationsController {
 
         const {ngo} = await loadExportDonations.execute({ngo_id})
             
-        return res.status(200).render("views/donations/export-donations", {ngo, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/donations/export-donations", {ngos: req.ngos, ngo, username: req.user.name, error: req.error, success: req.success})
 
     }
 

@@ -16,7 +16,7 @@ class LoadSetNgoEmailController {
 
         const {ngo, email} = await loadSetNgoEmail.execute({ngo_id})
 
-        return res.status(200).render("views/ngos/set-email", {ngo, email, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/ngos/set-email", {ngos: req.ngos, ngo, email, username: req.user.name, error: req.error, success: req.success})
 
     }
 

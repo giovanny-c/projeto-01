@@ -17,7 +17,7 @@ class LoadBookletController{
 
         const {file_path,  file_name,  ngo} = await loadBookletUseCase.execute({ngo_id, year, month, file_name: fileName})
 
-        return res.status(200).render("views/donations/booklet", {file_path, file_name, ngo, username: req.user.name, error: req.error, success: req.success})
+        return res.status(200).render("views/donations/booklet", {file_path, file_name, ngo, ngos: req.ngos, username: req.user.name, error: req.error, success: req.success})
        
 
         // return res.render("views/donations/booklet", {
