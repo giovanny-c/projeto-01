@@ -41,7 +41,7 @@ class NgoRepository implements INgoRepository{
         return await this.repository.findOneBy({name})
     }
     async findAll(): Promise<Ngo[]> {
-        return  await this.repository.find({ order: { full_name: "ASC"}})
+        return  await this.repository.find({ order: { name: "ASC"}})
     }
 
     async delete(id: string){

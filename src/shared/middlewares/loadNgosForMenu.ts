@@ -1,3 +1,4 @@
+import { array } from "joi";
 import { Ngo } from "../../modules/donations/entities/ngos";
 import { NgoRepository } from "../../modules/donations/repositories/implementation/NgoRepository";
 import { RedisCacheProvider } from "../../shared/container/providers/cacheProvider/implementations/RedisCacheProvider";
@@ -35,9 +36,10 @@ export async function loadNgosForMenu(req: Request, res: Response, next: NextFun
     if(!ngos){
         ngos = await cacheProvider.mGet<string[]>(ngos_ids)
     }
-    
-    req.ngos = ngos.map((ngo) => {
 
+    
+    ngos = ngos.map((ngo) => {
+        
         const {id, name} = JSON.parse(ngo) as Ngo
         return {
             id,
@@ -45,6 +47,13 @@ export async function loadNgosForMenu(req: Request, res: Response, next: NextFun
         }
     })
     
+    
+    
+    //ordem alfabetica
+    req.ngos = ngos.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1);
+
+    
+
     
 
     next()

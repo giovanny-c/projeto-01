@@ -18,16 +18,8 @@
 
                     <div class="links">
 
-                        
+                            
                             <a href="/">Instituições</a>
-
-                            <div class="dropdown-menu">
-                                {% for ngo in ngos %}
-                                    <a href="/instituicao/{{ngo.id}}">{{ngo.name}}</a>
-                                {% endfor %}
-                            </div>
-                            
-                            
                             <a href="/funcionarios">Funcionários</a>
                             <a href="/usuarios">Usuários</a>
                             {% if admin %}{% endif %}
@@ -37,6 +29,15 @@
                             {% if ngo %}
                             <a href="/instituicao/{{ngo.id}}">{{ngo.name}}</a>
                             {% endif %}
+                            
+                            <div class="dropdown-menu">
+                               
+                                {% for ngo in ngos %}
+                                    <div>
+                                        <a href="/instituicao/{{ngo.id}}">{{ngo.name}}</a>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         
                             
                         
