@@ -462,8 +462,45 @@ function toggleIframe() {
 
 };
 
+function showSubMenu() {
+    const submenu = document.querySelector(".dropdown-menu")
+
+    submenu.style.visibility = "visible"
+    submenu.style.opacity = 1
+}
 
 
+
+
+function hideSubMenu() {
+
+    const submenu = document.querySelector(".dropdown-menu")
+
+    submenu.style.visibility = "hidden"
+    submenu.style.opacity = 0
+}
+
+function formatSubMenu() {
+
+    const submenu = document.querySelector(".dropdown-menu")
+
+
+    for (item of submenu.children) {
+
+        const name = item.firstElementChild.innerHTML
+
+        if (name.length > 10) {
+
+            item.firstElementChild.innerHTML = name.slice(0, 10) + "..."
+
+        }
+
+    }
+}
+
+formatSubMenu()
+
+hideSubMenu()
 
 // buttonOnClick(){
 

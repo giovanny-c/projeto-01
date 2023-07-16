@@ -19,7 +19,7 @@
                     <div class="links">
 
                             
-                            <a href="/">Instituições</a>
+                            <a href="/" id="ngos" onmouseover="showSubMenu()" onmouseout="hideSubMenu()">Instituições</a>
                             <a href="/funcionarios">Funcionários</a>
                             <a href="/usuarios">Usuários</a>
                             {% if admin %}{% endif %}
@@ -30,7 +30,7 @@
                             <a href="/instituicao/{{ngo.id}}">{{ngo.name}}</a>
                             {% endif %}
                             
-                            <div class="dropdown-menu">
+                            <div class="dropdown-menu"  onmouseover="showSubMenu()" onmouseout="hideSubMenu()" >
                                
                                 {% for ngo in ngos %}
                                     <div>
