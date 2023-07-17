@@ -7,18 +7,17 @@ object {
     visibility: hidden;
 }
 
+.page-title {
+    margin: 0 auto;
+}
 
 .wrap-title {
+    margin-top: 70px;
     display: flex;
     flex-wrap: wrap;
 
 }
 
-.wrap-title .page-title,
-.wrap-title .new-donation {
-    margin: 30px 0px;
-    width: 50%;
-}
 
 .wrap-title .new-donation {
     text-align: end;

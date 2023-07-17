@@ -1,3 +1,37 @@
+.wrap {
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+    margin: 0px auto;
+}
+
+
+.page-title {
+    max-width: 70%;
+    margin-left: 0px;
+
+
+}
+
+.new-ngo {
+    align-self: center;
+}
+
+.new-ngo a:hover {
+    background-color: var(--color-hover);
+}
+
+.new-ngo a {
+
+    border-radius: 5px;
+    padding: 4px;
+
+    font-weight: bold;
+    background-color: var(--color-call-to-action);
+    color: var(--color-letters-clear);
+    box-shadow: 1px 1px 1px 1px var(--color-letters);
+}
+
 .ngo_actions {
     margin: 70px auto;
     width: 840px;
