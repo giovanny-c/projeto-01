@@ -1,5 +1,21 @@
-{% if error %}
+{% if error and fix%}
+
 <div class="messages error">
+
+    <div>
+
+        Erro: {{error.message}}
+        
+        <div class="close-btn">
+            X
+        </div>
+
+    </div>
+</div>
+
+{% elseif error%}
+<div class="messages error close">
+
 
     Erro: {{error.message}}
     
@@ -10,6 +26,8 @@
 {% endif %}
 
 
+
+
 {% if success %}
 <div class="messages success">
 
@@ -18,3 +36,4 @@
 </div>
 
 {% endif %}
+ 

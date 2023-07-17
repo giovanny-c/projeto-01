@@ -40,7 +40,7 @@ async function fetchExportDonations(tag) {
         if (!response.ok) {// tudo que tiver status 4** ou 5**
             const error = await response.text()
 
-            tag.className = "messages error"
+            tag.className = "messages error close"
             tag.removeAttribute("href")
             tag.innerHTML = error || "Erro ao gerar arquivo"
 
@@ -79,7 +79,7 @@ async function fetchExportDonations(tag) {
         //o mesmo que !response.ok
 
         console.error(err)
-        tag.className = "messages error"
+        tag.className = "messages error close"
         tag.removeAttribute("href")
         tag.innerHTML = err || "Erro ao gerar o arquivo."
 

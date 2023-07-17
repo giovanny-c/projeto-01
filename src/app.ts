@@ -100,16 +100,18 @@ app.use(Sentry.Handlers.tracingHandler())
 //web socket handler
 //sharing session with socket.io
 socketHandler.use(wrapSessionForSocketIo(redisSession))
-//por a sessao com redis amannah
+
 socketHandler.on("connection", (socket: Socket) => {
-    
+
     //@ts-expect-error
     const room = socket.request.session.user?.id || ""
 
     socket.join(room)
-    
+
  
 })
+
+
 
 //routes
 app.use(router)

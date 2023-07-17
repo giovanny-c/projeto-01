@@ -84,11 +84,11 @@ class ListDonationsUseCase {
                 throw new AppError("Usuario nao encontrado.")
             }
 
-            worker_id = (await this.usersRepository.findById(user.id)).worker.id
+            worker_id = (await this.usersRepository.findById(user.id)).worker?.id
             
 
             if(!worker_id || worker_id === ""){
-                throw new AppError("Nao foram encontradas doações para esse funcionário, ou ele nao existe")
+                throw new AppError("Para acessar este conteudo é necessario ser admin ou estar atribuido a um funcionário.")
             }
         }
 

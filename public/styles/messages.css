@@ -27,6 +27,12 @@
     right: 10%;
     opacity: 1;
 
+
+}
+
+
+
+.close {
     animation: hidemessage 400ms 6s ease-out forwards;
     /*  tempo da animação
     delay de ativaçao da animaçao 
@@ -56,6 +62,27 @@
     }
 
 }
+
+.messages div {
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: -38px;
+    right: -261px;
+    background-color: rgb(143, 30, 10);
+    border-radius: 2px;
+    padding: 2px 4px 2px 4px;
+    font-size: 12px;
+    cursor: pointer;
+
+}
+
+.close-btn:hover {
+    background-color: rgb(114, 25, 9);
+}
+
 
 .input-error {
     border: 1px solid rgb(207, 47, 19);

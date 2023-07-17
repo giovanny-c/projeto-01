@@ -136,7 +136,7 @@ class SendReceiptEmailUseCase {
         
         const ngo_emails = await this.ngosEmailsRepository.findAllfromNgo(ngo.id)
         
-        if(!ngo_emails) throw new AppError("Email não encontrado ou não existe")
+        if(!ngo_emails || !ngo_emails.length) throw new AppError("Email não encontrado ou não existe")
 
 
         const message = await this.ngosMessagesRepository.findById(message_id)
@@ -234,7 +234,7 @@ class SendReceiptEmailUseCase {
             }
             
             setTimeout(()=> 
-                socketHandler.to(user_id).emit("response", {success: false, message: error_message})
+                socketHandler.to(user_id).emit("response", {success: false, message: error_message, fix: true})
                 , 1500)
             
         })
