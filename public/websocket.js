@@ -12,7 +12,7 @@ socket.on("response", (data) => {
 
 
     if (data.success) {
-        message.className = "messages success"
+        message.className = "messages success close"
         message.innerHTML = data.message
     }
     if (!data.success) {
