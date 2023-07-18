@@ -23,6 +23,9 @@ class NgoEmail {
 
     @Column()
     service: string
+
+    @Column()
+    host: string
     
     constructor() {
         if (!this.id) {

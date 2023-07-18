@@ -9,16 +9,25 @@ class MailProvider implements IMailProvider{
     
 
     
-    async sendMail({service, from, password, to, subject, body}: ISendEmailRequest): Promise<void> {
-        
+    async sendMail({service, host, from, password, to, subject, body}: ISendEmailRequest): Promise<void> {
+    
+
         const mailer = nodemailer.createTransport({
-            service: service,
+            host,
+            service,
             port: 587,
             secure: false,
+            // requireTLS: true
+            tls:{
+                ciphers: "SSLv3",
+                rejectUnauthorized: false,
+            },
+            //
             auth: {
                 user: from,
                 pass: password
-            }
+            },
+            
         })
 
         //necessario?

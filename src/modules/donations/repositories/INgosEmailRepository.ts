@@ -3,7 +3,7 @@ import { NgoEmail } from "../entities/ngos_emails";
 
 interface INgosEmailsRepository {
 
-    create({email, ngo_id, password, service, id}: ICreateNgoEmail): Promise<NgoEmail>
+    create({email, ngo_id, password, service, id, host}: ICreateNgoEmail): Promise<NgoEmail>
     findAllfromNgo(ngo_id: string): Promise<NgoEmail[]>
     findByEmail(email: string): Promise<NgoEmail>
     delete(id: string, ngo_id?: string): Promise<void>

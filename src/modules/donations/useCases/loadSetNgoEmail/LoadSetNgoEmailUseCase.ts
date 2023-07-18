@@ -14,10 +14,6 @@ interface IRequest {
    ngo_id: string
 }
 
-interface IResponse {
-    ngo: Ngo
-    email?: string
-}
 
 @injectable()
 class LoadSetNgoEmailUseCase {
@@ -33,7 +29,7 @@ class LoadSetNgoEmailUseCase {
 
     ) { }
 
-    async execute({ngo_id}: IRequest): Promise<IResponse> {
+    async execute({ngo_id}: IRequest){
         
         let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
 
@@ -52,7 +48,8 @@ class LoadSetNgoEmailUseCase {
     
         return  {
             ngo,
-            email: email[0]?.email || null
+            email: email[0]?.email || null,
+            host: email[0]?.host || null
         }
         
     

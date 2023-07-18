@@ -7,11 +7,13 @@ import { IUsersRepository } from "../../../user/repositories/IUsersRepository";
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { INgosEmailsRepository } from "../../repositories/INgosEmailRepository";
 import { IMailProvider } from "../../../../shared/container/providers/mailProvider/IMailProvider";
+import { socketHandler } from "../../../../app";
 
 
 interface IRequest {
     ngo_id: string
     email: string
+    host: string
     password: string
     user_id: string
     user_password: string
@@ -35,7 +37,7 @@ class SetNgoEmailUseCase {
 
     ) { }
 
-    async execute({ ngo_id, email, password, user_id, user_password}: IRequest) {
+    async execute({ ngo_id, email, password, user_id, user_password, host}: IRequest) {
 
         if(!ngo_id){
             throw new AppError("Instituição nao encontrada", 400)
@@ -45,6 +47,10 @@ class SetNgoEmailUseCase {
         }
         if(!password){
             throw new AppError("Forneça uma senha", 400)
+        }
+
+        if(!host){
+            throw new AppError("Forneça o endereço do servidor de email", 400)
         }
         if(!user_password){
             throw new AppError("Forneça a senha de usuario", 400)
@@ -101,9 +107,10 @@ class SetNgoEmailUseCase {
 
         //manda o email de teste 
         //manda um email para ele mesmo para testar testar
-        console.log(email)
+        
         try {
             await this.mailProvider.sendMail({
+                host,
                 service: service,
                 from: email,
                 password: password,
@@ -141,41 +148,40 @@ class SetNgoEmailUseCase {
         }
 
         
-
+        
         let encoded_password = encrypt(password)
-
-
+        
+        
         //se ja tiver o email e estiver dando update
         if(emails.length === 1){
     
-            const newEmail = await this.ngosEmailsRepository.create({
+            await this.ngosEmailsRepository.create({
                 id: emails[0].id,
                 ngo_id,
                 email,
                 password: encoded_password,
-                service
+                service,
+                host
             })
 
-            return {
-                email: newEmail,
-                ngo
-            }
-        }   
+            
+        }
+        if(!emails.length || emails.length !== 1){
 
-
-        //se for a primeira vez
-        const newEmail = await this.ngosEmailsRepository.create({
-            ngo_id,
-            email,
-            password: encoded_password,
-            service
-        })
-
+            //se for a primeira vez
+            await this.ngosEmailsRepository.create({
+                ngo_id,
+                email,
+                password: encoded_password,
+                service,
+                host
+            })
+        }
+        
         
         return {
-            email: newEmail,
             ngo,
-            // success: "Email enviado. Verifique a caixa de entrada do email cadastrado para confirmação. "
+            success: `Email alterado para: ${email}. Verifique a caixa de entrada para ver o email de teste`
         }
         
     

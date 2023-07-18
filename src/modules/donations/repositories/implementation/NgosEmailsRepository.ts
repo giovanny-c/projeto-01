@@ -14,14 +14,15 @@ class NgosEmailsRepository implements INgosEmailsRepository {
         this.repository = dataSource.getRepository(NgoEmail)
     }
 
-    async create({email, ngo_id, password, service, id}: ICreateNgoEmail){
+    async create({email, ngo_id, password, service, id, host}: ICreateNgoEmail){
 
         const ngo_email = this.repository.create({
             id,
             email, 
             ngo_id,
             password, 
-            service
+            service,
+            host
         })
 
         return await this.repository.save(ngo_email)
