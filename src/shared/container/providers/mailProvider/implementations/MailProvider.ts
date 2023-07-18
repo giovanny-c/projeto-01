@@ -13,6 +13,8 @@ class MailProvider implements IMailProvider{
         
         const mailer = nodemailer.createTransport({
             service: service,
+            port: 587,
+            secure: false,
             auth: {
                 user: from,
                 pass: password
