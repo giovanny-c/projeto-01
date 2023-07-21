@@ -198,7 +198,7 @@ class SendReceiptEmailUseCase {
 
         this.mailProvider.sendMail({
             service: ngo_emails[0].service,
-            host: ngo_emails[0].host,
+            // host: ngo_emails[0].host,
             from: ngo_emails[0].email,
             password: decrypt(ngo_emails[0].password),
             to: donorsEmails,

@@ -13,7 +13,7 @@ import { socketHandler } from "../../../../app";
 interface IRequest {
     ngo_id: string
     email: string
-    host: string
+    // host: string
     password: string
     user_id: string
     user_password: string
@@ -37,7 +37,7 @@ class SetNgoEmailUseCase {
 
     ) { }
 
-    async execute({ ngo_id, email, password, user_id, user_password, host}: IRequest) {
+    async execute({ ngo_id, email, password, user_id, user_password}: IRequest) {
 
         if(!ngo_id){
             throw new AppError("Instituição nao encontrada", 400)
@@ -49,9 +49,9 @@ class SetNgoEmailUseCase {
             throw new AppError("Forneça uma senha", 400)
         }
 
-        if(!host){
-            throw new AppError("Forneça o endereço do servidor de email", 400)
-        }
+        // if(!host){
+        //     throw new AppError("Forneça o endereço do servidor de email", 400)
+        // }
         if(!user_password){
             throw new AppError("Forneça a senha de usuario", 400)
         }
@@ -103,14 +103,14 @@ class SetNgoEmailUseCase {
 
          
         //ex: pega apenas o hotmail de email@hotmail.com
-        let service = email.match(/(?!\w+@)\w+/)[0]
+        let service = email.match(/(?!.+@)\w+/)[0]
 
         //manda o email de teste 
         //manda um email para ele mesmo para testar testar
         
         try {
             await this.mailProvider.sendMail({
-                host,
+                // host,
                 service: service,
                 from: email,
                 password: password,
@@ -160,8 +160,8 @@ class SetNgoEmailUseCase {
                 ngo_id,
                 email,
                 password: encoded_password,
-                service,
-                host
+                service
+                // host
             })
 
             
@@ -174,7 +174,6 @@ class SetNgoEmailUseCase {
                 email,
                 password: encoded_password,
                 service,
-                host
             })
         }
         

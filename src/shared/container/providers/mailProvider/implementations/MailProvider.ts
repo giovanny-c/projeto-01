@@ -9,11 +9,11 @@ class MailProvider implements IMailProvider{
     
 
     
-    async sendMail({service, host, from, password, to, subject, body}: ISendEmailRequest): Promise<void> {
+    async sendMail({service, from, password, to, subject, body}: ISendEmailRequest): Promise<void> {
     
 
         const mailer = nodemailer.createTransport({
-            host,
+            // host,
             service,
             port: 587,
             secure: false,

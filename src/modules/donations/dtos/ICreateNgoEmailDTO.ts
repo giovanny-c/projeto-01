@@ -7,7 +7,7 @@ interface ICreateNgoEmail {
     email: string
     password: string
     service: string
-    host: string
+    host?: string
 
 }
 
