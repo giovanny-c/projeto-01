@@ -36,8 +36,8 @@
             method="post" enctype="multipart/form-data">
 
                     
-                    
                 <div class="item">
+                <label>Nome do doador</label>  
                         <div>
                            
                         <input      
@@ -52,8 +52,8 @@
                 </div>
 
                 
-                    
                 <div class="item">
+                <label>Email do doardor</label>
                         <div>
                         <input      
                             type="email" name="email" 
@@ -70,6 +70,7 @@
             
                     
                 <div class="item">
+                    <label>Telefone do doador</label>
                         <div>
                         <input
                         class="phone"      
@@ -85,6 +86,7 @@
                 </div>
 
                 {% if workers %}
+
                   <select class="item" name="worker_id">
                         
                         <option value="" 

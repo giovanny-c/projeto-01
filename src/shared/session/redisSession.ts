@@ -29,7 +29,7 @@ const redisSession = session({
 
 })
 
-const wrapSessionForSocketIo = expressMiddleware => (soket: Socket, next: NextFunction) => expressMiddleware(soket.request, {}, next)
+const wrapSessionForSocketIo = expressMiddleware => (socket: Socket, next: NextFunction) => expressMiddleware(socket.request, {}, next)
 
 
 

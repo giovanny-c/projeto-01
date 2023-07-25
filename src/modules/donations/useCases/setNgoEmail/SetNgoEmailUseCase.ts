@@ -104,6 +104,9 @@ class SetNgoEmailUseCase {
          
         //ex: pega apenas o hotmail de email@hotmail.com
         let service = email.match(/(?!.+@)\w+/)[0]
+        //só serve para serviços conhecidos, como: gmail, hotmail, outlook,
+        //se for usar em outro projeto usar host: smtp.servidor.com
+
 
         //manda o email de teste 
         //manda um email para ele mesmo para testar testar

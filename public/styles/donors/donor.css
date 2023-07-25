@@ -23,6 +23,13 @@ object {
     text-align: end;
 }
 
+label {
+    font-weight: bold;
+    font-size: 22px;
+    color: var(--color-letters-clear);
+}
+
+
 .wrap-title .new-donation a {
     text-decoration: none;
     font-size: 22px;

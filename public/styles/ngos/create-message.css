@@ -4,9 +4,15 @@
 }
 
 .item {
-    margin: 30px auto;
+    margin: 5px auto 30px auto;
 
 
+}
+
+label {
+    font-weight: bold;
+    font-size: 22px;
+    color: var(--color-letters-clear);
 }
 
 .item input,

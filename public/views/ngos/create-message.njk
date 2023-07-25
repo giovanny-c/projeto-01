@@ -27,7 +27,7 @@
     <div class="form">
             <form id="#form" method="POST" action="/instituicao/{{ngo.id}}/criar-mensagem"  enctype="multipart/form-data">
 
-                
+                <label>Nome da mensagem</label>
                 <div class="item">
                         <div>
                         <input      
@@ -35,6 +35,8 @@
                         </div>
                 </div>
                     
+
+                <label>Assunto</label>
                 <div class="item">
                         <div>
                         <input      
@@ -50,6 +52,7 @@
                         </div>
                 </div> #}
 
+                <label>Conteudo do email</label>
                 <div class="item">
                     <textarea name="message" placeholder="Conteudo do email" ></textarea>
                 </div>

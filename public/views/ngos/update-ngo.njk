@@ -21,15 +21,15 @@
        
 
 
-
-    <div class="form">
         <div class="subtitle">
             Atualizar
         </div>
+
+    <div class="form">
             <form id="#form" method="POST" action="/instituicao/{{ngo.id}}/atualizar?_method=PUT"  enctype="multipart/form-data">
 
                     
-                    
+                <label>Nome completo</label>
                 <div class="item">
                         <div>
                             
@@ -38,6 +38,7 @@
                         </div>
                 </div>
                        
+                <label>Acronimo ou Abreviação</label>
                 <div class="item">
                         <div>
                         <input      
@@ -57,16 +58,18 @@
 
     </div>
 
-    <div class="form">
         <div class="subtitle">
             Deletar
         </div>
+    <div class="form">
             <form id="#form" class="form-delete" method="POST" action="/instituicao/{{ngo.id}}/deletar?_method=DELETE" enctype="multipart/form-data">
                 
+                <label>Nome completo</label>
                 <div class="item">
                     <input type="text" name="delete_name" value="" placeholder="Digite o nome completo da instituição para DELETAR a instituição">
                 </div>
 
+                <label>Senha de usuário</label>
                 <div class="item">
                     <input type="password" name="password" value="" placeholder="Digite a sua senha para DELETAR a instituição">
                 </div>

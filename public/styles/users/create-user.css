@@ -4,7 +4,7 @@
 }
 
 .item {
-    margin: 30px auto;
+    margin: 5px auto 30px auto;
     height: 40px;
 
 }
@@ -68,6 +68,12 @@ select.item {
     font-size: 22px;
 }
 
+label {
+    font-weight: bold;
+    font-size: 22px;
+    color: var(--color-letters-clear);
+}
+
 .item input[type="checkbox"] {
     height: 36px;
     width: 36px;
@@ -77,6 +83,7 @@ input[type="password"] {
 
     width: 420px;
 }
+
 
 /* .item input {
 

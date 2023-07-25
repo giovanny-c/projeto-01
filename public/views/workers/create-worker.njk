@@ -24,9 +24,11 @@
 
 {% if worker %}
     <div class="form">
+        
             <form id="#form" method="POST" action="/funcionarios/{{worker.id}}/atualizar?_method=PUT"  enctype="multipart/form-data">
 
                     
+                <label >Nome do funcionário</label>
                     
                 <div class="item">
                         <div>
@@ -50,7 +52,8 @@
             <form id="#form" method="POST" action="/funcionarios/criar"  enctype="multipart/form-data">
 
                     
-                    
+                <label >Nome do funcionário</label>
+
                 <div class="item">
                         <div>
                         <input      
