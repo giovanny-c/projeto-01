@@ -44,12 +44,14 @@ p.worker {
     color: var(--color-letters-clear);
     width: 70%;
     font-size: 24px;
+
 }
 
 p a {
     width: 30%;
     text-align: center;
     color: var(--color-letters-clear);
+    text-decoration: underline;
 }
 
 p a:hover {
