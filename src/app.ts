@@ -45,10 +45,6 @@ const httpServer = createServer(app)
 const socketHandler = new socketio.Server(httpServer)
 //////
 
-
-
-
-
 //front
 app.use(express.static("public"))
 
@@ -106,7 +102,16 @@ socketHandler.on("connection", (socket: Socket) => {
     //@ts-expect-error
     const room = socket.request.session.user?.id || ""
 
+    // //@ts-expect-error
+    // socket.user = room
+
+    
+    // //@ts-expect-error
+    // console.log(socket.user)
+
     socket.join(room)
+
+
 
  
 })

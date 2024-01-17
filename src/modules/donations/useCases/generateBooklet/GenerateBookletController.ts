@@ -11,7 +11,7 @@ class GenerateBookletController {
         
         try {
 
-            const {initial_number, final_number} = req.body
+            const {initial_number, final_number, data_de_inicio, data_de_termino} = req.body
             const {ngo_id} = req.params
 
 
@@ -19,8 +19,14 @@ class GenerateBookletController {
             const generateBooklet = container.resolve(GenerateBookletUseCase)
 
         
+            console.log(req.body)
 
-            const {content_type, file, file_name} = await generateBooklet.execute({donation_number_interval: [+(initial_number),  +(final_number)], ngo_id})
+            const {content_type, file, file_name} = await generateBooklet.execute({
+                donation_number_interval: [+(initial_number),  +(final_number)], 
+                ngo_id, 
+                date_interval: {startDate: data_de_inicio as string, endDate: data_de_termino as string
+            }})
+
             
         
             res.set("Content-Disposition", `inline; filename=${file_name}`)

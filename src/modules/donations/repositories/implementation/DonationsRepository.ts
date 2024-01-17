@@ -18,8 +18,8 @@ class DonationsRepository implements IDonationsRepository {
 
         this.repository = dataSource.getRepository(Donation)
     }
-
-
+    
+    
     async create({id, user_id, donor_id, donor_name, ngo_id ,donation_value, is_payed, payed_at, donation_number, created_at, is_donation_canceled, worker_id }: ICreateDonationsDTO): Promise<Donation> {
 
         const donation = this.repository.create({
@@ -36,15 +36,15 @@ class DonationsRepository implements IDonationsRepository {
            payed_at,
            is_donation_canceled,
         })
-
-
+        
+        
         return await this.repository.save(donation)
-
-
+        
+        
     }
-
+    
     async update({id, donation_value, donor_name, worker_id, is_donation_canceled, created_at}: IUpdateDonation){
-
+        
         await this.repository.update({id},{
             donation_value,
             donor_name,
@@ -52,19 +52,19 @@ class DonationsRepository implements IDonationsRepository {
             created_at,
             is_donation_canceled,
         })
-
+        
         
     }
-
+    
     async countDonationsValues({startDate, endDate, ngo_id, worker_id, limit, offset, orderBy }: IFindOptions): Promise<ICountDonationsValueResponse> {
-
+        
         const sum = this.repository.createQueryBuilder("donations")
         .select("SUM(donations.donation_value)", "total")
         .where("donations.is_donation_canceled IS NOT true")
         .andWhere("donations.ngo_id = :ngo_id", {ngo_id})
         .andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
-
-
+        
+        
         let query = this.repository.createQueryBuilder("donations")
         .leftJoinAndSelect("donations.worker", "workers")
         .leftJoinAndSelect("donations.ngo", "ngos")
@@ -72,15 +72,15 @@ class DonationsRepository implements IDonationsRepository {
         .where("donations.is_donation_canceled IS NOT true")
         .andWhere("donations.ngo_id = :ngo_id", {ngo_id})
         .andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
-
+        
         if(worker_id){
             query.andWhere("donations.worker_id = :worker_id", {worker_id})
             sum.andWhere("donations.worker_id = :worker_id", {worker_id})
-
+            
         }
         
         query.skip(offset).take(limit)
-
+        
         query.orderBy("donations.donation_number", orderBy)
         
         
@@ -88,15 +88,17 @@ class DonationsRepository implements IDonationsRepository {
         
         const {total} = await sum.getRawOne()
         const queryResults = await query.getMany()
-
+        
         return {
             donations: queryResults,
             sum: +(total)
         }
     }
-
+  
+   
+    
     async findForGenerateBooklet({ donation_number_interval, ngo_id }: IFindOptions): Promise<Donation[]> {
-
+        
         let query = await this.repository.createQueryBuilder("donations")
         .leftJoinAndSelect("donations.worker", "workers")
         .leftJoinAndSelect("donations.donor", "donors")

@@ -127,8 +127,8 @@
                         <div>
                             <select name="message_id" id="message_id"
                             onchange="removeFormError(this)">
-                            {% for message in messages %}
                                 <option value="" selected disabled hidden>Escolha a mensagem</option>
+                            {% for message in messages %}
                                 <option value="{{message.id}}">
                                     {{message.name}}                           
                                 </option>

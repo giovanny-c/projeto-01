@@ -19,6 +19,7 @@ export async function loadNgosForMenu(req: Request, res: Response, next: NextFun
     const ngos_ids = await cacheProvider.scan<string[]>("ngo-*", 100)
     let ngos
 
+    //se nao encontrar nenhuma ngo 
     if(!ngos_ids.length){
 
         ngos = await ngosRepository.findAll()
@@ -30,24 +31,34 @@ export async function loadNgosForMenu(req: Request, res: Response, next: NextFun
         
         })
 
-    }
-    
-
-    if(!ngos){
-        ngos = await cacheProvider.mGet<string[]>(ngos_ids)
-    }
-
-    
-    ngos = ngos.map((ngo) => {
+        ngos = ngos.map((ngo) => {
         
-        const {id, name} = JSON.parse(ngo) as Ngo
-        return {
-            id,
-            name
-        }
-    })
+            const {id, name} = ngo
+            return {
+                id,
+                name
+            }
+        })
+
+    }
     
+
+    if(ngos_ids.length){
+
+        ngos = await cacheProvider.mGet<string[]>(ngos_ids)
     
+
+    
+        ngos = ngos.map((ngo) => {
+            
+            const {id, name} = JSON.parse(ngo) as Ngo
+            return {
+                id,
+                name
+            }
+        })
+    
+    }
     
     //ordem alfabetica
     req.ngos = ngos.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1);

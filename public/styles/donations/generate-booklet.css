@@ -14,14 +14,16 @@
     color: var(--color-letters-clear);
 }
 
+
+
 .form {
     width: 900px;
     margin: 30px auto 80px auto;
 
     padding: 0px 40px;
-    justify-items: center;
+    justify-items: start;
     display: grid;
-    grid-template-columns: 200px 200px 200px;
+    grid-template-columns: 400px 400px;
 
 }
 
@@ -42,7 +44,7 @@
     font-size: 30px;
 
     text-align: end;
-    margin: 0px 10px;
+    margin: 0px 0px 20px 0px;
     padding: 0px;
     color: var(--color-letters);
     background-color: var(--color-input);
@@ -51,8 +53,13 @@
 
 }
 
+.item input[type="date"] {
+    width: 230px;
+}
+
 .button button {
 
+    margin-top: 40px;
     width: 180px;
     height: 32px;
     font-size: 20px;
@@ -122,7 +129,7 @@ a.download-wait {
     height: 90px;
     max-height: 90px;
     min-height: 90px;
-    margin: 0px auto;
+    margin: -10px auto;
 }
 
 a.download-file {

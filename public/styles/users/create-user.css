@@ -69,6 +69,7 @@ select.item {
 }
 
 label {
+    margin: 0 auto;
     font-weight: bold;
     font-size: 22px;
     color: var(--color-letters-clear);

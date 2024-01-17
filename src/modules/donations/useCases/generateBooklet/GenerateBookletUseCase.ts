@@ -14,6 +14,10 @@ import { INGOtemplateConfig } from "../../../../shared/container/providers/fileP
 interface IRequest {
     donation_number_interval: [number, number]
     ngo_id: string
+    date_interval?: {
+        startDate: string | Date,
+        endDate: string | Date
+    }
 }
 
 
@@ -32,18 +36,18 @@ class GenerateBookletUseCase {
         private ngoRepository: INgoRepository,
         @inject("CacheProvider")
         private cacheProvider: ICacheProvider,
+        @inject("DayjsDateProvider")
+        private dateProvider: IDateProvider,
     ){
 
     }
 
 
-    async execute({donation_number_interval, ngo_id}: IRequest){
+    async execute({donation_number_interval, ngo_id, date_interval}: IRequest){
         
         try {
             
             
-           
-       
             let ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`)) as Ngo
 
             if(!ngo || !ngo.id || !ngo.template_name){
@@ -55,19 +59,41 @@ class GenerateBookletUseCase {
                 if(!ngo) throw new AppError("Instituição nao encontrada", 404)
 
             }   
-        
-            if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (isNaN(donation_number_interval[0])  ||  isNaN(donation_number_interval[1]) )){
+
+            let donations
+            let fileName
+            
+            let {startDate, endDate} = date_interval
+
+            if(startDate !== "" && endDate !== ""){
+
+
+                fileName = `${this.dateProvider.formatDate(startDate as Date, "DD-MM-YY")}__${this.dateProvider.formatDate(endDate as Date, "DD-MM-YY")}`
+
+                !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
+
+                donations = await this.donationsRepository.findDonationsBy({ngo_id, startDate: startDate as Date, endDate: endDate as Date}) as Donation[]
+
+                if(!donations.length){
+                    throw new AppError("Nenhuma doação encontrada para esse periodo de tempo.")
+                }
+
                 
-                throw new AppError("O numero inicial deve ser menor que o final.", 400)
+            }else{
+
+                if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (isNaN(donation_number_interval[0])  ||  isNaN(donation_number_interval[1]) )){
+                    
+                    throw new AppError("O numero inicial deve ser menor que o final.", 400)
+                }
+                
+                
+                
+                donations = await this.donationsRepository.findForGenerateBooklet({
+                    donation_number_interval,
+                    ngo_id: ngo.id
+                })
+
             }
-            
-            
-            
-            const donations = await this.donationsRepository.findForGenerateBooklet({
-                donation_number_interval,
-                ngo_id: ngo.id
-            })
-            
 
             if(!donations.length){
                 
@@ -102,12 +128,13 @@ class GenerateBookletUseCase {
 
             const file = stream.Readable.from(Buffer.from(pdfBytes))
 
-            
-            
+
+           
+                       
             return {
                 
                 file,
-                file_name: `${ngo.name}_${donation_number_interval[0]}__${donation_number_interval[1]}.pdf`,
+                file_name: fileName? `${fileName}.pdf` :`${ngo.name}_${donation_number_interval[0]}__${donation_number_interval[1]}.pdf`,
                 content_type: "application/pdf"
             
             }
