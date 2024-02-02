@@ -6,10 +6,16 @@ import ICacheProvider from "../../../../shared/container/providers/cacheProvider
 import { INgoRepository } from "../../repositories/INgoRepository";
 import { Ngo } from "../../entities/ngos";
 import { IXlsxParserProvider } from "../../../../shared/container/providers/xlsxParserProvider/IXlsxParserProvider";
+import { IDateProvider } from "../../../../shared/container/providers/dateProvider/IDateProvider";
+import { Donation } from "../../../../modules/donations/entities/donation";
 
 interface IRequest {
     ngo_id: string
-    donation_number_interval: [number, number]
+    donation_number_interval: [number, number],
+    date_interval?: {
+        startDate: string | Date,
+        endDate: string | Date
+    }
 }
 
 
@@ -24,12 +30,14 @@ class ExportDonationsUseCase {
         @inject("NgoRepository")
         private ngoRepository: INgoRepository,
         @inject("XlsxParserProvider")
-        private xlsxParserProvider: IXlsxParserProvider
+        private xlsxParserProvider: IXlsxParserProvider,
+        @inject("DayjsDateProvider")
+        private dateProvider: IDateProvider,
     ){
 
     }
 
-    async execute({donation_number_interval, ngo_id }: IRequest){
+    async execute({donation_number_interval, ngo_id, date_interval }: IRequest){
 
 
         try {
@@ -46,17 +54,50 @@ class ExportDonationsUseCase {
 
             }   
 
-            if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (isNaN(donation_number_interval[0])  ||  isNaN(donation_number_interval[1]) )){
+            //para pegar por data
+            let donations: Donation[]
+            let fileName
+
+            let {startDate, endDate} = date_interval
+
+           
+            
+
+            if(startDate !== "" ||endDate !== ""){
+
+
+                fileName = `${ngo.name}_planilha_doações_${this.dateProvider.formatDate(startDate as Date, "DD-MM-YY")}__${this.dateProvider.formatDate(endDate as Date, "DD-MM-YY")}`
+
+                !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
+
+                donations = await this.donationsRepository.findDonationsBy({ngo_id, startDate: startDate as Date, endDate: endDate as Date}) as Donation[]
+
+                if(!donations.length){
+                    throw new AppError("Nenhuma doação encontrada para esse periodo de tempo.")
+                }
+
+                //aparentemente nao esta funcionando
                 
-                throw new AppError("O numero inicial deve ser menor que o final.", 400)
+            }///////////
+            else{//pega por numeraçao
+
+                if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (isNaN(donation_number_interval[0])  ||  isNaN(donation_number_interval[1]) )){
+                    
+                    throw new AppError("O numero inicial deve ser menor que o final.", 400)
+                }
+
+                donations = await this.donationsRepository.findForGenerateBooklet({
+                    donation_number_interval, ngo_id
+                }) as Donation[]
+
+                fileName
+            
             }
+
             
 
 
-            const donation_sheet = await Promise.all(
-                (await this.donationsRepository.findForGenerateBooklet({
-                    donation_number_interval, ngo_id
-                })).map( (donation) => {
+            const donation_sheet = donations.map((donation) => {
                     
                     return {
                         instituicao: donation.ngo?.name || null,
@@ -70,11 +111,8 @@ class ExportDonationsUseCase {
                         email_enviado: donation.is_email_sent ? "SIM" : "NÃO"
 
                     }
-                })
-            ).catch(error => { 
-                console.error(error)
-                throw new AppError("Erro ao procurar doações", 500)
             })
+            
 
             if(donation_sheet.length <= 0 ){
                 throw new AppError("Nenhuma doação encontrada.", 404)
@@ -82,7 +120,7 @@ class ExportDonationsUseCase {
                 
 
             const sheetName = "Doações"
-            const file_name = `${donation_sheet[0].instituicao}-doações-${donation_number_interval[0]}-${donation_number_interval[1]}.xlsx`
+            const file_name = fileName? `${fileName}.xlsx` : `${donation_sheet[0].instituicao}_planilha_doações_${donation_number_interval[0]}__${donation_number_interval[1]}.xlsx`
             
             const file = this.xlsxParserProvider.objectToXlsx(donation_sheet, {dateNF: "dd/mm/yyyy"}, sheetName)
         

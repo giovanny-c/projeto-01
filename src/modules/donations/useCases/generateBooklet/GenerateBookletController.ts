@@ -24,8 +24,8 @@ class GenerateBookletController {
             const {content_type, file, file_name} = await generateBooklet.execute({
                 donation_number_interval: [+(initial_number),  +(final_number)], 
                 ngo_id, 
-                date_interval: {startDate: data_de_inicio as string, endDate: data_de_termino as string
-            }})
+                date_interval: {startDate: data_de_inicio as string, endDate: data_de_termino as string}
+            })
 
             
         

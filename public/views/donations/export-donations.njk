@@ -23,32 +23,63 @@
        
 
 
- <form class="form" id="#form">
+        <form class="form" id="#form">
 
             {# <input type="hidden" name="ngo_id" value="{{ngo.id}}"> #}
+            {# <div>
+
+                <div class="label"> <p>Inicio</p> </div> <div class="label"> <p>Fim</p>  </div>
+
+            </div> #}
+
+            <div>
+
+                <div> Por numero</div> 
+                <div class="item">
+
+                        <div>
+                            
+                        <input      
+                            type="number" name="initial_number"  placeholder="0"/>
+                        </div>
+
+                </div> 
 
             
-            <div class="label"> <p>Inicio</p> </div> <div class="label"> <p>Fim</p> </div><div> </div>
-            <div class="item">
+                <div class="item">
 
-                    <div>
+                        <div>
                         
-                    <input      
-                        type="number" name="initial_number"  placeholder="0"/>
-                    </div>
+                        <input      
+                            type="number" name="final_number"  placeholder="0"/>
+                        </div>
 
-            </div> 
-
-           
-            <div class="item">
-
-                    <div>
-                       
-                    <input      
-                        type="number" name="final_number"  placeholder="0"/>
-                    </div>
+                </div>
 
             </div>
+
+            <div>
+                
+
+                <div> Por Data</div> 
+                <div class="item">
+                    <input 
+                        type="date"
+                        name="data_de_inicio"
+                        placeholder=""
+                    >
+                </div>
+
+                <div class="item">
+                    <input 
+                        type="date"
+                        name="data_de_termino"
+                        placeholder=""
+                    >
+                </div>
+                
+        </div>
+
             
             <div class="button">
                 <button               
@@ -62,7 +93,9 @@
                     '{{ngo.id}}',
                     {
                     initial_number: document.querySelector(`input[name='initial_number']`).value,
-                    final_number: document.querySelector(`input[name='final_number']`).value
+                    final_number: document.querySelector(`input[name='final_number']`).value,
+                    data_de_inicio: document.querySelector(`input[name='data_de_inicio']`).value,
+                    data_de_termino: document.querySelector(`input[name='data_de_termino']`).value
                     },
                     document.querySelector('#download-btn')
                 );"

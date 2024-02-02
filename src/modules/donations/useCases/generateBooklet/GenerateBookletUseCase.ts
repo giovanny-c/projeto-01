@@ -60,15 +60,16 @@ class GenerateBookletUseCase {
 
             }   
 
-            let donations
+            let donations: Donation[]
             let fileName
+            
             
             let {startDate, endDate} = date_interval
 
-            if(startDate !== "" && endDate !== ""){
+            if(startDate !== "" ||endDate !== ""){//pega pela data
 
 
-                fileName = `${this.dateProvider.formatDate(startDate as Date, "DD-MM-YY")}__${this.dateProvider.formatDate(endDate as Date, "DD-MM-YY")}`
+                fileName = `${ngo.name}__${this.dateProvider.formatDate(startDate as Date, "DD-MM-YY")}__${this.dateProvider.formatDate(endDate as Date, "DD-MM-YY")}`
 
                 !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
 
@@ -79,7 +80,7 @@ class GenerateBookletUseCase {
                 }
 
                 
-            }else{
+            }else{//pega pela numeração
 
                 if(donation_number_interval[1] - donation_number_interval[0]  < 0 || (isNaN(donation_number_interval[0])  ||  isNaN(donation_number_interval[1]) )){
                     
@@ -91,7 +92,7 @@ class GenerateBookletUseCase {
                 donations = await this.donationsRepository.findForGenerateBooklet({
                     donation_number_interval,
                     ngo_id: ngo.id
-                })
+                }) as Donation[]
 
             }
 
@@ -140,7 +141,7 @@ class GenerateBookletUseCase {
             }
 
         } catch (error) {
-            console.error(error)
+            
             throw new AppError(error.message || "Não foi posivel gerar o arquivo", error.statusCode || 500)
         }
         
