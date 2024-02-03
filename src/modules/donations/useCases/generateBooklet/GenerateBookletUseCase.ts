@@ -66,10 +66,15 @@ class GenerateBookletUseCase {
             
             let {startDate, endDate} = date_interval
 
-            if(startDate !== "" ||endDate !== ""){//pega pela data
+            if(this.dateProvider.isValidDate(startDate) || this.dateProvider.isValidDate(endDate)){//pega pela data
 
 
                 fileName = `${ngo.name}__${this.dateProvider.formatDate(startDate as Date, "DD-MM-YY")}__${this.dateProvider.formatDate(endDate as Date, "DD-MM-YY")}`
+
+                
+                if(!startDate){
+                    startDate = this.dateProvider.dateNow()
+                }
 
                 !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
 

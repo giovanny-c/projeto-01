@@ -93,6 +93,10 @@ class DayjsDateProvider implements IDateProvider {
 
     isValidDate(date: string | Date): boolean {
 
+        if(date == undefined){
+            return false
+        }
+
         const isValid = dayjs(date).isValid()
 
         if (!isValid) {

@@ -125,11 +125,11 @@ a.download-wait {
 }
 
 .download-file-div {
-    width: 800px;
+    width: 820px;
     height: 90px;
     max-height: 90px;
     min-height: 90px;
-    margin: -10px auto;
+    margin: -20px auto;
 }
 
 a.download-file {
