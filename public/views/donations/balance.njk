@@ -137,12 +137,54 @@
         <div class="div-total">
 
             <div> 
-                <p class="total-date">Total do periodo de {{search_terms.startDate}} a {{search_terms.endDate}}:</p>
+                <p class="total-date">Total do periodo de {{search_terms.startDate}} a {{search_terms.endDate}}
+
+                    {% if search_terms.worker_id %}
+                        
+                        {% for worker in workers %}
+                        
+                            {% if worker.id == search_terms.worker_id %}
+                                
+                                de {{worker.name}}
+                                
+                            {% endif %}
+                            
+                        {% endfor %}
+
+                    {% endif %}
+
+                :</p>
             
                 <p class="total">{{sum}}</p>
             </div>
 
-            
+            <!-- exportar -->
+            <div class="export">
+                <div class="button">
+                    <button               
+                    type="button"
+                    onclick="
+                    fetchExportDonations(
+                        '{{ngo.id}}',
+                        {
+                        data_de_inicio: document.querySelector(`input[name='data_de_inicio']`).value,
+                        data_de_termino: document.querySelector(`input[name='data_de_termino']`).value,
+                        worker_id: '{{search_terms.worker_id}}',
+                        for_balance: 'true'
+                        },
+                        document.querySelector('#download-btn')
+                    );"
+                    >Gerar Relatório</button>  
+                </div>
+
+                <div class="download-file-div">
+                    <a class="inactive"
+                    id="download-btn"
+                    download="{{file_name}}">Baixar
+                    </a>
+                </div>
+            </div>
+            <!-- exportar -->
         </div>
         
         </table>
@@ -167,6 +209,7 @@
         
                 
     <script src="/scripts-for-list.js"></script>
+    <script src="/scriptForExportDonations.js"></script>
 
 
 

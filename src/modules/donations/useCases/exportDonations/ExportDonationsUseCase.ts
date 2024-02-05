@@ -11,11 +11,14 @@ import { Donation } from "../../../../modules/donations/entities/donation";
 
 interface IRequest {
     ngo_id: string
-    donation_number_interval: [number, number],
+    donation_number_interval?: [number, number],
     date_interval?: {
         startDate: string | Date,
         endDate: string | Date
     }
+    
+    worker_id?: string
+    for_balance: boolean
 }
 
 
@@ -37,7 +40,7 @@ class ExportDonationsUseCase {
 
     }
 
-    async execute({donation_number_interval, ngo_id, date_interval }: IRequest){
+    async execute({donation_number_interval, ngo_id, date_interval, worker_id, for_balance }: IRequest){
 
 
         try {
@@ -63,22 +66,35 @@ class ExportDonationsUseCase {
          
             if(this.dateProvider.isValidDate(startDate) || this.dateProvider.isValidDate(endDate)){
 
-
-                fileName = `${ngo.name}_planilha_doações_${this.dateProvider.formatDate(startDate as Date, "DD-MM-YY")}__${this.dateProvider.formatDate(endDate as Date, "DD-MM-YY")}`
-
+        
                 if(!startDate){
                     startDate = this.dateProvider.dateNow()
                 }
 
                 !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
 
-                donations = await this.donationsRepository.findDonationsBy({ngo_id, startDate: startDate as Date, endDate: endDate as Date}) as Donation[]
-
+                
+                //se tiver worker id passa tbm
+                donations = await this.donationsRepository.findDonationsBy({ngo_id, startDate: startDate as Date, endDate: endDate as Date, orderBy: "ASC", worker_id}) as Donation[]
+                
+                //se for para o balanço tira as canceladas
+                if(for_balance){
+                    donations = donations.filter(donation => donation.is_donation_canceled === false)
+                }
+                
                 if(!donations.length){
                     throw new AppError("Nenhuma doação encontrada para esse periodo de tempo.")
                 }
+            
+                
+                //se houver um worker id poe o nome no file name
+                worker_id ? 
+                    fileName = `${donations[0].worker.name}_${ngo.name}_${this.dateProvider.formatDate(startDate as Date, "DD-MM-YY")}__${this.dateProvider.formatDate(endDate as Date, "DD-MM-YY")}` 
+                    : 
+                    fileName = `${ngo.name}_planilha_doações_${this.dateProvider.formatDate(startDate as Date, "DD-MM-YY")}__${this.dateProvider.formatDate(endDate as Date, "DD-MM-YY")}`
 
-                //aparentemente nao esta funcionando
+
+                
                 
             }///////////
             else{//pega por numeraçao
@@ -97,9 +113,27 @@ class ExportDonationsUseCase {
             }
 
             
+            let donation_sheet
 
+            if(for_balance){
+                donation_sheet = donations.map((donation) => {
+                    
+                    return {
+                        instituicao: donation.ngo?.name || null,
+                        numero: donation.donation_number || null,
+                        valor: donation.donation_value || null,
+                        doador: donation.donor_name || null,
+                        funcionario: donation.worker?.name || null,
+                        data: donation.created_at || null, //como a data vai sair?
+                        data_de_criacao: donation.payed_at || null,
+                        
+                        
 
-            const donation_sheet = donations.map((donation) => {
+                    }
+                })
+
+            }else{
+                donation_sheet = donations.map((donation) => {
                     
                     return {
                         instituicao: donation.ngo?.name || null,
@@ -113,7 +147,9 @@ class ExportDonationsUseCase {
                         email_enviado: donation.is_email_sent ? "SIM" : "NÃO"
 
                     }
-            })
+                })
+            }
+            
             
 
             if(donation_sheet.length <= 0 ){

@@ -93,7 +93,7 @@ class GetBalanceUseCase {
        
        
         
-
+        //ja tira os que estao cancelados
         const {donations, sum} =  await this.donationsRepository.countDonationsValues({
             ngo_id,
             worker_id,

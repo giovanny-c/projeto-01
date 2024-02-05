@@ -13,7 +13,7 @@ class ExportDonationsController {
         try {
             const {ngo_id} = req.params 
 
-            const {initial_number, final_number, data_de_inicio, data_de_termino} = req.body
+            const {initial_number, final_number, data_de_inicio, data_de_termino, worker_id, for_balance} = req.body
             
             const ExportDonations = container.resolve(ExportDonationsUseCase)
 
@@ -22,7 +22,10 @@ class ExportDonationsController {
             const {file, file_name} = await ExportDonations.execute({
                 ngo_id,
                 donation_number_interval: [+(initial_number), +(final_number)],
-                date_interval: {startDate: data_de_inicio as string, endDate: data_de_termino as string}
+                date_interval: {startDate: data_de_inicio as string, endDate: data_de_termino as string},
+                worker_id: worker_id || null,
+                for_balance: for_balance ? true : false
+                
             })
 
 

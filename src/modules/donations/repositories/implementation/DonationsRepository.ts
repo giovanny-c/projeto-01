@@ -20,6 +20,7 @@ class DonationsRepository implements IDonationsRepository {
     }
     
     
+    
     async create({id, user_id, donor_id, donor_name, ngo_id ,donation_value, is_payed, payed_at, donation_number, created_at, is_donation_canceled, worker_id }: ICreateDonationsDTO): Promise<Donation> {
 
         const donation = this.repository.create({
@@ -173,6 +174,37 @@ class DonationsRepository implements IDonationsRepository {
         // offset 0`
 
         
+    }
+
+    async findDonationsByDate({ ngo_id, startDate, endDate, orderBy }: IFindOptions) {
+        
+         // buscar tbm por is payed or is_canceled
+         let query = this.repository.createQueryBuilder("donations")
+         .leftJoinAndSelect("donations.worker", "workers")
+         .leftJoinAndSelect("donations.donor", "donors")
+         .leftJoinAndSelect("donations.ngo", "ngos")
+         .select(["donations","workers","donors","ngos"])
+         .where("donations.ngo_id = :ngo_id ", {ngo_id})
+ 
+         if(startDate && endDate){
+             query.andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
+         }
+ 
+ 
+         if(orderBy){
+
+                query.orderBy("donations.donation_number", orderBy)
+            
+         }
+ 
+ 
+         const results = await query.getMany()
+ 
+       
+         return results
+        
+ 
+         
     }
 
     async findOneById(id: string): Promise<Donation> {

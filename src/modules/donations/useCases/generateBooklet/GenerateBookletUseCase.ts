@@ -63,6 +63,8 @@ class GenerateBookletUseCase {
             let donations: Donation[]
             let fileName
             
+
+            //fazer um jeito melhor de escolher ou por data ou por numero, ex com check box
             
             let {startDate, endDate} = date_interval
 
