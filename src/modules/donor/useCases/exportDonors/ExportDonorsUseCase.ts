@@ -60,7 +60,7 @@ class ExportDonorsUseCase {
             const sheetName = "Doadores"
             const file_name = `Exportaçao_Doadores.xlsx`
             
-            const file = this.xlsxParserProvider.objectToXlsx(donor_sheet, {dateNF: "dd/mm/yyyy"}, sheetName)
+            const file = this.xlsxParserProvider.objectToXlsx(donor_sheet, {dateNF: "dd/mm/yyyy"}, sheetName/*, false*/)
         
             
 

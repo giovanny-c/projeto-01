@@ -25,11 +25,22 @@ class XlsxParserProvider implements IXlsxParserProvider {
   
     }
     
-    objectToXlsx<TObject>(data: TObject[], options: xlsx.JSON2SheetOpts, sheetName: string): Buffer {
+    objectToXlsx<TObject>(data: TObject[], options: xlsx.JSON2SheetOpts, sheetName: string /*, sum_value: boolean*/): Buffer {
          
         const workSheet = xlsx.utils.json_to_sheet(data, options)
 
             const workBook = xlsx.utils.book_new()
+
+
+            // if(sum_value){
+
+            //     const row = `C${xlsx.utils.decode_range(workSheet['!ref']).e.r + 2}`
+
+            //     console.log(row)
+            //     workSheet[`C${row}`] = { f: `SUM(C2:C${row})` };
+            // }
+            
+
 
             xlsx.utils.book_append_sheet(workBook, workSheet, sheetName)
 

@@ -231,6 +231,10 @@ div.search-paramns button:active {
     color: red;
 }
 
+.table td.donation-email-sent {
+    color: var(--color-menu-hover)
+}
+
 
 .clean {
     margin-left: 10px;

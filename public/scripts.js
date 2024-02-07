@@ -29,6 +29,7 @@ function showList() {
     donorsList.style.opacity = 1
     donorsList.style.visibility = "visible"
 }
+
 async function searchDonor(input) {
 
 
@@ -87,8 +88,6 @@ async function searchDonor(input) {
     }
 
 }
-
-
 
 function catchDonorAndCleanList(tag) {
 
@@ -159,6 +158,7 @@ function catchDonorAndCleanList(tag) {
     //destruir as divs a cada novo iput
 
 }
+
 function removeDonor(tag) {
 
 
@@ -412,7 +412,8 @@ const Mask = {
             .map((string, index) => { //pega a primeira letra e transforma em upper
 
                 //todas as palavras maiores que duas letras exeto dos. das.
-                if (string.match(/(?!das(?!\w+)|dos(?!\w+))\b\w{3,}/) || index === 0) {
+                //colocar letras com . ex: s. a., para ficarem maiusculas
+                if (string.match(/(?!das(?!\w+)|dos(?!\w+))\b\w{3,}/) || string.match(/(\w\.)/) || index === 0) {
 
                     return string.replace(/^\w/, string.charAt(0).toUpperCase())
 

@@ -142,6 +142,10 @@
                         {% if donation.is_donation_canceled %}
                                class="donation-canceled" 
                         {% endif %}
+                        {% if donation.is_email_sent%}
+                                class="donation-email-sent"
+                        {% endif%}
+                        
                     >{{ donation.donation_number}}
                     </td>
 

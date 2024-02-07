@@ -70,7 +70,7 @@ class CreateDonationUseCase {
             userExists = await this.usersRepository.findById(user_id)
             
             if (!userExists) {
-                throw new AppError("Usuário não encontrado", 400)
+                throw new AppError("Usuário não encontrado.", 400)
             }    
         }
        
@@ -80,7 +80,7 @@ class CreateDonationUseCase {
         const workerExists = await this.workersRepository.findById(worker_id)
 
         if (!userExists) {
-            throw new AppError("Esse usuario nao existe")
+            throw new AppError("Esse usuario nao existe.")
 
         }
 
@@ -90,7 +90,7 @@ class CreateDonationUseCase {
         // }
 
         if (!workerExists) {
-            throw new AppError("Esse funcionario nao existe")
+            throw new AppError("Esse funcionario nao existe.")
 
         } 
 
@@ -100,13 +100,13 @@ class CreateDonationUseCase {
             
             ngo = await this.ngoRepository.findById(ngo_id)
 
-            if(!ngo) throw new AppError("Instituição nao encontrada", 404)
+            if(!ngo) throw new AppError("Instituição nao encontrada.", 404)
         }
 
         const donation_counter = await this.donationCounterRepository.findByNgoId(ngo_id)
 
         if(!donation_counter){
-            throw new AppError("O contador de doação não possui um valor", 500)
+            throw new AppError("O contador de doação não possui um valor.", 500)
         }
 
         const {donation_number} = donation_counter
@@ -114,6 +114,12 @@ class CreateDonationUseCase {
         if(is_payed && !payed_at){//se for pago mas nao tiver data
 
             payed_at = donation_date || this.dateProvider.dateNow()
+        }
+
+        const is_donation_number_valid = await this.donationsRepository.findDonationByNumberAndNgoId({donation_number, ngo_id})
+
+        if(is_donation_number_valid.donation_number){
+            throw new AppError("Já existe uma doacão com essa numeração.", 500)
         }
 
         const donation = await this.donationsRepository.create({
