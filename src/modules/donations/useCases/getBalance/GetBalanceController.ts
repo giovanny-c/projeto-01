@@ -27,7 +27,7 @@ class GetBalanceController {
 
         const getBalance = container.resolve(GetBalanceUseCase)
 
-        const { donations, ngo, search_terms, workers, sum} = await getBalance.execute({
+        const { donations, ngo, search_terms, workers, sum, count} = await getBalance.execute({
             orderBy: orderBy as string,
             limit: +(limit),
             page: +(page),
@@ -43,6 +43,7 @@ class GetBalanceController {
             search_terms, 
             workers, 
             sum, 
+            count,
             ngo, 
             ngos: req.ngos,
             username: req.user.name, 

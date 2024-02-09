@@ -36,7 +36,6 @@ class CreateDonationController {
         const createDonationUseCase = container.resolve(CreateDonationUseCase)
 
         
-
         const {donation} = await createDonationUseCase.execute({ 
             ngo_id, 
             donor_name,
@@ -47,6 +46,8 @@ class CreateDonationController {
             is_payed, 
             payed_at, 
         })
+    
+        
 
         if(!admin){
             req.session.success="Doação criada com sucesso"

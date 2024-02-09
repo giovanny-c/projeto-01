@@ -56,6 +56,7 @@ class LoadBookletUseCase {
         try { 
             await fsPromises.access(file_path)
         } catch (error) {
+            console.error(error)
             throw new AppError("Não foi possivel encontrar o arquivo, ou ele não existe", 500)
         }
         

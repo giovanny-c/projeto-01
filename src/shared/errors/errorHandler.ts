@@ -16,7 +16,8 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
     
         req.session.error = {
             message: err.message,
-            status: err.statusCode
+            status: err.statusCode,
+            stack: err.stack
         }
 
         let back 

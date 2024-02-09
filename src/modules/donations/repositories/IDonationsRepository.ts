@@ -6,6 +6,7 @@ import { Donation } from "../entities/donation"
 interface ICountDonationsValueResponse{
     donations: Donation[]
     sum: number
+    count: number
 }
 
 interface IDonationsRepository {

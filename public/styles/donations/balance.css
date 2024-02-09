@@ -262,6 +262,7 @@ div.search-paramns button:active {
 
 }
 
+a.total,
 p.total {
     text-decoration: underline;
 }

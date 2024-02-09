@@ -148,6 +148,8 @@ class GenerateBookletUseCase {
             }
 
         } catch (error) {
+
+            console.error(error)
             
             throw new AppError(error.message || "Não foi posivel gerar o arquivo", error.statusCode || 500)
         }

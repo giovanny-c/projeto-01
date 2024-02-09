@@ -60,7 +60,8 @@ class DonationsRepository implements IDonationsRepository {
     async countDonationsValues({startDate, endDate, ngo_id, worker_id, limit, offset, orderBy }: IFindOptions): Promise<ICountDonationsValueResponse> {
         
         const sum = this.repository.createQueryBuilder("donations")
-        .select("SUM(donations.donation_value)", "total")
+        .select("SUM(donations.donation_value)", "total_value")
+        .addSelect("COUNT(donations)", "total")
         .where("donations.is_donation_canceled IS NOT true")
         .andWhere("donations.ngo_id = :ngo_id", {ngo_id})
         .andWhere("donations.created_at between :startDate and :endDate ", {startDate, endDate})
@@ -87,12 +88,13 @@ class DonationsRepository implements IDonationsRepository {
         
         // query.groupBy("donations.id, workers.id, ngos.id, donors.id")
         
-        const {total} = await sum.getRawOne()
+        const {total, total_value} = await sum.getRawOne()
         const queryResults = await query.getMany()
         
         return {
             donations: queryResults,
-            sum: +(total)
+            sum: +(total_value),
+            count: total
         }
     }
   

@@ -25,6 +25,7 @@ interface IResponse{
     workers: Worker[]
     donations: Donation[]
     sum: number
+    count: number
     search_terms: {
         orderBy: string
         limit: number
@@ -94,7 +95,7 @@ class GetBalanceUseCase {
        
         
         //ja tira os que estao cancelados
-        const {donations, sum} =  await this.donationsRepository.countDonationsValues({
+        const {donations, sum, count} =  await this.donationsRepository.countDonationsValues({
             ngo_id,
             worker_id,
             startDate: startDate as Date,
@@ -103,14 +104,17 @@ class GetBalanceUseCase {
             offset,
             orderBy: orderBy as "ASC" | "DESC",
         })
+
+        
       
         //COLOCAR NUMERO DE RECIBOS RETORNADOS, E VER SE O LIMIT NAO TA 
-        //ATRAPALHANDO O COUNT 
+        //ATRAPALHANDO O COUNT  
         return {
             ngo,
             workers,
             donations,
             sum,
+            count,
             search_terms: {
                 ngo_id,
                 startDate,
