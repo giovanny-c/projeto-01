@@ -118,7 +118,7 @@ class CreateDonationUseCase {
 
         const is_donation_number_valid = await this.donationsRepository.findDonationByNumberAndNgoId({donation_number, ngo_id})
 
-        if(is_donation_number_valid.donation_number){
+        if(is_donation_number_valid){
             throw new AppError("Já existe uma doacão com essa numeração.", 500)
         }
 

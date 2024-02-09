@@ -104,7 +104,8 @@ class GetBalanceUseCase {
             orderBy: orderBy as "ASC" | "DESC",
         })
       
-        
+        //COLOCAR NUMERO DE RECIBOS RETORNADOS, E VER SE O LIMIT NAO TA 
+        //ATRAPALHANDO O COUNT 
         return {
             ngo,
             workers,

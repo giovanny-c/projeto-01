@@ -12,7 +12,7 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
     if (err instanceof AppError) {
 
         
-        console.error(err)
+        console.error(err) 
     
         req.session.error = {
             message: err.message,
