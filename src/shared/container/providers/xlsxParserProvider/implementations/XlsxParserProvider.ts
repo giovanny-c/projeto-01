@@ -25,26 +25,50 @@ class XlsxParserProvider implements IXlsxParserProvider {
   
     }
     
-    objectToXlsx<TObject>(data: TObject[], options: xlsx.JSON2SheetOpts, sheetName: string /*, sum_value: boolean*/): Buffer {
+    objectToXlsx<TObject>(data: TObject[], options: xlsx.JSON2SheetOpts, sheetName: string, for_balance: boolean /*, sum_value: boolean*/): Buffer {
          
         const workSheet = xlsx.utils.json_to_sheet(data, options)
 
             const workBook = xlsx.utils.book_new()
 
 
-            // if(sum_value){
+            if(for_balance){
+                const col = xlsx.utils.decode_col("C") // col c = index 2
+                    
+                const format = 'R$ 0.00' // formato do numero
 
-            //     const row = `C${xlsx.utils.decode_range(workSheet['!ref']).e.r + 2}`
+                const range =  xlsx.utils.decode_range(workSheet["!ref"]) // pega o range(ex: A1, A2, B1, B2) e transforma para index de 0
 
-            //     console.log(row)
-            //     workSheet[`C${row}`] = { f: `SUM(C2:C${row})` };
-            // }
+                
+
+                //para procurar pela coluna certa, pula o primeiro row pois é o header
+                for (let i = range.s.r + 1; i <= range.e.r; ++i) {
+                
+                    //transforma de index de volta para A1
+                    const ref = xlsx.utils.encode_cell({r: i, c: col})
+
+                    //transforma a celula para tipo numero
+                    workSheet[ref].t = "n"
+                    
+                    //se a celula conter algo e for do tipo numero 
+                    if (workSheet[ref] && workSheet[ref].t === 'n') {
+                        
+                        //formata ela
+                        workSheet[ref].z = format
+                    
+                    }
+                }
+
+                //tentando por soma
+                // const lastColumnRow = xlsx.utils.encode_cell({r: range.e.r + 2, c: col})
+
+                // workSheet["C5"] = {t: 'n', f: 'SUM(C2:C4)' }
+                ///////
+            }
             
-
-
+            
             xlsx.utils.book_append_sheet(workBook, workSheet, sheetName)
 
-            
             return xlsx.writeXLSX(
                 workBook
                 , {

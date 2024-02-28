@@ -29,14 +29,14 @@ class CreateDonorUseCase {
             throw new AppError("formato de Email invalido", 400)
         }
 
-        if (!name || !email || !phone) {
-            throw new AppError("Preencha todos os campos")
+        if (!email && !phone) {
+            throw new AppError("Insira o email ou telefone.")
         }
 
         const donorAlreadyExists = await this.donorsRepository.findByEmail(email)
 
         if (donorAlreadyExists) {
-            throw new AppError("Esse doador ja existe")
+            throw new AppError("Esse doador ja existe.")
 
         }
 
@@ -49,7 +49,7 @@ class CreateDonorUseCase {
         const checkUser = await this.usersRepository.findById(user_id)
 
         if(!checkUser){
-            throw new AppError("Usuário nao encontrado")
+            throw new AppError("Usuário nao encontrado.")
         }
 
 

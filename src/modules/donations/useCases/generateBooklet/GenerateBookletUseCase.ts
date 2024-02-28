@@ -80,7 +80,7 @@ class GenerateBookletUseCase {
 
                 !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
 
-                donations = await this.donationsRepository.findDonationsBy({ngo_id, startDate: startDate as Date, endDate: endDate as Date}) as Donation[]
+                donations = await this.donationsRepository.findDonationsBy({ngo_id, startDate: startDate as Date, endDate: endDate as Date, orderBy: "ASC"}) as Donation[]
 
                 if(!donations.length){
                     throw new AppError("Nenhuma doação encontrada para esse periodo de tempo.")

@@ -160,7 +160,7 @@ class ExportDonationsUseCase {
             const sheetName = "Doações"
             const file_name = fileName? `${fileName}.xlsx` : `${donation_sheet[0].instituicao}_planilha_doações_${donation_number_interval[0]}__${donation_number_interval[1]}.xlsx`
             
-            const file = this.xlsxParserProvider.objectToXlsx(donation_sheet, {dateNF: "dd/mm/yyyy"}, sheetName/*, true*/)
+            const file = this.xlsxParserProvider.objectToXlsx(donation_sheet, {dateNF: "dd/mm/yyyy"}, sheetName, for_balance/*true ou false*/)
         
             
 
