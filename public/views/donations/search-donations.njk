@@ -173,7 +173,7 @@
         <div class="pagination">
             <div>
             {% if search_terms.page != 1 %}
-                <a id="previous_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float - 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_id}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}&not_email={{search_terms.not_email}}">
+                <a id="previous_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float - 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_id}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}&%6Eot_email={{search_terms.not_email}}">
                 << Página anterior </a>
             {% endif %}
             </div>
@@ -181,7 +181,7 @@
                 {# caracter invisivel #}
             <div>
             {% if donations| length >= search_terms.limit %}
-                <a id="next_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float + 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_id}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}&not_email={{search_terms.not_email}}">
+                <a id="next_page" href="/instituicao/{{ngo.id}}/doacao/listar?pagina={{search_terms.page|float + 1}}&limit=30&doador={{search_terms.donor_name}}&funcionario={{search_terms.worker_id}}&data_de_inicio={{search_terms.startDate}}&data_de_termino={{search_terms.endDate}}&ordenar={{search_terms.orderBy}}&%6Eot_email={{search_terms.not_email}}">
                 
                 Próxima página >></a>  
             {% endif %}
