@@ -118,7 +118,7 @@ class DonationsRepository implements IDonationsRepository {
     }
 
     //REFAZER COM QUERY BUILDER
-    async findDonationsBy({ value, ngo_id, orderBy, limit, offset, startDate, endDate, donor_name, worker_id, donation_number, }: IFindOptions): Promise<Donation[]> {
+    async findDonationsBy({ value, ngo_id, orderBy, limit, offset, startDate, endDate, donor_name, worker_id, donation_number, not_email }: IFindOptions): Promise<Donation[]> {
         // buscar tbm por is payed or is_canceled
         let query = this.repository.createQueryBuilder("donations")
         .leftJoinAndSelect("donations.worker", "workers")
@@ -142,10 +142,15 @@ class DonationsRepository implements IDonationsRepository {
         if(worker_id){
             query.andWhere("workers.id = :worker_id ", {worker_id})
         }
+        
+        if(!not_email){
+            query.andWhere("donations.is_email_sent = :not_email ", {not_email})
+        }
 
         if(orderBy){
             query.orderBy("donations.donation_number", orderBy)
         }
+
 
 
         if(limit){

@@ -43,14 +43,54 @@ div.search-paramns .search input.text {
 }
 
 div.search-paramns .search input[type=number] {
-    width: 28%;
+    width: 30%;
     text-align: center;
+
+}
+
+div.not_email-input {
+
+    display: flex;
+
+    align-items: center;
+
+    margin: 30px 10px;
+
+}
+
+
+div.search-paramns .search input[type=checkbox] {
+
+    width: 20px;
+
+    height: 20px;
+
+    margin: 0;
+
+    margin-right: 5px;
+
+    border-radius: 5px;
+
+    background-color: var(--color-input);
+
+    border: none;
+
+    box-shadow: 2px 2px 4px 1px var(--color-call-to-action);
+
+}
+
+
+div.search-paramns .search label[for="not_email"] {
+
+    font-size: 12px;
+    margin-right: 5px;
+    color: var(--color-letters-clear);
 
 }
 
 div.search-paramns .search input[type=date] {
     height: 30px;
-    width: 28%;
+    width: 20%;
     text-align: center;
 }
 

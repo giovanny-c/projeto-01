@@ -88,7 +88,18 @@
                         value="{{search_terms.donation_number}}"
                 {% endif %}
                 >
-                
+
+
+                <div class="not_email-input">
+
+                    <label for="not_email">Email nao enviado</label>
+                    <input type="checkbox" name="not_email" 
+                        {% if search_terms.not_email === "on" %}
+                            checked
+                        {% endif %}>
+
+
+                </div>
 
                 <div class="radio">
                     <input 

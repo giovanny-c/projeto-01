@@ -25,6 +25,7 @@ interface IRequest {
     ngo_id: string
     donor_name: string
     worker_id: string
+    not_email: string
     user: Partial<User>
 }
 
@@ -41,7 +42,8 @@ interface IResponse {
         endDate: string | Date
         ngo_id: string
         donor_name: string
-        worker_id: string
+        worker_id: string,
+        not_email: string
     }
 }
 
@@ -65,7 +67,7 @@ class ListDonationsUseCase {
 
     ) { }
 
-    async execute({ orderBy, limit, page, startDate, endDate, ngo_id, worker_id, donor_name, donation_number, user }: IRequest): Promise<IResponse> {
+    async execute({ orderBy, limit, page, startDate, endDate, ngo_id, worker_id, donor_name, donation_number, not_email, user }: IRequest): Promise<IResponse> {
 
 
         let ngo: Ngo = JSON.parse(await this.cacheProvider.get(`ngo-${ngo_id}`))
@@ -111,11 +113,14 @@ class ListDonationsUseCase {
         !endDate ? endDate = this.dateProvider.dateNow() :  endDate = this.dateProvider.addOrSubtractTime("add", "second", 86399, endDate)
        
 
+
+
         const donations =  await this.donationsRepository.findDonationsBy({
             ngo_id,
             worker_id,
             donor_name,
             donation_number,
+            not_email: not_email === "on" ? false : true,
             orderBy: orderBy as "ASC" | "DESC",
             limit,
             offset,
@@ -143,6 +148,7 @@ class ListDonationsUseCase {
                 orderBy,
                 limit,
                 page,
+                not_email
             }
         }
 

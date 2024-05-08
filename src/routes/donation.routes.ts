@@ -33,7 +33,7 @@ import { ManageAllNgosController } from "../modules/donations/useCases/manageAll
 import { ManageNgoController } from "../modules/donations/useCases/manageNgo/ManageNgoController";
 import { SendReceiptEmailController } from "../modules/donations/useCases/sendReceiptEmail/SendReceiptEmailController";
 
-import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/SetDonationCounterController";
+import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/setDonationCounterController";
 import { SetEmailMessageController } from "../modules/donations/useCases/setEmaiMessage/SetEmailMessageController";
 import { SetNgoEmailController } from "../modules/donations/useCases/setNgoEmail/SetNgoEmailController";
 import { UpdateDonationController } from "../modules/donations/useCases/updateDonation/UpdateDonationController";

@@ -11,6 +11,7 @@ interface IFindOptions {
     endDate?: Date
     donation_number?: number
     donation_number_interval?: number[]
+    not_email: boolean
 
 }
 

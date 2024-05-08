@@ -17,7 +17,8 @@ class ListDonationsController {
             data_de_termino: endDate, 
             funcionario: worker_id, 
             doador: donor_name,
-            numero_da_doacao: donation_number
+            numero_da_doacao: donation_number,
+            not_email: not_email
         } = req.query
 
         
@@ -39,8 +40,11 @@ class ListDonationsController {
             donor_name: donor_name as string,
             ngo_id: ngo_id as string,
             worker_id: worker_id as string,
+            not_email: not_email as string,
             user
         })
+
+        
 
         return res.status(200).render("views/donations/search-donations", {
             donations, 

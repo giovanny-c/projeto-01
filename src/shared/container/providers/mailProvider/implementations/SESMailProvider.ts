@@ -1,84 +1,84 @@
-import { injectable } from "tsyringe";
-import { IMailProvider, ISendEmailRequest } from "../IMailProvider";
-import * as fs from "fs"
-import * as handlebars from "handlebars"
-import { SES } from "aws-sdk"
-import * as nodemailer from "nodemailer"
-import { Transporter } from "nodemailer"
+// import { injectable } from "tsyringe";
+// import { IMailProvider, ISendEmailRequest } from "../IMailProvider";
+// import * as fs from "fs"
+// import * as handlebars from "handlebars"
+// import { SES } from "aws-sdk"
+// import * as nodemailer from "nodemailer"
+// import { Transporter } from "nodemailer"
 
-@injectable()
-class SESMailProvider implements IMailProvider {
+// @injectable()
+// class SESMailProvider implements IMailProvider {
 
-    private node_mailer_client: Transporter
-    private ses_client: SES
+//     private node_mailer_client: Transporter
+//     private ses_client: SES
 
-    constructor() {
+//     constructor() {
 
-        this.node_mailer_client = nodemailer.createTransport({
-            SES: new SES({
-                apiVersion: "2010-12-01",
-                region: process.env.AWS_REGION
-            })
-        })
+//         this.node_mailer_client = nodemailer.createTransport({
+//             SES: new SES({
+//                 apiVersion: "2010-12-01",
+//                 region: process.env.AWS_REGION
+//             })
+//         })
 
-        this.ses_client = new SES({
-            region: process.env.AWS_REGION
-        })
-    }
+//         this.ses_client = new SES({
+//             region: process.env.AWS_REGION
+//         })
+//     }
 
-    async sendMail({to, from, subject, body, path, variables}: ISendEmailRequest): Promise<void> {
+//     async sendMail({to, from, subject, body, path, variables}: ISendEmailRequest): Promise<void> {
         
-        let templateHTML
+//         let templateHTML
         
-        if(path && variables){
+//         if(path && variables){
 
-            const templateFileContent = fs.readFileSync(path).toString("utf-8")
+//             const templateFileContent = fs.readFileSync(path).toString("utf-8")
             
-            const templateParse = handlebars.compile(templateFileContent)
+//             const templateParse = handlebars.compile(templateFileContent)
             
-            templateHTML = templateParse(variables)
-        }
+//             templateHTML = templateParse(variables)
+//         }
 
-        await this.node_mailer_client.sendMail({
-            to,
-            from,//inserir email ja verificado pela aws aqui
-            subject,
-            html: templateHTML || null,
-            text: body.text,
-            attachments: body.attachments //pdf em base 64
+//         await this.node_mailer_client.sendMail({
+//             to,
+//             from,//inserir email ja verificado pela aws aqui
+//             subject,
+//             html: templateHTML || null,
+//             text: body.text,
+//             attachments: body.attachments //pdf em base 64
         
-        })
-    }
+//         })
+//     }
 
-    async SesSendMail(from: string, to: string, subject: any, body: any, configuration?: string){
+//     async SesSendMail(from: string, to: string, subject: any, body: any, configuration?: string){
         
-        await this.ses_client.sendEmail({
-            Source: from,
-            Destination: {
-                ToAddresses: [to],
-            },
-            Message: {
-                Subject: {
-                    Data: subject,
-                },
-                Body: {
-                    Text: {
-                        Data: body.text
-                    },
-                },
+//         await this.ses_client.sendEmail({
+//             Source: from,
+//             Destination: {
+//                 ToAddresses: [to],
+//             },
+//             Message: {
+//                 Subject: {
+//                     Data: subject,
+//                 },
+//                 Body: {
+//                     Text: {
+//                         Data: body.text
+//                     },
+//                 },
             
-            },
-            ConfigurationSetName: configuration
-        }).promise()
+//             },
+//             ConfigurationSetName: configuration
+//         }).promise()
 
 
        
 
 
-    }
+//     }
 
-    //configuration = configuração do ses
+//     //configuration = configuração do ses
 
-}
+// }
 
-export { SESMailProvider }
+// export { SESMailProvider }
