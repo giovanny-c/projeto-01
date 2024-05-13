@@ -18,7 +18,7 @@ import { Donor } from "../../../donor/entities/donor";
 
 interface IRequest{
     ngo_id: string
-    donation_number: number
+    donation_number?: number
 }
 
 interface IResponse {
@@ -76,10 +76,10 @@ class GetDonationUseCase {
             
             donation = await this.donationsRepository.findDonationByNumberAndNgoId({donation_number, ngo_id})
 
+        }
+        if(!donation_number){
 
-        }else{
-
-            const donations = await this.donationsRepository.findDonationsBy({ngo_id, orderBy: "DESC"})
+            const donations = await this.donationsRepository.findDonationsBy({ngo_id})
 
             donation = donations[0]
         }

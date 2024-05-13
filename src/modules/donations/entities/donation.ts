@@ -48,7 +48,7 @@ class Donation {
     @Column() 
     ngo_id: string
 
-    @Column()
+    @Column({type: "decimal"})
     donation_value: number
 
     @Column()

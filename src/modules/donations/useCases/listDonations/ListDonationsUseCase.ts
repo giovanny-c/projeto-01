@@ -120,7 +120,7 @@ class ListDonationsUseCase {
             worker_id,
             donor_name,
             donation_number,
-            not_email: not_email === "on" ? false : true,
+            not_email: not_email === "on" ? true : false,
             orderBy: orderBy as "ASC" | "DESC",
             limit,
             offset,

@@ -143,8 +143,8 @@ class DonationsRepository implements IDonationsRepository {
             query.andWhere("workers.id = :worker_id ", {worker_id})
         }
         
-        if(!not_email){
-            query.andWhere("donations.is_email_sent = :not_email ", {not_email})
+        if(not_email){
+            query.andWhere("donations.is_email_sent = :not_email ", {not_email: false})
         }
 
         if(orderBy){
@@ -161,6 +161,7 @@ class DonationsRepository implements IDonationsRepository {
         }
 
 
+        
         const results = await query.getMany()
 
       

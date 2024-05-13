@@ -6,4 +6,7 @@ tmp/*
 .vscode
 readMe
 
+indexDev.css
+
+
 docker-compose.yml

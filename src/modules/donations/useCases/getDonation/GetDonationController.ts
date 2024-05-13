@@ -15,7 +15,7 @@ class GetDonationController {
 
         const getDonationUseCase = container.resolve(GetDonationUseCase)
         
-        const {donation, ngo, file_name, formated_value, formated_date, messages} = await getDonationUseCase.execute({ngo_id, donation_number: +(donation_number)})
+        const {donation, ngo, file_name, formated_value, formated_date, messages} = await getDonationUseCase.execute({ngo_id, donation_number: +(donation_number) || null})
     
         return res.status(200).render("views/donations/donation", {
             user_id, 
