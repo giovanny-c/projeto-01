@@ -79,7 +79,7 @@ class GetDonationUseCase {
         }
         if(!donation_number){
 
-            const donations = await this.donationsRepository.findDonationsBy({ngo_id})
+            const donations = await this.donationsRepository.findDonationsBy({ngo_id, orderBy: "DESC"})
 
             donation = donations[0]
         }
