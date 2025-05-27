@@ -74,8 +74,21 @@ async function searchDonor(input) {
                 donorsList.appendChild(list)
                 list.appendChild(content)
 
-                content.innerHTML = `${donor.name} &lt${donor.email}&gt`
+                if(donor.send_message_by){
+                    content.style = "background-color: #00ff66"
+                    content.innerHTML = `${donor.name} &lt${donor.phone || ""} Por WhatsApp &gt`
+
+
+                }else{
+                    content.innerHTML = `${donor.name} &lt${donor.email}&gt`
+
+                }
+
+
+
                 content.setAttribute("id", `${donor.id}`)
+                
+                
 
                 // content.onclick = catchValue
                 content.addEventListener("click", catchDonorAndCleanList)

@@ -16,7 +16,7 @@ class DonorsRepository implements IDonorsRepository {
         this.repository = dataSource.getRepository(Donor)
     }
 
-    async create({ id, name, email, phone, last_donation, user_id, worker_id }: ICreateDonorDTO): Promise<Donor> {
+    async create({ id, name, email, phone, last_donation, user_id, worker_id, send_by_message}: ICreateDonorDTO): Promise<Donor> {
         const donor = this.repository.create({
             id,
             name,
@@ -24,7 +24,8 @@ class DonorsRepository implements IDonorsRepository {
             phone,
             last_donation,
             user_id,
-            worker_id
+            worker_id,
+            send_by_message
         })
 
         return await this.repository.save(donor)

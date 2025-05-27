@@ -66,6 +66,9 @@ class Donation {
     @Column()
     is_email_sent: boolean
 
+    @Column()
+    sent_by_message: boolean
+
     constructor() {
         if (!this.id) {
             this.id = uuidV4()

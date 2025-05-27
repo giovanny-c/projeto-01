@@ -156,6 +156,9 @@
                         {% if donation.is_email_sent%}
                                 class="donation-email-sent"
                         {% endif%}
+                        {% if donation.sent_by_message%}
+                                class="sent_by_message"
+                        {% endif%}
                         
                     >{{ donation.donation_number}}
                     </td>

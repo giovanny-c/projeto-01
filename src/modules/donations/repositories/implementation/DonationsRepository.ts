@@ -317,6 +317,17 @@ class DonationsRepository implements IDonationsRepository {
         
     }
 
+    async markMessageSentForDonation(id: string){
+        const updateMessageSent = this.repository.create({
+            id,
+            sent_by_message: true
+        })
+
+        return await this.repository.save(updateMessageSent)
+
+        
+    }
+
 }
 
 export { DonationsRepository }

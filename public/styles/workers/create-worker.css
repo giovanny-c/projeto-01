@@ -22,11 +22,20 @@ select.item {
 
 }
 
+
 label {
     margin: 0 auto;
     font-weight: bold;
     font-size: 22px;
     color: var(--color-letters-clear);
+}
+
+
+.item input[type="checkbox"] {
+    height: 36px;
+    width: 36px;
+    
+    margin-bottom: 50px
 }
 
 

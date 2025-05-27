@@ -49,10 +49,8 @@ class GetDonorAndDonationsUseCase {
 
        // const donations = await this.donationsRepository.findDonationsByDonorId(donorExists.id)
 
-        
-
         const results = {
-            donor: donorExists,
+            donor: {...donorExists, send_by_message: donorExists.send_by_message? "SIM" : "NÃO" },
             worker: worker || null
             //donations
         }

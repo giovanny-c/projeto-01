@@ -84,6 +84,24 @@
                             onblur="Mask.apply(this, 'formatPhone')"/>
                         </div>
                 </div>
+                
+            
+                
+                <div class="item">
+                    
+                        <div>
+                                
+                            <label>Enviar por WhatsApp:</label>  <input      
+                                type="checkbox" name="send_by_message" value="true" placeholder=""
+                                {% if donor.send_by_message%}
+                                    checked
+                                {% endif %}/> 
+                        </div>
+
+                        
+                </div>
+            
+               
 
                 {% if workers %}
 
@@ -105,6 +123,9 @@
                     </select>
                 {% endif %}
 
+
+                
+                
 
 
                 <div class="button"><button type="submit">

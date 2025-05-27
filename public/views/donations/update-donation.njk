@@ -35,8 +35,7 @@
             onsubmit="verifyEmptyInput(this, event)"
             >
 
-                <label>Nome do doador</label>    
-                
+                <label>Nome do doador</label>     
                 <div class="item">
                         <div>
                         <input      
@@ -63,51 +62,51 @@
                 onchange="removeFormError(this)"
                 >
                 
-                {% for worker in workers %}
+                    {% for worker in workers %}
 
-                        {% if not donation.worker_id %}
-                            
-                            <option value="" selected disabled hidden>Escolha o funcionário</option>
-                            
-                            <option value="{{worker.id}}"
+                            {% if not donation.worker_id %}
                                 
-                                >
+                                <option value="" selected disabled hidden>Escolha o funcionário</option>
                                 
+                                <option value="{{worker.id}}"
+                                    
+                                    >
+                                    
+                                    {{worker.name}}
+                                    
+                                </option>
+                                
+                        
+                            {% endif %}   
+                            
+                            <option value="{{worker.id}}" 
+                            {% if donation.worker_id == worker.id %}
+                                selected    
+                            {% endif %}
+                            >
+                                    
                                 {{worker.name}}
                                 
                             </option>
                             
-                       
-                        {% endif %}   
-                        
-                        <option value="{{worker.id}}" 
-                        {% if donation.worker_id == worker.id %}
-                            selected    
-                        {% endif %}
-                        >
-                                
-                            {{worker.name}}
-                            
-                        </option>
-                        
 
-                {% endfor %}
+                    {% endfor %}
 
                 </select>
-                </div>
+        </div>
 
 
-                <label for="donation_date">Data do recibo</label>
-                <div class="item">
-                        <div>
-                        <input      
-                            type="date" name="donation_date"
-                            value="{{date}}"
-                            onchange="removeFormError(this)"
-                            
-                            />
-                        </div>
-                </div>
+            <label for="donation_date">Data do recibo</label>
+            <div class="item">
+                    <div>
+                    <input      
+                        type="date" name="donation_date"
+                        value="{{date}}"
+                        onchange="removeFormError(this)"
+                        
+                        />
+                    </div>
+            </div>
 
 
 
@@ -119,16 +118,16 @@
                             type="hidden" name="donation_id" value="{{donation.id}}"/>
                         </div>
                 
-                <label>Cancelado:</label> 
+                
                 <div class="item">
                     
                         <div>
-                            
-                        <input      
-                            type="checkbox" name="is_donation_canceled" value="true" placeholder="" 
-                            {% if donation.is_donation_canceled %}
-                                checked
-                            {% endif %}/>
+                            <label>Cancelado:</label>     
+                            <input      
+                                type="checkbox" name="is_donation_canceled" value="true" placeholder="" 
+                                {% if donation.is_donation_canceled %}
+                                    checked
+                                {% endif %}/>
                         </div>
 
                        

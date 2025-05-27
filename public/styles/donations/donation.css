@@ -158,10 +158,16 @@
 
  .update-info p.email-sent {
      color: rgb(30, 205, 236);
-     ;
+
      width: 50%;
      text-align: start;
  }
+
+ .update-info p.sent_by_message {
+    color: #00ff66;
+    width: 50%;
+    text-align: start;
+}
 
  /* 
 .donation-info p:nth-child(5) {} */

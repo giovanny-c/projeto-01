@@ -41,7 +41,9 @@ class SendGridMailProvider implements IMailProvider {
 
     }
 
-
+    sendMailOAuth2(data: ISendEmailRequest): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
 
 }
 

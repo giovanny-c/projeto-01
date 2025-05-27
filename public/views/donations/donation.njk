@@ -45,8 +45,13 @@
                     {% if donation.is_email_sent %}
                         EMAIL ENVIADO
                     {% endif %}
-                </p> 
-            
+                </p>
+
+                <p class="sent_by_message">
+                    {% if donation.sent_by_message %}
+                        ENVIADO POR WHATSAPP
+                    {% endif %}
+                </p>
             
 
                 <p class="canceled">
@@ -93,7 +98,7 @@
             <form name="form-email" 
             id="form-email"
             {# class="form-email"   #}
-            action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/enviar-email" method="POST" 
+            action="/instituicao/{{ngo.id}}/doacao/{{donation.donation_number}}/enviar-recibo" method="POST" 
             enctype="multipart/form-data"
             onsubmit="verifyEmptyInput(this, event)"
             >

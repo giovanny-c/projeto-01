@@ -35,6 +35,9 @@ class Donor {
     @Column()
     worker_id: string
 
+    @Column()
+    send_by_message: boolean
+
     @ManyToOne(() => User)
     @JoinColumn({ name: "user_id" })
     user: User

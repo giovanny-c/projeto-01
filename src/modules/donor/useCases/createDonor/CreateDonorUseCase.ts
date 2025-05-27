@@ -21,7 +21,7 @@ class CreateDonorUseCase {
         private workersRepository: IWorkersReposiroty
         ) { }
 
-    async execute({ name, email, phone, user_id, worker_id}: ICreateDonorDTO) {
+    async execute({ name, email, phone, user_id, worker_id, send_by_message}: ICreateDonorDTO) {
 
         email = email.toLowerCase() as string
 
@@ -39,6 +39,7 @@ class CreateDonorUseCase {
             throw new AppError("Esse doador ja existe.")
 
         }
+
 
 
         //arruma o numero
@@ -69,7 +70,8 @@ class CreateDonorUseCase {
                 email, 
                 phone, 
                 user_id: worker.user? worker.user.id : checkUser.id,
-                worker_id: worker.id //poe o id do usuario atrelado ou worker
+                worker_id: worker.id, //poe o id do usuario atrelado ou worker
+                send_by_message: send_by_message? true : false
             })
 
             return {

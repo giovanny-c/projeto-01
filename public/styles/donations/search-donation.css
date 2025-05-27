@@ -275,6 +275,9 @@ div.search-paramns button:active {
     color: var(--color-menu-hover)
 }
 
+.table td.sent_by_message{
+    color: #00FF66;
+}
 
 .clean {
     margin-left: 10px;

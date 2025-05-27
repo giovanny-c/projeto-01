@@ -29,6 +29,7 @@ interface ISendEmailRequest {
 interface IMailProvider {
 
     sendMail(data: ISendEmailRequest): Promise<void>
+    sendMailOAuth2(data:ISendEmailRequest):Promise<void>
 
 }
 

@@ -31,7 +31,8 @@ class FilterDonorsUseCase {
             return {
                 id: donor.id,
                 name: donor.name,
-                email: donor.email
+                email: donor.email,
+                send_message_by: donor.send_by_message
             }
 
         }) 

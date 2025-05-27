@@ -34,7 +34,7 @@ interface IRequest {
 
 
 @injectable()
-class SendReceiptEmailUseCase {
+class SendReceiptUseCase {
 
 
     constructor(
@@ -82,7 +82,6 @@ class SendReceiptEmailUseCase {
         if(!ngo) throw new AppError("Instituição não encontrada", 404)
         
 
-
         
         
         let donorsEmails: string[] = [] 
@@ -99,23 +98,43 @@ class SendReceiptEmailUseCase {
 
             }))];
 
+
+            if(donors_ids_array.length === 1){
+                const donor = await this.donorsRepository.findById(donors_ids_array[0])
+
+                if(donor.send_by_message){
+
+                    const donation = await this.donationsRepository.markMessageSentForDonation(donation_id)
+
+
+// RETORNO DA MSG POR WHATSAPP
+                    return {
+                        ngo,
+                        donation,
+                        success: "Marcado como mensagem enviada por WhatsApp!"
+                    }
+                }
+
+                donorsEmails.push(donor.email)
+            }else{
+                
             //tambem filtra os duplicados
             //    donors_ids_array.filter((value, index, self) => self.indexOf(value) === index)
-
             //separa na virgula
-            donorsEmails = await Promise.all(donors_ids_array.map(async(donor_id) => {
+                donorsEmails = await Promise.all(donors_ids_array.map(async(donor_id) => {
 
-                const donor = await this.donorsRepository.findById(donor_id)
-            
-                if(!donor){
-                    return
-                }
+                    const donor = await this.donorsRepository.findById(donor_id)
                 
-                return donor.email
+                    if(!donor){
+                        return
+                    }
+                    
+                    return donor.email
+                    
+                    
                 
-
-                
-            })) 
+                }))  
+            }
         }
 
 
@@ -258,4 +277,4 @@ class SendReceiptEmailUseCase {
     }
 }
 
-export { SendReceiptEmailUseCase }
+export { SendReceiptUseCase }

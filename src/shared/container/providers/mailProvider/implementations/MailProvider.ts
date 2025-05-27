@@ -7,6 +7,7 @@ import { IMailProvider, ISendEmailRequest } from "../IMailProvider";
 class MailProvider implements IMailProvider{
     
     
+    
 
     
     async sendMail({service, from, password, to, subject, body}: ISendEmailRequest): Promise<void> {
@@ -45,7 +46,13 @@ class MailProvider implements IMailProvider{
                 html: body.html || null,
                 attachments: body.attachments || null
         })
+
+
         
+    }
+
+    sendMailOAuth2(data: ISendEmailRequest): Promise<void> {
+        throw new Error("Method not implemented.");
     }
 
 }

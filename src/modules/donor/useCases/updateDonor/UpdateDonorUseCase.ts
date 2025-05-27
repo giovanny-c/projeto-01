@@ -20,7 +20,7 @@ class UpdateDonorUseCase {
     ) {
     }
 
-    async execute({ id, name, email, phone, user_id, worker_id }: ICreateDonorDTO) {
+    async execute({ id, name, email, phone, user_id, worker_id, send_by_message }: ICreateDonorDTO) {
 
         email = email.toLowerCase() as string
 
@@ -34,7 +34,6 @@ class UpdateDonorUseCase {
             throw new AppError("Doador nao encontrado", 404)
         }
 
-        
         
 
         phone = formatPhone(phone, false)
@@ -71,7 +70,9 @@ class UpdateDonorUseCase {
                 email, 
                 phone, 
                 user_id: worker.user? worker.user.id : checkUser.id, //se o worker nao estiver atrelado a um user, vai ser usado o id do admin
-                worker_id: worker.id //poe o id do usuario atrelado ou worker
+                worker_id: worker.id, //poe o id do usuario atrelado ou worker
+                send_by_message: send_by_message? true : false
+
             })
 
             return {

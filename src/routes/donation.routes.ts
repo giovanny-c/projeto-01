@@ -31,7 +31,7 @@ import { LoadUpdateDonationController } from "../modules/donations/useCases/load
 import { LoadUpdateNgoController } from "../modules/donations/useCases/loadUpdateNgo/LoadUpdateNgoController";
 import { ManageAllNgosController } from "../modules/donations/useCases/manageAllNgos/ManageAllNgosController";
 import { ManageNgoController } from "../modules/donations/useCases/manageNgo/ManageNgoController";
-import { SendReceiptEmailController } from "../modules/donations/useCases/sendReceiptEmail/SendReceiptEmailController";
+import { SendReceiptController } from "../modules/donations/useCases/sendReceiptEmail/SendReceiptController";
 
 import { SetDonationCounterController } from "../modules/donations/useCases/setDonationCounter/setDonationCounterController";
 import { SetEmailMessageController } from "../modules/donations/useCases/setEmaiMessage/SetEmailMessageController";
@@ -82,7 +82,7 @@ const setEmailMessageController = new SetEmailMessageController()
 const loadSetNgoEmailController = new LoadSetNgoEmailController()
 const loadSetEmailMessageController = new LoadSetEmailMessageController()
 
-const sendReceiptEmailController = new SendReceiptEmailController()
+const sendReceiptController = new SendReceiptController()
 const manageAllNgosController = new ManageAllNgosController()
 const manageNgoController = new ManageNgoController()
 const loadUpdateNgoController = new LoadUpdateNgoController()
@@ -185,7 +185,7 @@ donationRoutes.post("/instituicao/:ngo_id/definir-email", ensureAdmin, upload.no
 donationRoutes.get("/instituicao/:ngo_id/criar-mensagem", ensureAdmin, handleMessage, loadSetEmailMessageController.handle)
 donationRoutes.post("/instituicao/:ngo_id/criar-mensagem", ensureAdmin, upload.none(), setEmailMessageController.handle)
 
-donationRoutes.post("/instituicao/:ngo_id/doacao/:donation_number/enviar-email", ensureAdmin, upload.none(), sendReceiptEmailController.handle )
+donationRoutes.post("/instituicao/:ngo_id/doacao/:donation_number/enviar-recibo", ensureAdmin, upload.none(), sendReceiptController.handle )
 // donationRoutes.post("/update-status/:id", ensureAuthenticated, updateDonationStatusController.handle)
 
 

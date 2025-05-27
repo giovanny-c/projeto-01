@@ -24,6 +24,7 @@ interface IDonationsRepository {
     // markDonationAsPayed(donation: ICreateDonationsDTO, payed_at: Date): Promise<Donation>
     markDonationAsCanceled(id: string): Promise<Donation>
     markEmailSentForDonation(id: string): Promise<Donation>
+    markMessageSentForDonation(id: string): Promise<Donation>
 }
 
 export { IDonationsRepository, ICountDonationsValueResponse }

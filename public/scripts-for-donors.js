@@ -1,17 +1,14 @@
 function formatDateStaticP(pDate) {
 
 
-    var date = pDate.innerHTML
-
-    date = new Date(date)
+    var date = new Date(pDate.innerText)
+    
 
     const year = date.getFullYear();
     const month = `0${date.getMonth() + 1}`.slice(-2);
     const day = `0${date.getUTCDate()}`.slice(-2);
 
     var formatedDate = `${day}/${month}/${year}`
-
-
 
 
 
@@ -70,8 +67,8 @@ function formatPhoneStatic(pPhone) {
 
 var pdate = document.querySelector("p.date")
 
-
 formatDateStaticP(pdate)
+
 
 var pphone = document.querySelector("p.phone")
 

@@ -28,12 +28,16 @@
             <p>
                 Email: {{donor.email}}
             </p> 
+
+            <p class="sendMessageBy">
+                Enviar por WhatsApp: {{donor.send_by_message}}
+            </p>
             <p class="phone">
                 Telefone: {{donor.phone}}
             </p>   
                         
             <p class="date">
-                Criado em: {{donor.created_at}} 
+                {{donor.created_at}}
             </p>
 
         {% if worker %}

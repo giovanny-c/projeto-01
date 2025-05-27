@@ -3,13 +3,13 @@
 
 import { container } from "tsyringe";
 import { Request, Response } from "express";
-import { SendReceiptEmailUseCase } from "./SendReceiptEmailUseCase";
+import { SendReceiptUseCase } from "./SendReceiptUseCase";
 
 
 
 
 
-class SendReceiptEmailController {
+class SendReceiptController {
 
     async handle(req: Request, res: Response): Promise<any> {
 
@@ -17,7 +17,7 @@ class SendReceiptEmailController {
         const { message_id, donation_id, donors_ids, email } = req.body
         const {id: user_id} = req.user
 
-        const SendReceiptEmail = container.resolve(SendReceiptEmailUseCase)
+        const SendReceiptEmail = container.resolve(SendReceiptUseCase)
 
         const {ngo, donation, success} = await SendReceiptEmail.execute({ngo_id, donation_id, donors_ids, message_id, email: email.toLowerCase() as string, user_id})
         
@@ -30,4 +30,4 @@ class SendReceiptEmailController {
 
 }
 
-export {SendReceiptEmailController }
+export {SendReceiptController }

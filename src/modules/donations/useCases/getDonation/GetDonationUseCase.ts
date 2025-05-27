@@ -93,7 +93,7 @@ class GetDonationUseCase {
             throw new AppError("Doacão nao encontrada, ou nao existe", 400)
         }
 
-        
+// console.log(donation)
 
         //se existir um donor com o mesmo nome passa ele para o get donation
         //para colocar no campo de email o donor.email
