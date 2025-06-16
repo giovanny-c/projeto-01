@@ -46,7 +46,15 @@ jobs:
             cd ~/app/projeto-01
             yarn 
             ./node_modules/.bin/typeorm migration:run -d ./dist/database/runMigration.js
+
+            pm2 describe projeto_01 > /dev/null
+            if [ $? -eq 0 ]; then
+            echo "Restarting projeto_01"
             pm2 restart projeto_01
+            else
+            echo "Starting projeto_01"
+            pm2 start dist/index.js --name projeto_01
+            fi
             
           
         
